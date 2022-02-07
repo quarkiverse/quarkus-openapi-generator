@@ -1,0 +1,22 @@
+= Quarkus - Openapi Generator
+:extension-status: preview
+
+Describe what the extension does here.
+
+== Installation
+
+If you want to use this extension, you need to add the `io.quarkiverse.openapi.generator:quarkus-openapi-generator` extension first.
+In your `pom.xml` file, add:
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkiverse.openapi.generator</groupId>
+    <artifactId>quarkus-openapi-generator</artifactId>
+</dependency>
+----
+
+[[extension-configuration-reference]]
+== Extension Configuration Reference
+
+include::config.adoc[leveloffset=+1, opts=optional]
