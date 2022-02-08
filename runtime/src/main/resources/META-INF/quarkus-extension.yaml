@@ -1,9 +1,11 @@
-name: Openapi Generator
-#description: Openapi Generator ...
+name: "OpenAPI Generator - REST Client Generator"
+artifact: ${project.groupId}:${project.artifactId}:${project.version}
 metadata:
-#  keywords:
-#    - openapi-generator
-#  guide: ...
-#  categories:
-#    - "miscellaneous"
-#  status: "preview"
+  keywords:
+    - "openapi"
+    - "openapi-generator"
+    - "rest"
+    - "rest-client"
+  categories:
+    - "rest"
+  status: "preview"

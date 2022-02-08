@@ -1,0 +1,3 @@
+io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorJsonCodeGen
+io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorYamlCodeGen
+io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorYmlCodeGen
