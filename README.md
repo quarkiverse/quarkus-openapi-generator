@@ -1,29 +1,109 @@
-# Quarkus - Openapi Generator
+# Quarkus - OpenAPI Generator
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-## Welcome to Quarkiverse!
+Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
-Congratulations and thank you for creating a new Quarkus extension project in Quarkiverse!
+## Getting Started
 
-Feel free to replace this content with the proper description of your new project and necessary instructions how to use and contribute to it.
+Add the following dependency to your project's `pom.xml` file:
 
-You can find the basic info, Quarkiverse policies and conventions in [the Quarkiverse wiki](https://github.com/quarkiverse/quarkiverse/wiki).
+```xml
 
-In case you are creating a Quarkus extension project for the first time, please follow [Building My First Extension](https://quarkus.io/guides/building-my-first-extension) guide.
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
 
-Other useful articles related to Quarkus extension development can be found under the [Writing Extensions](https://quarkus.io/guides/#writing-extensions) guide category on the [Quarkus.io](http://quarkus.io) website.
+You will also need to add additional execution entries to the `quarkus-maven-plugin` configuration:
 
-Thanks again, good luck and have fun!
+```xml
 
-## Documentation
+<plugin>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-maven-plugin</artifactId>
+  <extensions>true</extensions>
+  <executions>
+    <execution>
+      <goals>
+        <goal>build</goal>
+        <goal>generate-code</goal>
+        <goal>generate-code-tests</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
 
-The documentation for this extension should be maintained as part of this repository and it is stored in the `docs/` directory. 
+Now, create the directory `openapi` under your `src/main/` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
 
-The layout should follow the [Antora's Standard File and Directory Set](https://docs.antora.org/antora/2.3/standard-directories/).
+To fine tune the configuration for each spec file, add the following entries to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
-Once the docs are ready to be published, please open a PR including this repository in the [Quarkiverse Docs Antora playbook](https://github.com/quarkiverse/quarkiverse-docs/blob/main/antora-playbook.yml#L7). See an example [here](https://github.com/quarkiverse/quarkiverse-docs/pull/1).
+```properties
+quarkus.openapi-generator.spec."petstore.json".api-package=org.acme.openapi.api
+quarkus.openapi-generator.spec."petstore.json".model-package=org.acme.openapi.model
+```
+
+Note that the file name is used to configure the specific information for each spec.
+
+Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
+
+```
+- org.acme.openapi
+  - api
+    - PetApi.java
+    - StoreApi.java
+    - UserApi.java
+  - model
+    - Address.java
+    - Category.java
+    - Customer.java
+    - ModelApiResponse.java
+    - Order.java
+    - Pet.java
+    - Tag.java
+    - User.java
+```
+
+You can reference the generated code in your project, for example:
+
+```java
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.acme.openapi.api.PetApi;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
+
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/petstore")
+public class PetResource {
+
+    @RestClient
+    @Inject
+    PetApi petApi;
+}
+```
+
+See the [integration-tests](integration-tests) module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
+
+## Known Limitations
+
+These are the known limitations of this pre-release version:
+
+- No authentication support (Basic, Bearer, OAuth2)
+- No reactive support
+- Only Jackson support
+
+We will work in the next few releases to address these use cases, until there please provide feedback for the current state of this extension. We also love contributions :heart:
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

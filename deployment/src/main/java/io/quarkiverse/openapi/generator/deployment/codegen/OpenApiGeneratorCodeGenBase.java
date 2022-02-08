@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +26,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YML = ".yml";
     static final String JSON = ".json";
 
+    static final String CONFIG_PREFIX = "quarkus.openapi-generator";
+
     @Override
     public String inputDirectory() {
         return "openapi";
@@ -34,9 +37,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
         final Path openApiDir = context.inputDir();
-        final String apiPackage = context.config().getConfigValue("quarkus.openapi-generator.codegen.api-package").getValue();
-        final String modelPackage = context.config().getConfigValue("quarkus.openapi-generator.codegen.model-package")
-                .getValue();
 
         try {
             if (Files.isDirectory(openApiDir)) {
@@ -48,10 +48,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                             .map(this::escapeWhitespace)
                             .collect(Collectors.toList());
                     for (String openApiFile : openApiFiles) {
+                        final String prop = getSpecPropertyPrefix(openApiFile);
                         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(openApiFile,
                                 outDir.toString())
-                                        .withApiPackage(apiPackage)
-                                        .withModelPackage(modelPackage);
+                                        .withApiPackage(getRequiredIndexedProperty(prop + ".api-package", context))
+                                        .withModelPackage(getRequiredIndexedProperty(prop + ".model-package", context));
                         generator.generate();
                     }
                     return true;
@@ -69,5 +70,14 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         } else {
             return path;
         }
+    }
+
+    private String getSpecPropertyPrefix(final String openApiFile) {
+        return CONFIG_PREFIX + ".spec.\"" + Paths.get(openApiFile).getFileName().toString() + "\"";
+    }
+
+    private String getRequiredIndexedProperty(final String propertyKey, final CodeGenContext context) {
+        // this is how we get a required property. The configSource will handle the exception for us.
+        return context.config().getValue(propertyKey, String.class);
     }
 }
