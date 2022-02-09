@@ -1,7 +1,10 @@
 package io.quarkiverse.openapi.generator.it;
 
-import static io.restassured.RestAssured.when;
+import javax.inject.Inject;
 
+import org.acme.openapi.api.PetApi;
+import org.acme.openapi.model.Pet;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +15,14 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 public class PetStoreTest {
 
+    @RestClient
+    @Inject
+    PetApi petApi;
+
     @Test
     public void testGetPetById() {
-        final String petName = when()
-                .get("/petstore/pet/name/1234")
-                .then()
-                .statusCode(200)
-                .extract().asString();
-        Assertions.assertEquals("Bidu", petName);
+        final Pet pet = petApi.getPetById(1234L);
+        Assertions.assertEquals("Bidu", pet.getName());
+        Assertions.assertEquals(Pet.StatusEnum.AVAILABLE, pet.getStatus());
     }
 }

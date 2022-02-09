@@ -76,16 +76,13 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {ext}
     {/for}
     {#if v.useBeanValidation}{#include beanValidation.qute p=v/}{/if}
-    {#if v.isEnum && !v.isArray && !v.isMap}public {v.dataType} {v.getter}() {
-        if({v.name} == null) {
-            return null;
-        }
-        return {v.name}.value();
-    }{#else if !withXml && v.isEnum && !v.isArray && !v.isMap}public {v.datatypeWithEnum} {v.getter}() {
+    {#if v.isEnum && !v.isArray && !v.isMap}public {v.datatypeWithEnum} {v.getter}() {
         return {v.name};
-    }{#else if v.isEnum && (v.isArray || v.isMap)}public {v.datatypeWithEnum} {v.getter}() {
+    }{#else if !v.isEnum && !v.isArray && !v.isMap}public {v.datatype} {v.getter}() {
         return {v.name};
-    }{#else if !v.isEnum}public {v.datatypeWithEnum} {v.getter}() {
+    }{#else if !v.isEnum && (v.isArray || v.isMap)}public {v.datatype} {v.getter}() {
+        return {v.name};
+    }{#else if !v.isEnum}public {v.datatype} {v.getter}() {
         return {v.name};
     }{/if}
 
