@@ -31,8 +31,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-devtools-utilities</artifactId>
-      <!-- Maybe we need to add it to the quarkus bom -->
-      <version>${quarkus.version}</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -127,6 +125,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- Used internally by openapi-generator-tool, we can't use JBoss Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-ext</artifactId>
