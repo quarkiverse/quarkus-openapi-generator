@@ -4,7 +4,7 @@ import org.jboss.jandex.ClassInfo;
 
 import io.quarkus.builder.item.MultiBuildItem;
 
-public class GeneratedOpenApiFile extends MultiBuildItem {
+public abstract class GeneratedOpenApiFile extends MultiBuildItem {
     private final ClassInfo classInfo;
 
     public GeneratedOpenApiFile(final ClassInfo classInfo) {
