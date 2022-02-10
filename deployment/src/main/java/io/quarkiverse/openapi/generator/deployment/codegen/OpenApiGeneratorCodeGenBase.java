@@ -1,9 +1,12 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.API_PKG_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.MODEL_PKG_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,8 +29,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YML = ".yml";
     static final String JSON = ".json";
 
-    static final String CONFIG_PREFIX = "quarkus.openapi-generator";
-
     @Override
     public String inputDirectory() {
         return "openapi";
@@ -48,11 +49,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                             .map(this::escapeWhitespace)
                             .collect(Collectors.toList());
                     for (String openApiFile : openApiFiles) {
-                        final String prop = getSpecPropertyPrefix(openApiFile);
+                        final String basePackage = getRequiredIndexedProperty(getResolvedBasePackageProperty(openApiFile),
+                                context);
                         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(openApiFile,
                                 outDir.toString())
-                                        .withApiPackage(getRequiredIndexedProperty(prop + ".api-package", context))
-                                        .withModelPackage(getRequiredIndexedProperty(prop + ".model-package", context));
+                                        .withApiPackage(basePackage + API_PKG_SUFFIX)
+                                        .withModelPackage(basePackage + MODEL_PKG_SUFFIX);
                         generator.generate();
                     }
                     return true;
@@ -70,10 +72,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         } else {
             return path;
         }
-    }
-
-    private String getSpecPropertyPrefix(final String openApiFile) {
-        return CONFIG_PREFIX + ".spec.\"" + Paths.get(openApiFile).getFileName().toString() + "\"";
     }
 
     private String getRequiredIndexedProperty(final String propertyKey, final CodeGenContext context) {

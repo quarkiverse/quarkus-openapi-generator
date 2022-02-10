@@ -41,11 +41,10 @@ You will also need to add additional execution entries to the `quarkus-maven-plu
 
 Now, create the directory `openapi` under your `src/main/` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
 
-To fine tune the configuration for each spec file, add the following entries to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
+To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
 ```properties
-quarkus.openapi-generator.spec."petstore.json".api-package=org.acme.openapi.api
-quarkus.openapi-generator.spec."petstore.json".model-package=org.acme.openapi.model
+quarkus.openapi-generator.spec."petstore.json".base-package=org.acme.openapi
 ```
 
 Note that the file name is used to configure the specific information for each spec.

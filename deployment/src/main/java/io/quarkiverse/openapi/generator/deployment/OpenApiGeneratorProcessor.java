@@ -22,10 +22,10 @@ class OpenApiGeneratorProcessor {
         boolean hasGeneratedFiles = false;
         for (SpecConfig spec : configuration.specs.values()) {
             for (ClassInfo classInfo : index.getIndex().getKnownClasses()) {
-                if (classInfo.name().packagePrefix().equals(spec.apiPackage)) {
+                if (classInfo.name().packagePrefix().equals(spec.getApiPackage())) {
                     restClients.produce(new GeneratedOpenApiRestClientBuildItem(classInfo));
                     hasGeneratedFiles = true;
-                } else if (classInfo.name().packagePrefix().equals(spec.modelPackage)) {
+                } else if (classInfo.name().packagePrefix().equals(spec.getModelPackage())) {
                     models.produce(new GeneratedOpenApiModelBuildItem(classInfo));
                     hasGeneratedFiles = true;
                 }
