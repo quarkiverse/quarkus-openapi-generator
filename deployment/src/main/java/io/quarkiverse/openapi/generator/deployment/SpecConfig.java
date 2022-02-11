@@ -26,7 +26,8 @@ public class SpecConfig {
         return String.format("%s%s", basePackage, MODEL_PKG_SUFFIX);
     }
 
-    public static String getResolvedBasePackageProperty(final String openApiFile) {
-        return CONFIG_PREFIX + ".spec.\"" + Paths.get(openApiFile).getFileName().toString() + "\"" + ".base-package";
+    public static String getResolvedBasePackageProperty(final String openApiFilePath) {
+        final String fileName = Paths.get(openApiFilePath).getFileName().toString().replace(" ", "\\u0020");
+        return CONFIG_PREFIX + ".spec.\"" + fileName + "\"" + ".base-package";
     }
 }

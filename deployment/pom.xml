@@ -13,9 +13,7 @@
   <properties>
     <version.org.openapitools>5.4.0</version.org.openapitools>
     <version.org.slf4j>1.7.29</version.org.slf4j>
-    <version.com.github.jknack>4.2.0</version.com.github.jknack>
-    <version.io.swagger>1.6.2</version.io.swagger>
-    <version.io.swagger.core.v3>2.1.5</version.io.swagger.core.v3>
+    <version.com.github.jknack>4.2.1</version.com.github.jknack>
   </properties>
 
   <dependencies>
@@ -77,51 +75,12 @@
           <artifactId>jakarta.xml.bind-api</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>io.swagger.core.v3</groupId>
-          <artifactId>swagger-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>io.swagger</groupId>
-          <artifactId>swagger-core</artifactId>
-        </exclusion>
-        <exclusion>
           <groupId>joda-time</groupId>
           <artifactId>joda-time</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-ext</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.github.jknack</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- forcing correct versions by openapi-generator -->
-    <dependency>
-      <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-core</artifactId>
-      <version>${version.io.swagger.core.v3}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.validation</groupId>
-          <artifactId>validation-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>jakarta.xml.bind</groupId>
-          <artifactId>jakarta.xml.bind-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-core</artifactId>
-      <version>${version.io.swagger}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.validation</groupId>
-          <artifactId>validation-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
