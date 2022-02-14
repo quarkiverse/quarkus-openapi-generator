@@ -27,7 +27,7 @@ public class SpecConfig {
     }
 
     public static String getResolvedBasePackageProperty(final String openApiFilePath) {
-        final String fileName = Paths.get(openApiFilePath).getFileName().toString().replace(" ", "\\u0020");
+        final String fileName = Paths.get(openApiFilePath).getFileName().toString();
         return CONFIG_PREFIX + ".spec.\"" + fileName + "\"" + ".base-package";
     }
 }
