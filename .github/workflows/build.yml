@@ -24,8 +24,10 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+     matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -48,6 +50,11 @@ jobs:
           path: ~/.m2/repository
           # refresh cache every month to avoid unlimited growth
           key: maven-repo-${{ runner.os }}-${{ steps.get-date.outputs.date }}
+          
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v2  
 
       - name: Build with Maven
-        run: mvn -B formatter:validate verify --file pom.xml
+        run: |
+           mvn -B formatter:validate verify --file pom.xml
