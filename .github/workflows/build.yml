@@ -56,4 +56,4 @@ jobs:
       - uses: actions/checkout@v2  
 
       - name: Build with Maven
-        run: mvn -B formatter:validate verify -D"format.skip"=true --file pom.xml
+        run:  mvn -B formatter:validate verify --file pom.xml 
