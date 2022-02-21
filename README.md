@@ -23,7 +23,7 @@ You will also need to add or update the `quarkus-maven-plugin` configuration wit
 
 ---
 **⚠️**
-If you created your application with the [Quarkus Starter](https://code.quarkus.io/), you probably already have this configuration. Pay attention to not duplicate it.
+You probably already have this configuration if you created your application with the [Quarkus Starter](https://code.quarkus.io/). That said, double-check your configuration not to add another `plugin` entry.
 ---
 
 ```xml
