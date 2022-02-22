@@ -152,6 +152,114 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 
 The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you. 
 
+## Circuit Breaker
+
+You can add [CircuitBreaker annotation from MicroProfile Fault Tolerance](https://microprofile.io/project/eclipse/microprofile-fault-tolerance/spec/src/main/asciidoc/circuitbreaker.asciidoc)
+to your generated classes by defining the desired configuration in `application.properties`.
+
+Let's say you have the following OpenAPI definition:
+````json
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Simple API",
+    "version": "1.0.0-SNAPSHOT"
+  },
+  "paths": {
+    "/hello": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/bye": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+````
+
+And you want to configure Circuit Breaker for the `/bye` endpoint, you can do it in the following way:
+
+Add the [SmallRye Fault Tolerance extension](https://quarkus.io/guides/smallrye-fault-tolerance) to your project's `pom.xml` file:
+
+````xml
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
+</dependency>
+````
+
+Assuming your Open API spec file is in `src/main/openapi/simple-openapi.json`, add the following configuration to your `application.properties` file:
+
+````properties
+quarkus.openapi-generator.spec."simple-openapi.json".base-package=org.acme.openapi.simple
+
+# Enables the CircuitBreaker extension
+quarkus.openapi-generator.CircuitBreaker.enabled=true
+
+# Defines the configuration for the GET method to the /bye endpoint
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/failOn = java.lang.IllegalArgumentException,java.lang.NullPointerException
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/skipOn = java.lang.NumberFormatException
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/delay = 33
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/delayUnit = MILLIS
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/requestVolumeThreshold = 42
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/failureRatio = 3.14
+quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/successThreshold = 22
+````
+
+With the above configuration, your Rest Clients will be created with a code similar to the following:
+
+````java
+@Path("")
+@RegisterRestClient
+public interface DefaultApi {
+
+    @GET
+    @Path("/bye")
+    @Produces({"text/plain"})
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker(
+            delay = 33, 
+            delayUnit = java.time.temporal.ChronoUnit.MILLIS, 
+            failOn = { java.lang.IllegalArgumentException.class, java.lang.NullPointerException.class }, 
+            failureRatio = 3.14, 
+            requestVolumeThreshold = 42, 
+            skipOn = java.lang.NumberFormatException.class, 
+            successThreshold = 22)
+    public String byeGet();
+
+    @GET
+    @Path("/hello")
+    @Produces({"text/plain"})
+    public String helloGet();
+
+}
+````
+
 ## Known Limitations
 
 These are the known limitations of this pre-release version:

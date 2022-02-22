@@ -5,8 +5,14 @@ import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolved
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration;
+import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
@@ -41,8 +47,14 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
+                            final CircuitBreakerConfiguration circuitBreakerConfiguration = getCircuitBreakerConfiguration(
+                                    context,
+                                    openApiFilePath);
+                            
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    openApiFilePath.normalize(), outDir);
+                                    openApiFilePath.normalize(), outDir)
+                                            .withCircuitBreakerConfiguration(circuitBreakerConfiguration);
+
                             context.config()
                                     .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
                                     .ifPresent(generator::withBasePackage);
@@ -55,5 +67,18 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             return true;
         }
         return false;
+    }
+
+    private CircuitBreakerConfiguration getCircuitBreakerConfiguration(CodeGenContext context, Path openApiFilePath) {
+        UnaryOperator<String> nameToValuePropertyMapper = propertyName -> context.config().getValue(propertyName,
+                String.class);
+
+        return new CircuitBreakerConfigurationParser(openApiFilePath.toFile().getName(), nameToValuePropertyMapper)
+                .parse(getConfigPropertyNames(context));
+    }
+
+    private static List<String> getConfigPropertyNames(CodeGenContext context) {
+        return StreamSupport.stream(context.config().getPropertyNames().spliterator(), false)
+                .collect(Collectors.toUnmodifiableList());
     }
 }
