@@ -42,12 +42,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .filter(Files::isRegularFile)
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
-                        .map(this::encodeURISpaces)
-                        .forEach(openApiFilePath -> {
+                        .map(Path::of).forEach(openApiFilePath -> {
                             final String basePackage = getRequiredIndexedProperty(
                                     getResolvedBasePackageProperty(openApiFilePath), context);
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    "file:" + openApiFilePath, outDir.toString())
+                                    openApiFilePath.normalize(), outDir)
                                             .withApiPackage(basePackage + API_PKG_SUFFIX)
                                             .withModelPackage(basePackage + MODEL_PKG_SUFFIX);
                             generator.generate();
@@ -59,13 +58,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             return true;
         }
         return false;
-    }
-
-    private String encodeURISpaces(String path) {
-        // the underlying swagger parser library handles the path as a URI, and in previous versions (the one used by the openapi-generator)
-        // it has a bug, not handling these paths correctly. That's why we manually encode the paths here, so the file can be accessible and validated against
-        // these libraries
-        return path.replaceAll(" ", "%20");
     }
 
     private String getRequiredIndexedProperty(final String propertyKey, final CodeGenContext context) {

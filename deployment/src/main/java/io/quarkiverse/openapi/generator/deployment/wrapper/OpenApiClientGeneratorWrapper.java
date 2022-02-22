@@ -4,6 +4,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.openapitools.codegen.CodegenConstants;
@@ -25,7 +26,7 @@ public class OpenApiClientGeneratorWrapper {
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
 
-    public OpenApiClientGeneratorWrapper(final String specFilePath, final String outputDir) {
+    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -41,8 +42,8 @@ public class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(ONCE_LOGGER, TRUE.toString());
 
         this.configurator = new QuarkusCodegenConfigurator();
-        this.configurator.setInputSpec(specFilePath);
-        this.configurator.setOutputDir(outputDir);
+        this.configurator.setInputSpec(specFilePath.toString());
+        this.configurator.setOutputDir(outputDir.toString());
         this.generator = new DefaultGenerator();
     }
 
