@@ -1,8 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.API_PKG_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.MODEL_PKG_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,7 +41,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            final String basePackage = getRequiredIndexedProperty(getResolvedBasePackageProperty(openApiFilePath), context);
+                            final String basePackage = getRequiredIndexedProperty(
+                                    getResolvedBasePackageProperty(openApiFilePath), context);
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                                     openApiFilePath.normalize(), outDir)
                                             .withApiPackage(basePackage + API_PKG_SUFFIX)
