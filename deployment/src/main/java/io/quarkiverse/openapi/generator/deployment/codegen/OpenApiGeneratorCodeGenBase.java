@@ -1,6 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.*;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.API_PKG_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.MODEL_PKG_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
 
 import java.io.IOException;
 import java.nio.file.Files;
