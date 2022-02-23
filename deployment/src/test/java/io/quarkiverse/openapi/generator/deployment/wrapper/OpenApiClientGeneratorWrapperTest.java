@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getBuildTimeSpecPropertyPrefix;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,7 +20,8 @@ public class OpenApiClientGeneratorWrapperTest {
         final Path petstoreOpenApi = Path
                 .of(requireNonNull(this.getClass().getResource("/openapi/petstore-openapi.json")).toURI());
         final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(petstoreOpenApi, targetPath);
+        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(petstoreOpenApi, targetPath,
+                getBuildTimeSpecPropertyPrefix(petstoreOpenApi));
         final List<File> generatedFiles = generatorWrapper.generate();
         assertNotNull(generatedFiles);
         assertFalse(generatedFiles.isEmpty());

@@ -1,0 +1,27 @@
+package {apiPackage}.auth;
+
+import javax.ws.rs.Priorities;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import io.quarkiverse.openapi.generator.providers.AbstractBasicAuthenticationProvider;
+import io.quarkus.arc.Priority;
+
+@Priority(Priorities.AUTHENTICATION)
+public class BasicAuthenticationProvider extends AbstractBasicAuthenticationProvider {
+
+    @ConfigProperty(name = "{quarkusConfigPrefix}.auth.username")
+    String username;
+
+    @ConfigProperty(name = "{quarkusConfigPrefix}.auth.password")
+    String password;
+
+    protected String getUsername() {
+        return this.username;
+    }
+
+    protected String getPassword() {
+        return this.password;
+    }
+
+}

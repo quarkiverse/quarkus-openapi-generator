@@ -31,6 +31,8 @@ public class WiremockPetStore implements QuarkusTestResourceLifecycleManager {
                                         "\"status\": \"AVAILABLE\"" +
                                         "}")));
         return Collections.singletonMap("org.acme.openapi.api.PetApi/mp-rest/url", wireMockServer.baseUrl());
+
+        // TODO: verify if authentication headers have been received
     }
 
     @Override

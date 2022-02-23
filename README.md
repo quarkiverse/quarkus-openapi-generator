@@ -6,6 +6,8 @@
 
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
+This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/).
+
 ## Getting Started
 
 Add the following dependency to your project's `pom.xml` file:
