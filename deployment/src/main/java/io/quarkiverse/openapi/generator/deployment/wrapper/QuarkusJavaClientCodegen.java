@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.languages.JavaClientCodegen;
+import org.openapitools.codegen.utils.ProcessUtils;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
@@ -12,12 +13,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     public QuarkusJavaClientCodegen() {
         // immutable properties
         this.setDateLibrary(JavaClientCodegen.JAVA8_MODE);
+        this.setSerializationLibrary(SERIALIZATION_LIBRARY_JACKSON);
         this.setTemplateDir("templates");
-        // we are only interested in the main generated classes
-        this.projectFolder = "";
-        this.projectTestFolder = "";
-        this.sourceFolder = "";
-        this.testFolder = "";
     }
 
     @Override
@@ -28,14 +25,21 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     @Override
     public void processOpts() {
         super.processOpts();
+        // we are only interested in the main generated classes
+        this.projectFolder = "";
+        this.projectTestFolder = "";
+        this.sourceFolder = "";
+        this.testFolder = "";
+
         this.replaceWithQuarkusTemplateFiles();
     }
 
     private void replaceWithQuarkusTemplateFiles() {
         supportingFiles.clear();
-        // TODO: verify if we need basic authentication in the given OpenAPI definition
-        supportingFiles.add(new SupportingFile("auth/basicAuthenticationProvider.qute", authFileFolder(),
-                "BasicAuthenticationProvider.java"));
+
+        if (ProcessUtils.hasHttpBasicMethods(this.openAPI)) {
+            supportingFiles.add(new SupportingFile("auth/basicAuthenticationProvider.qute", authFileFolder(), "BasicAuthenticationProvider.java"));
+        }
 
         apiTemplateFiles.clear();
         apiTemplateFiles.put("api.qute", ".java");

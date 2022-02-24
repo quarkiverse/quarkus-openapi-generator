@@ -5,8 +5,12 @@ import {imp.import};
 {/for}
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+{#if hasAuthMethods}
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
+{/if}
+{#if hasHttpBasicMethods}
 import {package}.auth.BasicAuthenticationProvider;
+{/if}
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,7 +29,9 @@ import javax.ws.rs.core.MediaType;
 {/if}
 @Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
 @RegisterRestClient
+{#if hasHttpBasicMethods}
 @RegisterProvider(BasicAuthenticationProvider.class)
+{/if}
 public interface {classname} {
 
     {#for op in operations.operation}
