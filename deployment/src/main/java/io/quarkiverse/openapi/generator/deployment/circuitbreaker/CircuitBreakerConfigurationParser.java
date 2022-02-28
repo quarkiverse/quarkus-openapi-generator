@@ -1,74 +1,59 @@
 package io.quarkiverse.openapi.generator.deployment.circuitbreaker;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration.CircuitBreakerClassConfiguration;
+
 public final class CircuitBreakerConfigurationParser {
-
-    private static final String CONFIG_PREFIX = "quarkus.openapi-generator.spec.";
-
-    private static final String PROPERTY_REGEX = CONFIG_PREFIX + "\".+\"/.+/CircuitBreaker/.+";
-
-    private static final String CIRCUIT_BREAKER_ENABLED_PROPERTY_NAME = "quarkus.openapi-generator.CircuitBreaker.enabled";
 
     private final UnaryOperator<String> nameToValuePropertyMapper;
 
-    private final String openApiFileName;
-
-    private final int operationIndex;
-
-    public CircuitBreakerConfigurationParser(String openApiFileName, UnaryOperator<String> nameToValuePropertyMapper) {
-        this.openApiFileName = openApiFileName;
+    public CircuitBreakerConfigurationParser(UnaryOperator<String> nameToValuePropertyMapper) {
         this.nameToValuePropertyMapper = nameToValuePropertyMapper;
-        operationIndex = CONFIG_PREFIX.length() + openApiFileName.length() + 3;
     }
 
     public CircuitBreakerConfiguration parse(Collection<String> propertyNames) {
-        if (propertyNames.contains(CIRCUIT_BREAKER_ENABLED_PROPERTY_NAME)
-                && Boolean.parseBoolean(nameToValuePropertyMapper.apply(CIRCUIT_BREAKER_ENABLED_PROPERTY_NAME))) {
-            return CircuitBreakerConfiguration.builder()
-                    .enabled(true)
-                    .operations(getOperations(propertyNames))
-                    .build();
-        } else {
-            return CircuitBreakerConfiguration.empty();
-        }
+        return new CircuitBreakerConfiguration(readClasses(propertyNames));
     }
 
-    private List<CircuitBreakerConfiguration.Operation> getOperations(Collection<String> propertyNames) {
-        Map<String, Map<String, String>> operationsMap = new HashMap<>();
+    private List<CircuitBreakerClassConfiguration> readClasses(Collection<String> propertyNames) {
+        List<String> filteredPropertyNames = filterPropertyNames(propertyNames).stream()
+                .filter(property -> nameToValuePropertyMapper.apply(property).equals("true"))
+                .collect(Collectors.toList());
 
-        for (String propertyName : filterPropertyNames(propertyNames)) {
-            String operationName = getOperationName(propertyName);
-            String circuitBreakerAttributeName = getCircuitBreakerAttributeName(propertyName);
-            String circuitBreakerAttributeValue = nameToValuePropertyMapper.apply(propertyName).trim();
+        Set<String> classNames = filteredPropertyNames.stream()
+                .map(this::getClassName)
+                .collect(Collectors.toSet());
 
-            operationsMap.computeIfAbsent(operationName, k -> new HashMap<>())
-                    .put(circuitBreakerAttributeName, circuitBreakerAttributeValue);
-        }
-
-        return operationsMap.entrySet().stream()
-                .map(entry -> new CircuitBreakerConfiguration.Operation(entry.getKey(), entry.getValue()))
+        return classNames.stream()
+                .map(className -> new CircuitBreakerClassConfiguration(className,
+                        getMethodNames(className, filteredPropertyNames)))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private String getCircuitBreakerAttributeName(String propertyName) {
-        return propertyName.substring(propertyName.lastIndexOf("/") + 1);
+    private List<String> getMethodNames(String className, List<String> propertyNames) {
+        return propertyNames.stream()
+                .filter(propertyName -> propertyName.startsWith(className + "/"))
+                .map(this::getMethodName)
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    private String getOperationName(String propertyName) {
-        return propertyName.substring(operationIndex, propertyName.indexOf("/CircuitBreaker/"));
+    private String getClassName(String propertyName) {
+        return propertyName.substring(0, propertyName.indexOf("/"));
+    }
+
+    private String getMethodName(String propertyName) {
+        return propertyName.substring(propertyName.indexOf("/") + 1, propertyName.indexOf("/CircuitBreaker/"));
     }
 
     private List<String> filterPropertyNames(Collection<String> propertyNames) {
         return propertyNames.stream()
-                .filter(propertyName -> propertyName.matches(PROPERTY_REGEX))
                 .filter(propertyName -> propertyName
-                        .matches(CONFIG_PREFIX + "\"" + openApiFileName + "\"/.+/CircuitBreaker/.+"))
+                        .matches(".+/.+/CircuitBreaker/enabled"))
                 .collect(Collectors.toList());
     }
 }

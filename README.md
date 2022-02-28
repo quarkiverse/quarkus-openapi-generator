@@ -154,8 +154,8 @@ The API Key scheme has an additional property that requires where to add the API
 
 ## Circuit Breaker
 
-You can add [CircuitBreaker annotation from MicroProfile Fault Tolerance](https://microprofile.io/project/eclipse/microprofile-fault-tolerance/spec/src/main/asciidoc/circuitbreaker.asciidoc)
-to your generated classes by defining the desired configuration in `application.properties`.
+You can define the [CircuitBreaker annotation from MicroProfile Fault Tolerance](https://microprofile.io/project/eclipse/microprofile-fault-tolerance/spec/src/main/asciidoc/circuitbreaker.asciidoc)
+in your generated classes by setting the desired configuration in `application.properties`.
 
 Let's say you have the following OpenAPI definition:
 ````json
@@ -182,7 +182,6 @@ Let's say you have the following OpenAPI definition:
         }
       }
     },
-
     "/bye": {
       "get": {
         "responses": {
@@ -217,24 +216,27 @@ Add the [SmallRye Fault Tolerance extension](https://quarkus.io/guides/smallrye-
 Assuming your Open API spec file is in `src/main/openapi/simple-openapi.json`, add the following configuration to your `application.properties` file:
 
 ````properties
-quarkus.openapi-generator.spec."simple-openapi.json".base-package=org.acme.openapi.simple
+quarkus.openapi-generator.codegen.spec."simple-openapi.json".base-package=org.acme.openapi.simple
 
-# Enables the CircuitBreaker extension
-quarkus.openapi-generator.CircuitBreaker.enabled=true
-
-# Defines the configuration for the GET method to the /bye endpoint
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/failOn = java.lang.IllegalArgumentException,java.lang.NullPointerException
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/skipOn = java.lang.NumberFormatException
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/delay = 33
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/delayUnit = MILLIS
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/requestVolumeThreshold = 42
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/failureRatio = 3.14
-quarkus.openapi-generator.spec."simple-openapi.json"/byeGet/CircuitBreaker/successThreshold = 22
+# Enables the CircuitBreaker extension for the byeGet method from the DefaultApi class
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/enabled=true
 ````
 
 With the above configuration, your Rest Clients will be created with a code similar to the following:
 
 ````java
+package org.acme.openapi.simple.api;
+
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
+
 @Path("")
 @RegisterRestClient
 public interface DefaultApi {
@@ -242,14 +244,7 @@ public interface DefaultApi {
     @GET
     @Path("/bye")
     @Produces({"text/plain"})
-    @org.eclipse.microprofile.faulttolerance.CircuitBreaker(
-            delay = 33, 
-            delayUnit = java.time.temporal.ChronoUnit.MILLIS, 
-            failOn = { java.lang.IllegalArgumentException.class, java.lang.NullPointerException.class }, 
-            failureRatio = 3.14, 
-            requestVolumeThreshold = 42, 
-            skipOn = java.lang.NumberFormatException.class, 
-            successThreshold = 22)
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     public String byeGet();
 
     @GET
@@ -259,6 +254,19 @@ public interface DefaultApi {
 
 }
 ````
+
+You can also override the default Circuit Breaker configuration by setting the properties in `application.properties` [just as you would for a traditional MicroProfile application](https://quarkus.io/guides/smallrye-fault-tolerance#runtime-configuration):
+
+````properties
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failOn = java.lang.IllegalArgumentException,java.lang.NullPointerException
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/skipOn = java.lang.NumberFormatException
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/delay = 33
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/delayUnit = MILLIS
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/requestVolumeThreshold = 42
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failureRatio = 3.14
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold = 22
+````
+
 
 ## Known Limitations
 

@@ -29,6 +29,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration;
+import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration.CircuitBreakerClassConfiguration;
 
 public class OpenApiClientGeneratorWrapperTest {
 
@@ -113,13 +114,7 @@ public class OpenApiClientGeneratorWrapperTest {
 
         assertThat(byeMethod.orElseThrow())
                 .hasCircuitBreakerAnnotation()
-                .hasDelayAsString("33")
-                .hasSuccessThresholdAsString("5")
-                .doesNotHaveDelayUnit()
-                .doesNotHaveFailOn()
-                .doesNotHaveFailureRatio()
-                .doesNotHaveRequestVolumeThreshold()
-                .doesNotHaveSkipOn();
+                .doesNotHaveAnyCircuitBreakerAttribute();
 
         methodDeclarations.stream()
                 .filter(m -> !m.getNameAsString().equals("byeGet"))
@@ -129,14 +124,10 @@ public class OpenApiClientGeneratorWrapperTest {
     private List<File> generateRestClientFiles() throws URISyntaxException {
         Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
 
-        List<CircuitBreakerConfiguration.Operation> operations = List.of(
-                new CircuitBreakerConfiguration.Operation("opThatDoesNotExist", Map.of()),
-                new CircuitBreakerConfiguration.Operation("byeGet", Map.of("delay", "33", "successThreshold", "5")));
+        CircuitBreakerClassConfiguration classConfiguration = new CircuitBreakerClassConfiguration(
+                "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet"));
 
-        CircuitBreakerConfiguration circuitBreakerConfiguration = CircuitBreakerConfiguration.builder()
-                .enabled(true)
-                .operations(operations)
-                .build();
+        CircuitBreakerConfiguration circuitBreakerConfiguration = new CircuitBreakerConfiguration(List.of(classConfiguration));
 
         Path simpleOpenApiFile = Path.of(Objects.requireNonNull(getClass().getResource("/openapi/simple-openapi.json"))
                 .toURI());

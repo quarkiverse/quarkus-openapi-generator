@@ -39,14 +39,9 @@ class SimpleOpenApiTest {
 
         assertThat(byeMethod).isNotEmpty();
 
-        assertThat(byeMethod.orElseThrow()).hasCircuitBreakerAnnotation()
-                .hasFailOnAsString("{ java.lang.IllegalArgumentException.class, java.lang.NullPointerException.class }")
-                .hasSkipOnAsString("{ java.lang.NumberFormatException.class, java.lang.IndexOutOfBoundsException.class }")
-                .hasDelayAsString("33")
-                .hasDelayUnitAsString("java.time.temporal.ChronoUnit.MILLIS")
-                .hasRequestVolumeThresholdAsString("42")
-                .hasFailureRatioAsString("3.14")
-                .hasSuccessThresholdAsString("22");
+        assertThat(byeMethod.orElseThrow())
+                .hasCircuitBreakerAnnotation()
+                .doesNotHaveAnyCircuitBreakerAttribute();
 
         methodDeclarations.stream()
                 .filter(method -> !method.getNameAsString().equals("byeGet"))

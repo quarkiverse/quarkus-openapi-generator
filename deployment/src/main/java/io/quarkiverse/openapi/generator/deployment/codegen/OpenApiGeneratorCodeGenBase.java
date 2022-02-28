@@ -48,9 +48,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
                             final CircuitBreakerConfiguration circuitBreakerConfiguration = getCircuitBreakerConfiguration(
-                                    context,
-                                    openApiFilePath);
-                            
+                                    context);
+
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                                     openApiFilePath.normalize(), outDir)
                                             .withCircuitBreakerConfiguration(circuitBreakerConfiguration);
@@ -69,11 +68,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return false;
     }
 
-    private CircuitBreakerConfiguration getCircuitBreakerConfiguration(CodeGenContext context, Path openApiFilePath) {
+    private CircuitBreakerConfiguration getCircuitBreakerConfiguration(CodeGenContext context) {
         UnaryOperator<String> nameToValuePropertyMapper = propertyName -> context.config().getValue(propertyName,
                 String.class);
 
-        return new CircuitBreakerConfigurationParser(openApiFilePath.toFile().getName(), nameToValuePropertyMapper)
+        return new CircuitBreakerConfigurationParser(nameToValuePropertyMapper)
                 .parse(getConfigPropertyNames(context));
     }
 
