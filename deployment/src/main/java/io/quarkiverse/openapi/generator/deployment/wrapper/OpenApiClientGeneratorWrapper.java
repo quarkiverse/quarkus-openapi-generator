@@ -26,7 +26,7 @@ public class OpenApiClientGeneratorWrapper {
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
 
-    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final String runtimeConfigPrefix) {
+    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -40,7 +40,7 @@ public class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(VERBOSE, FALSE.toString());
         GlobalSettings.setProperty(ONCE_LOGGER, TRUE.toString());
 
-        this.configurator = new QuarkusCodegenConfigurator(runtimeConfigPrefix);
+        this.configurator = new QuarkusCodegenConfigurator();
         this.configurator.setInputSpec(specFilePath.toString());
         this.configurator.setOutputDir(outputDir.toString());
         this.generator = new DefaultGenerator();
@@ -54,6 +54,11 @@ public class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withModelPackage(final String pkg) {
         this.configurator.setModelPackage(pkg);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withBasePackage(final String pkg) {
+        this.configurator.setPackageName(pkg);
         return this;
     }
 

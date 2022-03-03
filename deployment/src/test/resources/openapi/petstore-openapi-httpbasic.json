@@ -1222,7 +1222,11 @@
       },
       "basic_auth": {
         "type": "http",
-         "scheme": "basic"
+        "scheme": "basic"
+      },
+      "basic_auth2": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }

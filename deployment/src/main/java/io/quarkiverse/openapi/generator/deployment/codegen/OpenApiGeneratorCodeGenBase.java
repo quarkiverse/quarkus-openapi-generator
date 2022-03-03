@@ -3,7 +3,6 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.API_PKG_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.MODEL_PKG_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getRuntimeSpecPropertyPrefix;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,9 +46,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                             final String basePackage = getRequiredIndexedProperty(
                                     getResolvedBasePackageProperty(openApiFilePath), context);
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    openApiFilePath.normalize(), outDir, getRuntimeSpecPropertyPrefix(openApiFilePath))
+                                    openApiFilePath.normalize(), outDir)
                                             .withApiPackage(basePackage + API_PKG_SUFFIX)
-                                            .withModelPackage(basePackage + MODEL_PKG_SUFFIX);
+                                            .withModelPackage(basePackage + MODEL_PKG_SUFFIX)
+                                            .withBasePackage(basePackage);
                             generator.generate();
                         });
             } catch (IOException e) {

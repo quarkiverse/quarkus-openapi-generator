@@ -1,6 +1,5 @@
 package io.quarkiverse.openapi.generator.deployment.template;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getBuildTimeSpecPropertyPrefix;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -8,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
@@ -22,8 +20,7 @@ public class QuteTemplatingEngineAdapterTest {
     void checkTemplateGenerator() throws IOException {
         final String petstoreOpenApi = requireNonNull(this.getClass().getResource("/openapi/petstore-openapi.json")).getPath();
         final DefaultGenerator generator = new DefaultGenerator();
-        final CodegenConfigurator configurator = new QuarkusCodegenConfigurator(
-                getBuildTimeSpecPropertyPrefix(Path.of(petstoreOpenApi)));
+        final CodegenConfigurator configurator = new QuarkusCodegenConfigurator();
         final File apiFile = File.createTempFile("api", "java");
         apiFile.deleteOnExit();
         configurator.setInputSpec(petstoreOpenApi);

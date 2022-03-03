@@ -5,14 +5,11 @@ import org.openapitools.codegen.languages.JavaClientCodegen;
 
 public class QuarkusCodegenConfigurator extends CodegenConfigurator {
 
-    public static final String CONFIG_PREFIX_PROP = "quarkusConfigPrefix";
-
-    public QuarkusCodegenConfigurator(final String runtimeConfigPrefix) {
+    public QuarkusCodegenConfigurator() {
         // immutable properties
         this.setGeneratorName("quarkus");
         this.setTemplatingEngineName("qute");
         this.setLibrary(JavaClientCodegen.MICROPROFILE);
-        this.addAdditionalProperty(CONFIG_PREFIX_PROP, runtimeConfigPrefix.replace("\"", "\\\""));
     }
 
 }
