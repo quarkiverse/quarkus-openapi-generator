@@ -49,7 +49,7 @@ Now, create the directory `openapi` under your `src/main/` path and add the Open
 To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
 ```properties
-quarkus.openapi-generator.spec."petstore.json".base-package=org.acme.openapi
+quarkus.openapi-generator.codegen.spec."petstore.json".base-package=org.acme.openapi
 ```
 
 Note that the file name is used to configure the specific information for each spec.
@@ -104,7 +104,7 @@ If your OpenAPI specification file has `securitySchemes` [definitions](https://s
 
 To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this pattern: `[base_package].security.auth.[security_scheme_name]/[auth_property_name]`. Where:
 
-- `base_package` is the package name you gave when configuring the code generation using `quarkus.openapi-generator.spec.[open_api_file].base-package` property.
+- `base_package` is the package name you gave when configuring the code generation using `quarkus.openapi-generator.codegen.spec.[open_api_file].base-package` property.
 - `security_scheme_name` is the name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we have `api_key` and `basic_auth` security schemes:
 ```json
 {
