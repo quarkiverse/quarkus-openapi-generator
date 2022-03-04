@@ -11,7 +11,7 @@ class OpenApiGeneratorProcessor {
 
     private static final String FEATURE = "openapi-generator";
 
-    OpenApiGeneratorConfiguration configuration;
+    OpenApiGeneratorBuildTimeConfig configuration;
 
     @BuildStep
     void discoverGeneratedApis(BuildProducer<GeneratedOpenApiRestClientBuildItem> restClients,

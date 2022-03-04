@@ -32,8 +32,7 @@ public class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.MODEL_TESTS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.MODEL_DOCS, FALSE.toString());
-        // generates every Api and Supporting files
-        // TODO: requires more testing to properly filter the generated classes
+        // generates every Api and Models
         GlobalSettings.setProperty(CodegenConstants.APIS, "");
         GlobalSettings.setProperty(CodegenConstants.MODELS, "");
         GlobalSettings.setProperty(CodegenConstants.SUPPORTING_FILES, "");
@@ -55,6 +54,11 @@ public class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withModelPackage(final String pkg) {
         this.configurator.setModelPackage(pkg);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withBasePackage(final String pkg) {
+        this.configurator.setPackageName(pkg);
         return this;
     }
 

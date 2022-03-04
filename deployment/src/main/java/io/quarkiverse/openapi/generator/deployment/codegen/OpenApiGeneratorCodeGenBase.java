@@ -48,7 +48,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                                     openApiFilePath.normalize(), outDir)
                                             .withApiPackage(basePackage + API_PKG_SUFFIX)
-                                            .withModelPackage(basePackage + MODEL_PKG_SUFFIX);
+                                            .withModelPackage(basePackage + MODEL_PKG_SUFFIX)
+                                            .withBasePackage(basePackage);
                             generator.generate();
                         });
             } catch (IOException e) {
