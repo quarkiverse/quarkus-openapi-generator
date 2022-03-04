@@ -98,11 +98,65 @@ public class PetResource {
 
 See the [integration-tests](integration-tests) module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
 
+## Authentication Support
+
+If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator will [register `ClientRequestFilter`s providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to implement the given authentication mechanism.
+
+To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this pattern: `[base_package].security.auth.[security_scheme_name]/[auth_property_name]`. Where:
+
+- `base_package` is the package name you gave when configuring the code generation using `quarkus.openapi-generator.spec.[open_api_file].base-package` property.
+- `security_scheme_name` is the name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we have `api_key` and `basic_auth` security schemes:
+```json
+{
+  "securitySchemes": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    },
+    "basic_auth": {
+      "type": "http",
+      "scheme": "basic"
+    }
+  }
+}
+```
+- `auth_property_name` varies depending on the authentication provider. For example, for Basic Authentication we have `username` and `password`. See the following sections for more details.
+
+> Tip: on production environments you will likely to use [HashiCorp Vault](https://quarkiverse.github.io/quarkiverse-docs/quarkus-vault/dev/index.html) or [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) to provide this information for your application.
+
+### Basic HTTP Authentication
+
+For Basic HTTP Authentication, these are the supported configurations:
+
+| Description          | Property Key                                                   | Example                                              |
+| -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
+| Username credentials | `[base_package].security.auth.[security_scheme_name]/username` | `org.acme.openapi.security.auth.basic_auth/username` |
+| Password credentials | `[base_package].security.auth.[security_scheme_name]/password` | `org.acme.openapi.security.auth.basic_auth/password` |
+
+### Bearer Token Authentication
+
+For Bearer Token Authentication, these are the supported configurations:
+
+| Description  | Property Key                                                       | Example                                                  |
+| -------------| ------------------------------------------------------------------ | -------------------------------------------------------- |
+| Bearer Token | `[base_package].security.auth.[security_scheme_name]/bearer-token` | `org.acme.openapi.security.auth.bearer/bearer-token` |
+
+### API Key Authentication
+
+Similarly to bearer token, the API Key Authentication also has the token entry key property:
+
+| Description  | Property Key                                                  | Example                                             |
+| -------------| --------------------------------------------------------------| --------------------------------------------------- |
+| API Key      | `[base_package].security.auth.[security_scheme_name]/api-key` | `org.acme.openapi.security.auth.apikey/api-key` |
+
+The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you. 
+
 ## Known Limitations
 
 These are the known limitations of this pre-release version:
 
-- No authentication support (Basic, Bearer, OAuth2)
+- No OAuth2 support
 - No reactive support
 - Only Jackson support
 

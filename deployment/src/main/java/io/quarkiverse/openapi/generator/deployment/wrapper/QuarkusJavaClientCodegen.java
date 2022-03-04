@@ -38,7 +38,9 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         supportingFiles.clear();
 
         // TODO: add others as we go
-        if (ProcessUtils.hasHttpBasicMethods(this.openAPI) || ProcessUtils.hasApiKeyMethods(this.openAPI)) {
+        if (ProcessUtils.hasHttpBasicMethods(this.openAPI) ||
+                ProcessUtils.hasApiKeyMethods(this.openAPI) ||
+                ProcessUtils.hasHttpBearerMethods(this.openAPI)) {
             supportingFiles.add(
                     new SupportingFile("auth/compositeAuthenticationProvider.qute",
                             authFileFolder(),

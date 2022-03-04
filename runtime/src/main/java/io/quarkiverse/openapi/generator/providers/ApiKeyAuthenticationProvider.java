@@ -7,6 +7,9 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.UriBuilder;
 
+/**
+ * Provider for API Key authentication.
+ */
 public class ApiKeyAuthenticationProvider implements ClientRequestFilter {
 
     private final String name;

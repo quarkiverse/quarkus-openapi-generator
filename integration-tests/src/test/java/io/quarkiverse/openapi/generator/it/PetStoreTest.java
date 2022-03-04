@@ -44,6 +44,6 @@ public class PetStoreTest {
 
         petstoreServer.verify(getRequestedFor(urlEqualTo("/pet/1234"))
                 .withHeader(HttpHeaders.AUTHORIZATION,
-                        matching(AuthUtils.generateBasicAuthAccessToken(username, password))));
+                        matching(AuthUtils.basicAuthAccessToken(username, password))));
     }
 }

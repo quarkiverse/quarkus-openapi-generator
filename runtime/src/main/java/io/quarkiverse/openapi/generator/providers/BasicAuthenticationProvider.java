@@ -7,7 +7,7 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 
 /**
- * Base class for generated providers using basic authentication.
+ * Provider for Basic Authentication.
  * Username and password should be read by generated configuration properties, which is only known after openapi spec processing
  * during build time.
  */
@@ -21,20 +21,17 @@ public class BasicAuthenticationProvider implements ClientRequestFilter {
         this.name = name;
     }
 
-    private String generateAccessToken() {
-        return AuthUtils.generateBasicAuthAccessToken(getUsername(), getPassword());
-    }
-
     private String getUsername() {
-        return authProvidersConfig.auth().get(name + "/username");
+        return authProvidersConfig.auth().getOrDefault(name + "/username", "");
     }
 
     private String getPassword() {
-        return authProvidersConfig.auth().get(name + "/password");
+        return authProvidersConfig.auth().getOrDefault(name + "/password", "");
     }
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, generateAccessToken());
+        requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
+                AuthUtils.basicAuthAccessToken(getUsername(), getPassword()));
     }
 }
