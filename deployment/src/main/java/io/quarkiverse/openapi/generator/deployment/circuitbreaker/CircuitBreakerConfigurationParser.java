@@ -2,11 +2,11 @@ package io.quarkiverse.openapi.generator.deployment.circuitbreaker;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-
-import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration.CircuitBreakerClassConfiguration;
 
 public final class CircuitBreakerConfigurationParser {
 
@@ -16,11 +16,12 @@ public final class CircuitBreakerConfigurationParser {
         this.nameToValuePropertyMapper = nameToValuePropertyMapper;
     }
 
-    public CircuitBreakerConfiguration parse(Collection<String> propertyNames) {
-        return new CircuitBreakerConfiguration(readClasses(propertyNames));
-    }
-
-    private List<CircuitBreakerClassConfiguration> readClasses(Collection<String> propertyNames) {
+    /**
+     * Parses the properties and returns a map of class names and their methods that should be configured with circuit breaker.
+     *
+     * @return a map of class names and their methods that should be configured with circuit breaker
+     */
+    public Map<String, List<String>> parse(Collection<String> propertyNames) {
         List<String> filteredPropertyNames = filterPropertyNames(propertyNames).stream()
                 .filter(property -> nameToValuePropertyMapper.apply(property).equals("true"))
                 .collect(Collectors.toList());
@@ -29,10 +30,9 @@ public final class CircuitBreakerConfigurationParser {
                 .map(this::getClassName)
                 .collect(Collectors.toSet());
 
-        return classNames.stream()
-                .map(className -> new CircuitBreakerClassConfiguration(className,
-                        getMethodNames(className, filteredPropertyNames)))
-                .collect(Collectors.toUnmodifiableList());
+        return classNames.stream().collect(Collectors.toUnmodifiableMap(
+                Function.identity(),
+                className -> getMethodNames(className, filteredPropertyNames)));
     }
 
     private List<String> getMethodNames(String className, List<String> propertyNames) {

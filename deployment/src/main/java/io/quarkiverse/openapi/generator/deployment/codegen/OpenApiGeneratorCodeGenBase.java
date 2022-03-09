@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
@@ -47,7 +47,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            final CircuitBreakerConfiguration circuitBreakerConfiguration = getCircuitBreakerConfiguration(
+                            final Map<String, List<String>> circuitBreakerConfiguration = getCircuitBreakerConfiguration(
                                     context);
 
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
@@ -68,7 +68,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return false;
     }
 
-    private CircuitBreakerConfiguration getCircuitBreakerConfiguration(CodeGenContext context) {
+    private Map<String, List<String>> getCircuitBreakerConfiguration(CodeGenContext context) {
         UnaryOperator<String> nameToValuePropertyMapper = propertyName -> context.config().getValue(propertyName,
                 String.class);
 

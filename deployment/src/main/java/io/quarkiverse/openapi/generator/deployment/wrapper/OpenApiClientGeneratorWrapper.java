@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
@@ -68,7 +69,13 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withCircuitBreakerConfiguration(final CircuitBreakerConfiguration config) {
+    /**
+     * Adds the circuit breaker configuration to the generator.
+     *
+     * @param config a map of class names and their methods that should be configured with circuit breaker
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withCircuitBreakerConfiguration(final Map<String, List<String>> config) {
         configurator.addAdditionalProperty("circuit-breaker", config);
         return this;
     }

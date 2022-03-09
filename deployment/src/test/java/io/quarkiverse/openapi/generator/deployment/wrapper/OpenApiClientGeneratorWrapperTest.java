@@ -28,9 +28,6 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
-import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration;
-import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfiguration.CircuitBreakerClassConfiguration;
-
 public class OpenApiClientGeneratorWrapperTest {
 
     @Test
@@ -124,16 +121,12 @@ public class OpenApiClientGeneratorWrapperTest {
     private List<File> generateRestClientFiles() throws URISyntaxException {
         Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
 
-        CircuitBreakerClassConfiguration classConfiguration = new CircuitBreakerClassConfiguration(
-                "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet"));
-
-        CircuitBreakerConfiguration circuitBreakerConfiguration = new CircuitBreakerConfiguration(List.of(classConfiguration));
-
         Path simpleOpenApiFile = Path.of(Objects.requireNonNull(getClass().getResource("/openapi/simple-openapi.json"))
                 .toURI());
 
         OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(simpleOpenApiFile, targetPath)
-                .withCircuitBreakerConfiguration(circuitBreakerConfiguration);
+                .withCircuitBreakerConfiguration(Map.of(
+                        "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
 
         return generatorWrapper.generate();
     }
