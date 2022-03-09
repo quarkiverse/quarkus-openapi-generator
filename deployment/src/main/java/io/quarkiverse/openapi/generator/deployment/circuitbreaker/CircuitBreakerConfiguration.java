@@ -14,7 +14,7 @@ public final class CircuitBreakerConfiguration {
         return classConfigurations;
     }
 
-    CircuitBreakerClassConfiguration getClassConfiguration(String className) {
+    public CircuitBreakerClassConfiguration getClassConfiguration(String className) {
         return getClassConfigurations().stream()
                 .filter(c -> c.getClassName().equals(className))
                 .findFirst()
