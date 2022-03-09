@@ -2,18 +2,20 @@ package io.quarkiverse.openapi.generator.deployment.circuitbreaker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 import org.junit.jupiter.api.Test;
 
 class CircuitBreakerConfigurationParserTest {
 
     @Test
-    void parse() throws IOException {
-        Map<String, List<String>> circuitBreakerConfiguration = loadConfiguration("/circuitbreaker/application.properties");
+    void parse() {
+        Config config = mockConfig("/circuitbreaker/application.properties");
+
+        Map<String, List<String>> circuitBreakerConfiguration = CircuitBreakerConfigurationParser.parse(config);
 
         assertThat(circuitBreakerConfiguration.get("org.acme.CountryResource"))
                 .containsExactlyInAnyOrder("getCountries", "getByCapital");
@@ -22,27 +24,29 @@ class CircuitBreakerConfigurationParserTest {
                 .containsOnly("get");
     }
 
-    private Map<String, List<String>> loadConfiguration(String propertiesFile) throws IOException {
-        Properties properties = new Properties();
-        properties.load(CircuitBreakerConfigurationParserTest.class.getResourceAsStream(propertiesFile));
-
-        return new CircuitBreakerConfigurationParser(properties::getProperty)
-                .parse(properties.stringPropertyNames());
-    }
-
     @Test
-    void circuitBreakerDisabledShouldReturnEmptyConfig() throws IOException {
-        Map<String, List<String>> circuitBreakerConfiguration = loadConfiguration(
-                "/circuitbreaker/circuit_breaker_disabled_application.properties");
+    void circuitBreakerDisabledShouldReturnEmptyConfig() {
+        Config config = mockConfig("/circuitbreaker/circuit_breaker_disabled_application.properties");
+
+        Map<String, List<String>> circuitBreakerConfiguration = CircuitBreakerConfigurationParser.parse(config);
 
         assertThat(circuitBreakerConfiguration).isEmpty();
     }
 
     @Test
-    void missingCircuitBreakerEnabledConfigShouldReturnEmptyConfig() throws IOException {
-        Map<String, List<String>> circuitBreakerConfiguration = loadConfiguration(
-                "/circuitbreaker/missing_circuit_breaker_enabled_application.properties");
+    void missingCircuitBreakerEnabledConfigShouldReturnEmptyConfig() {
+        Config config = mockConfig("/circuitbreaker/missing_circuit_breaker_enabled_application.properties");
+
+        Map<String, List<String>> circuitBreakerConfiguration = CircuitBreakerConfigurationParser.parse(config);
 
         assertThat(circuitBreakerConfiguration).isEmpty();
+    }
+
+    private static Config mockConfig(String propertiesFile) {
+        return ConfigProviderResolver
+                .instance()
+                .getBuilder()
+                .withSources(new FileConfigSource(propertiesFile))
+                .build();
     }
 }

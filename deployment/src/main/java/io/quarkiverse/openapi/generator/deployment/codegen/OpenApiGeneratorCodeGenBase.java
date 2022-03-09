@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -47,12 +45,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            final Map<String, List<String>> circuitBreakerConfiguration = getCircuitBreakerConfiguration(
-                                    context);
-
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                                     openApiFilePath.normalize(), outDir)
-                                            .withCircuitBreakerConfiguration(circuitBreakerConfiguration);
+                                            .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
+                                                    context.config()));
 
                             context.config()
                                     .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
@@ -66,18 +62,5 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             return true;
         }
         return false;
-    }
-
-    private Map<String, List<String>> getCircuitBreakerConfiguration(CodeGenContext context) {
-        UnaryOperator<String> nameToValuePropertyMapper = propertyName -> context.config().getValue(propertyName,
-                String.class);
-
-        return new CircuitBreakerConfigurationParser(nameToValuePropertyMapper)
-                .parse(getConfigPropertyNames(context));
-    }
-
-    private static List<String> getConfigPropertyNames(CodeGenContext context) {
-        return StreamSupport.stream(context.config().getPropertyNames().spliterator(), false)
-                .collect(Collectors.toUnmodifiableList());
     }
 }
