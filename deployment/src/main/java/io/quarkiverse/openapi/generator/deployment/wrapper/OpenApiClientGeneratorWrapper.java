@@ -5,11 +5,14 @@ import static java.lang.Boolean.TRUE;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
+
+import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
 
 /**
  * Wrapper for the OpenAPIGen tool.
@@ -39,7 +42,7 @@ public class OpenApiClientGeneratorWrapper {
         // logging
         GlobalSettings.setProperty(VERBOSE, FALSE.toString());
         GlobalSettings.setProperty(ONCE_LOGGER, TRUE.toString());
-
+        EnumSet<ApiKeyIn> values = EnumSet.allOf(ApiKeyIn.class);
         this.configurator = new QuarkusCodegenConfigurator();
         this.configurator.setInputSpec(specFilePath.toString());
         this.configurator.setOutputDir(outputDir.toString());

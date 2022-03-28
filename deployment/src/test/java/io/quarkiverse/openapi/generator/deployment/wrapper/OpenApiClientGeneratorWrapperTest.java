@@ -46,6 +46,20 @@ public class OpenApiClientGeneratorWrapperTest {
         assertTrue(generatedFiles.stream().anyMatch(f -> f.getName().equals("CompositeAuthenticationProvider.java")));
     }
 
+    @Test
+    void verifyEnumGeneration() throws URISyntaxException {
+        final Path petstoreOpenApi = Path
+                .of(requireNonNull(this.getClass().getResource("/openapi/issue-28.yaml")).toURI());
+        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
+        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(petstoreOpenApi, targetPath)
+                .withBasePackage("org.issue28")
+                .withApiPackage("org.issue28.api")
+                .withModelPackage("org.issue28.package");
+        final List<File> generatedFiles = generatorWrapper.generate();
+
+        // TODO: add verification via java parser
+    }
+
     private String getTargetDir() throws URISyntaxException {
         return Paths.get(requireNonNull(getClass().getResource("/")).toURI()).getParent().toString();
     }
