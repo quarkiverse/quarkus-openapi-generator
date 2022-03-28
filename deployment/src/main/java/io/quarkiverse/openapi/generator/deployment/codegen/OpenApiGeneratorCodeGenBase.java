@@ -26,6 +26,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YML = ".yml";
     static final String JSON = ".json";
 
+    private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
+
     @Override
     public String inputDirectory() {
         return "openapi";
@@ -43,8 +45,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            final String basePackage = getRequiredIndexedProperty(
-                                    getResolvedBasePackageProperty(openApiFilePath), context);
+                            final String basePackage = context.config()
+                                    .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
+                                    .orElse(DEFAULT_PACKAGE);
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                                     openApiFilePath.normalize(), outDir)
                                             .withApiPackage(basePackage + API_PKG_SUFFIX)
@@ -59,10 +62,5 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             return true;
         }
         return false;
-    }
-
-    private String getRequiredIndexedProperty(final String propertyKey, final CodeGenContext context) {
-        // this is how we get a required property. The configSource will handle the exception for us.
-        return context.config().getValue(propertyKey, String.class);
     }
 }
