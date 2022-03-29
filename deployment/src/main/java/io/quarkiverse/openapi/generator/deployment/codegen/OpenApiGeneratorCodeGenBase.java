@@ -41,11 +41,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            final String basePackage = context.config()
-                                    .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
-                                    .orElse("");
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    openApiFilePath.normalize(), outDir).withBasePackage(basePackage);
+                                    openApiFilePath.normalize(), outDir);
+                            context.config()
+                                    .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
+                                    .ifPresent(generator::withBasePackage);
                             generator.generate();
                         });
             } catch (IOException e) {
