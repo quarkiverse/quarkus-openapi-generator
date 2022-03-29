@@ -21,6 +21,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>2.7.5.Final</quarkus.version>
+
+    <version.com.github.javaparser>3.24.0</version.com.github.javaparser>
+    <version.org.assertj>3.22.0</version.org.assertj>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -30,6 +33,19 @@
         <version>${quarkus.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <!-- Test -->
+      <dependency>
+        <groupId>com.github.javaparser</groupId>
+        <artifactId>javaparser-core</artifactId>
+        <version>${version.com.github.javaparser}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${version.org.assertj}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

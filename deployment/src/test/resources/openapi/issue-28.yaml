@@ -1,0 +1,1872 @@
+openapi: 3.0.0 # need this as first line to allow some IDEs to know this is an openapi document.
+# All endpoints defined here will be discoverable by all users. If there is a need to keep some endpoints
+# "private", add them to the "connector_mgmt-private.yaml" file
+info:
+  title: Connector Service Fleet Manager
+  version: 0.1.0
+  description: Connector Service Fleet Manager is a Rest API to manage connectors.
+servers:
+  - url: https://api.openshift.com
+    description: Main (production) server
+  - url: https://api.stage.openshift.com
+    description: Staging server
+  - url: http://localhost:8000
+    description: localhost
+  - url: /
+    description: current domain
+tags:
+  - name: Connector Types
+    description: ""
+  - name: Connectors
+    description: ""
+  - name: Connector Clusters
+    description: ""
+  - name: Connector Service
+    description: ""
+
+paths:
+  #
+  #  Connector Service
+  #
+
+  "/api/connector_mgmt/v1":
+    get:
+      tags:
+        - Connector Service
+      operationId: getVersionMetadata
+      summary: Returns the version metadata
+      description: Returns the version metadata
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionMetadata'
+          description: Version metadata
+
+  #
+  # Connector Types
+  #
+
+  "/api/connector_mgmt/v1/kafka_connector_types/{connector_type_id}":
+    parameters:
+      - name: connector_type_id
+        description: The id of the connector type
+        schema:
+          type: string
+        in: path
+        required: true
+    get:
+      tags:
+        - Connector Types
+      security:
+        - Bearer: [ ]
+      operationId: getConnectorTypeByID
+      summary: Get a connector type by id
+      description: Get a connector type by id
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorType"
+              examples:
+                ConnectorTypeExample:
+                  $ref: "#/components/examples/ConnectorTypeExample"
+          description: The connector type matching the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connector_types":
+    get:
+      tags:
+        - Connector Types
+      security:
+        - Bearer: [ ]
+      operationId: getConnectorTypes
+      summary: Returns a list of connector types
+      description: Returns a list of connector types
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/size"
+        - $ref: "#/components/parameters/orderBy"
+        - $ref: "#/components/parameters/search"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorTypeList"
+          description: A list of connector types
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  #
+  # Connector
+  #
+
+  "/api/connector_mgmt/v1/kafka_connectors":
+    post:
+      tags:
+        - Connectors
+      security:
+        - Bearer: [ ]
+      operationId: createConnector
+      summary: Create a new connector
+      description: Create a new connector
+      parameters:
+        - in: query
+          name: async
+          description: Perform the action in an asynchronous manner
+          schema:
+            type: boolean
+          required: true
+      requestBody:
+        description: Connector data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorRequest"
+            examples:
+              ConnectorCreateExample:
+                $ref: "#/components/examples/ConnectorCreateExample"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Connector"
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                400CreationExample:
+                  $ref: "#/components/examples/400CreationExample"
+          description: Validation errors occurred
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: The requested resource doesn't exist
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: An unexpected error occurred creating the connector
+    get:
+      tags:
+        - Connectors
+      security:
+        - Bearer: [ ]
+      operationId: listConnectors
+      summary: Returns a list of connector types
+      description: Returns a list of connector types
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/size"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorList"
+          description: A list of connectors
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connectors/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Connectors
+      security:
+        - Bearer: [ ]
+      operationId: getConnector
+      summary: Get a connector
+      description: Get a connector
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Connector"
+          description: The connector matching the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+    delete:
+      tags:
+        - Connectors
+      security:
+        - Bearer: [ ]
+      operationId: deleteConnector
+      summary: Delete a connector
+      description: Delete a connector
+      responses:
+        "204":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404DeleteExample:
+                  $ref: "#/components/examples/404DeleteExample"
+          description: No kafka request with specified ID exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500DeleteExample:
+                  $ref: "#/components/examples/500DeleteExample"
+          description: Unexpected error occurred
+    patch:
+      tags:
+        - Connectors
+      security:
+        - Bearer: [ ]
+      operationId: patchConnector
+      summary: Patch a connector
+      description: Patch a connector
+      requestBody:
+        description: Data to patch the connector with
+        content:
+          application/merge-patch+json:
+            schema:
+              type: object
+          application/json-patch+json:
+            schema:
+              description: A JSON Patch, RFC 6902 - https://tools.ietf.org/html/rfc6902
+              type: object
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorRequest"
+
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Connector"
+          description: The connector matching the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  #
+  # Connector Cluster
+  #
+
+  "/api/connector_mgmt/v1/kafka_connector_clusters":
+    post:
+      tags:
+        - Connector Clusters
+      operationId: createConnectorCluster
+      security:
+        - Bearer: [ ]
+      summary: Create a new connector cluster
+      description: Create a new connector cluster
+      parameters:
+        - in: query
+          name: async
+          description: Perform the action in an asynchronous manner
+          schema:
+            type: boolean
+          required: true
+      requestBody:
+        description: Connector cluster data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorClusterRequest"
+            examples:
+              ConnectorClusterCreateExample:
+                $ref: "#/components/examples/ConnectorClusterCreateExample"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorCluster"
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                400CreationExample:
+                  $ref: "#/components/examples/400CreationExample"
+          description: Validation errors occurred
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: The requested resource doesn't exist
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: An unexpected error occurred creating the connector cluster
+    get:
+      tags:
+        - Connector Clusters
+      security:
+        - Bearer: [ ]
+      operationId: listConnectorClusters
+      summary: Returns a list of connector clusters
+      description: Returns a list of connector clusters
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/size"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorClusterList"
+          description: A list of connector clusters
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connector_clusters/{connector_cluster_id}":
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+    get:
+      tags:
+        - Connector Clusters
+      security:
+        - Bearer: [ ]
+      operationId: getConnectorCluster
+      summary: Get a connector cluster
+      description: Get a connector cluster
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorCluster"
+          description: The connector cluster matching the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector cluster type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+    put:
+      tags:
+        - Connector Clusters
+      security:
+        - Bearer: [ ]
+      operationId: updateConnectorClusterById
+      summary: udpate a connector cluster
+      description: udpate a connector cluster
+      requestBody:
+        description: Data to updated connector with
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorClusterRequest"
+        required: true
+      responses:
+        "204":
+          description: Cluster status is updated
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector cluster exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+    delete:
+      tags:
+        - Connector Clusters
+      security:
+        - Bearer: [ ]
+      operationId: deleteConnectorCluster
+      summary: Delete a connector cluster
+      description: Delete a connector cluster
+      responses:
+        "204":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404DeleteExample:
+                  $ref: "#/components/examples/404DeleteExample"
+          description: No resource with specified ID exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500DeleteExample:
+                  $ref: "#/components/examples/500DeleteExample"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connector_clusters/{connector_cluster_id}/addon_parameters":
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+    get:
+      tags:
+        - Connector Clusters
+      security:
+        - Bearer: [ ]
+      operationId: getConnectorClusterAddonParameters
+      summary: Get a connector cluster's addon parameters
+      description: Get a connector cluster's addon parameters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddonParameterList"
+          description: The parameters that should be used to configure the managed connector addon on the cluster.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector cluster type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connector_clusters/{connector_cluster_id}/namespaces":
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/size"
+      - $ref: "#/components/parameters/orderBy"
+      - $ref: "#/components/parameters/search"
+    get:
+      tags:
+        - Connector Clusters
+      security:
+        - Bearer: [ ]
+      operationId: getConnectorClusterNamespaces
+      summary: Get a connector cluster's namespaces
+      description: Get a connector cluster's namespaces
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorNamespaceList"
+          description: The namespaces visible to user in the cluster.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector cluster type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  #
+  # Connector Namespaces
+  #
+
+  "/api/connector_mgmt/v1/kafka_connector_namespaces":
+    post:
+      tags:
+        - Connector Namespaces
+      operationId: createConnectorNamespace
+      security:
+        - Bearer: [ ]
+      summary: Create a new connector namespace
+      description: Create a new connector namespace
+      requestBody:
+        description: Connector namespace data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorNamespaceRequest"
+            examples:
+              ConnectorNamespaceCreateExample:
+                $ref: "#/components/examples/ConnectorNamespaceCreateExample"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorNamespace"
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                400CreationExample:
+                  $ref: "#/components/examples/400CreationExample"
+          description: Validation errors occurred
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: The requested resource doesn't exist
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: An unexpected error occurred creating the connector namespace
+    get:
+      tags:
+        - Connector Namespaces
+      security:
+        - Bearer: [ ]
+      operationId: listConnectorNamespaces
+      summary: Returns a list of connector namespaces
+      description: Returns a list of connector namespaces
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/size"
+        - $ref: "#/components/parameters/orderBy"
+        - $ref: "#/components/parameters/search"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorNamespaceList"
+          description: A list of connector namespaces
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connector_namespaces/{connector_namespace_id}":
+    parameters:
+      - name: connector_namespace_id
+        description: The id of the connector namespace
+        schema:
+          type: string
+        in: path
+        required: true
+    get:
+      tags:
+        - Connector Namespaces
+      security:
+        - Bearer: [ ]
+      operationId: getConnectorNamespace
+      summary: Get a connector namespace
+      description: Get a connector namespace
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorNamespace"
+          description: The connector namespace matching the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector namespace type exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+    patch:
+      tags:
+        - Connector Namespaces
+      security:
+        - Bearer: [ ]
+      operationId: updateConnectorNamespaceById
+      summary: udpate a connector namespace
+      description: udpate a connector namespace
+      requestBody:
+        description: Data to update namespace with
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorNamespacePatchRequest"
+        required: true
+      responses:
+        "204":
+          description: Namespace status is updated
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: No matching connector namespace exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: Unexpected error occurred
+    delete:
+      tags:
+        - Connector Namespaces
+      security:
+        - Bearer: [ ]
+      operationId: deleteConnectorNamespace
+      summary: Delete a connector namespace
+      description: Delete a connector namespace
+      responses:
+        "204":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404DeleteExample:
+                  $ref: "#/components/examples/404DeleteExample"
+          description: No resource with specified ID exists
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500DeleteExample:
+                  $ref: "#/components/examples/500DeleteExample"
+          description: Unexpected error occurred
+
+  "/api/connector_mgmt/v1/kafka_connector_namespaces/eval":
+    post:
+      tags:
+        - Connector Namespaces
+      operationId: createEvaluationNamespace
+      security:
+        - Bearer: [ ]
+      summary: Create a new short lived evaluation connector namespace
+      description: Create a new evaluation connector namespace
+      requestBody:
+        description: Connector namespace data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectorNamespaceEvalRequest"
+            examples:
+              ConnectorNamespaceEvalCreateExample:
+                $ref: "#/components/examples/ConnectorNamespaceEvalCreateExample"
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorNamespace"
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                400CreationExample:
+                  $ref: "#/components/examples/400CreationExample"
+          description: Validation errors occurred
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                401Example:
+                  $ref: "#/components/examples/401Example"
+          description: Auth token is invalid
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                404Example:
+                  $ref: "#/components/examples/404Example"
+          description: The requested resource doesn't exist
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                500Example:
+                  $ref: "#/components/examples/500Example"
+          description: An unexpected error occurred creating the connector namespace
+
+components:
+  schemas:
+
+    #
+    # Common
+    #
+
+    List:
+      required:
+        - kind
+        - page
+        - size
+        - total
+        - items
+      type: object
+      properties:
+        kind:
+          type: string
+        page:
+          type: integer
+        size:
+          type: integer
+        total:
+          type: integer
+
+    Error:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - type: object
+          properties:
+            code:
+              type: string
+            reason:
+              type: string
+            operation_id:
+              type: string
+
+    ObjectReference:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+        href:
+          type: string
+
+    ObjectMeta:
+      type: object
+      properties:
+        owner:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        modified_at:
+          format: date-time
+          type: string
+
+    ServiceConnectionSettings:
+      required:
+        - id
+        - url
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+
+    ServiceAccount:
+      required:
+        - client_id
+        - client_secret
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+
+    VersionMetadata:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - type: object
+          example:
+            kind: "APIVersion"
+            id: "v1"
+            href: "/api/connector_mgmt/v1"
+            collections:
+              - id: "kafkas"
+                href: "/api/connector_mgmt/v1/kafka_connectors"
+                kind: "ConnectorList"
+          properties:
+            collections:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/ObjectReference"
+
+    #
+    # Services
+    #
+
+    KafkaConnectionSettings:
+      description: Holds the configuration to connect to a Kafka Instance.
+      allOf:
+        - $ref: "#/components/schemas/ServiceConnectionSettings"
+        # kafka specific properties
+        #- type: object
+        #  properties:
+
+    SchemaRegistryConnectionSettings:
+      description: Holds the configuration to connect to a Schem Registry Instance.
+      allOf:
+        - $ref: "#/components/schemas/ServiceConnectionSettings"
+        # schema registry specific properties
+        #- type: object
+        #  properties:
+
+    #
+    # Addons
+    #
+
+    AddonParameter:
+      description: "A addon parameter"
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+
+    AddonParameterList:
+      description: "A list of addon parameters"
+      type: array
+      items:
+        $ref: "#/components/schemas/AddonParameter"
+
+    #
+    # Connector Cluster
+    #
+
+    ConnectorClusterState:
+      type: string
+      enum:
+        - disconnected
+        - ready
+        - deleting
+
+    ConnectorClusterRequestMeta:
+      properties:
+        name:
+          type: string
+
+    ConnectorClusterRequest:
+      description: "Schema for the request to update a data plane cluster's name"
+      allOf:
+        - $ref: "#/components/schemas/ConnectorClusterRequestMeta"
+
+    ConnectorClusterMeta:
+      allOf:
+        - $ref: "#/components/schemas/ObjectMeta"
+        - $ref: "#/components/schemas/ConnectorClusterRequestMeta"
+
+    ConnectorClusterStatus:
+      properties:
+        status:
+          type: object
+          properties:
+            state:
+              $ref: "#/components/schemas/ConnectorClusterState"
+            error:
+              type: string
+
+    ConnectorCluster:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - $ref: "#/components/schemas/ConnectorClusterMeta"
+        - $ref: "#/components/schemas/ConnectorClusterStatus"
+
+    ConnectorClusterList:
+      allOf:
+        - $ref: "#/components/schemas/List"
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectorCluster"
+
+    #
+    # Connector
+    #
+    Channel:
+      type: string
+      default: stable
+      enum:
+        - stable
+
+    ConnectorDesiredState:
+      type: string
+      enum:
+        - unassigned
+        - ready
+        - stopped
+        - deleted
+
+    ConnectorState:
+      type: string
+      enum:
+        - assigning
+        - assigned
+        - updating
+        - ready
+        - stopped
+        - failed
+        - deleting
+        - deleted
+        - provisioning
+        - deprovisioning
+
+    ConnectorConfiguration:
+      required:
+        - kafka
+        - service_account
+        - connector
+      properties:
+        kafka:
+          $ref: "#/components/schemas/KafkaConnectionSettings"
+        service_account:
+          $ref: '#/components/schemas/ServiceAccount'
+        schema_registry:
+          $ref: "#/components/schemas/SchemaRegistryConnectionSettings"
+        connector:
+          # connector specific properties
+          # data shape
+          # processors
+          # error handling
+          type: object
+
+    ConnectorRequestMeta:
+      required:
+        - name
+        - connector_type_id
+        - desired_state
+      properties:
+        name:
+          type: string
+        connector_type_id:
+          type: string
+        namespace_id:
+          type: string
+        channel:
+          $ref: "#/components/schemas/Channel"
+        desired_state:
+          $ref: "#/components/schemas/ConnectorDesiredState"
+
+    ConnectorRequest:
+      allOf:
+        - $ref: "#/components/schemas/ConnectorRequestMeta"
+        - $ref: "#/components/schemas/ConnectorConfiguration"
+
+    ConnectorMeta:
+      allOf:
+        - $ref: "#/components/schemas/ObjectMeta"
+        - $ref: "#/components/schemas/ConnectorRequestMeta"
+        - type: object
+          properties:
+            resource_version:
+              type: integer
+              format: int64
+
+    ConnectorStatus:
+      properties:
+        status:
+          type: object
+          properties:
+            state:
+              $ref: "#/components/schemas/ConnectorState"
+            error:
+              type: string
+
+    Connector:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - $ref: "#/components/schemas/ConnectorMeta"
+        - $ref: "#/components/schemas/ConnectorConfiguration"
+        - $ref: "#/components/schemas/ConnectorStatus"
+
+    ConnectorList:
+      allOf:
+        - $ref: "#/components/schemas/List"
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/Connector"
+    #
+    # Connector Types
+    #
+
+    ConnectorType:
+      description: >-
+        Represents a connector type supported by the API
+      oneOf:
+        - required:
+            - name
+            - version
+            - schema
+        - required:
+            - name
+            - version
+            - json_schema
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - type: object
+          properties:
+            name:
+              description: Name of the connector type.
+              type: string
+            version:
+              description: Version of the connector type.
+              type: string
+            channels:
+              description: Channels of the connector type.
+              type: array
+              items:
+                $ref: "#/components/schemas/Channel"
+            description:
+              description: A description of the connector.
+              type: string
+            icon_href:
+              description: URL to an icon of the connector.
+              type: string
+            labels:
+              description: Labels used to categorize the connector
+              type: array
+              items:
+                type: string
+            capabilities:
+              description: The capabilities supported by the conenctor
+              type: array
+              items:
+                type: string
+            schema:
+              description: >-
+                A json schema that can be used to validate a ConnectorRequest
+                connector field.
+              type: object
+            json_schema:
+              description: >-
+                A json schema that can be used to validate a ConnectorRequest
+                connector field.
+              type: object
+
+    ConnectorTypeList:
+      allOf:
+        - $ref: "#/components/schemas/List"
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectorType"
+
+    #
+    # Connector Namespaces
+    #
+    ConnectorNamespaceRequestMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        annotations:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            required:
+              - key
+              - value
+
+    ConnectorNamespaceMeta:
+      allOf:
+        - $ref: "#/components/schemas/ObjectMeta"
+        - $ref: "#/components/schemas/ConnectorNamespaceRequestMeta"
+
+    ConnectorNamespaceTenantKind:
+      type: string
+      enum:
+        - user
+        - organisation
+
+    ConnectorNamespaceTenant:
+      type: object
+      required:
+        - kind
+        - id
+      properties:
+        kind:
+          $ref: "#/components/schemas/ConnectorNamespaceTenantKind"
+        id:
+          description: Either user or organisation id depending on the value of kind
+          type: string
+
+    ConnectorNamespaceRequest:
+      description: A connector namespace create request
+      required:
+        - name
+        - cluster_id
+        - kind
+      allOf:
+        - $ref: "#/components/schemas/ConnectorNamespaceRequestMeta"
+        - type: object
+          properties:
+            cluster_id:
+              type: string
+            kind:
+              $ref: "#/components/schemas/ConnectorNamespaceTenantKind"
+
+    ConnectorNamespacePatchRequest:
+      description: A connector namespace patch request
+      allOf:
+        - $ref: "#/components/schemas/ConnectorNamespaceRequestMeta"
+        - type: object
+
+    ConnectorNamespaceEvalRequest:
+      description: An evaluation connector namespace create request
+      required:
+        - name
+      allOf:
+        - $ref: "#/components/schemas/ConnectorNamespaceRequestMeta"
+
+    ConnectorNamespaceList:
+      allOf:
+        - $ref: "#/components/schemas/List"
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/ConnectorNamespace"
+
+    ConnectorNamespaceState:
+      type: string
+      enum:
+        - disconnected
+        - ready
+        - deleting
+
+    ConnectorNamespaceStatus:
+      type: object
+      required:
+        - state
+        - connectors_deployed
+      properties:
+        state:
+          $ref: "#/components/schemas/ConnectorNamespaceState"
+        version:
+          type: string
+        connectors_deployed:
+          type: integer
+          format: int32
+        error:
+          type: string
+
+    ConnectorNamespace:
+      description: A connector namespace
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - $ref: "#/components/schemas/ConnectorNamespaceMeta"
+        - type: object
+          properties:
+            name:
+              type: string
+            cluster_id:
+              type: string
+            expiration:
+              #format: date-time
+              type: string
+            tenant:
+              $ref: "#/components/schemas/ConnectorNamespaceTenant"
+            status:
+              $ref: "#/components/schemas/ConnectorNamespaceStatus"
+          required:
+            - id
+            - name
+            - cluster_id
+            - tenant
+            - status
+
+  parameters:
+    id:
+      name: id
+      description: The ID of record
+      schema:
+        type: string
+      in: path
+      required: true
+    page:
+      name: page
+      in: query
+      description: Page index
+      required: false
+      schema:
+        type: string
+      examples:
+        page:
+          value: "1"
+    size:
+      name: size
+      in: query
+      description: Number of items in each page
+      required: false
+      schema:
+        type: string
+      examples:
+        size:
+          value: "100"
+    orderBy:
+      description: |-
+        Specifies the order by criteria. The syntax of this parameter is
+        similar to the syntax of the `order by` clause of an SQL statement.
+        Each query can be ordered by any of the `ConnectorType` fields.
+        For example, to return all Connector types ordered by their name, use the following syntax:
+
+        ```sql
+        name asc
+        ```
+
+        To return all Connector types ordered by their name _and_ version, use the following syntax:
+
+        ```sql
+        name asc, version asc
+        ```
+
+        If the parameter isn't provided, or if the value is empty, then
+        the results are ordered by name.
+      explode: true
+      examples:
+        orderBy:
+          value: "name asc"
+      in: query
+      name: orderBy
+      required: false
+      schema:
+        type: string
+      style: form
+    search:
+      description: |
+        Search criteria.
+
+        The syntax of this parameter is similar to the syntax of the `where` clause of a
+        SQL statement. Allowed fields in the search are `name`, `description`, `version`, `label`, and `channel`.
+        Allowed operators are `<>`, `=`, or `LIKE`.
+        Allowed conjunctive operators are `AND` and `OR`. However, you can use a maximum of 10 conjunctions in a search query.
+
+        Examples:
+
+        To return a Connector Type with the name `aws-sqs-source` and the channel `stable`, use the following syntax:
+
+        ```
+        name = aws-sqs-source and channel = stable
+        ```[p-]
+
+        To return a Kafka instance with a name that starts with `aws`, use the following syntax:
+
+        ```
+        name like aws%25
+        ```
+
+        If the parameter isn't provided, or if the value is empty, then all the Connector Type
+        that the user has permission to see are returned.
+
+        Note. If the query is invalid, an error is returned.
+      explode: true
+      name: search
+      in: query
+      required: false
+      examples:
+        search:
+          value: "name = aws-sqs-source and channel = stable"
+      schema:
+        type: string
+      style: form
+
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+
+  examples:
+    ConnectorClusterCreateExample:
+      value:
+        name: "MyCluster"
+    ConnectorTypeExample:
+      value:
+        id: log_sink_0.1
+        kind: ConnectorType
+        href: "/api/connector_mgmt/v1/kafka_connector_types/log_sink_0.1"
+        name: Log Sink
+        version: "0.1"
+        channels:
+          - stable
+        description: Log Sink
+        icon_href: "/api/connector_mgmt/v1/kafka_connector_types/log_sink.png"
+        labels:
+          - sink
+        capabilities:
+          - data_shape
+          - processors
+        schema:
+          properties:
+            common:
+              required: [ ]
+              title: Log
+              type: object
+              properties:
+                multi_line:
+                  default: false
+                  description: Multi Line
+                  title: Multi Line
+                  type: boolean
+                  x-group: "endpoint"
+                show_all:
+                  default: false
+                  description: Show All
+                  title: Show All
+                  type: boolean
+                  x-group: "endpoint"
+            topics:
+              description: Comma separated list of Kafka topic names
+              title: Topic names
+              type: string
+              x-group: "kafka"
+            steps:
+              type: array
+              items:
+                oneOf:
+                  - properties:
+                      insert_field:
+                        description: |-
+                          Adds a custom field with a constant value to the message in transit.
+                        properties:
+                          field:
+                            description: The name of the field to be added
+                            title: Field
+                            type: string
+                          value:
+                            description: The value of the field
+                            title: Value
+                            type: string
+                        required:
+                          - field
+                          - value
+                        title: Insert Field Action
+                        type: object
+                    required:
+                      - insert_field
+                    type: object
+                  - properties:
+                      extract_field:
+                        description: Extract a field from the body
+                        properties:
+                          field:
+                            description: The name of the field to be added
+                            title: Field
+                            type: string
+                        required:
+                          - field
+                        title: Extract Field Action
+                        type: object
+                    required:
+                      - extract_field
+                    type: object
+                  - properties:
+                      has_header_filter:
+                        description: Filter based on the presence of one header
+                        properties:
+                          name:
+                            description: The header name to evaluate
+                            example: headerName
+                            title: Header Name
+                            type: string
+                        required:
+                          - name
+                        title: Has Header Filter Action
+                        type: object
+                    required:
+                      - has_header_filter
+                    type: object
+    ConnectorCreateExample:
+      value:
+        name: MyLogger
+        namespace_id: "9bsv0s7tne7g02gh5g4g"
+        kafka:
+          id: "9bsv0s6brfr002pfnkh0"
+          client_id: "srvc-acct-162ef2d8-0209-4117-8462-df63c2025c26"
+          client_secret: "b144d991-08eb-4472-8ec1-eb034c69231b"
+          url: "foo-9bsv0s6brfr002pfnkh0.kas.acme.com:443"
+        schema_registry:
+          id: "9bsv0s0k8lng031se9q0"
+          client_id: "srvc-acct-e025265e-a88a-44fb-8450-ed010eb6bc5c"
+          client_secret: "dc5a8298-bed7-422e-8947-f6fda69292ff"
+          url: "bar-9bsv0s2mfca002t9q7sg.srs.acme.com:443"
+        channel: stable
+        connector_type_id: "log_sink_0.1"
+        connector:
+          common:
+            show_all: true
+            multi_lines: true
+          topics: "foo,bar"
+          data_shape:
+            key:
+              format: "STRING"
+            value:
+              format: "JSON"
+          processors:
+            - insert_field:
+                name: "fieldName"
+                value: "fieldValue"
+        desired_state: ready
+        error_handling:
+          dead_letter_queue:
+            topic: "dlq"
+    ConnectorNamespaceCreateExample:
+      value:
+        name: "MyNamespace"
+        cluster_id: "9bsv0s7tne7g02gh5g4g"
+        annotations:
+          - key: "connector_mgmt.api.openshift.com/profile"
+            value: "default-profile"
+    ConnectorNamespaceEvalCreateExample:
+      value:
+        name: "MyEvalNamespace"
+        annotations:
+          - key: "connector_mgmt.api.openshift.com/profile"
+            value: "default-profile"
+    400CreationExample:
+      value:
+        id: "103"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/103"
+        code: "CONNECTOR-MGMT-103"
+        reason: "Synchronous action is not supported, use async=true parameter"
+        operation_id: "1iWIimqGcrDuL61aUxIZqBTqNRa"
+    400InvalidQueryExample:
+      value:
+        id: "203"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/23"
+        code: "CONNECTOR-MGMT-23"
+        reason: |
+          Failed to parse search query: Unable to list Kafka requests for api_kafka_service: CONNECTOR-MGMT-23:
+          Failed to parse search query: Unsupported column name for search: 'id'. Supported column names are:
+          region, name, cloud_provider, name, status. Query invalid: id = 123
+        operation_id: "1lWDGuybIrEnxrAem724gqkkiDv"
+    404Example:
+      value:
+        id: "404"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/7"
+        code: "CONNECTOR-MGMT-7"
+        reason: "The requested resource doesn't exist"
+    404DeleteExample:
+      value:
+        id: "7"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/7"
+        code: "CONNECTOR-MGMT-7"
+        reason: "Connector with id='1iK3duVYIvv5YvLlyz1mGR3JyqN' not found"
+        operation_id: "1iYO7g2g6HTdUKUa2ksH82kQD3y"
+    401Example:
+      value:
+        id: "11"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/11"
+        code: "CONNECTOR-MGMT-11"
+        reason: "Unable to verify JWT token: Required authorization token not found"
+        operation_id: "1iY3UhEhwmXBpWPfI2lNekpd4ZD"
+    409NameConflictExample:
+      value:
+        id: "36"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/36"
+        code: "CONNECTOR-MGMT-36"
+        reason: "Conenctor name is already used"
+        operation_id: "6kY0UiEkzkXCzWPeI2oYehd3ED"
+    500Example:
+      value:
+        id: "9"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/9"
+        code: "CONNECTOR-MGMT-9"
+        reason: "Unspecified error"
+        operation_id: "1ieELvF9jMQY6YghfM9gGRsHvEW"
+    500DeleteExample:
+      value:
+        id: "9"
+        kind: "Error"
+        href: "/api/connector_mgmt/v1/errors/9"
+        code: "CONNECTOR-MGMT-9"
+        reason: |
+          Error deleting syncset: OCM-EX-9: failed to delete syncset: ext-serviceapi-1ix03lndlmq0qfc7sita5sljv8e
+          for cluster id: 1g5d88q0lrcdv4g7alb7slfgnj3dhbsj%!(EXTRA *errors.Error=identifier
+          is '404', code is 'CLUSTERS-MGMT-404' and operation identifier is '1g5or50viu07oealuehrkc26dgftj1ac':
+          Cluster '1g5d88q0lrcdv4g7alb7slfgnj3dhbsj' not found)
+        operation_id: "1iYTsWry6nsqb2sNmFj5bXpD7Ca"

@@ -11,6 +11,9 @@
         {/if}
         {/if}
 
+        // caching enum access
+        private static final java.util.EnumSet<{e.datatypeWithEnum}> values = java.util.EnumSet.allOf({e.datatypeWithEnum}.class);
+
         {e.dataType} value;
 
         {e.datatypeWithEnum} ({e.dataType} v) {
@@ -26,14 +29,12 @@
             return String.valueOf(value);
         }
 
-        {#if e.withXml}
-        public static {e.datatypeWithEnum} fromValue(String, v) {
-            for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}.values()) {
+        public static {e.datatypeWithEnum} fromValue(String v) {
+            for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
                 if (String.valueOf(b.value).equals(v)) {
                     return b;
                 }
             }
             {#if e.useNullForUnknownEnumValue}return null;{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
         }
-        {/if}
     }
