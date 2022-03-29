@@ -1,7 +1,5 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.API_PKG_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.MODEL_PKG_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
 
 import java.io.IOException;
@@ -26,8 +24,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YML = ".yml";
     static final String JSON = ".json";
 
-    private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
-
     @Override
     public String inputDirectory() {
         return "openapi";
@@ -47,12 +43,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::of).forEach(openApiFilePath -> {
                             final String basePackage = context.config()
                                     .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
-                                    .orElse(DEFAULT_PACKAGE);
+                                    .orElse("");
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    openApiFilePath.normalize(), outDir)
-                                            .withApiPackage(basePackage + API_PKG_SUFFIX)
-                                            .withModelPackage(basePackage + MODEL_PKG_SUFFIX)
-                                            .withBasePackage(basePackage);
+                                    openApiFilePath.normalize(), outDir).withBasePackage(basePackage);
                             generator.generate();
                         });
             } catch (IOException e) {

@@ -1,5 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
@@ -8,8 +11,7 @@ import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
+import io.quarkiverse.openapi.generator.deployment.SpecConfig;
 
 /**
  * Wrapper for the OpenAPIGen tool.
@@ -22,9 +24,14 @@ public class OpenApiClientGeneratorWrapper {
 
     private static final String VERBOSE = "verbose";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
+    private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
+
+    private String basePackage = DEFAULT_PACKAGE;
+    private String apiPackage = "";
+    private String modelPackage = "";
 
     public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir) {
         // do not generate docs nor tests
@@ -47,23 +54,39 @@ public class OpenApiClientGeneratorWrapper {
     }
 
     public OpenApiClientGeneratorWrapper withApiPackage(final String pkg) {
-        this.configurator.setApiPackage(pkg);
-        this.configurator.setInvokerPackage(pkg);
+        this.apiPackage = pkg;
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withModelPackage(final String pkg) {
-        this.configurator.setModelPackage(pkg);
+        this.modelPackage = pkg;
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withBasePackage(final String pkg) {
-        this.configurator.setPackageName(pkg);
+        this.basePackage = pkg;
         return this;
     }
 
     public List<File> generate() {
+        this.consolidatePackageNames();
         return generator.opts(configurator.toClientOptInput()).generate();
+    }
+
+    private void consolidatePackageNames() {
+        if (basePackage.isEmpty()) {
+            basePackage = DEFAULT_PACKAGE;
+        }
+        if (apiPackage.isEmpty()) {
+            this.apiPackage = basePackage.concat(SpecConfig.API_PKG_SUFFIX);
+        }
+        if (modelPackage.isEmpty()) {
+            this.modelPackage = basePackage.concat(SpecConfig.MODEL_PKG_SUFFIX);
+        }
+        this.configurator.setPackageName(basePackage);
+        this.configurator.setApiPackage(apiPackage);
+        this.configurator.setModelPackage(modelPackage);
+        this.configurator.setInvokerPackage(apiPackage);
     }
 
 }
