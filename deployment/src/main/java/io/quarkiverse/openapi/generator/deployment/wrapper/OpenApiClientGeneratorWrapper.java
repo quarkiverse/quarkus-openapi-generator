@@ -1,5 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
@@ -10,9 +13,6 @@ import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
 
 import io.quarkiverse.openapi.generator.deployment.SpecConfig;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 /**
  * Wrapper for the OpenAPIGen tool.
