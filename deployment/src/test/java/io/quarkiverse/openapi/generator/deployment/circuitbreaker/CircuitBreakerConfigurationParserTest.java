@@ -1,13 +1,19 @@
 package io.quarkiverse.openapi.generator.deployment.circuitbreaker;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 import org.junit.jupiter.api.Test;
+
+import io.smallrye.config.PropertiesConfigSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CircuitBreakerConfigurationParserTest {
 
@@ -43,10 +49,21 @@ class CircuitBreakerConfigurationParserTest {
     }
 
     private static Config mockConfig(String propertiesFile) {
+        PropertiesConfigSource configSource;
+        try {
+            configSource = new PropertiesConfigSource(getResource(propertiesFile));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return ConfigProviderResolver
                 .instance()
                 .getBuilder()
-                .withSources(new FileConfigSource(propertiesFile))
+                .withSources(configSource)
                 .build();
+    }
+
+    private static URL getResource(String resourcePath) {
+        return Objects.requireNonNull(CircuitBreakerConfigurationParserTest.class.getResource(resourcePath));
     }
 }
