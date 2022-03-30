@@ -6,6 +6,7 @@ import static java.lang.Boolean.TRUE;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
@@ -65,6 +66,17 @@ public class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withBasePackage(final String pkg) {
         this.basePackage = pkg;
+        return this;
+    }
+
+    /**
+     * Adds the circuit breaker configuration to the generator.
+     *
+     * @param config a map of class names and their methods that should be configured with circuit breaker
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withCircuitBreakerConfiguration(final Map<String, List<String>> config) {
+        configurator.addAdditionalProperty("circuit-breaker", config);
         return this;
     }
 

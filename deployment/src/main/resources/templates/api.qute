@@ -53,6 +53,11 @@ public interface {classname} {
     {#if op.hasProduces}
     @Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
+    {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == package + classname}
+    {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
+    {/if}{/for}
+    {/if}{/for}
     public {#if op.returnType}{op.returnType}{#else}void{/if} {op.nickname}({#for p in op.allParams}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include formParams.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for});
 
     {/for}

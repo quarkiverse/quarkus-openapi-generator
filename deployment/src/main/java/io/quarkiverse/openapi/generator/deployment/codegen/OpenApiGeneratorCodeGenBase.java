@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
+import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
@@ -42,7 +43,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
                             final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    openApiFilePath.normalize(), outDir);
+                                    openApiFilePath.normalize(), outDir)
+                                            .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
+                                                    context.config()));
+
                             context.config()
                                     .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
                                     .ifPresent(generator::withBasePackage);
