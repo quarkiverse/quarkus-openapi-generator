@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.circuitbreaker;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -12,8 +14,6 @@ import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 import org.junit.jupiter.api.Test;
 
 import io.smallrye.config.PropertiesConfigSource;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class CircuitBreakerConfigurationParserTest {
 

@@ -11,11 +11,6 @@
     <artifactId>quarkus-openapi-generator-test-utils</artifactId>
     <name>Quarkus - Openapi Generator - Test Utils</name>
 
-    <properties>
-        <version.org.assertj>3.22.0</version.org.assertj>
-        <version.com.github.javaparser>3.24.0</version.com.github.javaparser>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.github.javaparser</groupId>
