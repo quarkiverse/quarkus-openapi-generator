@@ -25,7 +25,7 @@
 
     <version.com.github.javaparser>3.24.2</version.com.github.javaparser>
     <version.org.assertj>3.22.0</version.org.assertj>
-    <version.org.eclipse.microprofile.fault-tolerance>3.0</version.org.eclipse.microprofile.fault-tolerance>
+    <version.org.eclipse.microprofile.fault-tolerance>4.0</version.org.eclipse.microprofile.fault-tolerance>
   </properties>
   <dependencyManagement>
     <dependencies>
