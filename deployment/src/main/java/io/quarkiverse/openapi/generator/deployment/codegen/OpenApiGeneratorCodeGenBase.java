@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +12,6 @@ import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGenerato
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
-
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
@@ -56,8 +56,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     protected void generate(CodeGenContext context, final Path openApiFilePath, final Path outDir) {
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                 openApiFilePath.normalize(), outDir)
-                .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
-                        context.config()));
+                        .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
+                                context.config()));
         context.config()
                 .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
                 .ifPresent(generator::withBasePackage);

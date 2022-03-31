@@ -18,7 +18,8 @@ import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.openapi.generator.OpenApiSpecInputProvider;
+import io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider;
+import io.quarkiverse.openapi.generator.codegen.SpecInputModel;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 
@@ -60,18 +61,20 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
         boolean generated = false;
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
-            for (final InputStream is : provider.read()) {
+            for (SpecInputModel inputModel : provider.read()) {
+                if (inputModel == null) {
+                    throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
+                }
                 // TODO: in the future, we can use the checksum to not generate the stub files again
-                final String checksum = generateChecksumCRC32(is);
-                final Path openApiFilePath = Paths.get(outDir.toString(), checksum + ".yaml");
-
-                try (ReadableByteChannel channel = Channels.newChannel(is);
+                final Path openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
+                try (ReadableByteChannel channel = Channels.newChannel(inputModel.getInputStream());
                         FileOutputStream output = new FileOutputStream(openApiFilePath.toString())) {
                     output.getChannel().transferFrom(channel, 0, Integer.MAX_VALUE);
                     this.generate(context, openApiFilePath, outDir);
                     generated = true;
                 } catch (IOException e) {
-                    throw new UncheckedIOException("Fail to save openapi file", e);
+                    throw new UncheckedIOException("Failed to save InputStream from provider " + provider + " into location ",
+                            e);
                 }
             }
         }
