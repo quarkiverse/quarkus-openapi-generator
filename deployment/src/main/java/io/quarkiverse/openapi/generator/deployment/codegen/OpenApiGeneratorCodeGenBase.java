@@ -54,6 +54,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     protected void generate(CodeGenContext context, final Path openApiFilePath, final Path outDir) {
+        // TODO: do not generate with the output dir has generated files and the openapi file has the same checksum of the previous runz
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                 openApiFilePath.normalize(), outDir)
                         .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(

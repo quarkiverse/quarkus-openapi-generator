@@ -2,7 +2,6 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -11,8 +10,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
-import java.util.zip.CRC32;
-import java.util.zip.CheckedInputStream;
 
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
@@ -28,14 +25,16 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiGeneratorStreamCodeGen.class);
 
     private List<OpenApiSpecInputProvider> providers;
+    private final ServiceLoader<OpenApiSpecInputProvider> loader;
 
     public OpenApiGeneratorStreamCodeGen() {
-
+        loader = ServiceLoader.load(OpenApiSpecInputProvider.class);
     }
 
     private void loadServices() {
-        final ServiceLoader<OpenApiSpecInputProvider> loader = ServiceLoader.load(OpenApiSpecInputProvider.class);
+        loader.reload();
         providers = loader.stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
+        LOGGER.debug("Loaded {} OpenApiSpecInputProviders", providers);
     }
 
     @Override
@@ -62,14 +61,15 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
             for (SpecInputModel inputModel : provider.read()) {
+                LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
                 }
-                // TODO: in the future, we can use the checksum to not generate the stub files again
                 final Path openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
                 try (ReadableByteChannel channel = Channels.newChannel(inputModel.getInputStream());
                         FileOutputStream output = new FileOutputStream(openApiFilePath.toString())) {
                     output.getChannel().transferFrom(channel, 0, Integer.MAX_VALUE);
+                    LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
                     this.generate(context, openApiFilePath, outDir);
                     generated = true;
                 } catch (IOException e) {
@@ -79,21 +79,6 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
             }
         }
         return generated;
-    }
-
-    private String generateChecksumCRC32(final InputStream is) {
-        CheckedInputStream checkedInputStream = new CheckedInputStream(is, new CRC32());
-        byte[] buffer = new byte[2048];
-        while (true) {
-            try {
-                if (checkedInputStream.read(buffer, 0, buffer.length) < 0) {
-                    break;
-                }
-            } catch (IOException e) {
-                throw new UncheckedIOException("Fail to calculate checksum for InputStream", e);
-            }
-        }
-        return String.valueOf(checkedInputStream.getChecksum().getValue());
     }
 
     @Override
