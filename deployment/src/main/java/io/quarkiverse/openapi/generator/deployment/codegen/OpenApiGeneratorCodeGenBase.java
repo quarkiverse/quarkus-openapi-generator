@@ -42,15 +42,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                                    openApiFilePath.normalize(), outDir)
-                                            .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
-                                                    context.config()));
-
-                            context.config()
-                                    .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
-                                    .ifPresent(generator::withBasePackage);
-                            generator.generate();
+                            this.generate(context, openApiFilePath, outDir);
                         });
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
@@ -59,5 +51,17 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             return true;
         }
         return false;
+    }
+
+    protected void generate(CodeGenContext context, final Path openApiFilePath, final Path outDir) {
+        // TODO: do not generate with the output dir has generated files and the openapi file has the same checksum of the previous runz
+        final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
+                openApiFilePath.normalize(), outDir)
+                        .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
+                                context.config()));
+        context.config()
+                .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
+                .ifPresent(generator::withBasePackage);
+        generator.generate();
     }
 }
