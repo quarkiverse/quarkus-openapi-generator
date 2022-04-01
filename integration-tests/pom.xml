@@ -36,11 +36,11 @@
       <artifactId>microprofile-fault-tolerance-api</artifactId>
     </dependency>
 
+    <!-- exceptionally here, we are using the test utils with default scope because of the ClassPathOpenApiSpecInputProvider -->
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator-test-utils</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

@@ -100,12 +100,17 @@ See the [integration-tests](integration-tests) module for more information of ho
 
 ## Authentication Support
 
-If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator will [register `ClientRequestFilter`s providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to implement the given authentication mechanism.
+If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator
+will [register `ClientRequestFilter`s providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to
+implement the given authentication mechanism.
 
-To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this pattern: `[base_package].security.auth.[security_scheme_name]/[auth_property_name]`. Where:
+To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this
+pattern: `[base_package].security.auth.[security_scheme_name]/[auth_property_name]`. Where:
 
 - `base_package` is the package name you gave when configuring the code generation using `quarkus.openapi-generator.codegen.spec.[open_api_file].base-package` property.
-- `security_scheme_name` is the name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we have `api_key` and `basic_auth` security schemes:
+- `security_scheme_name` is the name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
+  have `api_key` and `basic_auth` security schemes:
+
 ```json
 {
   "securitySchemes": {
@@ -121,6 +126,7 @@ To provide the credentials for your application, you can use the [Quarkus config
   }
 }
 ```
+
 - `auth_property_name` varies depending on the authentication provider. For example, for Basic Authentication we have `username` and `password`. See the following sections for more details.
 
 > Tip: on production environments you will likely to use [HashiCorp Vault](https://quarkiverse.github.io/quarkiverse-docs/quarkus-vault/dev/index.html) or [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) to provide this information for your application.
@@ -150,7 +156,7 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 | -------------| --------------------------------------------------------------| --------------------------------------------------- |
 | API Key      | `[base_package].security.auth.[security_scheme_name]/api-key` | `org.acme.openapi.security.auth.apikey/api-key` |
 
-The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you. 
+The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
 
 ## Circuit Breaker
 
@@ -158,6 +164,7 @@ You can define the [CircuitBreaker annotation from MicroProfile Fault Tolerance]
 in your generated classes by setting the desired configuration in `application.properties`.
 
 Let's say you have the following OpenAPI definition:
+
 ````json
 {
   "openapi": "3.0.3",
@@ -207,9 +214,10 @@ And you want to configure Circuit Breaker for the `/bye` endpoint, you can do it
 Add the [SmallRye Fault Tolerance extension](https://quarkus.io/guides/smallrye-fault-tolerance) to your project's `pom.xml` file:
 
 ````xml
+
 <dependency>
-    <groupId>io.quarkus</groupId>
-    <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
 </dependency>
 ````
 
@@ -217,7 +225,6 @@ Assuming your Open API spec file is in `src/main/openapi/simple-openapi.json`, a
 
 ````properties
 quarkus.openapi-generator.codegen.spec."simple-openapi.json".base-package=org.acme.openapi.simple
-
 # Enables the CircuitBreaker extension for the byeGet method from the DefaultApi class
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/enabled=true
 ````
@@ -233,6 +240,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
@@ -243,30 +251,38 @@ public interface DefaultApi {
 
     @GET
     @Path("/bye")
-    @Produces({"text/plain"})
+    @Produces({ "text/plain" })
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     public String byeGet();
 
     @GET
     @Path("/hello")
-    @Produces({"text/plain"})
+    @Produces({ "text/plain" })
     public String helloGet();
 
 }
 ````
 
-You can also override the default Circuit Breaker configuration by setting the properties in `application.properties` [just as you would for a traditional MicroProfile application](https://quarkus.io/guides/smallrye-fault-tolerance#runtime-configuration):
+You can also override the default Circuit Breaker configuration by setting the properties
+in `application.properties` [just as you would for a traditional MicroProfile application](https://quarkus.io/guides/smallrye-fault-tolerance#runtime-configuration):
 
 ````properties
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failOn = java.lang.IllegalArgumentException,java.lang.NullPointerException
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/skipOn = java.lang.NumberFormatException
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/delay = 33
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/delayUnit = MILLIS
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/requestVolumeThreshold = 42
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failureRatio = 3.14
-org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold = 22
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failOn=java.lang.IllegalArgumentException,java.lang.NullPointerException
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/skipOn=java.lang.NumberFormatException
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/delay=33
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/delayUnit=MILLIS
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/requestVolumeThreshold=42
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failureRatio=3.14
+org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold=22
 ````
 
+## Generating files via InputStream
+
+Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement the `io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider`
+interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file
+saved locally in your project.
+
+See the example implementation [here](test-utils/src/main/java/io/quarkiverse/openapi/generator/testutils/codegen/ClassPathPetstoreOpenApiSpecInputProvider.java)
 
 ## Known Limitations
 

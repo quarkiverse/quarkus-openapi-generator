@@ -100,7 +100,6 @@
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator-test-utils</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
