@@ -1,0 +1,69 @@
+package io.quarkiverse.openapi.generator.it;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+
+import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
+
+import org.acme.openapi.multipart.api.UserProfileDataApi;
+import org.acme.openapi.multipart.api.UserProfileDataApi.PostUserProfileDataMultipartForm;
+import org.acme.openapi.multipart.model.Address;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.http.ContentTypeHeader;
+import com.github.tomakehurst.wiremock.matching.MultipartValuePatternBuilder;
+
+import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
+@QuarkusTestResource(WiremockMultipart.class)
+public class MultipartTest {
+
+    WireMockServer multipartServer;
+
+    @RestClient
+    @Inject
+    private UserProfileDataApi userProfileDataApi;
+
+    @Test
+    public void testUploadMultipartFormdata(@TempDir Path tempDir) throws IOException {
+        File testFile = File.createTempFile("test", "", tempDir.toFile());
+        try (PrintWriter printWriter = new PrintWriter(testFile)) {
+            printWriter.print("Content of the file");
+        }
+
+        PostUserProfileDataMultipartForm requestBody = new PostUserProfileDataMultipartForm();
+        requestBody.address = new Address().street("Champs-Elysees").city("Paris");
+        requestBody.id = "00112233-4455-6677-8899-aabbccddeeff";
+        requestBody.profileImage = testFile;
+
+        userProfileDataApi.postUserProfileData(requestBody);
+
+        multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
+                .withRequestBodyPart(new MultipartValuePatternBuilder()
+                        .withName("id")
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
+                        .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build())
+                .withRequestBodyPart(new MultipartValuePatternBuilder()
+                        .withName("address")
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_JSON))
+                        .withBody(equalToJson("{\"street\":\"Champs-Elysees\", \"city\":\"Paris\"}")).build())
+                .withRequestBodyPart(new MultipartValuePatternBuilder()
+                        .withName("profileImage")
+                        .withHeader("Content-Disposition", containing("filename="))
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_OCTET_STREAM))
+                        .withBody(equalTo("Content of the file")).build()));
+    }
+
+    // todo test base64, array of primitives, array of objects, array of files
+
+}

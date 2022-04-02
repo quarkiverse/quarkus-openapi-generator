@@ -1,0 +1,17 @@
+    public static class {op.operationIdCamelCase}MultipartForm {
+    {#for p in op.formParams}
+    {#if p.isFile}
+        @FormParam("{p.baseName}")
+        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}File")
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        public {p.dataType} {p.paramName};
+        {#else if p.isPrimitiveType}
+        @FormParam("{p.baseName}"){! TODO: or an array of primitives !}
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.TEXT_PLAIN)
+        public String {p.paramName};
+        {#else}
+        @FormParam("{p.baseName}")
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_JSON)
+        public {p.dataType} {p.paramName};
+    {/if}{/for}
+    }
