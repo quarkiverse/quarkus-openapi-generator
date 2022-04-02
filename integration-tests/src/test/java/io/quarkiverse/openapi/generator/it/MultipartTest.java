@@ -5,7 +5,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +16,7 @@ import org.acme.openapi.multipart.api.UserProfileDataApi;
 import org.acme.openapi.multipart.api.UserProfileDataApi.PostUserProfileDataMultipartForm;
 import org.acme.openapi.multipart.model.Address;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -43,7 +46,7 @@ public class MultipartTest {
 
         PostUserProfileDataMultipartForm requestBody = new PostUserProfileDataMultipartForm();
         requestBody.address = new Address().street("Champs-Elysees").city("Paris");
-        requestBody.id = "00112233-4455-6677-8899-aabbccddeeff";
+        requestBody.id = UUID.fromString("00112233-4455-6677-8899-aabbccddeeff");
         requestBody.profileImage = testFile;
 
         userProfileDataApi.postUserProfileData(requestBody);
@@ -51,19 +54,37 @@ public class MultipartTest {
         multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("id")
+                        // Primitive => text/plain
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
                         .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build())
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("address")
+                        // Complex value => application/json
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_JSON))
                         .withBody(equalToJson("{\"street\":\"Champs-Elysees\", \"city\":\"Paris\"}")).build())
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("profileImage")
                         .withHeader("Content-Disposition", containing("filename="))
+                        // binary string => application/octet-stream
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_OCTET_STREAM))
                         .withBody(equalTo("Content of the file")).build()));
     }
 
-    // todo test base64, array of primitives, array of objects, array of files
+    @Test
+    public void testUploadBase64EncodedFile() {
+        String sentData = "Some data that's sent!";
+        String base64Data = Base64.getEncoder().encodeToString(sentData.getBytes(StandardCharsets.UTF_8));
+        UserProfileDataApi.PostBase64DataMultipartForm requestBody = new UserProfileDataApi.PostBase64DataMultipartForm();
+        requestBody.encodedFile = base64Data;
 
+        userProfileDataApi.postBase64Data(requestBody);
+
+        multipartServer.verify(postRequestedFor(urlEqualTo("/base64"))
+                .withRequestBodyPart(new MultipartValuePatternBuilder()
+                        .withName("file")
+                        .withHeader("Content-Disposition", containing("filename="))
+                        // base64 string => application/octet-stream
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_OCTET_STREAM))
+                        .withBody(equalTo(base64Data)).build()));
+    }
 }

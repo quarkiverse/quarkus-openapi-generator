@@ -27,6 +27,25 @@ paths:
         "400":
           description: "Invalid ID supplied"
 
+  /base64:
+    post:
+      tags:
+        - User Profile Data
+      operationId: PostBase64Data
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                encodedFile:
+                  type: string
+                  format: base64
+      responses:
+        "204":
+          description: "Data uploaded"
+
 components:
   schemas:
     Address:

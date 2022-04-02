@@ -18,7 +18,7 @@ public class WiremockMultipart implements QuarkusTestResourceLifecycleManager {
         wireMockServer = new WireMockServer(8889);
         wireMockServer.start();
 
-        wireMockServer.stubFor(post(urlEqualTo("/user-profile-data"))
+        wireMockServer.stubFor(post(anyUrl())
                 .willReturn(aResponse().withStatus(204)));
         return Collections.singletonMap("org.acme.openapi.multipart.api.UserProfileDataApi/mp-rest/url",
                 wireMockServer.baseUrl());

@@ -71,10 +71,11 @@ public interface {classname} {
         {/for}
         {/if}
     );
-
     {#if op.hasFormParams}
+
     {#include multipartFormdataPojo.qute param=op/}
     {/if}
-    {/for}
 
+
+    {/for}
 }

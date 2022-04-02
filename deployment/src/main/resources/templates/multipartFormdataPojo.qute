@@ -1,17 +1,14 @@
     public static class {op.operationIdCamelCase}MultipartForm {
     {#for p in op.formParams}
-    {#if p.isFile}
         @FormParam("{p.baseName}")
+    {#if p.isFile || (p.isString && p.dataFormat == 'base64')}
         @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}File")
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_OCTET_STREAM)
-        public {p.dataType} {p.paramName};
-        {#else if p.isPrimitiveType}
-        @FormParam("{p.baseName}"){! TODO: or an array of primitives !}
+    {#else if p.isPrimitiveType or (p.isArray && p.items.isPrimitiveType)}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.TEXT_PLAIN)
-        public String {p.paramName};
-        {#else}
-        @FormParam("{p.baseName}")
+    {#else}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_JSON)
+    {/if}
         public {p.dataType} {p.paramName};
-    {/if}{/for}
+    {/for}
     }
