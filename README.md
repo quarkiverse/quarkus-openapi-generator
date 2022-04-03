@@ -276,7 +276,7 @@ org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failureRatio=3.14
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold=22
 ````
 
-## Multipart/form-data input
+## Sending multipart/form-data
 The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request bodies. 
 
 You need to add the following additional dependency to your `pom.xml`:
@@ -289,7 +289,7 @@ You need to add the following additional dependency to your `pom.xml`:
 For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
 - `javax.ws.rs.FormParam`, where the value parameter denotes the part name, 
 - `org.jboss.resteasy.annotations.providers.multipart.PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
-- and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a default generate value parameter that will be passed as the fileName sub-header in the Content-Disposition header of the part.
+- and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the Content-Disposition header of the part.
 
 For example, the model for a request that requires a file, a string and some complex object will look like this: 
 ```java
