@@ -22,7 +22,6 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
             "bodyParams.qute",
             "enumClass.qute",
             "enumOuterClass.qute",
-            "formParams.qute",
             "headerParams.qute",
             "pathParams.qute",
             "pojo.qute",
