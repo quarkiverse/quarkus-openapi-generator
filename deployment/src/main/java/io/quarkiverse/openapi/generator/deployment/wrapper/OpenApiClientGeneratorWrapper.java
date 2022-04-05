@@ -80,6 +80,17 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    /**
+     * Sets the global 'skipFormModel' setting. If not set this setting will default to true.
+     *
+     * @param skipFormModel whether to skip the generation of models for form parameters
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withSkipFormModelConfig(final String skipFormModel) {
+        GlobalSettings.setProperty(CodegenConstants.SKIP_FORM_MODEL, skipFormModel);
+        return this;
+    }
+
     public List<File> generate() {
         this.consolidatePackageNames();
         return generator.opts(configurator.toClientOptInput()).generate();

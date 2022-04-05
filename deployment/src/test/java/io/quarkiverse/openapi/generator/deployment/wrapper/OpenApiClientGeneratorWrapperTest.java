@@ -13,58 +13,43 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 
 public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyCommonGenerated() throws URISyntaxException {
-        final Path petstoreOpenApi = Path
-                .of(requireNonNull(this.getClass().getResource("/openapi/petstore-openapi.json")).toURI());
-        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(petstoreOpenApi, targetPath);
-        final List<File> generatedFiles = generatorWrapper.generate();
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate();
         assertNotNull(generatedFiles);
         assertFalse(generatedFiles.isEmpty());
     }
 
     @Test
     void verifyAuthBasicGenerated() throws URISyntaxException {
-        final Path petstoreOpenApi = Path
-                .of(requireNonNull(this.getClass().getResource("/openapi/petstore-openapi-httpbasic.json")).toURI());
-        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(petstoreOpenApi, targetPath);
-        final List<File> generatedFiles = generatorWrapper.generate();
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-httpbasic.json").generate();
         assertTrue(generatedFiles.stream().anyMatch(f -> f.getName().equals("CompositeAuthenticationProvider.java")));
     }
 
     @Test
     void verifyAuthBearerGenerated() throws URISyntaxException {
-        final Path petstoreOpenApi = Path
-                .of(requireNonNull(this.getClass().getResource("/openapi/petstore-openapi-bearer.json")).toURI());
-        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(petstoreOpenApi, targetPath);
-        final List<File> generatedFiles = generatorWrapper.generate();
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-bearer.json").generate();
         assertTrue(generatedFiles.stream().anyMatch(f -> f.getName().equals("CompositeAuthenticationProvider.java")));
     }
 
     @Test
     void verifyEnumGeneration() throws URISyntaxException, FileNotFoundException {
-        final Path issue28Path = Path
-                .of(requireNonNull(this.getClass().getResource("/openapi/issue-28.yaml")).toURI());
-        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-        final OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(issue28Path, targetPath)
-                .withBasePackage("org.issue28");
-
-        final List<File> generatedFiles = generatorWrapper.generate();
+        final List<File> generatedFiles = createGeneratorWrapper("issue-28.yaml")
+                .withBasePackage("org.issue28")
+                .generate();
         final Optional<File> enumFile = generatedFiles.stream()
                 .filter(f -> f.getName().endsWith("ConnectorNamespaceState.java")).findFirst();
         assertThat(enumFile).isPresent();
@@ -114,15 +99,72 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
-        Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-
-        Path simpleOpenApiFile = Path.of(Objects.requireNonNull(getClass().getResource("/openapi/simple-openapi.json"))
-                .toURI());
-
-        OpenApiClientGeneratorWrapper generatorWrapper = new OpenApiClientGeneratorWrapper(simpleOpenApiFile, targetPath)
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
                 .withCircuitBreakerConfiguration(Map.of(
                         "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
 
         return generatorWrapper.generate();
+    }
+
+    private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {
+        final Path openApiSpec = Path
+                .of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
+        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
+
+        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath);
+    }
+
+    @Test
+    void verifyMultipartFormAnnotationIsGeneratedForParameter() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
+                .withSkipFormModelConfig("false")
+                .generate();
+        assertThat(generatedFiles).isNotEmpty();
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
+                .findAny();
+        assertThat(file).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> multipartPostMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("postUserProfileData"))
+                .findAny();
+        assertThat(multipartPostMethod).isPresent();
+
+        List<Parameter> parameters = multipartPostMethod.orElseThrow().getParameters();
+        assertThat(parameters).hasSize(1);
+
+        Parameter param = parameters.get(0);
+        assertThat(param.getAnnotationByName("MultipartForm")).isPresent();
+    }
+
+    @Test
+    void verifyMultipartPojoGeneratedAndFieldsHaveAnnotations() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
+                .withSkipFormModelConfig("false")
+                .generate();
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        Optional<ClassOrInterfaceDeclaration> multipartPojo = compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                .stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm"))
+                .findAny();
+        assertThat(multipartPojo).isNotEmpty();
+
+        assertThat(multipartPojo.orElseThrow().getFields()).hasSize(3);
+        multipartPojo.orElseThrow().getFields().forEach(field -> {
+            assertThat(field.getAnnotationByName("FormParam")).isPresent();
+            assertThat(field.getAnnotationByName("PartType")).isPresent();
+        });
     }
 }
