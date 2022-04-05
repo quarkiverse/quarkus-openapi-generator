@@ -16,7 +16,6 @@ import org.acme.openapi.multipart.api.UserProfileDataApi;
 import org.acme.openapi.multipart.api.UserProfileDataApi.PostUserProfileDataMultipartForm;
 import org.acme.openapi.multipart.model.Address;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
