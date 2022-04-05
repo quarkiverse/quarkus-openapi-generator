@@ -15,5 +15,5 @@ import javax.validation.Valid;
 {/if}
 {#for m in models}
 {#if m.model.isEnum}{#include enumOuterClass.qute e=m.model/}
-{#else}{#include pojo.qute m=m.model withXml=withXml/}{/if}
+{#else}{#include pojo.qute m=m.model withXml=withXml codegen=model-codegen package=modelPackage/}{/if}
 {/for}
