@@ -21,7 +21,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/11776454?v=4",
       "profile": "http://thegreatapi.com",
       "contributions": [
-        "doc"
+        "doc",
+        "code"
       ]
     },
     {
@@ -48,6 +49,15 @@
       "name": "Francisco Javier Tirado Sarti",
       "avatar_url": "https://avatars.githubusercontent.com/u/65240126?v=4",
       "profile": "https://github.com/fjtirado",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Orbifoldt",
+      "name": "Orbifoldt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30009459?v=4",
+      "profile": "https://github.com/Orbifoldt",
       "contributions": [
         "code"
       ]

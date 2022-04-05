@@ -13,6 +13,7 @@ public class SpecConfig {
     public static final String MODEL_PKG_SUFFIX = ".model";
     public static final String BUILD_TIME_SPEC_PREFIX_FORMAT = BUILD_TIME_CONFIG_PREFIX + ".spec.\"%s\"";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
+    private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
 
     /**
      * Defines the base package name for the generated classes.
@@ -30,6 +31,10 @@ public class SpecConfig {
 
     public static String getResolvedBasePackageProperty(final Path openApiFilePath) {
         return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
+    public static String getSkipFormModelPropertyName(final Path openApiFilePath) {
+        return String.format(SKIP_FORM_MODEL_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
     /**

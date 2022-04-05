@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getSkipFormModelPropertyName;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -62,6 +63,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         context.config()
                 .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
                 .ifPresent(generator::withBasePackage);
+        context.config()
+                .getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
+                .ifPresent(generator::withSkipFormModelConfig);
+
         generator.generate();
     }
 }

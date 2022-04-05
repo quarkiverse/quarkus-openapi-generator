@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
@@ -276,6 +276,69 @@ org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failureRatio=3.14
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold=22
 ````
 
+## Sending multipart/form-data
+The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request bodies. 
+
+You need to add the following additional dependency to your `pom.xml`:
+```xml
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-resteasy-multipart</artifactId>
+</dependency>
+```
+For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
+- `javax.ws.rs.FormParam`, where the value parameter denotes the part name, 
+- `org.jboss.resteasy.annotations.providers.multipart.PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
+- and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the Content-Disposition header of the part.
+
+For example, the model for a request that requires a file, a string and some complex object will look like this: 
+```java
+public class MultipartBody {
+
+    @FormParam("file")
+    @PartType(MediaType.APPLICATION_OCTET_STREAM)
+    @PartFilename("defaultFileName")
+    public File file;
+
+    @FormParam("fileName")
+    @PartType(MediaType.TEXT_PLAIN)
+    public String fileName;
+
+    @FormParam("someObject")
+    @PartType(MediaType.APPLICATION_JSON)
+    public MyComplexObject someObject;
+}
+```
+
+Then in the client the `org.jboss.resteasy.annotations.providers.multipart.MultipartForm` annotation is added in front of the multipart parameter:
+```java
+@Path("/echo")
+@RegisterRestClient
+public interface MultipartService {
+    
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    String sendMultipartData(@MultipartForm MultipartBody data);
+    
+}
+```
+See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
+
+Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
+```properties
+quarkus.openapi-generator.codegen.spec."my-multipart-requests.yml".skip-form-model=false
+```
+
+### Default content-types according to OpenAPI Specification and limitations
+The [OAS 3.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#special-considerations-for-multipart-content) specifies the following default content-types for a multipart:
+- If the property is a primitive, or an array of primitive values, the default Content-Type is `text/plain`
+- If the property is complex, or an array of complex values, the default Content-Type is `application/json`
+- If the property is a `type: string` with `format: binary` or `format: base64` (aka a file object), the default Content-Type is `application/octet-stream`
+
+A different content-type may be defined in your api spec, but this is not yet supported in the code generation. Also, this "annotation-oriented" approach of RestEasy (i.e. using `@MultipartForm` to denote the multipart body parameter) does not seem to properly support the unmarshalling of arrays of the same type (e.g. array of files), in these cases it uses Content-Type equal to `application/json`.
+
+
 ## Generating files via InputStream
 
 Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement the `io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider`
@@ -304,10 +367,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://ricardozanini.medium.com/"><img src="https://avatars.githubusercontent.com/u/1538000?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ricardo Zanini</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=ricardozanini" title="Code">💻</a> <a href="#maintenance-ricardozanini" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="http://thegreatapi.com"><img src="https://avatars.githubusercontent.com/u/11776454?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Helber Belmiro</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=hbelmiro" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://thegreatapi.com"><img src="https://avatars.githubusercontent.com/u/11776454?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Helber Belmiro</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=hbelmiro" title="Documentation">📖</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=hbelmiro" title="Code">💻</a></td>
     <td align="center"><a href="http://gastaldi.wordpress.com"><img src="https://avatars.githubusercontent.com/u/54133?v=4?s=100" width="100px;" alt=""/><br /><sub><b>George Gastaldi</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=gastaldi" title="Code">💻</a> <a href="#infra-gastaldi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="https://github.com/RishiKumarRay"><img src="https://avatars.githubusercontent.com/u/87641376?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rishi Kumar Ray</b></sub></a><br /><a href="#infra-RishiKumarRay" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="https://github.com/fjtirado"><img src="https://avatars.githubusercontent.com/u/65240126?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Francisco Javier Tirado Sarti</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=fjtirado" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Orbifoldt"><img src="https://avatars.githubusercontent.com/u/30009459?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Orbifoldt</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=Orbifoldt" title="Code">💻</a></td>
   </tr>
 </table>
 
