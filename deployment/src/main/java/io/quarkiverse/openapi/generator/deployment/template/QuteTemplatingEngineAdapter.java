@@ -22,13 +22,13 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
             "bodyParams.qute",
             "enumClass.qute",
             "enumOuterClass.qute",
-            "formParams.qute",
             "headerParams.qute",
             "pathParams.qute",
             "pojo.qute",
             "queryParams.qute",
             "auth/compositeAuthenticationProvider.qute",
-            "auth/authConfig.qute"
+            "auth/authConfig.qute",
+            "multipartFormdataPojo.qute"
     };
     public final Engine engine;
 
