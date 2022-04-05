@@ -105,7 +105,6 @@ public class OpenApiClientGeneratorWrapperTest {
                 .flatMap(v -> v.getVariables().stream())
                 .anyMatch(f -> f.getNameAsString().equals("allowUpgrade")))
                 .isFalse();
-
         //TODO: add a condition where we know there is a deprecated attribute and verify it's been generated
     }
 
