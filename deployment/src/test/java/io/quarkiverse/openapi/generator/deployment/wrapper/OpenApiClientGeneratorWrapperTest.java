@@ -104,7 +104,18 @@ public class OpenApiClientGeneratorWrapperTest {
                 .flatMap(v -> v.getVariables().stream())
                 .anyMatch(f -> f.getNameAsString().equals("allowUpgrade")))
                         .isFalse();
-        //TODO: add a condition where we know there is a deprecated attribute and verify it's been generated
+
+        // this class has a deprecated attribute, so we check the default behavior
+        final Optional<File> connectorDeploymentStatus = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("ConnectorDeploymentStatus.java")).findFirst();
+        assertThat(connectorDeploymentStatus).isPresent();
+        final CompilationUnit cu3 = StaticJavaParser.parse(connectorDeploymentStatus.orElseThrow());
+        final List<FieldDeclaration> fields3 = cu3.findAll(FieldDeclaration.class);
+
+        assertThat(fields3.stream()
+                .flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("availableUpgrades")))
+                        .isTrue();
     }
 
     @Test

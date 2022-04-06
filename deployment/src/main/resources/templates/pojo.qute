@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements Serializable{/if} {
 
     {#for v in m.vars}
-    {#if !v.deprecated || generateModelDeprecated()}
+    {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
     {#if v.isEnum}
     {#if v.isContainer && v.mostInnerItems}
     {#include enumClass.qute e=v/}
@@ -57,7 +57,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {/for}
 
     {#for v in m.vars}
-    {#if !v.deprecated || generateModelDeprecated()}
+    {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
     /**
     {#if v.description}
     * {v.description}
@@ -127,7 +127,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
         {#if m.parent}
         sb.append("    ").append(toIndentedString(super.toString())).append("\n");{/if}
         {#for v in m.vars}
-        {#if !v.deprecated || generateModelDeprecated()}
+        {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
         sb.append("    {v.name}: ").append(toIndentedString({v.name})).append("\n");
         {/if}
         {/for}
