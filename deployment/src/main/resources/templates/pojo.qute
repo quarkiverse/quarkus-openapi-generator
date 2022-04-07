@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements Serializable{/if} {
 
     {#for v in m.vars}
+    {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
     {#if v.isEnum}
     {#if v.isContainer && v.mostInnerItems}
     {#include enumClass.qute e=v/}
@@ -52,9 +53,11 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {#else}
     private {v.datatypeWithEnum} {v.name}{#if v.defaultValue} = {v.defaultValue}{/if};
     {/if}
+    {/if}
     {/for}
 
     {#for v in m.vars}
+    {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
     /**
     {#if v.description}
     * {v.description}
@@ -112,6 +115,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {/if}
     {/if}
 
+    {/if}
     {/for}
     /**
      * Create a string representation of this pojo.
@@ -123,7 +127,9 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
         {#if m.parent}
         sb.append("    ").append(toIndentedString(super.toString())).append("\n");{/if}
         {#for v in m.vars}
+        {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
         sb.append("    {v.name}: ").append(toIndentedString({v.name})).append("\n");
+        {/if}
         {/for}
         sb.append("}");
         return sb.toString();

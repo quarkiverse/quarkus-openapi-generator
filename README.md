@@ -277,21 +277,29 @@ org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold=22
 ````
 
 ## Sending multipart/form-data
-The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request bodies. 
+
+The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request
+bodies.
 
 You need to add the following additional dependency to your `pom.xml`:
+
 ```xml
+
 <dependency>
   <groupId>io.quarkus</groupId>
   <artifactId>quarkus-resteasy-multipart</artifactId>
 </dependency>
 ```
-For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
-- `javax.ws.rs.FormParam`, where the value parameter denotes the part name, 
-- `org.jboss.resteasy.annotations.providers.multipart.PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
-- and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the Content-Disposition header of the part.
 
-For example, the model for a request that requires a file, a string and some complex object will look like this: 
+For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
+
+- `javax.ws.rs.FormParam`, where the value parameter denotes the part name,
+- `org.jboss.resteasy.annotations.providers.multipart.PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
+- and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the
+  Content-Disposition header of the part.
+
+For example, the model for a request that requires a file, a string and some complex object will look like this:
+
 ```java
 public class MultipartBody {
 
@@ -311,33 +319,41 @@ public class MultipartBody {
 ```
 
 Then in the client the `org.jboss.resteasy.annotations.providers.multipart.MultipartForm` annotation is added in front of the multipart parameter:
+
 ```java
 @Path("/echo")
 @RegisterRestClient
 public interface MultipartService {
-    
+
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
     String sendMultipartData(@MultipartForm MultipartBody data);
-    
+
 }
 ```
-See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
 
-Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
+See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and
+the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
+
+Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting
+the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
+
 ```properties
 quarkus.openapi-generator.codegen.spec."my-multipart-requests.yml".skip-form-model=false
 ```
 
 ### Default content-types according to OpenAPI Specification and limitations
+
 The [OAS 3.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#special-considerations-for-multipart-content) specifies the following default content-types for a multipart:
+
 - If the property is a primitive, or an array of primitive values, the default Content-Type is `text/plain`
 - If the property is complex, or an array of complex values, the default Content-Type is `application/json`
 - If the property is a `type: string` with `format: binary` or `format: base64` (aka a file object), the default Content-Type is `application/octet-stream`
 
-A different content-type may be defined in your api spec, but this is not yet supported in the code generation. Also, this "annotation-oriented" approach of RestEasy (i.e. using `@MultipartForm` to denote the multipart body parameter) does not seem to properly support the unmarshalling of arrays of the same type (e.g. array of files), in these cases it uses Content-Type equal to `application/json`.
-
+A different content-type may be defined in your api spec, but this is not yet supported in the code generation. Also, this "annotation-oriented" approach of RestEasy (i.e. using `@MultipartForm` to
+denote the multipart body parameter) does not seem to properly support the unmarshalling of arrays of the same type (e.g. array of files), in these cases it uses Content-Type equal
+to `application/json`.
 
 ## Generating files via InputStream
 
@@ -346,6 +362,13 @@ interface to provide a list of `InputStream`s of OpenAPI specification files. Th
 saved locally in your project.
 
 See the example implementation [here](test-utils/src/main/java/io/quarkiverse/openapi/generator/testutils/codegen/ClassPathPetstoreOpenApiSpecInputProvider.java)
+
+## Skip Deprecated Attributes in Model classes
+
+The domain objects are classes generated in the `model` package. These classes might have [deprecated attributes](https://spec.openapis.org/oas/v3.1.0#fixed-fields-9) in the Open API specification
+file. By default, these attributes are generated. You can fine tune this behavior if the deprecated attributes should not be generated.
+
+Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to disable the deprecated attributes in the given model. For example `org.acme.weather.Country.generatedDeprecated=false`.
 
 ## Known Limitations
 

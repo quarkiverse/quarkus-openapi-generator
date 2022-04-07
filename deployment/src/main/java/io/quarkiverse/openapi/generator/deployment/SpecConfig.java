@@ -11,6 +11,14 @@ public class SpecConfig {
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
 
+    public static String resolveApiPackage(final String basePackage) {
+        return String.format("%s%s", basePackage, API_PKG_SUFFIX);
+    }
+
+    public static String resolveModelPackage(final String basePackage) {
+        return String.format("%s%s", basePackage, MODEL_PKG_SUFFIX);
+    }
+
     public static String getResolvedBasePackageProperty(final Path openApiFilePath) {
         return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }

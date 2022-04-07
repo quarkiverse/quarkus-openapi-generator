@@ -2,7 +2,6 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import static io.quarkiverse.openapi.generator.deployment.assertions.Assertions.assertThat;
 import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,11 +21,14 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
+import io.quarkiverse.openapi.generator.deployment.MockConfigUtils;
+import io.quarkiverse.openapi.generator.deployment.codegen.ModelCodegenConfigParser;
 
 public class OpenApiClientGeneratorWrapperTest {
 
@@ -66,8 +68,52 @@ public class OpenApiClientGeneratorWrapperTest {
                 .containsExactlyInAnyOrder("DISCONNECTED", "READY", "DELETING");
     }
 
-    private String getTargetDir() throws URISyntaxException {
-        return Paths.get(requireNonNull(getClass().getResource("/")).toURI()).getParent().toString();
+    @Test
+    void verifyDeprecatedFields() throws URISyntaxException, FileNotFoundException {
+        final Map<String, Object> codegenConfig = ModelCodegenConfigParser
+                .parse(MockConfigUtils.getTestConfig("/codegen/application.properties"), "org.issue38");
+        final List<File> generatedFiles = this.createGeneratorWrapper("issue-38.yaml")
+                .withBasePackage("org.issue38")
+                .withModelCodeGenConfiguration(codegenConfig)
+                .generate();
+
+        // we have two attributes that will be generated with the same name, one of them is deprecated
+        final Optional<File> metaV1Condition = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("MetaV1Condition.java")).findFirst();
+        assertThat(metaV1Condition).isPresent();
+        final CompilationUnit cu = StaticJavaParser.parse(metaV1Condition.orElseThrow());
+        final List<FieldDeclaration> fields = cu.findAll(FieldDeclaration.class);
+
+        assertThat(fields).extracting(FieldDeclaration::getVariables).hasSize(5);
+
+        assertThat(fields.stream()
+                .flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("lastTransitionTime")))
+                        .isTrue();
+
+        // this one we optionally removed the deprecated attribute
+        final Optional<File> connectorDeploymentSpec = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("ConnectorDeploymentSpec.java")).findFirst();
+        assertThat(connectorDeploymentSpec).isPresent();
+        final CompilationUnit cu2 = StaticJavaParser.parse(connectorDeploymentSpec.orElseThrow());
+        final List<FieldDeclaration> fields2 = cu2.findAll(FieldDeclaration.class);
+
+        assertThat(fields2.stream()
+                .flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("allowUpgrade")))
+                        .isFalse();
+
+        // this class has a deprecated attribute, so we check the default behavior
+        final Optional<File> connectorDeploymentStatus = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("ConnectorDeploymentStatus.java")).findFirst();
+        assertThat(connectorDeploymentStatus).isPresent();
+        final CompilationUnit cu3 = StaticJavaParser.parse(connectorDeploymentStatus.orElseThrow());
+        final List<FieldDeclaration> fields3 = cu3.findAll(FieldDeclaration.class);
+
+        assertThat(fields3.stream()
+                .flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("availableUpgrades")))
+                        .isTrue();
     }
 
     @Test
@@ -114,14 +160,6 @@ public class OpenApiClientGeneratorWrapperTest {
                         "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
 
         return generatorWrapper.generate();
-    }
-
-    private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {
-        final Path openApiSpec = Path
-                .of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
-        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
-
-        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath);
     }
 
     @Test
@@ -176,5 +214,17 @@ public class OpenApiClientGeneratorWrapperTest {
             assertThat(field.getAnnotationByName("FormParam")).isPresent();
             assertThat(field.getAnnotationByName("PartType")).isPresent();
         });
+    }
+
+    private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {
+        final Path openApiSpec = Path
+                .of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
+        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
+
+        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath);
+    }
+
+    private String getTargetDir() throws URISyntaxException {
+        return Paths.get(requireNonNull(getClass().getResource("/")).toURI()).getParent().toString();
     }
 }
