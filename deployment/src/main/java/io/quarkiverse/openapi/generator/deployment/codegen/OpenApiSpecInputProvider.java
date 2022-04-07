@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator.codegen;
+package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import java.io.InputStream;
 import java.util.List;

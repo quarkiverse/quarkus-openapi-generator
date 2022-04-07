@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import static io.quarkiverse.openapi.generator.deployment.assertions.Assertions.assertThat;
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,6 +24,9 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+
+import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
+import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
 
 public class OpenApiClientGeneratorWrapperTest {
 
@@ -67,7 +71,7 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void circuitBreaker() throws URISyntaxException, FileNotFoundException {
+    void checkAnnotations() throws URISyntaxException, FileNotFoundException {
         List<File> restClientFiles = generateRestClientFiles();
 
         assertNotNull(restClientFiles);
@@ -80,8 +84,14 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(file).isNotEmpty();
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+
+        compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                .forEach(c -> assertThat(c.getAnnotationByClass(GeneratedClass.class)).isPresent());
+
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
         assertThat(methodDeclarations).isNotEmpty();
+
+        methodDeclarations.forEach(m -> assertThat(m.getAnnotationByClass(GeneratedMethod.class)).isPresent());
 
         Optional<MethodDeclaration> byeMethod = methodDeclarations.stream()
                 .filter(m -> m.getNameAsString().equals("byeGet"))

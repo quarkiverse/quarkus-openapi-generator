@@ -341,7 +341,7 @@ A different content-type may be defined in your api spec, but this is not yet su
 
 ## Generating files via InputStream
 
-Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement the `io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider`
+Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider`
 interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file
 saved locally in your project.
 

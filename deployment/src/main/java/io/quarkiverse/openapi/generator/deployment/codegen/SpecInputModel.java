@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator.codegen;
+package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import static java.util.Objects.requireNonNull;
 

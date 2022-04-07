@@ -1,10 +1,10 @@
-package io.quarkiverse.openapi.generator.testutils.codegen;
+package io.quarkiverse.openapi.generator.codegen;
 
 import java.util.Collections;
 import java.util.List;
 
-import io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider;
-import io.quarkiverse.openapi.generator.codegen.SpecInputModel;
+import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider;
+import io.quarkiverse.openapi.generator.deployment.codegen.SpecInputModel;
 
 /**
  * Class used during tests to read the spec PetStore file from an alternative input.
