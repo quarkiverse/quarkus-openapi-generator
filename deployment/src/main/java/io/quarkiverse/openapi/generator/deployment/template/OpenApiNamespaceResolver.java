@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.template;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -32,6 +33,10 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
             final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
+    }
+
+    public String parseUri(String uri) {
+        return Path.of(uri).getFileName().toString();
     }
 
     @Override

@@ -25,10 +25,8 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 
-
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
-
 import io.quarkiverse.openapi.generator.deployment.MockConfigUtils;
 import io.quarkiverse.openapi.generator.deployment.codegen.ModelCodegenConfigParser;
 
