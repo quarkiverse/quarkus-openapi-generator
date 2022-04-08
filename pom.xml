@@ -63,6 +63,7 @@
        <dependency>
         <groupId>io.quarkiverse.openapi.generator</groupId>
         <artifactId>quarkus-openapi-generator-generation-input</artifactId>
+        <scope>test</scope>
         <version>${project.version}</version>
       </dependency>
       <dependency>

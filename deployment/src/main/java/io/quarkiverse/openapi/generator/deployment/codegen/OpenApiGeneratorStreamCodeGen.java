@@ -58,7 +58,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
         boolean generated = false;
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
-            for (SpecInputModel inputModel : provider.read()) {
+            for (SpecInputModel inputModel : provider.read(context)) {
                 LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
