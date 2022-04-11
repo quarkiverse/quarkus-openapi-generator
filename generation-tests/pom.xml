@@ -10,7 +10,7 @@
   <name>Quarkus - Openapi Generator - Generation Tests</name>
 
   <properties>
-    <version.com.github.tomakehurst>2.32.0</version.com.github.tomakehurst>
+    <version.com.github.tomakehurst>2.33.1</version.com.github.tomakehurst>
   </properties>
 
   <dependencies>
