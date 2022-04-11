@@ -12,9 +12,10 @@
   <packaging>pom</packaging>
   <name>Quarkus - Openapi Generator - Parent</name>
   <modules>
+    <module>test-utils</module>
     <module>deployment</module>
     <module>runtime</module>
-    <module>test-utils</module>
+     <module>generation-input</module>
   </modules>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
@@ -59,6 +60,12 @@
         <version>${version.org.assertj}</version>
         <scope>test</scope>
       </dependency>
+       <dependency>
+        <groupId>io.quarkiverse.openapi.generator</groupId>
+        <artifactId>quarkus-openapi-generator-generation-input</artifactId>
+        <scope>test</scope>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.quarkiverse.openapi.generator</groupId>
         <artifactId>quarkus-openapi-generator-test-utils</artifactId>
@@ -98,6 +105,7 @@
       </activation>
       <modules>
         <module>integration-tests</module>
+        <module>generation-tests</module>
       </modules>
     </profile>
   </profiles>

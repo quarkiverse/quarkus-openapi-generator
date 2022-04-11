@@ -55,13 +55,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     protected void generate(CodeGenContext context, final Path openApiFilePath, final Path outDir) {
-        // TODO: do not generate with the output dir has generated files and the openapi file has the same checksum of the previous runz
+        // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
+        final String basePackage = getResolvedBasePackageProperty(openApiFilePath);
+
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                 openApiFilePath.normalize(), outDir)
+                        .withModelCodeGenConfiguration(ModelCodegenConfigParser.parse(context.config(), basePackage))
                         .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
                                 context.config()));
         context.config()
-                .getOptionalValue(getResolvedBasePackageProperty(openApiFilePath), String.class)
+                .getOptionalValue(basePackage, String.class)
                 .ifPresent(generator::withBasePackage);
         context.config()
                 .getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)

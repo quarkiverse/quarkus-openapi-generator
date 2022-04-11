@@ -1,10 +1,11 @@
-package io.quarkiverse.openapi.generator.testutils.codegen;
+package io.quarkiverse.openapi.generator.codegen;
 
 import java.util.Collections;
 import java.util.List;
 
-import io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider;
-import io.quarkiverse.openapi.generator.codegen.SpecInputModel;
+import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider;
+import io.quarkiverse.openapi.generator.deployment.codegen.SpecInputModel;
+import io.quarkus.deployment.CodeGenContext;
 
 /**
  * Class used during tests to read the spec PetStore file from an alternative input.
@@ -14,7 +15,7 @@ import io.quarkiverse.openapi.generator.codegen.SpecInputModel;
 public class ClassPathPetstoreOpenApiSpecInputProvider implements OpenApiSpecInputProvider {
 
     @Override
-    public List<SpecInputModel> read() {
+    public List<SpecInputModel> read(CodeGenContext context) {
         return Collections.singletonList(
                 new SpecInputModel("petstore.json", this.getClass().getResourceAsStream("/specs/petstore.json")));
     }

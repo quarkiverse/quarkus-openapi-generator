@@ -1,31 +1,21 @@
 package io.quarkiverse.openapi.generator.deployment;
 
-import static io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorBuildTimeConfig.BUILD_TIME_CONFIG_PREFIX;
-
 import java.nio.file.Path;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
-
-@ConfigGroup
 public class SpecConfig {
+
+    private static final String BUILD_TIME_CONFIG_PREFIX = "quarkus.openapi-generator.codegen";
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     public static final String BUILD_TIME_SPEC_PREFIX_FORMAT = BUILD_TIME_CONFIG_PREFIX + ".spec.\"%s\"";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
 
-    /**
-     * Defines the base package name for the generated classes.
-     */
-    @ConfigItem
-    public String basePackage;
-
-    public String getApiPackage() {
+    public static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);
     }
 
-    public String getModelPackage() {
+    public static String resolveModelPackage(final String basePackage) {
         return String.format("%s%s", basePackage, MODEL_PKG_SUFFIX);
     }
 

@@ -15,8 +15,6 @@ import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.openapi.generator.codegen.OpenApiSpecInputProvider;
-import io.quarkiverse.openapi.generator.codegen.SpecInputModel;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 
@@ -60,7 +58,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
         boolean generated = false;
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
-            for (SpecInputModel inputModel : provider.read()) {
+            for (SpecInputModel inputModel : provider.read(context)) {
                 LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");

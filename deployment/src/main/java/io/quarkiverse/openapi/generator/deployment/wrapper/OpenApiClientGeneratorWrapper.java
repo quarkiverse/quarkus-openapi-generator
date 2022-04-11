@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveApiPackage;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveModelPackage;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -11,8 +13,6 @@ import java.util.Map;
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
-
-import io.quarkiverse.openapi.generator.deployment.SpecConfig;
 
 /**
  * Wrapper for the OpenAPIGen tool.
@@ -76,7 +76,16 @@ public class OpenApiClientGeneratorWrapper {
      * @return this wrapper
      */
     public OpenApiClientGeneratorWrapper withCircuitBreakerConfiguration(final Map<String, List<String>> config) {
-        configurator.addAdditionalProperty("circuit-breaker", config);
+        if (config != null) {
+            configurator.addAdditionalProperty("circuit-breaker", config);
+        }
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withModelCodeGenConfiguration(final Map<String, Object> config) {
+        if (config != null) {
+            configurator.addAdditionalProperty("model-codegen", config);
+        }
         return this;
     }
 
@@ -101,10 +110,10 @@ public class OpenApiClientGeneratorWrapper {
             basePackage = DEFAULT_PACKAGE;
         }
         if (apiPackage.isEmpty()) {
-            this.apiPackage = basePackage.concat(SpecConfig.API_PKG_SUFFIX);
+            this.apiPackage = resolveApiPackage(basePackage);
         }
         if (modelPackage.isEmpty()) {
-            this.modelPackage = basePackage.concat(SpecConfig.MODEL_PKG_SUFFIX);
+            this.modelPackage = resolveModelPackage(basePackage);
         }
         this.configurator.setPackageName(basePackage);
         this.configurator.setApiPackage(apiPackage);

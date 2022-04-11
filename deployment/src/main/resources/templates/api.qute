@@ -18,6 +18,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
+import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
+import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
+import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 
 {#if appName}
 /**
@@ -27,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 {/if}
 @Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
 @RegisterRestClient
+@GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)
 {/if}
@@ -53,6 +57,7 @@ public interface {classname} {
     {#if op.hasProduces}
     @Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
+    @GeneratedMethod ("{op.operationId}")
     {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == package + classname}
     {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker

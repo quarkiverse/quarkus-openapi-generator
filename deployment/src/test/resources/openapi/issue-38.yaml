@@ -1,0 +1,351 @@
+openapi: 3.0.0 # need this as first line to allow some IDEs to know this is an openapi document.
+# Warning: This file should only be used if the endpoints are not yet ready to be public, or not suitable for public consumption (like the data plane endpoints).
+# In most cases, you shouldn't need to add the endpoints here.
+# Only add endpoints here when it is an explicit requirement, or if you know what you are doing.
+# There should be no duplicated endpoints or schemas in these 2 files. They should only defined in one of them.
+info:
+  title: Connector Service Fleet Manager Private APIs
+  version: 0.0.3
+  description: Connector Service Fleet Manager apis that are used by internal services.
+servers:
+  - url: /
+    description: current domain
+tags:
+  - name: Connector Clusters Agent
+    description: "only accessible by connector fleet shard agents"
+
+paths:
+  '/api/connector_mgmt/v1/agent/kafka_connector_clusters/{connector_cluster_id}/status':
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+    put:
+      tags:
+        - Connector Clusters Agent
+      security:
+        - Bearer: [ ]
+      operationId: updateKafkaConnectorClusterStatus
+      summary: Update the status of a connector cluster
+      description: Update the status of a connector cluster
+      requestBody:
+        description: Cluster status update data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorClusterStatus'
+        required: true
+      responses:
+        '200':
+          description: Cluster status is updated
+
+  '/api/connector_mgmt/v1/agent/kafka_connector_clusters/{connector_cluster_id}/deployments':
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+    get:
+      tags:
+        - Connector Clusters Agent
+      security:
+        - Bearer: [ ]
+      operationId: getClusterAsignedConnectorDeployments
+      summary: Returns a list of connector deployments assigned to the cluster.
+      description: Returns a list of connector deployments assigned to the cluster.
+      parameters:
+        - in: query
+          name: gt_version
+          description: filters the connectors to those with a version greater than the given value
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: watch
+          description: watch for changes to the resources and return them as a stream of watch events. Specify gt_version to specify the starting point.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorDeploymentList'
+            application/json;stream=watch:
+              schema:
+                $ref: '#/components/schemas/ConnectorDeploymentWatchEvent'
+          description: A list of connector
+
+  '/api/connector_mgmt/v1/agent/kafka_connector_clusters/{connector_cluster_id}/deployments/{deployment_id}':
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: deployment_id
+        description: The id of the deployment
+        schema:
+          type: string
+        in: path
+        required: true
+    get:
+      tags:
+        - Connector Clusters Agent
+      security:
+        - Bearer: [ ]
+      operationId: getClusterAsignedConnectorDeploymentById
+      summary: Returns a list of connector deployments assigned to the cluster.
+      description: Returns a list of connector deployments assigned to the cluster.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorDeployment'
+          description: A connector deployment
+
+  '/api/connector_mgmt/v1/agent/kafka_connector_clusters/{connector_cluster_id}/deployments/{deployment_id}/status':
+    parameters:
+      - name: connector_cluster_id
+        description: The id of the connector cluster
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: deployment_id
+        description: The id of the deployment
+        schema:
+          type: string
+        in: path
+        required: true
+    put:
+      tags:
+        - Connector Clusters Agent
+      operationId: updateConnectorDeploymentStatus
+      summary: update the connector deployment status
+      description: update the connector deployment status
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorDeploymentStatus'
+        required: true
+      responses:
+        '200':
+          description: Cluster status is updated
+
+components:
+  schemas:
+
+    MetaV1Condition:
+      type: object
+      properties:
+        type:
+          type: string
+        reason:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+        lastTransitionTime:
+          type: string
+          deprecated: true
+        last_transition_time:
+          type: string
+          #format: date-time # enable this?? or just set it as pure plain string?
+
+    WatchEvent:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        object:
+          type: object
+          nullable: true
+
+    ConnectorDeployment:
+      description: Holds the deployment configuration of a connector
+      allOf:
+        - type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                created_at:
+                  format: date-time
+                  type: string
+                updated_at:
+                  format: date-time
+                  type: string
+                resource_version:
+                  type: integer
+                  format: int64
+            spec:
+              $ref: '#/components/schemas/ConnectorDeploymentSpec'
+            status:
+              $ref: '#/components/schemas/ConnectorDeploymentStatus'
+
+    ConnectorDeploymentSpec:
+      description: Holds the deployment specification of a connector
+      type: object
+      properties:
+        connector_id:
+          type: string
+        connector_resource_version:
+          type: integer
+          format: int64
+        connector_type_id:
+          type: string
+        namespace_id:
+          type: string
+        connector_spec:
+          type: object
+        allow_upgrade:
+          description: allow the connector to upgrade to a new operator
+          type: boolean
+          deprecated: true
+        operator_id:
+          description: an optional operator id that the connector should be run under.
+          type: string
+        desired_state:
+          type: string
+        shard_metadata:
+          type: object
+
+    ConnectorDeploymentStatus:
+      description: The status of connector deployment
+      type: object
+      properties:
+        phase:
+          type: string
+        resource_version:
+          type: integer
+          format: int64
+        available_upgrades:
+          type: string
+          deprecated: true
+        operators:
+          type: object
+          properties:
+            assigned:
+              $ref: '#/components/schemas/ConnectorOperator'
+            available:
+              $ref: '#/components/schemas/ConnectorOperator'
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaV1Condition'
+
+    ConnectorDeploymentList:
+      allOf:
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/ConnectorDeployment'
+
+    ConnectorDeploymentWatchEvent:
+      allOf:
+        - $ref: '#/components/schemas/WatchEvent'
+        - type: object
+          properties:
+            object:
+              $ref: '#/components/schemas/ConnectorDeployment'
+
+    ConnectorOperator:
+      description: identifies an operator that runs on the fleet shards used to manage connectors.
+      properties:
+        id:
+          description: the id of the operator
+          type: string
+        type:
+          description: the type of the operator
+          type: string
+        version:
+          description: the version of the operator
+          type: string
+
+    ConnectorNamespaceStatus:
+      description: "Schema for the request to update a data plane namespaces' status"
+      type: object
+      required:
+        - id
+        - phase
+        - version
+        - connectors_deployed
+      properties:
+        id:
+          type: string
+        phase:
+          type: string
+        version:
+          type: string
+        connectors_deployed:
+          type: integer
+          format: int32
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaV1Condition'
+
+    ConnectorClusterStatus:
+      description: "Schema for the request to update a data plane cluster's status"
+      type: object
+      properties:
+        phase:
+          type: string
+        version:
+          type: string
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaV1Condition'
+        operators:
+          description: the list of installed operators
+          type: array
+          items:
+            type: object
+            properties:
+              operator:
+                $ref: '#/components/schemas/ConnectorOperator'
+              namespace:
+                description: the namespace to which the operator has been installed
+                type: string
+              status:
+                description: the status of the operator
+                type: string
+        namespaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorNamespaceStatus'
+
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+
+  examples:
+    400InvalidIdExample:
+      value:
+        id: "21"
+        kind: "Error"
+        href: "/api/kafkas_mgmt/v1/errors/21"
+        code: "KAFKAS-MGMT-21"
+        reason: "Bad request"
+        operation_id: "1lWDGuybIrEnxrAem724gqkkiDv"
