@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
+    <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
     <groupId>io.quarkiverse.openapi.generator</groupId>
-    <artifactId>quarkus-openapi-generator-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>quarkus-openapi-generator-generation-tests</artifactId>
-  <name>Quarkus - Openapi Generator - Generation Tests</name>
+  <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <version.com.github.tomakehurst>2.33.1</version.com.github.tomakehurst>
-  </properties>
+  <artifactId>quarkus-openapi-generator-it-example-project</artifactId>
+  <name>Quarkus - Openapi Generator - Integration Tests - Example Project</name>
+  <description>Example project for general usage</description>
 
   <dependencies>
     <dependency>
@@ -21,6 +21,15 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-multipart</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.openapi.generator</groupId>
+      <artifactId>quarkus-openapi-generator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.openapi.generator</groupId>
+      <artifactId>quarkus-openapi-generator-test-utils</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.github.javaparser</groupId>
@@ -34,15 +43,6 @@
       <groupId>org.eclipse.microprofile.fault-tolerance</groupId>
       <artifactId>microprofile-fault-tolerance-api</artifactId>
     </dependency>
-     <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator-generation-input</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
@@ -51,7 +51,6 @@
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-jre8</artifactId>
-      <version>${version.com.github.tomakehurst}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -65,6 +64,7 @@
           <execution>
             <goals>
               <goal>build</goal>
+              <goal>generate-code</goal>
               <goal>generate-code-tests</goal>
             </goals>
           </execution>
@@ -113,4 +113,5 @@
       </properties>
     </profile>
   </profiles>
+
 </project>
