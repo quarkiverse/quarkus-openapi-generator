@@ -13,10 +13,12 @@ import org.openapi.quarkus.model.Pet;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 
+import io.quarkiverse.openapi.generator.testutils.keycloak.KeycloakRealmResourceManager;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTestResource(WiremockPetStore.class)
+@QuarkusTestResource(KeycloakRealmResourceManager.class)
 @QuarkusTest
 public class PetStoreTest {
 

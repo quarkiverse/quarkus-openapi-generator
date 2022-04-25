@@ -20,14 +20,14 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
         wireMockServer = new WireMockServer(8888);
         wireMockServer.start();
 
-        wireMockServer.stubFor(get(urlPathEqualTo("/weather"))
+        wireMockServer.stubFor(get(urlPathEqualTo("/data/2.5/weather"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                                 "{\"name\": \"Nowhere\"}")));
         return Collections.singletonMap("org.acme.openapi.weather.api.CurrentWeatherDataApi/mp-rest/url",
-                wireMockServer.baseUrl());
+                wireMockServer.baseUrl().concat("/data/2.5"));
     }
 
     @Override

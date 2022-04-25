@@ -9,13 +9,11 @@
   <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
   <name>Quarkus - Openapi Generator - Integration Tests</name>
   <packaging>pom</packaging>
-  <properties>
-    <version.com.github.tomakehurst>2.33.1</version.com.github.tomakehurst>
-  </properties>
   <modules>
     <module>example-project</module>
     <module>generation-tests</module>
     <module>generation-input</module>
+    <module>oidc-tests</module>
   </modules>
   <dependencyManagement>
     <dependencies>

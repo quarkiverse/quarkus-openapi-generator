@@ -30,6 +30,11 @@
       <groupId>org.eclipse.microprofile.fault-tolerance</groupId>
       <artifactId>microprofile-fault-tolerance-api</artifactId>
     </dependency>
+    <!-- petstore requires OAuth2 -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-oidc-client-filter</artifactId>
+    </dependency>
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator</artifactId>
@@ -46,6 +51,11 @@
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-jre8</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.openapi.generator</groupId>
+      <artifactId>quarkus-openapi-generator-test-utils</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
