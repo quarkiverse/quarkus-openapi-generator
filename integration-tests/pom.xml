@@ -13,7 +13,6 @@
     <module>example-project</module>
     <module>generation-tests</module>
     <module>generation-input</module>
-    <module>oidc-tests</module>
   </modules>
   <dependencyManagement>
     <dependencies>

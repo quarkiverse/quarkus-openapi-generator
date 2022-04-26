@@ -94,7 +94,9 @@ public class UrlPatternMatcher {
      */
     public UrlPatternMatcher(String pattern) {
         this.urlPattern = pattern;
-        compile();
+        String parsedPattern = this.urlPattern.replaceFirst(URL_FORMAT_REGEX, URL_FORMAT_MATCH_REGEX);
+        parsedPattern = parsedPattern.replaceAll(URL_PARAM_REGEX, URL_PARAM_MATCH_REGEX);
+        this.compiledUrl = Pattern.compile(parsedPattern + URL_QUERY_STRING_REGEX);
     }
 
     /**
@@ -107,15 +109,4 @@ public class UrlPatternMatcher {
     public boolean matches(String url) {
         return compiledUrl.matcher(url).matches();
     }
-
-    /**
-     * Processes the incoming URL pattern string to create a java.util.regex Pattern out of it and
-     * parse out the parameter names, if applicable.
-     */
-    private void compile() {
-        String parsedPattern = this.urlPattern.replaceFirst(URL_FORMAT_REGEX, URL_FORMAT_MATCH_REGEX);
-        parsedPattern = parsedPattern.replaceAll(URL_PARAM_REGEX, URL_PARAM_MATCH_REGEX);
-        this.compiledUrl = Pattern.compile(parsedPattern + URL_QUERY_STRING_REGEX);
-    }
-
 }

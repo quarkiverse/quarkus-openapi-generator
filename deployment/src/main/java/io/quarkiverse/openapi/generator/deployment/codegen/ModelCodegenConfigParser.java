@@ -20,9 +20,7 @@ public final class ModelCodegenConfigParser {
         final List<String> modelProperties = filterModelPropertyNames(config.getPropertyNames(),
                 resolveModelPackage(basePackage));
         final Map<String, Object> modelConfig = new HashMap<>();
-        modelProperties.forEach(m -> {
-            modelConfig.put(m, config.getValue(m, String.class));
-        });
+        modelProperties.forEach(m -> modelConfig.put(m, config.getValue(m, String.class)));
         return modelConfig;
     }
 

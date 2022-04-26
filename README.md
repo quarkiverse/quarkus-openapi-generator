@@ -6,7 +6,8 @@
 
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
-This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/).
+This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
+project: https://opencollective.com/openapi_generator/donate
 
 ## Getting Started
 
@@ -157,6 +158,58 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 | API Key      | `[base_package].security.auth.[security_scheme_name]/api-key` | `org.acme.openapi.security.auth.apikey/api-key` |
 
 The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
+
+### OAuth2 Authentication
+
+The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use
+the [Quarkus OIDC Extension](https://quarkus.io/guides/security-openid-connect-client) configuration to define your authentication flow.
+
+The generated code creates a named `OidcClient` for each [Security Scheme](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) listed in the OpenAPI specification files. For example, given
+the following excerpt:
+
+```json
+{
+  "securitySchemes": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "flows": {
+        "implicit": {
+          "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+          "scopes": {
+            "write:pets": "modify pets in your account",
+            "read:pets": "read your pets"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+You can configure this `OidcClient` as:
+
+```properties
+quarkus.oidc-client.petstore_auth.auth-server-url=https://petstore3.swagger.io/oauth/authorize
+quarkus.oidc-client.petstore_auth.discovery-enabled=false
+quarkus.oidc-client.petstore_auth.token-path=/tokens
+quarkus.oidc-client.petstore_auth.credentials.secret=secret
+quarkus.oidc-client.petstore_auth.grant.type=password
+quarkus.oidc-client.petstore_auth.grant-options.password.username=alice
+quarkus.oidc-client.petstore_auth.grant-options.password.password=alice
+quarkus.oidc-client.petstore_auth.client-id=petstore-app
+```
+
+The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file.
+
+For this to work you **must** add [Quarkus OIDC Client Filter Extension](https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter) to your project:
+
+````xml
+
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-oidc-client-filter</artifactId>
+</dependency>
+````
 
 ## Circuit Breaker
 
@@ -357,7 +410,8 @@ to `application/json`.
 
 ## Generating files via InputStream
 
-Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider`
+Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement
+the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider`
 interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file
 saved locally in your project.
 
@@ -374,7 +428,6 @@ Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to 
 
 These are the known limitations of this pre-release version:
 
-- No OAuth2 support
 - No reactive support
 - Only Jackson support
 
