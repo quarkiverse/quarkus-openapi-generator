@@ -13,17 +13,28 @@ import javax.ws.rs.client.ClientRequestFilter;
  */
 public abstract class AbstractCompositeAuthenticationProvider implements ClientRequestFilter {
 
-    private final List<ClientRequestFilter> authProviders = new ArrayList<>();
+    private final List<AuthProvider> authProviders = new ArrayList<>();
 
-    public final void addAuthenticationProvider(final ClientRequestFilter authProvider) {
+    public final void addAuthenticationProvider(final AuthProvider authProvider) {
         this.authProviders.add(authProvider);
     }
 
     @Override
     public final void filter(ClientRequestContext requestContext) throws IOException {
-        for (ClientRequestFilter authProvider : authProviders) {
-            authProvider.filter(requestContext);
+        for (AuthProvider authProvider : authProviders) {
+            if (canFilter(authProvider, requestContext)) {
+                authProvider.filter(requestContext);
+            }
         }
+    }
+
+    /**
+     * It can perform the authentication filter only if this operation requires it (has a security reference)
+     */
+    private boolean canFilter(final AuthProvider authProvider, final ClientRequestContext requestContext) {
+        return authProvider.operationsToFilter().stream()
+                .anyMatch(o -> o.getHttpMethod().equals(requestContext.getMethod()) &&
+                        o.matchPath(requestContext.getUri().getPath()));
     }
 
 }

@@ -39,7 +39,7 @@ public class MultipartTest {
 
     @RestClient
     @Inject
-    private UserProfileDataApi userProfileDataApi;
+    UserProfileDataApi userProfileDataApi;
 
     @Test
     public void testUploadMultipartFormdata(@TempDir Path tempDir) throws IOException {

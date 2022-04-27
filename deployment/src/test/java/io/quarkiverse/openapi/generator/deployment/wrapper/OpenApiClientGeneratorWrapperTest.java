@@ -154,14 +154,6 @@ public class OpenApiClientGeneratorWrapperTest {
                 .forEach(m -> assertThat(m).doesNotHaveCircuitBreakerAnnotation());
     }
 
-    private List<File> generateRestClientFiles() throws URISyntaxException {
-        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
-                .withCircuitBreakerConfiguration(Map.of(
-                        "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
-
-        return generatorWrapper.generate();
-    }
-
     @Test
     void verifyMultipartFormAnnotationIsGeneratedForParameter() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
@@ -214,6 +206,14 @@ public class OpenApiClientGeneratorWrapperTest {
             assertThat(field.getAnnotationByName("FormParam")).isPresent();
             assertThat(field.getAnnotationByName("PartType")).isPresent();
         });
+    }
+
+    private List<File> generateRestClientFiles() throws URISyntaxException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
+                .withCircuitBreakerConfiguration(Map.of(
+                        "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
+
+        return generatorWrapper.generate();
     }
 
     private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {

@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.it;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,9 @@ public class OpenWeatherTest {
     @ConfigProperty(name = "org.acme.openapi.weather.security.auth.app_id/api-key")
     String apiKey;
 
+    @ConfigProperty(name = "org.acme.openapi.weather.api.CurrentWeatherDataApi/mp-rest/url")
+    String weatherUrl;
+
     @RestClient
     @Inject
     CurrentWeatherDataApi weatherApi;
@@ -34,8 +38,9 @@ public class OpenWeatherTest {
     public void testGetWeatherByLatLon() {
         final Model200 model = weatherApi.currentWeatherData("", "", "10", "-10", "", "", "", "");
         assertEquals("Nowhere", model.getName());
+        assertNotNull(weatherUrl);
         openWeatherServer.verify(WireMock.getRequestedFor(
-                WireMock.urlEqualTo("/weather?q=&id=&lat=10&lon=-10&zip=&units=&lang=&mode=&appid=" + apiKey)));
+                WireMock.urlEqualTo("/data/2.5/weather?q=&id=&lat=10&lon=-10&zip=&units=&lang=&mode=&appid=" + apiKey)));
     }
 
 }
