@@ -1,12 +1,14 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackageProperty;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackagePropertyName;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getSkipFormModelPropertyName;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+
+import org.eclipse.microprofile.config.Config;
 
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
@@ -43,7 +45,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .map(Path::toString)
                         .filter(s -> s.endsWith(this.inputExtension()))
                         .map(Path::of).forEach(openApiFilePath -> {
-                            this.generate(context, openApiFilePath, outDir);
+                            this.generate(context.config(), openApiFilePath, outDir);
                         });
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
@@ -54,20 +56,18 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return false;
     }
 
-    protected void generate(CodeGenContext context, final Path openApiFilePath, final Path outDir) {
+    protected void generate(Config config, final Path openApiFilePath, final Path outDir) {
         // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-        final String basePackage = getResolvedBasePackageProperty(openApiFilePath);
+        final String basePackage = getResolvedBasePackagePropertyName(openApiFilePath);
 
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                 openApiFilePath.normalize(), outDir)
-                        .withModelCodeGenConfiguration(ModelCodegenConfigParser.parse(context.config(), basePackage))
+                        .withModelCodeGenConfiguration(ModelCodegenConfigParser.parse(config, basePackage))
                         .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
-                                context.config()));
-        context.config()
-                .getOptionalValue(basePackage, String.class)
+                                config));
+        config.getOptionalValue(basePackage, String.class)
                 .ifPresent(generator::withBasePackage);
-        context.config()
-                .getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
+        config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
 
         generator.generate();

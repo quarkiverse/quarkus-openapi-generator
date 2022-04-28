@@ -7,16 +7,19 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
+import io.smallrye.config.SmallRyeConfigBuilder;
 
 public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
@@ -55,6 +58,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
+
         boolean generated = false;
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
@@ -68,7 +72,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                         FileOutputStream output = new FileOutputStream(openApiFilePath.toString())) {
                     output.getChannel().transferFrom(channel, 0, Integer.MAX_VALUE);
                     LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
-                    this.generate(context, openApiFilePath, outDir);
+                    this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir);
                     generated = true;
                 } catch (IOException e) {
                     throw new UncheckedIOException("Failed to save InputStream from provider " + provider + " into location ",
@@ -77,6 +81,14 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
             }
         }
         return generated;
+    }
+
+    private Config mergeConfig(CodeGenContext context, SpecInputModel inputModel) {
+        final List<ConfigSource> sources = new ArrayList<>();
+        context.config().getConfigSources().forEach(sources::add);
+        return new SmallRyeConfigBuilder()
+                .withSources(inputModel.getConfigSource())
+                .withSources(sources).build();
     }
 
     @Override

@@ -29,7 +29,7 @@ public class WiremockPetStore implements QuarkusTestResourceLifecycleManager {
                                         "\"name\": \"Bidu\"," +
                                         "\"status\": \"AVAILABLE\"" +
                                         "}")));
-        return Collections.singletonMap("org.openapi.quarkus.api.PetApi/mp-rest/url", wireMockServer.baseUrl());
+        return Collections.singletonMap("org.acme.petstore.api.PetApi/mp-rest/url", wireMockServer.baseUrl());
     }
 
     @Override

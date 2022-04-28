@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.inject.Inject;
 
+import org.acme.petstore.api.PetApi;
+import org.acme.petstore.model.Pet;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
-import org.openapi.quarkus.api.PetApi;
-import org.openapi.quarkus.model.Pet;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 

@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.codegen;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider;
@@ -16,8 +16,11 @@ public class ClassPathPetstoreOpenApiSpecInputProvider implements OpenApiSpecInp
 
     @Override
     public List<SpecInputModel> read(CodeGenContext context) {
-        return Collections.singletonList(
-                new SpecInputModel("petstore.json", this.getClass().getResourceAsStream("/specs/petstore.json")));
+        final List<SpecInputModel> inputModels = new ArrayList<>();
+        inputModels.add(new SpecInputModel("petstore.json", this.getClass().getResourceAsStream("/specs/petstore.json")));
+        inputModels.add(new SpecInputModel("subtraction.yaml", this.getClass().getResourceAsStream("/specs/subtraction.yaml"),
+                "org.math"));
+        return inputModels;
     }
 
 }
