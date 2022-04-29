@@ -32,10 +32,7 @@ public class SpecInputModel {
      * @param basePackageName the name of the package where the files will be generated
      */
     public SpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
-        requireNonNull(inputStream, "InputStream can't be null");
-        requireNonNull(filename, "File name can't be null");
-        this.inputStream = inputStream;
-        this.filename = filename;
+        this(filename, inputStream);
         this.codegenProperties.put(SpecConfig.getResolvedBasePackagePropertyName(Path.of(filename)), basePackageName);
     }
 
