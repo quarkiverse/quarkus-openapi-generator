@@ -3,12 +3,21 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 import static java.util.Objects.requireNonNull;
 
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import org.eclipse.microprofile.config.spi.ConfigSource;
+
+import io.quarkiverse.openapi.generator.deployment.SpecConfig;
+import io.smallrye.config.PropertiesConfigSource;
 
 public class SpecInputModel {
 
     private final InputStream inputStream;
     private final String filename;
+    private final Map<String, String> codegenProperties = new HashMap<>();
 
     public SpecInputModel(final String filename, final InputStream inputStream) {
         requireNonNull(inputStream, "InputStream can't be null");
@@ -17,12 +26,26 @@ public class SpecInputModel {
         this.filename = filename;
     }
 
+    /**
+     * @param filename the name of the file for reference
+     * @param inputStream the content of the spec file
+     * @param basePackageName the name of the package where the files will be generated
+     */
+    public SpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
+        this(filename, inputStream);
+        this.codegenProperties.put(SpecConfig.getResolvedBasePackagePropertyName(Path.of(filename)), basePackageName);
+    }
+
     public String getFileName() {
         return filename;
     }
 
     public InputStream getInputStream() {
         return inputStream;
+    }
+
+    public ConfigSource getConfigSource() {
+        return new PropertiesConfigSource(this.codegenProperties, "properties", 0);
     }
 
     @Override
