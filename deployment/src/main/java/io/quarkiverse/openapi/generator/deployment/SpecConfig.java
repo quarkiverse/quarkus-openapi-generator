@@ -53,7 +53,6 @@ public class SpecConfig {
     }
 
     public static String getSanitizedFileName(final Path openApiFilePath) {
-        final String fileName = openApiFilePath.getFileName().toString();
-        return StringUtil.replaceNonAlphanumericByUnderscores(fileName.substring(fileName.lastIndexOf("/") + 1));
+        return StringUtil.replaceNonAlphanumericByUnderscores(openApiFilePath.getFileName().toString());
     }
 }
