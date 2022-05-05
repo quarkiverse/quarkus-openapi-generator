@@ -6,6 +6,7 @@ import java.util.Map;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
+import io.smallrye.config.common.utils.StringUtil;
 
 // This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
 @ConfigRoot(name = SpecConfig.BUILD_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
@@ -15,7 +16,7 @@ public class SpecConfig {
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     // package visibility for unit tests
-    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + BUILD_TIME_CONFIG_PREFIX + ".spec.\"%s\"";
+    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + BUILD_TIME_CONFIG_PREFIX + ".spec.%s";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
 
@@ -44,14 +45,14 @@ public class SpecConfig {
     /**
      * Gets the config prefix for a given OpenAPI file in the path.
      * For example, given a path like /home/luke/projects/petstore.json, the returned value is
-     * `quarkus.openapi-generator."petstore.json"`.
+     * `quarkus.openapi-generator."petstore_json"`.
+     * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
-        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getEscapedFileName(openApiFilePath));
+        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getSanitizedFileName(openApiFilePath));
     }
 
-    private static String getEscapedFileName(final Path openApiFilePath) {
-        final String uriFilePath = openApiFilePath.toUri().toString();
-        return uriFilePath.substring(uriFilePath.lastIndexOf("/") + 1);
+    public static String getSanitizedFileName(final Path openApiFilePath) {
+        return StringUtil.replaceNonAlphanumericByUnderscores(openApiFilePath.getFileName().toString());
     }
 }

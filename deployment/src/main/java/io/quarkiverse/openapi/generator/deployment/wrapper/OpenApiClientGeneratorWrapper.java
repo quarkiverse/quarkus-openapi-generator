@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveApiPackage;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveModelPackage;
 import static java.lang.Boolean.FALSE;
@@ -7,6 +8,7 @@ import static java.lang.Boolean.TRUE;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +53,8 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator = new QuarkusCodegenConfigurator();
         this.configurator.setInputSpec(specFilePath.toString());
         this.configurator.setOutputDir(outputDir.toString());
+        this.configurator.addAdditionalProperty("quarkus-generator",
+                Collections.singletonMap("openApiSpecId", getSanitizedFileName(specFilePath)));
         this.generator = new DefaultGenerator();
     }
 

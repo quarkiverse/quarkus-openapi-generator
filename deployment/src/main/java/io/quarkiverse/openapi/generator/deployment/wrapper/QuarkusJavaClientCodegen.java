@@ -5,10 +5,17 @@ import java.io.File;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.utils.ProcessUtils;
+import org.openapitools.codegen.utils.URLPathUtils;
+
+import io.swagger.v3.oas.models.OpenAPI;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     private static final String AUTH_PACKAGE = "auth";
+    /**
+     * Default server URL (the first one in the OpenAPI spec file servers definition.
+     */
+    private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
 
     public QuarkusJavaClientCodegen() {
         // immutable properties
@@ -42,11 +49,11 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                 ProcessUtils.hasHttpBearerMethods(this.openAPI) ||
                 ProcessUtils.hasOAuthMethods(this.openAPI)) {
             supportingFiles.add(
-                    new SupportingFile("auth/compositeAuthenticationProvider.qute",
+                    new SupportingFile(AUTH_PACKAGE + "/compositeAuthenticationProvider.qute",
                             authFileFolder(),
                             "CompositeAuthenticationProvider.java"));
             supportingFiles.add(
-                    new SupportingFile("auth/authConfig.qute",
+                    new SupportingFile(AUTH_PACKAGE + "/authConfig.qute",
                             authFileFolder(),
                             "AuthConfiguration.java"));
         }
@@ -62,5 +69,12 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         // we are not using the apiFileFolder since it returns the full path
         // we are only interested in the package path
         return apiPackage().replace('.', File.separatorChar) + File.separator + AUTH_PACKAGE;
+    }
+
+    @Override
+    public void preprocessOpenAPI(OpenAPI openAPI) {
+        super.preprocessOpenAPI(openAPI);
+        // add the default server url to the context
+        additionalProperties.put(DEFAULT_SERVER_URL, URLPathUtils.getServerURL(this.openAPI, serverVariableOverrides()));
     }
 }

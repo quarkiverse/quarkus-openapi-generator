@@ -4,6 +4,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/0.5.0/README.md) if you are looking for instructions.
+
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
 This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
@@ -18,7 +20,7 @@ Add the following dependency to your project's `pom.xml` file:
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator</artifactId>
-  <version>0.5.0</version>
+  <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -50,10 +52,10 @@ Now, create the directory `openapi` under your `src/main/` path and add the Open
 To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
 ```properties
-quarkus.openapi-generator.codegen.spec."petstore.json".base-package=org.acme.openapi
+quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme.openapi
 ```
 
-Note that the file name is used to configure the specific information for each spec.
+Note that the file name is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
 
@@ -277,7 +279,8 @@ Add the [SmallRye Fault Tolerance extension](https://quarkus.io/guides/smallrye-
 Assuming your Open API spec file is in `src/main/openapi/simple-openapi.json`, add the following configuration to your `application.properties` file:
 
 ````properties
-quarkus.openapi-generator.codegen.spec."simple-openapi.json".base-package=org.acme.openapi.simple
+# Note that the file name must have only alphabetic characters or underscores (_).
+quarkus.openapi-generator.codegen.spec.simple_openapi_json.base-package=org.acme.openapi.simple
 # Enables the CircuitBreaker extension for the byeGet method from the DefaultApi class
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/enabled=true
 ````
@@ -299,7 +302,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
 @Path("")
-@RegisterRestClient
+@RegisterRestClient(baseUri="http://localhost/", configKey="simple-openapi_json")
 public interface DefaultApi {
 
     @GET
@@ -375,7 +378,7 @@ Then in the client the `org.jboss.resteasy.annotations.providers.multipart.Multi
 
 ```java
 @Path("/echo")
-@RegisterRestClient
+@RegisterRestClient(baseUri="http://my.endpoint.com/api/v1", configKey="multipart-requests_yml")
 public interface MultipartService {
 
     @POST
@@ -393,7 +396,7 @@ Importantly, if some multipart request bodies contain complex objects (i.e. non-
 the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
 
 ```properties
-quarkus.openapi-generator.codegen.spec."my-multipart-requests.yml".skip-form-model=false
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model=false
 ```
 
 ### Default content-types according to OpenAPI Specification and limitations

@@ -27,7 +27,7 @@ public class OpenWeatherTest {
     @ConfigProperty(name = "org.acme.openapi.weather.security.auth.app_id/api-key")
     String apiKey;
 
-    @ConfigProperty(name = "org.acme.openapi.weather.api.CurrentWeatherDataApi/mp-rest/url")
+    @ConfigProperty(name = WiremockOpenWeather.URL_KEY)
     String weatherUrl;
 
     @RestClient

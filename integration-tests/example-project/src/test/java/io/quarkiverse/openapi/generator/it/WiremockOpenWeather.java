@@ -15,6 +15,8 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
 
     private WireMockServer wireMockServer;
 
+    public static final String URL_KEY = "quarkus.rest-client.open_weather_yaml.url";
+
     @Override
     public Map<String, String> start() {
         wireMockServer = new WireMockServer(8888);
@@ -26,7 +28,7 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                                 "{\"name\": \"Nowhere\"}")));
-        return Collections.singletonMap("org.acme.openapi.weather.api.CurrentWeatherDataApi/mp-rest/url",
+        return Collections.singletonMap(URL_KEY,
                 wireMockServer.baseUrl().concat("/data/2.5"));
     }
 
