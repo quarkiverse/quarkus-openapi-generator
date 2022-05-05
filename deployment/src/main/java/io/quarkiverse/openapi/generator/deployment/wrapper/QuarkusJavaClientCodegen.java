@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 import java.io.File;
 
 import org.openapitools.codegen.SupportingFile;
+import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
@@ -76,5 +77,13 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         super.preprocessOpenAPI(openAPI);
         // add the default server url to the context
         additionalProperties.put(DEFAULT_SERVER_URL, URLPathUtils.getServerURL(this.openAPI, serverVariableOverrides()));
+    }
+
+    @Override
+    public void postProcess() {
+        final boolean verbose = Boolean.parseBoolean(GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.VERBOSE));
+        if (verbose) {
+            super.postProcess();
+        }
     }
 }
