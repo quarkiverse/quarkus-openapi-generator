@@ -15,7 +15,7 @@ public class SpecConfig {
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     // package visibility for unit tests
-    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + BUILD_TIME_CONFIG_PREFIX + ".spec.\"%s\"";
+    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + BUILD_TIME_CONFIG_PREFIX + ".spec.%s";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
 
