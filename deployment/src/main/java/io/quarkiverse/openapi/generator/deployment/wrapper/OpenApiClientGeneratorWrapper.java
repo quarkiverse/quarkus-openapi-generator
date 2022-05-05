@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getEscapedFileName;
+import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveApiPackage;
 import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveModelPackage;
 import static java.lang.Boolean.FALSE;
@@ -54,7 +54,7 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.setInputSpec(specFilePath.toString());
         this.configurator.setOutputDir(outputDir.toString());
         this.configurator.addAdditionalProperty("quarkus-generator",
-                Collections.singletonMap("openApiSpecId", getEscapedFileName(specFilePath)));
+                Collections.singletonMap("openApiSpecId", getSanitizedFileName(specFilePath)));
         this.generator = new DefaultGenerator();
     }
 

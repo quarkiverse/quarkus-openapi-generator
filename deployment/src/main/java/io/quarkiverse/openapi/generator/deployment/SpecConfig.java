@@ -6,6 +6,7 @@ import java.util.Map;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
+import io.smallrye.config.common.utils.StringUtil;
 
 // This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
 @ConfigRoot(name = SpecConfig.BUILD_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
@@ -48,11 +49,11 @@ public class SpecConfig {
      * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
-        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getEscapedFileName(openApiFilePath));
+        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getSanitizedFileName(openApiFilePath));
     }
 
-    public static String getEscapedFileName(final Path openApiFilePath) {
-        final String uriFilePath = openApiFilePath.toUri().toString();
-        return uriFilePath.substring(uriFilePath.lastIndexOf("/") + 1).replaceAll("\\.", "_");
+    public static String getSanitizedFileName(final Path openApiFilePath) {
+        final String fileName = openApiFilePath.getFileName().toString();
+        return StringUtil.replaceNonAlphanumericByUnderscores(fileName.substring(fileName.lastIndexOf("/") + 1));
     }
 }

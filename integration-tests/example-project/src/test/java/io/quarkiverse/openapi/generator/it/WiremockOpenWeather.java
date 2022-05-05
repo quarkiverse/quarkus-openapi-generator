@@ -15,7 +15,7 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
 
     private WireMockServer wireMockServer;
 
-    public static final String URL_KEY = "quarkus.rest-client.\"open%20weather_yaml\".url";
+    public static final String URL_KEY = "quarkus.rest-client.open_weather_yaml.url";
 
     @Override
     public Map<String, String> start() {
