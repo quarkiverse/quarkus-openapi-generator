@@ -55,7 +55,7 @@ To fine tune the configuration for each spec file, add the following entry to yo
 quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme.openapi
 ```
 
-Note that the file name is used to configure the specific information for each spec. Periods (.) are replaced by underline (_).
+Note that the file name is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
 
@@ -279,7 +279,8 @@ Add the [SmallRye Fault Tolerance extension](https://quarkus.io/guides/smallrye-
 Assuming your Open API spec file is in `src/main/openapi/simple-openapi.json`, add the following configuration to your `application.properties` file:
 
 ````properties
-quarkus.openapi-generator.codegen.spec.simple-openapi_json.base-package=org.acme.openapi.simple
+# Note that the file name must have only alphabetic characters or underscores (_).
+quarkus.openapi-generator.codegen.spec.simple_openapi_json.base-package=org.acme.openapi.simple
 # Enables the CircuitBreaker extension for the byeGet method from the DefaultApi class
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/enabled=true
 ````
@@ -395,7 +396,7 @@ Importantly, if some multipart request bodies contain complex objects (i.e. non-
 the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
 
 ```properties
-quarkus.openapi-generator.codegen.spec.my-multipart-requests_yml.skip-form-model=false
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model=false
 ```
 
 ### Default content-types according to OpenAPI Specification and limitations
