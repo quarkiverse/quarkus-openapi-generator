@@ -29,7 +29,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
   */
 {/if}
 @Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
-@RegisterRestClient
+@RegisterRestClient(baseUri="{defaultServerUrl}", configKey="{quarkus-generator.openApiSpecId}")
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)

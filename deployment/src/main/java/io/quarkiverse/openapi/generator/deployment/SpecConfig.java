@@ -44,14 +44,15 @@ public class SpecConfig {
     /**
      * Gets the config prefix for a given OpenAPI file in the path.
      * For example, given a path like /home/luke/projects/petstore.json, the returned value is
-     * `quarkus.openapi-generator."petstore.json"`.
+     * `quarkus.openapi-generator."petstore_json"`.
+     * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
         return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getEscapedFileName(openApiFilePath));
     }
 
-    private static String getEscapedFileName(final Path openApiFilePath) {
+    public static String getEscapedFileName(final Path openApiFilePath) {
         final String uriFilePath = openApiFilePath.toUri().toString();
-        return uriFilePath.substring(uriFilePath.lastIndexOf("/") + 1);
+        return uriFilePath.substring(uriFilePath.lastIndexOf("/") + 1).replaceAll("\\.", "_");
     }
 }

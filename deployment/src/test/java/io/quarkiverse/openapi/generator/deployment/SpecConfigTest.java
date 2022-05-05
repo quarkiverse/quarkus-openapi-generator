@@ -13,13 +13,13 @@ class SpecConfigTest {
     void verifySpaceEncoding() {
         final String resolvedPrefix = SpecConfig
                 .getBuildTimeSpecPropertyPrefix(Path.of("/home/myuser/luke/my test openapi.json"));
-        assertEquals(resolvedPrefix, String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, "my%20test%20openapi.json"));
+        assertEquals(resolvedPrefix, String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, "my%20test%20openapi_json"));
     }
 
     @Test
     void withSingleFileName() {
         final String resolvedPrefix = SpecConfig.getBuildTimeSpecPropertyPrefix(Path.of("my test openapi.json"));
-        assertEquals(resolvedPrefix, String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, "my%20test%20openapi.json"));
+        assertEquals(resolvedPrefix, String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, "my%20test%20openapi_json"));
     }
 
 }
