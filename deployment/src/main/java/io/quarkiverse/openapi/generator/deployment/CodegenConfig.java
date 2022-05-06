@@ -9,14 +9,16 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.common.utils.StringUtil;
 
 // This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
-@ConfigRoot(name = SpecConfig.BUILD_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
-public class SpecConfig {
+@ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
+public class CodegenConfig {
 
-    static final String BUILD_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
+    static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
+
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
+    public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
     // package visibility for unit tests
-    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + BUILD_TIME_CONFIG_PREFIX + ".spec.%s";
+    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
 
@@ -25,6 +27,12 @@ public class SpecConfig {
      */
     @ConfigItem(name = "spec")
     public Map<String, SpecItemConfig> specItem;
+
+    /**
+     * Whether to log the internal generator codegen process in the default output or not.
+     */
+    @ConfigItem(name = "verbose", defaultValue = "false")
+    public boolean verbose;
 
     public static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);

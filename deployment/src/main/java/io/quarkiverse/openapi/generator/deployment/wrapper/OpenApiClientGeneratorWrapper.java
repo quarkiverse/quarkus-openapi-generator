@@ -1,8 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveApiPackage;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.resolveModelPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -25,7 +25,7 @@ import org.openapitools.codegen.config.GlobalSettings;
  */
 public class OpenApiClientGeneratorWrapper {
 
-    private static final String VERBOSE = "verbose";
+    public static final String VERBOSE = "verbose";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
@@ -36,7 +36,7 @@ public class OpenApiClientGeneratorWrapper {
     private String apiPackage = "";
     private String modelPackage = "";
 
-    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir) {
+    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final boolean verbose) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -47,8 +47,8 @@ public class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(CodegenConstants.MODELS, "");
         GlobalSettings.setProperty(CodegenConstants.SUPPORTING_FILES, "");
         // logging
-        GlobalSettings.setProperty(VERBOSE, FALSE.toString());
-        GlobalSettings.setProperty(ONCE_LOGGER, TRUE.toString());
+        GlobalSettings.setProperty(VERBOSE, String.valueOf(verbose));
+        GlobalSettings.setProperty(ONCE_LOGGER, verbose ? FALSE.toString() : TRUE.toString());
 
         this.configurator = new QuarkusCodegenConfigurator();
         this.configurator.setInputSpec(specFilePath.toString());

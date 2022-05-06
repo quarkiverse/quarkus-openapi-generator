@@ -1,11 +1,13 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getResolvedBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.SpecConfig.getSkipFormModelPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getResolvedBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
@@ -59,9 +61,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     protected void generate(Config config, final Path openApiFilePath, final Path outDir) {
         // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
         final String basePackage = getResolvedBasePackagePropertyName(openApiFilePath);
-
+        final Optional<Boolean> verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class);
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                openApiFilePath.normalize(), outDir)
+                openApiFilePath.normalize(),
+                outDir,
+                verbose.orElse(false))
                         .withModelCodeGenConfiguration(ModelCodegenConfigParser.parse(config, basePackage))
                         .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
                                 config));

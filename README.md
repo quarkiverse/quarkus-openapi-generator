@@ -101,6 +101,16 @@ public class PetResource {
 
 See the [integration-tests](integration-tests) module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
 
+## Logging
+
+Since the most part of this extension work is in the `generate-code` execution phase of the Quarkus Maven's plugin, the log configuration must be set in the Maven context. When building your project, add `-Dorg.slf4j.simpleLogger.log.org.openapitools=off` to the `mvn` command to reduce the internal generator noise. For example:
+
+```shell
+ mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
+```
+
+For more information, see the [Maven Logging Configuration](https://maven.apache.org/maven-logging.html) guide.
+
 ## Authentication Support
 
 If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator

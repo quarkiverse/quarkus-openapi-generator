@@ -221,7 +221,7 @@ public class OpenApiClientGeneratorWrapperTest {
                 .of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
         final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
 
-        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath);
+        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath, false);
     }
 
     private String getTargetDir() throws URISyntaxException {
