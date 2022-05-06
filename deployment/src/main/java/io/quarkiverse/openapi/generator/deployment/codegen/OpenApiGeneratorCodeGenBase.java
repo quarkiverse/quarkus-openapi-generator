@@ -1,13 +1,13 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getResolvedBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
@@ -29,6 +29,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YAML = ".yaml";
     static final String YML = ".yml";
     static final String JSON = ".json";
+
+    private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
     @Override
     public String inputDirectory() {
@@ -58,22 +60,27 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return false;
     }
 
-    protected void generate(Config config, final Path openApiFilePath, final Path outDir) {
-        // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-        final String basePackage = getResolvedBasePackagePropertyName(openApiFilePath);
-        final Optional<Boolean> verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class);
+    // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
+    protected void generate(final Config config, final Path openApiFilePath, final Path outDir) {
+        final String basePackage = getBasePackage(config, openApiFilePath);
+        final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
+
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                 openApiFilePath.normalize(),
                 outDir,
-                verbose.orElse(false))
-                        .withModelCodeGenConfiguration(ModelCodegenConfigParser.parse(config, basePackage))
-                        .withCircuitBreakerConfiguration(CircuitBreakerConfigurationParser.parse(
+                verbose)
+                        .withModelCodeGenConfig(ModelCodegenConfigParser.parse(config, basePackage))
+                        .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
                                 config));
-        config.getOptionalValue(basePackage, String.class)
-                .ifPresent(generator::withBasePackage);
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
 
-        generator.generate();
+        generator.generate(basePackage);
+    }
+
+    private String getBasePackage(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getBasePackagePropertyName(openApiFilePath), String.class)
+                .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
     }
 }

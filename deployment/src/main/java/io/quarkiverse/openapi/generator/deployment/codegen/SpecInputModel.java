@@ -33,7 +33,7 @@ public class SpecInputModel {
      */
     public SpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
         this(filename, inputStream);
-        this.codegenProperties.put(CodegenConfig.getResolvedBasePackagePropertyName(Path.of(filename)), basePackageName);
+        this.codegenProperties.put(CodegenConfig.getBasePackagePropertyName(Path.of(filename)), basePackageName);
     }
 
     public String getFileName() {

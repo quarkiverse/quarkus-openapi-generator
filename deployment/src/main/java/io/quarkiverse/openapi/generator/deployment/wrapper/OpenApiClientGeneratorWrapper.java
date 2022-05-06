@@ -5,6 +5,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveA
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -27,12 +28,11 @@ public class OpenApiClientGeneratorWrapper {
 
     public static final String VERBOSE = "verbose";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
-    private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
 
-    private String basePackage = DEFAULT_PACKAGE;
+    private String basePackage = "";
     private String apiPackage = "";
     private String modelPackage = "";
 
@@ -68,25 +68,20 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withBasePackage(final String pkg) {
-        this.basePackage = pkg;
-        return this;
-    }
-
     /**
      * Adds the circuit breaker configuration to the generator.
      *
      * @param config a map of class names and their methods that should be configured with circuit breaker
      * @return this wrapper
      */
-    public OpenApiClientGeneratorWrapper withCircuitBreakerConfiguration(final Map<String, List<String>> config) {
+    public OpenApiClientGeneratorWrapper withCircuitBreakerConfig(final Map<String, List<String>> config) {
         if (config != null) {
             configurator.addAdditionalProperty("circuit-breaker", config);
         }
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withModelCodeGenConfiguration(final Map<String, Object> config) {
+    public OpenApiClientGeneratorWrapper withModelCodeGenConfig(final Map<String, Object> config) {
         if (config != null) {
             configurator.addAdditionalProperty("model-codegen", config);
         }
@@ -104,14 +99,16 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public List<File> generate() {
+    public List<File> generate(final String basePackage) {
+        this.basePackage = basePackage;
         this.consolidatePackageNames();
         return generator.opts(configurator.toClientOptInput()).generate();
     }
 
     private void consolidatePackageNames() {
+        requireNonNull(basePackage);
         if (basePackage.isEmpty()) {
-            basePackage = DEFAULT_PACKAGE;
+            throw new IllegalArgumentException("basePackage must be a non-empty String");
         }
         if (apiPackage.isEmpty()) {
             this.apiPackage = resolveApiPackage(basePackage);

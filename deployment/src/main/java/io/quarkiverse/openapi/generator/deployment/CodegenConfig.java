@@ -42,7 +42,7 @@ public class CodegenConfig {
         return String.format("%s%s", basePackage, MODEL_PKG_SUFFIX);
     }
 
-    public static String getResolvedBasePackagePropertyName(final Path openApiFilePath) {
+    public static String getBasePackagePropertyName(final Path openApiFilePath) {
         return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
