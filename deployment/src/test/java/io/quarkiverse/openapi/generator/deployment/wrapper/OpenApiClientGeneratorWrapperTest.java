@@ -34,28 +34,27 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyCommonGenerated() throws URISyntaxException {
-        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate();
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate("org.petstore");
         assertNotNull(generatedFiles);
         assertFalse(generatedFiles.isEmpty());
     }
 
     @Test
     void verifyAuthBasicGenerated() throws URISyntaxException {
-        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-httpbasic.json").generate();
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-httpbasic.json").generate("org.petstore");
         assertTrue(generatedFiles.stream().anyMatch(f -> f.getName().equals("CompositeAuthenticationProvider.java")));
     }
 
     @Test
     void verifyAuthBearerGenerated() throws URISyntaxException {
-        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-bearer.json").generate();
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-bearer.json").generate("org.petstore");
         assertTrue(generatedFiles.stream().anyMatch(f -> f.getName().equals("CompositeAuthenticationProvider.java")));
     }
 
     @Test
     void verifyEnumGeneration() throws URISyntaxException, FileNotFoundException {
         final List<File> generatedFiles = createGeneratorWrapper("issue-28.yaml")
-                .withBasePackage("org.issue28")
-                .generate();
+                .generate("org.issue28");
         final Optional<File> enumFile = generatedFiles.stream()
                 .filter(f -> f.getName().endsWith("ConnectorNamespaceState.java")).findFirst();
         assertThat(enumFile).isPresent();
@@ -73,9 +72,8 @@ public class OpenApiClientGeneratorWrapperTest {
         final Map<String, Object> codegenConfig = ModelCodegenConfigParser
                 .parse(MockConfigUtils.getTestConfig("/codegen/application.properties"), "org.issue38");
         final List<File> generatedFiles = this.createGeneratorWrapper("issue-38.yaml")
-                .withBasePackage("org.issue38")
-                .withModelCodeGenConfiguration(codegenConfig)
-                .generate();
+                .withModelCodeGenConfig(codegenConfig)
+                .generate("org.issue38");
 
         // we have two attributes that will be generated with the same name, one of them is deprecated
         final Optional<File> metaV1Condition = generatedFiles.stream()
@@ -158,7 +156,7 @@ public class OpenApiClientGeneratorWrapperTest {
     void verifyMultipartFormAnnotationIsGeneratedForParameter() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
                 .withSkipFormModelConfig("false")
-                .generate();
+                .generate("org.acme");
         assertThat(generatedFiles).isNotEmpty();
 
         Optional<File> file = generatedFiles.stream()
@@ -186,7 +184,7 @@ public class OpenApiClientGeneratorWrapperTest {
     void verifyMultipartPojoGeneratedAndFieldsHaveAnnotations() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
                 .withSkipFormModelConfig("false")
-                .generate();
+                .generate("org.acme");
         assertFalse(generatedFiles.isEmpty());
 
         Optional<File> file = generatedFiles.stream()
@@ -210,10 +208,10 @@ public class OpenApiClientGeneratorWrapperTest {
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
-                .withCircuitBreakerConfiguration(Map.of(
+                .withCircuitBreakerConfig(Map.of(
                         "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
 
-        return generatorWrapper.generate();
+        return generatorWrapper.generate("org.openapitools.client");
     }
 
     private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {

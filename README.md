@@ -55,6 +55,8 @@ To fine tune the configuration for each spec file, add the following entry to yo
 quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme.openapi
 ```
 
+If a base package name is not provided, it will be used the default `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
+
 Note that the file name is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
