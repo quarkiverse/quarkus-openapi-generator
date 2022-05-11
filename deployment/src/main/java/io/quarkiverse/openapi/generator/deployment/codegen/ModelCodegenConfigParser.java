@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenBuildTimeConfig.resolveModelPackage;
 
 import java.util.HashMap;
 import java.util.List;

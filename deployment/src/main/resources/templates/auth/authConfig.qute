@@ -1,9 +1,0 @@
-package {apiPackage}.auth;
-
-import io.quarkiverse.openapi.generator.providers.AuthProvidersConfig;
-import io.smallrye.config.ConfigMapping;
-
-@ConfigMapping(prefix = "{packageName}.security")
-public interface AuthConfiguration extends AuthProvidersConfig {
-
-}

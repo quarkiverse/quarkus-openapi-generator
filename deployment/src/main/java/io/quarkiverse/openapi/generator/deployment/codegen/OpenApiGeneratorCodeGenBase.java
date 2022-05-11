@@ -1,9 +1,9 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenBuildTimeConfig.VERBOSE_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenBuildTimeConfig.getBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenBuildTimeConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenBuildTimeConfig.getSkipFormModelPropertyName;
 
 import java.io.IOException;
 import java.nio.file.Files;

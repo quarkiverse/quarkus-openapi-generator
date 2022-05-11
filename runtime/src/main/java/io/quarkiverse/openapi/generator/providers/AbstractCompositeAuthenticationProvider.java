@@ -7,6 +7,8 @@ import java.util.List;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 
+import io.quarkiverse.openapi.generator.CodegenConfig;
+
 /**
  * Composition of supported {@link ClientRequestFilter} defined by a given OpenAPI interface.
  * This class is used as the base class of generated code.
@@ -37,4 +39,7 @@ public abstract class AbstractCompositeAuthenticationProvider implements ClientR
                         o.matchPath(requestContext.getUri().getPath()));
     }
 
+    protected static String sanitizeAuthName(String schemeName) {
+        return CodegenConfig.getSanitizedSecuritySchemeName(schemeName);
+    }
 }
