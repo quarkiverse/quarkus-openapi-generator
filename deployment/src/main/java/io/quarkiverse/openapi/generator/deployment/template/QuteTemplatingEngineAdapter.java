@@ -27,7 +27,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
             "pojo.qute",
             "queryParams.qute",
             "auth/compositeAuthenticationProvider.qute",
-            "auth/authConfig.qute",
+            "auth/headersFactory.qute",
             "multipartFormdataPojo.qute"
     };
     public final Engine engine;

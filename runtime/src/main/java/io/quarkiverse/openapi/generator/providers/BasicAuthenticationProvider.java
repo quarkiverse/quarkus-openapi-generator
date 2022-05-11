@@ -1,34 +1,36 @@
 package io.quarkiverse.openapi.generator.providers;
 
+import static io.quarkiverse.openapi.generator.SpecItemAuthConfig.TOKEN_PROPAGATION;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.core.HttpHeaders;
+
+import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.CodegenException;
 
 /**
  * Provider for Basic Authentication.
  * Username and password should be read by generated configuration properties, which is only known after openapi spec processing
  * during build time.
  */
-public class BasicAuthenticationProvider implements AuthProvider {
+public class BasicAuthenticationProvider extends AbstractAuthProvider {
 
-    private final String name;
-    private final AuthProvidersConfig authProvidersConfig;
-    private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
+    static final String USER_NAME = "username";
+    static final String PASSWORD = "password";
 
-    public BasicAuthenticationProvider(final String name, final AuthProvidersConfig authProvidersConfig) {
-        this.authProvidersConfig = authProvidersConfig;
-        this.name = name;
+    public BasicAuthenticationProvider(final String openApiSpecId, String name, final CodegenConfig codegenConfig) {
+        super(openApiSpecId, name, codegenConfig);
+        validateConfig();
     }
 
     private String getUsername() {
-        return authProvidersConfig.auth().getOrDefault(name + "/username", "");
+        return getAuthConfigParam(USER_NAME, "");
     }
 
     private String getPassword() {
-        return authProvidersConfig.auth().getOrDefault(name + "/password", "");
+        return getAuthConfigParam(PASSWORD, "");
     }
 
     @Override
@@ -37,19 +39,14 @@ public class BasicAuthenticationProvider implements AuthProvider {
                 AuthUtils.basicAuthAccessToken(getUsername(), getPassword()));
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public List<OperationAuthInfo> operationsToFilter() {
-        return applyToOperations;
-    }
-
-    @Override
-    public AuthProvider addOperation(OperationAuthInfo operationAuthInfo) {
-        this.applyToOperations.add(operationAuthInfo);
-        return this;
+    private void validateConfig() {
+        if (isTokenPropagation()) {
+            throw new CodegenException(
+                    "Token propagation is not admitted for the OpenApi securitySchemes of \"type\": \"http\", \"scheme\": \"basic\"."
+                            +
+                            " A potential source of the problem might be that the configuration property " +
+                            getCanonicalAuthConfigPropertyName(TOKEN_PROPAGATION) +
+                            " was set with the value true in your application, please check your configuration.");
+        }
     }
 }

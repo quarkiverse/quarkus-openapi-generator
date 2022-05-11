@@ -12,7 +12,7 @@ import io.quarkus.runtime.annotations.ConfigItem;
  * Not meant to be used outside this scope.
  */
 @ConfigGroup
-public class SpecItemConfig {
+public class SpecItemBuildTimeConfig {
 
     /**
      * Base package for where the generated code for the given OpenAPI specification will be added.
