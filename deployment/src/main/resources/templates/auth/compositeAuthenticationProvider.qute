@@ -37,7 +37,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
             .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath{op.path.orEmpty}")
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
                 .withId("{op.operationId}")
                 .withMethod("{op.httpMethod}")
                 .build())
