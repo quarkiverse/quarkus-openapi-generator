@@ -55,6 +55,7 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.setOutputDir(outputDir.toString());
         this.configurator.addAdditionalProperty("quarkus-generator",
                 Collections.singletonMap("openApiSpecId", getSanitizedFileName(specFilePath)));
+        this.configurator.addAdditionalProperty("openApiNullable", false);
         this.generator = new DefaultGenerator();
     }
 
