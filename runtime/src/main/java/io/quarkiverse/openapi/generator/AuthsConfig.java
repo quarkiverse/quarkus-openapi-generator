@@ -7,7 +7,7 @@ import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigItem;
 
 @ConfigGroup
-public class SpecItemAuthsConfig {
+public class AuthsConfig {
 
     /**
      * Configurations for the individual securitySchemes present on a given OpenApi spec definition file.
@@ -19,18 +19,18 @@ public class SpecItemAuthsConfig {
      * quarkus.openapi-generator.petstore_json.auth.petstore_auth
      * 
      * @see SpecItemConfig
-     * @see SpecItemAuthConfig
+     * @see AuthConfig
      */
     @ConfigItem(name = ConfigItem.PARENT)
-    public Map<String, SpecItemAuthConfig> authConfigs;
+    public Map<String, AuthConfig> authConfigs;
 
-    public Optional<SpecItemAuthConfig> getItemConfig(String authConfig) {
+    public Optional<AuthConfig> getItemConfig(String authConfig) {
         return Optional.ofNullable(authConfigs.get(authConfig));
     }
 
     @Override
     public String toString() {
-        return "SpecRuntimeAuthConfigs{" +
+        return "AuthsConfig{" +
                 "authConfigs=" + authConfigs +
                 '}';
     }

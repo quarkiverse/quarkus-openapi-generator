@@ -14,7 +14,7 @@ import io.quarkus.runtime.annotations.ConfigItem;
  * on an OpenApi spec definition, i.e. the provided files.
  */
 @ConfigGroup
-public class SpecItemAuthConfig {
+public class AuthConfig {
 
     public static final String TOKEN_PROPAGATION = "token-propagation";
     public static final String HEADER_NAME = "header-name";
@@ -27,9 +27,9 @@ public class SpecItemAuthConfig {
      * <p>
      * quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true
      * 
-     * @see SpecItemAuthsConfig
+     * @see AuthsConfig
      * @see SpecItemConfig
-     * @see CodegenConfig
+     * @see OpenApiGeneratorConfig
      */
     @ConfigItem(defaultValue = "false")
     public Optional<Boolean> tokenPropagation;
@@ -43,9 +43,9 @@ public class SpecItemAuthConfig {
      * <p>
      * quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyParticularHttpHeaderName
      * 
-     * @see SpecItemAuthsConfig
+     * @see AuthsConfig
      * @see SpecItemConfig
-     * @see CodegenConfig
+     * @see OpenApiGeneratorConfig
      */
     @ConfigItem
     public Optional<String> headerName;
@@ -61,9 +61,9 @@ public class SpecItemAuthConfig {
      * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.username=MyUserName
      * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
      * 
-     * @see SpecItemAuthsConfig
+     * @see AuthsConfig
      * @see SpecItemConfig
-     * @see CodegenConfig
+     * @see OpenApiGeneratorConfig
      * @see BasicAuthenticationProvider
      * @see BearerAuthenticationProvider
      * @see ApiKeyAuthenticationProvider
@@ -85,7 +85,7 @@ public class SpecItemAuthConfig {
 
     @Override
     public String toString() {
-        return "SpecRuntimeAuthConfig{" +
+        return "AuthConfig{" +
                 "tokenPropagation=" + tokenPropagation +
                 ", headerName=" + headerName +
                 ", authConfigParams=" + authConfigParams +

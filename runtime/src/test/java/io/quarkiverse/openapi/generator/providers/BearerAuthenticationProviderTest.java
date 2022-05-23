@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTest<BearerAuthenticationProvider> {
 
@@ -26,8 +26,8 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Override
     protected BearerAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            CodegenConfig codegenConfig) {
-        return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null, codegenConfig);
+            OpenApiGeneratorConfig openApiGeneratorConfig) {
+        return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null, openApiGeneratorConfig);
     }
 
     @Test
@@ -46,8 +46,8 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     }
 
     private void filter(String bearerScheme, String currentToken, String expectedAuthorizationHeader) throws IOException {
-        provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme, codegenConfig);
-        specItemAuthConfig.authConfigParams.put(BearerAuthenticationProvider.BEARER_TOKEN, currentToken);
+        provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme, generatorConfig);
+        authConfig.authConfigParams.put(BearerAuthenticationProvider.BEARER_TOKEN, currentToken);
         provider.filter(requestContext);
         assertHeader(headers, HttpHeaders.AUTHORIZATION, expectedAuthorizationHeader);
     }
@@ -67,8 +67,8 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
                     HEADER_NAME);
         }
         headers.putSingle(propagatedHeaderName, INCOMING_TOKEN);
-        specItemAuthConfig.tokenPropagation = Optional.of(true);
-        specItemAuthConfig.headerName = Optional.ofNullable(headerName);
+        authConfig.tokenPropagation = Optional.of(true);
+        authConfig.headerName = Optional.ofNullable(headerName);
         filter(bearerScheme, currentToken, expectedAuthorizationHeader);
     }
 

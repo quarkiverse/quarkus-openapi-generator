@@ -10,7 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.jupiter.api.Test;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 class BasicAuthenticationProviderTest extends AbstractAuthenticationProviderTest<BasicAuthenticationProvider> {
 
@@ -22,22 +22,22 @@ class BasicAuthenticationProviderTest extends AbstractAuthenticationProviderTest
 
     @Override
     protected BasicAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            CodegenConfig codegenConfig) {
-        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, codegenConfig);
+            OpenApiGeneratorConfig openApiGeneratorConfig) {
+        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, openApiGeneratorConfig);
     }
 
     @Test
     void filter() throws IOException {
-        specItemAuthConfig.authConfigParams.put(BasicAuthenticationProvider.USER_NAME, USER);
-        specItemAuthConfig.authConfigParams.put(BasicAuthenticationProvider.PASSWORD, PASSWORD);
+        authConfig.authConfigParams.put(BasicAuthenticationProvider.USER_NAME, USER);
+        authConfig.authConfigParams.put(BasicAuthenticationProvider.PASSWORD, PASSWORD);
         provider.filter(requestContext);
         assertHeader(requestContext.getHeaders(), HttpHeaders.AUTHORIZATION, EXPECTED_BASIC_TOKEN);
     }
 
     @Test
     void tokenPropagationNotSupported() {
-        specItemAuthConfig.tokenPropagation = Optional.of(true);
-        assertThatThrownBy(() -> new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, codegenConfig))
+        authConfig.tokenPropagation = Optional.of(true);
+        assertThatThrownBy(() -> new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, generatorConfig))
                 .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
                         AUTH_SCHEME_NAME);
     }

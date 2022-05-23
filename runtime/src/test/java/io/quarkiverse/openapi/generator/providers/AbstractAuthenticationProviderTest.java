@@ -16,9 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
-import io.quarkiverse.openapi.generator.SpecItemAuthConfig;
-import io.quarkiverse.openapi.generator.SpecItemAuthsConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
+import io.quarkiverse.openapi.generator.AuthsConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkiverse.openapi.generator.SpecItemConfig;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,9 +27,9 @@ abstract class AbstractAuthenticationProviderTest<T extends AbstractAuthProvider
     protected static final String OPEN_API_FILE_SPEC_ID = "open_api_file_spec_id_json";
     protected static final String AUTH_SCHEME_NAME = "auth_scheme_name";
 
-    protected CodegenConfig codegenConfig;
+    protected OpenApiGeneratorConfig generatorConfig;
 
-    protected SpecItemAuthConfig specItemAuthConfig;
+    protected AuthConfig authConfig;
 
     @Mock
     protected ClientRequestContext requestContext;
@@ -41,23 +41,24 @@ abstract class AbstractAuthenticationProviderTest<T extends AbstractAuthProvider
     @BeforeEach
     void setUp() {
         createConfiguration();
-        provider = createProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, codegenConfig);
+        provider = createProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, generatorConfig);
     }
 
-    protected abstract T createProvider(String openApiSpecId, String authSchemeName, CodegenConfig codegenConfig);
+    protected abstract T createProvider(String openApiSpecId, String authSchemeName,
+            OpenApiGeneratorConfig openApiGeneratorConfig);
 
     protected void createConfiguration() {
-        codegenConfig = new CodegenConfig();
-        codegenConfig.itemConfigs = new HashMap<>();
+        generatorConfig = new OpenApiGeneratorConfig();
+        generatorConfig.itemConfigs = new HashMap<>();
         SpecItemConfig specItemConfig = new SpecItemConfig();
-        specItemConfig.auth = new SpecItemAuthsConfig();
+        specItemConfig.auth = new AuthsConfig();
         specItemConfig.auth.authConfigs = new HashMap<>();
-        specItemAuthConfig = new SpecItemAuthConfig();
-        specItemAuthConfig.headerName = Optional.empty();
-        specItemAuthConfig.tokenPropagation = Optional.of(false);
-        specItemAuthConfig.authConfigParams = new HashMap<>();
-        specItemConfig.auth.authConfigs.put(AUTH_SCHEME_NAME, specItemAuthConfig);
-        codegenConfig.itemConfigs.put(OPEN_API_FILE_SPEC_ID, specItemConfig);
+        authConfig = new AuthConfig();
+        authConfig.headerName = Optional.empty();
+        authConfig.tokenPropagation = Optional.of(false);
+        authConfig.authConfigParams = new HashMap<>();
+        specItemConfig.auth.authConfigs.put(AUTH_SCHEME_NAME, authConfig);
+        generatorConfig.itemConfigs.put(OPEN_API_FILE_SPEC_ID, specItemConfig);
         headers = new MultivaluedHashMap<>();
         lenient().doReturn(headers).when(requestContext).getHeaders();
     }

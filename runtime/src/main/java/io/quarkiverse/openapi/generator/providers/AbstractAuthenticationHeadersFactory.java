@@ -8,7 +8,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.eclipse.microprofile.rest.client.ext.ClientHeadersFactory;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 /**
  * Instances of this class determines which of the authentication related incoming headers must be made available to
@@ -20,14 +20,14 @@ public abstract class AbstractAuthenticationHeadersFactory implements ClientHead
     private static final String HEADER_NAME_FOR_TOKEN_PROPAGATION = "QCG_%s_%s_%s";
 
     protected AbstractCompositeAuthenticationProvider compositeProvider;
-    protected CodegenConfig codegenConfig;
+    protected OpenApiGeneratorConfig generatorConfig;
     protected HeadersProvider headersProvider;
 
     protected AbstractAuthenticationHeadersFactory(AbstractCompositeAuthenticationProvider compositeProvider,
-            CodegenConfig codegenConfig,
+            OpenApiGeneratorConfig generatorConfig,
             HeadersProvider headersProvider) {
         this.compositeProvider = compositeProvider;
-        this.codegenConfig = codegenConfig;
+        this.generatorConfig = generatorConfig;
         this.headersProvider = headersProvider;
     }
 
@@ -35,7 +35,7 @@ public abstract class AbstractAuthenticationHeadersFactory implements ClientHead
     public MultivaluedMap<String, String> update(MultivaluedMap<String, String> incomingHeaders,
             MultivaluedMap<String, String> clientOutgoingHeaders) {
         MultivaluedMap<String, String> propagatedHeaders = new MultivaluedHashMap<>();
-        MultivaluedMap<String, String> providedHeaders = headersProvider.getStringHeaders(codegenConfig);
+        MultivaluedMap<String, String> providedHeaders = headersProvider.getStringHeaders(generatorConfig);
         compositeProvider.getAuthenticationProviders().stream()
                 .filter(AbstractAuthProvider.class::isInstance)
                 .map(AbstractAuthProvider.class::cast)

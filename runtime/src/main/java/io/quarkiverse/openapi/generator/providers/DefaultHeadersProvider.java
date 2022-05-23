@@ -4,7 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkus.arc.DefaultBean;
 
 @DefaultBean
@@ -12,7 +12,7 @@ import io.quarkus.arc.DefaultBean;
 public class DefaultHeadersProvider implements HeadersProvider {
 
     @Override
-    public MultivaluedMap<String, String> getStringHeaders(CodegenConfig codegenConfig) {
+    public MultivaluedMap<String, String> getStringHeaders(OpenApiGeneratorConfig generatorConfig) {
         return new MultivaluedHashMap<>();
     }
 }

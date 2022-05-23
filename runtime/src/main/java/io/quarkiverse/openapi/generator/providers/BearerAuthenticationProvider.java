@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 /**
  * Provides bearer token authentication or any other valid scheme.
@@ -19,8 +19,8 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
     private final String scheme;
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
-            final CodegenConfig codegenConfig) {
-        super(openApiSpecId, name, codegenConfig);
+            final OpenApiGeneratorConfig generatorConfig) {
+        super(openApiSpecId, name, generatorConfig);
         this.scheme = scheme;
     }
 

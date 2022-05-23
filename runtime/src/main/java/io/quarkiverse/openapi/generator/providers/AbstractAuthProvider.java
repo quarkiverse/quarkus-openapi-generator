@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.CodegenConfig.RUNTIME_TIME_CONFIG_PREFIX;
+import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TIME_CONFIG_PREFIX;
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
@@ -11,9 +11,9 @@ import java.util.Optional;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
-import io.quarkiverse.openapi.generator.SpecItemAuthConfig;
-import io.quarkiverse.openapi.generator.SpecItemAuthsConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
+import io.quarkiverse.openapi.generator.AuthsConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkiverse.openapi.generator.SpecItemConfig;
 
 public abstract class AbstractAuthProvider implements AuthProvider {
@@ -24,19 +24,19 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     private final String openApiSpecId;
     private final String name;
-    private final CodegenConfig codegenConfig;
-    private SpecItemAuthConfig specItemAuthConfig;
+    private final OpenApiGeneratorConfig generatorConfig;
+    private AuthConfig authConfig;
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
-    protected AbstractAuthProvider(String openApiSpecId, String name, CodegenConfig codegenConfig) {
+    protected AbstractAuthProvider(String openApiSpecId, String name, OpenApiGeneratorConfig generatorConfig) {
         this.openApiSpecId = openApiSpecId;
         this.name = name;
-        this.codegenConfig = codegenConfig;
-        Optional<SpecItemConfig> specItemConfig = codegenConfig.getItemConfig(openApiSpecId);
+        this.generatorConfig = generatorConfig;
+        Optional<SpecItemConfig> specItemConfig = generatorConfig.getItemConfig(openApiSpecId);
         if (specItemConfig.isPresent()) {
-            Optional<SpecItemAuthsConfig> authsConfig = specItemConfig.get().getAuth();
+            Optional<AuthsConfig> authsConfig = specItemConfig.get().getAuth();
             authsConfig.ifPresent(
-                    specItemAuthsConfig -> specItemAuthConfig = specItemAuthsConfig.getItemConfig(name).orElse(null));
+                    specItemAuthsConfig -> authConfig = specItemAuthsConfig.getItemConfig(name).orElse(null));
         }
     }
 
@@ -49,12 +49,12 @@ public abstract class AbstractAuthProvider implements AuthProvider {
         return name;
     }
 
-    public CodegenConfig getCodegenConfig() {
-        return codegenConfig;
+    public OpenApiGeneratorConfig getGeneratorConfig() {
+        return generatorConfig;
     }
 
     public boolean isTokenPropagation() {
-        return specItemAuthConfig != null && specItemAuthConfig.getTokenPropagation().orElse(false);
+        return authConfig != null && authConfig.getTokenPropagation().orElse(false);
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
@@ -64,8 +64,8 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public String getHeaderName() {
-        if (specItemAuthConfig != null) {
-            return specItemAuthConfig.getHeaderName().orElse(null);
+        if (authConfig != null) {
+            return authConfig.getHeaderName().orElse(null);
         }
         return null;
     }
@@ -82,8 +82,8 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public String getAuthConfigParam(String paramName, String defaultValue) {
-        if (specItemAuthConfig != null) {
-            return specItemAuthConfig.getConfigParam(paramName).orElse(defaultValue);
+        if (authConfig != null) {
+            return authConfig.getConfigParam(paramName).orElse(defaultValue);
         }
         return defaultValue;
     }

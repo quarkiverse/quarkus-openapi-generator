@@ -3,15 +3,15 @@ package {apiPackage}.auth;
 import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkiverse.openapi.generator.providers.AbstractAuthenticationHeadersFactory;
 import io.quarkiverse.openapi.generator.providers.HeadersProvider;
 
 public class AuthenticationHeadersFactory extends AbstractAuthenticationHeadersFactory {
 
     @Inject
-    public AuthenticationHeadersFactory(CompositeAuthenticationProvider compositeProvider, CodegenConfig codegenConfig, HeadersProvider headersProvider) {
-        super(compositeProvider, codegenConfig, headersProvider);
+    public AuthenticationHeadersFactory(CompositeAuthenticationProvider compositeProvider, OpenApiGeneratorConfig generatorConfig, HeadersProvider headersProvider) {
+        super(compositeProvider, generatorConfig, headersProvider);
     }
 
 }

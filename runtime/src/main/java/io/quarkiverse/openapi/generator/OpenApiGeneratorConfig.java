@@ -11,8 +11,8 @@ import io.smallrye.config.common.utils.StringUtil;
 /**
  * This class represents the runtime configurations for the openapi-generator extension.
  */
-@ConfigRoot(name = CodegenConfig.RUNTIME_TIME_CONFIG_PREFIX, phase = ConfigPhase.RUN_TIME)
-public class CodegenConfig {
+@ConfigRoot(name = OpenApiGeneratorConfig.RUNTIME_TIME_CONFIG_PREFIX, phase = ConfigPhase.RUN_TIME)
+public class OpenApiGeneratorConfig {
 
     public static final String RUNTIME_TIME_CONFIG_PREFIX = "openapi-generator";
 
@@ -32,7 +32,7 @@ public class CodegenConfig {
 
     @Override
     public String toString() {
-        return "CodegenConfig{" +
+        return "OpenApiGeneratorConfig{" +
                 "itemConfigs=" + itemConfigs +
                 '}';
     }

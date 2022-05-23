@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 /**
  * Composition of supported {@link ClientRequestFilter} defined by a given OpenAPI interface.
@@ -54,7 +54,7 @@ public abstract class AbstractCompositeAuthenticationProvider implements ClientR
     }
 
     protected static String sanitizeAuthName(String schemeName) {
-        return CodegenConfig.getSanitizedSecuritySchemeName(schemeName);
+        return OpenApiGeneratorConfig.getSanitizedSecuritySchemeName(schemeName);
     }
 
     /**

@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.SpecItemAuthConfig.TOKEN_PROPAGATION;
+import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 
@@ -8,8 +8,8 @@ import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.UriBuilder;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
-import io.quarkiverse.openapi.generator.CodegenException;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
  * Provider for API Key authentication.
@@ -23,8 +23,8 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
 
     public ApiKeyAuthenticationProvider(final String openApiSpecId, final String name, final ApiKeyIn apiKeyIn,
             final String apiKeyName,
-            final CodegenConfig codegenConfig) {
-        super(openApiSpecId, name, codegenConfig);
+            final OpenApiGeneratorConfig generatorConfig) {
+        super(openApiSpecId, name, generatorConfig);
         this.apiKeyIn = apiKeyIn;
         this.apiKeyName = apiKeyName;
         validateConfig();
@@ -51,7 +51,7 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
 
     private void validateConfig() {
         if (isTokenPropagation()) {
-            throw new CodegenException(
+            throw new OpenApiGeneratorException(
                     "Token propagation is not admitted for the OpenApi securitySchemes of \"type\": \"apiKey\"." +
                             " A potential source of the problem might be that the configuration property "
                             + getCanonicalAuthConfigPropertyName(TOKEN_PROPAGATION) +

@@ -19,12 +19,12 @@ public class SpecItemConfig {
      * For example, given a file named petstore.json, the following prefix must be used to configure the authentication
      * related information quarkus.openapi-generator.petstore_json.auth
      * 
-     * @see SpecItemAuthsConfig
+     * @see AuthsConfig
      */
     @ConfigItem
-    public SpecItemAuthsConfig auth;
+    public AuthsConfig auth;
 
-    public Optional<SpecItemAuthsConfig> getAuth() {
+    public Optional<AuthsConfig> getAuth() {
         return Optional.ofNullable(auth);
     }
 

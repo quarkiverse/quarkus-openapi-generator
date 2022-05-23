@@ -1,14 +1,14 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.SpecItemAuthConfig.TOKEN_PROPAGATION;
+import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
-import io.quarkiverse.openapi.generator.CodegenException;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
  * Provider for Basic Authentication.
@@ -20,8 +20,8 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     static final String USER_NAME = "username";
     static final String PASSWORD = "password";
 
-    public BasicAuthenticationProvider(final String openApiSpecId, String name, final CodegenConfig codegenConfig) {
-        super(openApiSpecId, name, codegenConfig);
+    public BasicAuthenticationProvider(final String openApiSpecId, String name, final OpenApiGeneratorConfig generatorConfig) {
+        super(openApiSpecId, name, generatorConfig);
         validateConfig();
     }
 
@@ -41,7 +41,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
 
     private void validateConfig() {
         if (isTokenPropagation()) {
-            throw new CodegenException(
+            throw new OpenApiGeneratorException(
                     "Token propagation is not admitted for the OpenApi securitySchemes of \"type\": \"http\", \"scheme\": \"basic\"."
                             +
                             " A potential source of the problem might be that the configuration property " +

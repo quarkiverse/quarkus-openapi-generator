@@ -11,7 +11,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.jupiter.api.Test;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkus.oidc.client.filter.OidcClientRequestFilter;
 
 class OAuth2AuthenticationProviderTest extends AbstractAuthenticationProviderTest<OAuth2AuthenticationProvider> {
@@ -21,8 +21,8 @@ class OAuth2AuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Override
     protected OAuth2AuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            CodegenConfig codegenConfig) {
-        return new OAuth2AuthenticationProviderMock(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, codegenConfig);
+            OpenApiGeneratorConfig openApiGeneratorConfig) {
+        return new OAuth2AuthenticationProviderMock(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, openApiGeneratorConfig);
     }
 
     @Test
@@ -34,7 +34,7 @@ class OAuth2AuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Test
     void filterWithPropagationByDefault() throws IOException {
-        specItemAuthConfig.tokenPropagation = Optional.of(true);
+        authConfig.tokenPropagation = Optional.of(true);
         headers.putSingle(propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME,
                 HttpHeaders.AUTHORIZATION), OIDC_TOKEN);
         provider.filter(requestContext);
@@ -43,8 +43,8 @@ class OAuth2AuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Test
     void filterWithPropagationWithTokenName() throws IOException {
-        specItemAuthConfig.tokenPropagation = Optional.of(true);
-        specItemAuthConfig.headerName = Optional.of(HEADER_NAME);
+        authConfig.tokenPropagation = Optional.of(true);
+        authConfig.headerName = Optional.of(HEADER_NAME);
         headers.putSingle(
                 propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, HEADER_NAME),
                 OIDC_TOKEN);
@@ -69,8 +69,8 @@ class OAuth2AuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
         private OidcClientRequestFilterDelegateMock delegate;
 
-        public OAuth2AuthenticationProviderMock(String openApiSpecId, String name, CodegenConfig codegenConfig) {
-            super(openApiSpecId, name, codegenConfig);
+        public OAuth2AuthenticationProviderMock(String openApiSpecId, String name, OpenApiGeneratorConfig generatorConfig) {
+            super(openApiSpecId, name, generatorConfig);
         }
 
         @Override

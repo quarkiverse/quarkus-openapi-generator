@@ -6,7 +6,7 @@ import javax.ws.rs.Priorities;
 
 import io.quarkus.arc.Priority;
 
-import io.quarkiverse.openapi.generator.CodegenConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 {#if hasHttpBasicMethods}
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
@@ -28,12 +28,12 @@ import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 public class CompositeAuthenticationProvider extends AbstractCompositeAuthenticationProvider {
 
     @Inject
-    CodegenConfig codegenConfig;
+    OpenApiGeneratorConfig generatorConfig;
 
     @PostConstruct
     public void init() {
         {#for auth in httpBasicMethods.orEmpty}
-        this.addAuthenticationProvider(new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), codegenConfig)
+        this.addAuthenticationProvider(new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig)
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
@@ -51,7 +51,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for});
         {/for}
         {#for auth in oauthMethods.orEmpty}
-        this.addAuthenticationProvider(new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), codegenConfig)
+        this.addAuthenticationProvider(new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig)
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
@@ -69,7 +69,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for});
         {/for}
         {#for auth in httpBearerMethods.orEmpty}
-        this.addAuthenticationProvider(new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", codegenConfig)
+        this.addAuthenticationProvider(new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig)
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
@@ -88,7 +88,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {#for auth in apiKeyMethods.orEmpty}
         {#if auth.isKeyInQuery}
-        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", codegenConfig)
+        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", generatorConfig)
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
@@ -106,7 +106,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for});
         {/if}
         {#if auth.isKeyInHeader}
-        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", codegenConfig)
+        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", generatorConfig)
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
@@ -124,7 +124,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for});
         {/if}
         {#if auth.isKeyInCookie}
-        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", codegenConfig)
+        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig)
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
