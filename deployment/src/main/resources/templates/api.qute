@@ -7,7 +7,9 @@ import {imp.import};
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 {#if hasAuthMethods}
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
+import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import {package}.auth.CompositeAuthenticationProvider;
+import {package}.auth.AuthenticationPropagationHeadersFactory;
 {/if}
 
 import java.io.InputStream;
@@ -33,6 +35,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)
+@RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
 {/if}
 public interface {classname} {
 

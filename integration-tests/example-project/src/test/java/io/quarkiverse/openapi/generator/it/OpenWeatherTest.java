@@ -24,7 +24,7 @@ public class OpenWeatherTest {
     // injected by quarkus test resource
     WireMockServer openWeatherServer;
 
-    @ConfigProperty(name = "org.acme.openapi.weather.security.auth.app_id/api-key")
+    @ConfigProperty(name = "quarkus.openapi-generator.open_weather_yaml.auth.app_id.api-key")
     String apiKey;
 
     @ConfigProperty(name = WiremockOpenWeather.URL_KEY)
