@@ -56,7 +56,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             supportingFiles.add(
                     new SupportingFile("auth/headersFactory.qute",
                             authFileFolder(),
-                            "AuthenticationHeadersFactory.java"));
+                            "AuthenticationPropagationHeadersFactory.java"));
 
         }
 

@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationHeadersFactory.propagationHeaderNamePrefix;
+import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderNamePrefix;
 
 import java.io.IOException;
 import java.util.ArrayList;

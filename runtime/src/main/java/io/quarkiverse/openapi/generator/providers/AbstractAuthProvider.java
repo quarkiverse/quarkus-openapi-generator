@@ -1,7 +1,7 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TIME_CONFIG_PREFIX;
-import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationHeadersFactory.propagationHeaderName;
+import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,13 +4,13 @@ import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-import io.quarkiverse.openapi.generator.providers.AbstractAuthenticationHeadersFactory;
+import io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory;
 import io.quarkiverse.openapi.generator.providers.HeadersProvider;
 
-public class AuthenticationHeadersFactory extends AbstractAuthenticationHeadersFactory {
+public class AuthenticationPropagationHeadersFactory extends AbstractAuthenticationPropagationHeadersFactory {
 
     @Inject
-    public AuthenticationHeadersFactory(CompositeAuthenticationProvider compositeProvider, OpenApiGeneratorConfig generatorConfig, HeadersProvider headersProvider) {
+    public AuthenticationPropagationHeadersFactory(CompositeAuthenticationProvider compositeProvider, OpenApiGeneratorConfig generatorConfig, HeadersProvider headersProvider) {
         super(compositeProvider, generatorConfig, headersProvider);
     }
 

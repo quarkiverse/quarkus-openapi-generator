@@ -14,7 +14,7 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
  * Instances of this class determines which of the authentication related incoming headers must be made available to
  * the filtering phase.
  */
-public abstract class AbstractAuthenticationHeadersFactory implements ClientHeadersFactory {
+public abstract class AbstractAuthenticationPropagationHeadersFactory implements ClientHeadersFactory {
 
     private static final String HEADER_NAME_PREFIX_FOR_TOKEN_PROPAGATION = "QCG_%s";
     private static final String HEADER_NAME_FOR_TOKEN_PROPAGATION = "QCG_%s_%s_%s";
@@ -23,7 +23,7 @@ public abstract class AbstractAuthenticationHeadersFactory implements ClientHead
     protected OpenApiGeneratorConfig generatorConfig;
     protected HeadersProvider headersProvider;
 
-    protected AbstractAuthenticationHeadersFactory(AbstractCompositeAuthenticationProvider compositeProvider,
+    protected AbstractAuthenticationPropagationHeadersFactory(AbstractCompositeAuthenticationProvider compositeProvider,
             OpenApiGeneratorConfig generatorConfig,
             HeadersProvider headersProvider) {
         this.compositeProvider = compositeProvider;
