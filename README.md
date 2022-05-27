@@ -57,7 +57,7 @@ quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme.opena
 
 If a base package name is not provided, it will be used the default `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
 
-Note that the file name is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
+> **⚠️** Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
 
@@ -116,14 +116,14 @@ For more information, see the [Maven Logging Configuration](https://maven.apache
 ## Authentication Support
 
 If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator
-will [register `ClientRequestFilter`s providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to
+will [register `ClientRequestFilter`providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to
 implement the given authentication mechanism.
 
 To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this
-pattern: `[base_package].security.auth.[security_scheme_name]/[auth_property_name]`. Where:
+pattern: `quarkus.openapi-generator.[filename].[security_scheme_name].auth.[auth_property_name]`. Where:
 
-- `base_package` is the package name you gave when configuring the code generation using `quarkus.openapi-generator.codegen.spec.[open_api_file].base-package` property.
-- `security_scheme_name` is the name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
+- `filename` is the sanitized name of file containing the OpenAPI spec, for example `petstore_json`.
+- `security_scheme_name` is the sanitized name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
   have `api_key` and `basic_auth` security schemes:
 
 ```json
@@ -141,6 +141,7 @@ pattern: `[base_package].security.auth.[security_scheme_name]/[auth_property_nam
   }
 }
 ```
+> **⚠️** Note that the securityScheme name used to configure the specific information for each spec is sanitized using the same rules as for the file names.
 
 - `auth_property_name` varies depending on the authentication provider. For example, for Basic Authentication we have `username` and `password`. See the following sections for more details.
 
@@ -152,8 +153,8 @@ For Basic HTTP Authentication, these are the supported configurations:
 
 | Description          | Property Key                                                   | Example                                              |
 | -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
-| Username credentials | `[base_package].security.auth.[security_scheme_name]/username` | `org.acme.openapi.security.auth.basic_auth/username` |
-| Password credentials | `[base_package].security.auth.[security_scheme_name]/password` | `org.acme.openapi.security.auth.basic_auth/password` |
+| Username credentials | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].username` | `quarkus.openapi-generator.petstore_json.auth.basic_auth.username` |
+| Password credentials | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].password` | `quarkus.openapi-generator.petstore_json.auth.basic_auth-password` |
 
 ### Bearer Token Authentication
 
@@ -161,7 +162,7 @@ For Bearer Token Authentication, these are the supported configurations:
 
 | Description  | Property Key                                                       | Example                                                  |
 | -------------| ------------------------------------------------------------------ | -------------------------------------------------------- |
-| Bearer Token | `[base_package].security.auth.[security_scheme_name]/bearer-token` | `org.acme.openapi.security.auth.bearer/bearer-token` |
+| Bearer Token | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].bearer-token` | `quarkus.openapi-generator.petstore_json.auth.bearer.bearer-token` |
 
 ### API Key Authentication
 
@@ -169,7 +170,7 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 
 | Description  | Property Key                                                  | Example                                             |
 | -------------| --------------------------------------------------------------| --------------------------------------------------- |
-| API Key      | `[base_package].security.auth.[security_scheme_name]/api-key` | `org.acme.openapi.security.auth.apikey/api-key` |
+| API Key      | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].api-key` | `quarkus.openapi-generator.petstore_json.auth.api_key.api-key` |
 
 The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
 
@@ -213,17 +214,92 @@ quarkus.oidc-client.petstore_auth.grant-options.password.password=alice
 quarkus.oidc-client.petstore_auth.client-id=petstore-app
 ```
 
-The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file.
+The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the schemaName is sanitized by aplying the rules described above.
 
-For this to work you **must** add [Quarkus OIDC Client Filter Extension](https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter) to your project:
+## Authorization Token Propagation
 
-````xml
+The authorization token propagation can be used with OpenApi operations that are secured with a security scheme of type "oauth2" or "bearer".
+When configured, you can propagate the authorization tokens passed to your own service along the invocations to the rest clients generated by the quarkus-openapi-generator.
 
-<dependency>
-  <groupId>io.quarkus</groupId>
-  <artifactId>quarkus-oidc-client-filter</artifactId>
-</dependency>
-````
+Let's see how it works by following a simple example:
+
+Imagine that we have an `"updatePet"` operation, that is  defined in the `petstore.json` specification file, and that is secured with the `"petstore_auth"` security scheme.
+The code below shows simple example usage of this operation in a user programmed service.
+
+```java
+import org.acme.api.PetApi;
+import org.acme.model.Pet;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+/**
+ * User programmed service.
+ */
+@Path("/petstore")
+public class PetResource {
+
+  /**
+   * Inject the rest client generated by the quarkus-openapi-generator.
+   */
+  @Inject
+  @RestClient
+  PetApi petApi;
+
+  /**
+   * User programmed operation.
+   */
+  @Path("/pet/{id}")
+  @PATCH
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response customUpdatePet(@PathParam("id") long id, PetData petData) {
+
+    // Create a new instance of the Pet class generated by the quarkus-openapi-generator and 
+    // populate accordingly.
+    Pet pet = new Pet();
+    pet.setId(id);
+    applyDataToPet(pet, petData);
+
+    // Execute the rest call using the generated client.
+    // The petstore.json open api spec stays that the "updatePet" operation is secured with the 
+    // security scheme "petstore_auth".
+    petApi.updatePet(pet);
+
+    // Do other required things and finally return something.
+    return Response.ok().build();
+  }
+
+  public static class PetData {
+    // Represents the Pet modifiable data sent to the user programmed service.
+  }
+
+  private void applyDataToPet(Pet pet, PetData petData) {
+    // Set the corresponding values to the Pet instance.
+  }
+}
+```
+
+Let's see what happens when the PetResource service `customUpdatePet` operation is invoked by a third party.
+
+### Default flow
+1) The `customUpdatePet` operation is invoked.
+2) An authorization token is obtained by using the corresponding `"petstore_auth"` OidcClient configuration. (for more information see [OAuth2 Authentication](#oauth2-authentication))
+3) The authorization token is automatically passed along the PetApi `updatePet` operation execution by using an automatically generated request filter, etc.
+
+### Propagation flow
+However, there are scenarios where we simply want to propagate the authorization token that was originally passed to the PetResource service when the `customUpdatePet` operation was invoked, instead of having to obtain it by using the OidcClient.
+
+1) The user service `customUpdatePet` operation is invoked, and an authorization token is passed by the third party typically by using the http `"Authorization"` header.
+2) The incoming authorization token is automatically passed along the PetApi `updatePet` operation execution according to the user provided configuration.
+
+> **⚠️** When configured, the token propagation apply to all the operations secured with the same securityScheme in the same specification file. 
+
+### Propagation flow configuration
+The token propagation can be used with security schemes of type "oauth2" or "bearer". Finally, considering that a given security scheme might be configured on a set of operations in the same specification file, when configured, it'll apply to all these operations.
+
+| Property Key                                                       | Example                                                  |
+| ------------------------------------------------------------------ | -------------------------------------------------------- |
+| `quarkus.openapi-generator.[filename].auth.[security_scheme_name].token-propagation=[true,false]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true`<br/>Enables the token propagation for all the operations that are secured with the `petstore_auth` scheme in the `petstore_json` file.
+| `quarkus.openapi-generator.[filename].auth.[security_scheme_name].header-name=[http_header_name]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyHeaderName`<br/>Stays that the authorization token to propagate will be read from the http header `MyHeaderName` instead of the standard http `Authorization` header.
 
 ## Circuit Breaker
 
