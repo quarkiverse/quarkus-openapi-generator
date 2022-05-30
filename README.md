@@ -214,7 +214,7 @@ quarkus.oidc-client.petstore_auth.grant-options.password.password=alice
 quarkus.oidc-client.petstore_auth.client-id=petstore-app
 ```
 
-The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the schemaName is sanitized by aplying the rules described above.
+The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the `schemaName` is sanitized by applying the rules described above.
 
 ## Authorization Token Propagation
 
