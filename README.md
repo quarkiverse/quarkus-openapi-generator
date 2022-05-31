@@ -216,6 +216,17 @@ quarkus.oidc-client.petstore_auth.client-id=petstore-app
 
 The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the `schemaName` is sanitized by applying the rules described above.
 
+For this to work you **must** add [Quarkus OIDC Client Filter Extension](https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter) to your project:
+
+````xml
+
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-oidc-client-filter</artifactId>
+</dependency>
+````
+
+
 ## Authorization Token Propagation
 
 The authorization token propagation can be used with OpenApi operations secured with a security scheme of type "oauth2" or "bearer".
