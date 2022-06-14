@@ -27,7 +27,7 @@ Add the following dependency to your project's `pom.xml` file:
 You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
 
 > **⚠️**
-You probably already have this configuration if you created your application with the [Quarkus Starter](https://code.quarkus.io/). That said, double-check your configuration not to add another `plugin` entry.
+You probably already have this configuration if you created your application with [Code Quarkus](https://code.quarkus.io/). That said, double-check your configuration not to add another `plugin` entry.
 
 ```xml
 
