@@ -11,7 +11,9 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
+import org.openapitools.codegen.config.GlobalSettings;
 
+import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
@@ -64,6 +66,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     protected void generate(final Config config, final Path openApiFilePath, final Path outDir) {
         final String basePackage = getBasePackage(config, openApiFilePath);
         final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
+        GlobalSettings.setProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
+                config.getOptionalValue(CodegenConfig.DEFAULT_SECURITY_SCHEME, String.class).orElse(""));
 
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
                 openApiFilePath.normalize(),

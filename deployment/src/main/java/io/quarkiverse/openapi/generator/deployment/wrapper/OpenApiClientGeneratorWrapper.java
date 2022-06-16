@@ -28,7 +28,10 @@ public class OpenApiClientGeneratorWrapper {
 
     public static final String VERBOSE = "verbose";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
-
+    /**
+     * Security scheme for which to apply security constraints even if the OpenAPI definition has no security definition
+     */
+    public static final String DEFAULT_SECURITY_SCHEME = "defaultSecurityScheme";
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
 

@@ -147,6 +147,12 @@ pattern: `quarkus.openapi-generator.[filename].[security_scheme_name].auth.[auth
 
 > Tip: on production environments you will likely to use [HashiCorp Vault](https://quarkiverse.github.io/quarkiverse-docs/quarkus-vault/dev/index.html) or [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) to provide this information for your application.
 
+If your OpenAPI specification file has `securitySchemes` definitions, but no [Security Requirement Object](https://spec.openapis.org/oas/v3.1.0#security-requirement-object) definitions, the generator can create these by default if the following property is defined:
+
+| Description          | Property Key                                                   | Value                                          |
+| -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
+| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default.security.scheme` | Name of the security scheme object definition, eg. `api_key` or `basic_auth` in the security scheme definitions above |
+
 ### Basic HTTP Authentication
 
 For Basic HTTP Authentication, these are the supported configurations:
