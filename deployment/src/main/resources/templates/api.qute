@@ -20,6 +20,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
 import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
@@ -37,6 +39,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 @RegisterProvider(CompositeAuthenticationProvider.class)
 @RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
 {/if}
+@ApplicationScoped
 public interface {classname} {
 
     {#for op in operations.operation}
