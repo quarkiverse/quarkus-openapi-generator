@@ -147,11 +147,11 @@ pattern: `quarkus.openapi-generator.[filename].[security_scheme_name].auth.[auth
 
 > Tip: on production environments you will likely to use [HashiCorp Vault](https://quarkiverse.github.io/quarkiverse-docs/quarkus-vault/dev/index.html) or [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) to provide this information for your application.
 
-If your OpenAPI specification file has `securitySchemes` definitions, but no [Security Requirement Object](https://spec.openapis.org/oas/v3.1.0#security-requirement-object) definitions, the generator can create these by default if the following property is defined:
+If the OpenAPI specification file has `securitySchemes` definitions, but no [Security Requirement Object](https://spec.openapis.org/oas/v3.1.0#security-requirement-object) definitions, the generator can be configured to create these by default. In this case, for all operations without a security requirement the default one will be created. Note that the property value needs to match the name of a security scheme object definition, eg. `api_key` or `basic_auth` in the `securitySchemes` list above.
 
-| Description          | Property Key                                                   | Value                                          |
+| Description          | Property Key                                                   | Example                                              |
 | -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
-| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default.security.scheme` | Name of the security scheme object definition, eg. `api_key` or `basic_auth` in the security scheme definitions above |
+| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default.security.scheme` | `quarkus.openapi-generator.codegen.default.security.scheme=api_key` |
 
 ### Basic HTTP Authentication
 
