@@ -4,7 +4,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 
-import java.util.Collections;
 import java.util.Map;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -16,6 +15,7 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
     private WireMockServer wireMockServer;
 
     public static final String URL_KEY = "quarkus.rest-client.open_weather_yaml.url";
+    public static final String URL_NO_SEC_KEY = "quarkus.rest-client.open_weather_no_security_yaml.url";
 
     @Override
     public Map<String, String> start() {
@@ -28,8 +28,8 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                                 "{\"name\": \"Nowhere\"}")));
-        return Collections.singletonMap(URL_KEY,
-                wireMockServer.baseUrl().concat("/data/2.5"));
+        return Map.of(URL_KEY, wireMockServer.baseUrl().concat("/data/2.5"),
+                URL_NO_SEC_KEY, wireMockServer.baseUrl().concat("/data/2.5"));
     }
 
     @Override
