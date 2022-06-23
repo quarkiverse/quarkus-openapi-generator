@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
@@ -74,6 +75,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                                 config));
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
+
+        config.getOptionalValue(getAdditionalModelTypeAnnotationsPropertyName(openApiFilePath), String.class)
+                .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
 
         generator.generate(basePackage);
     }

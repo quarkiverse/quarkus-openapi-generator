@@ -206,6 +206,31 @@ public class OpenApiClientGeneratorWrapperTest {
         });
     }
 
+    @Test
+    void verifyAdditionalModelTypeAnnotations() throws URISyntaxException {
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
+                .withAdditionalModelTypeAnnotationsConfig("@org.test.Foo;@org.test.Bar")
+                .generate("org.additionalmodeltypeannotations");
+        assertFalse(generatedFiles.isEmpty());
+
+        generatedFiles.stream()
+                .filter(file -> file.getPath().matches(".*/model/.*.java"))
+                .forEach(file -> verifyModelAdditionalAnnotations(file));
+    }
+
+    private void verifyModelAdditionalAnnotations(File file) {
+        try {
+            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                    .forEach(c -> {
+                        assertThat(c.getAnnotationByName("Foo")).isPresent();
+                        assertThat(c.getAnnotationByName("Bar")).isPresent();
+                    });
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     private List<File> generateRestClientFiles() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
                 .withCircuitBreakerConfig(Map.of(

@@ -1,1 +1,3 @@
-{#for annon in m.additionalModelTypeAnnotations.orEmpty}{annon}{/for}
+{#for annon in additionalModelTypeAnnotations.orEmpty}
+{annon}
+{/for}
