@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.openapitools.codegen.config.GlobalSettings;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -43,6 +46,32 @@ public class OpenApiClientGeneratorWrapperTest {
     void verifyAuthBasicGenerated() throws URISyntaxException {
         final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-httpbasic.json").generate("org.petstore");
         assertTrue(generatedFiles.stream().anyMatch(f -> f.getName().equals("CompositeAuthenticationProvider.java")));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic", "undefined" })
+    void verifyAuthBasicWithMissingSecurityDefinition(String defaultSecurityScheme)
+            throws URISyntaxException, FileNotFoundException {
+        GlobalSettings.setProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME, defaultSecurityScheme);
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-httpbasic.json").generate("org.petstore");
+        final Optional<File> authProviderFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("CompositeAuthenticationProvider.java")).findFirst();
+        assertThat(authProviderFile).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(authProviderFile.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> initMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("init"))
+                .findAny();
+        assertThat(initMethod).isPresent();
+
+        String fileContent = compilationUnit.toString();
+        assertTrue(fileContent.contains("addAuthenticationProvider"));
+        if (!defaultSecurityScheme.equals("undefined")) {
+            assertTrue(fileContent.contains("addOperation"));
+        }
     }
 
     @Test

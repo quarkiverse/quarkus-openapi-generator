@@ -46,6 +46,12 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
                 .build())
         {/if}
         {/for}
+        {#else if defaultSecurityScheme == auth.name}
+            .addOperation(OperationAuthInfo.builder()
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+                .withId("{op.operationId}")
+                .withMethod("{op.httpMethod}")
+                .build())
         {/if}
         {/for}
         {/for});
@@ -64,6 +70,12 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
                 .build())
         {/if}
         {/for}
+        {#else if defaultSecurityScheme == auth.name}
+            .addOperation(OperationAuthInfo.builder()
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+                .withId("{op.operationId}")
+                .withMethod("{op.httpMethod}")
+                .build())
         {/if}
         {/for}
         {/for});
@@ -82,6 +94,12 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
                 .build())
         {/if}
         {/for}
+        {#else if defaultSecurityScheme == auth.name}
+            .addOperation(OperationAuthInfo.builder()
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+                .withId("{op.operationId}")
+                .withMethod("{op.httpMethod}")
+                .build())
         {/if}
         {/for}
         {/for});
@@ -101,6 +119,12 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
                 .build())
         {/if}
         {/for}
+        {#else if defaultSecurityScheme == auth.name}
+            .addOperation(OperationAuthInfo.builder()
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+                .withId("{op.operationId}")
+                .withMethod("{op.httpMethod}")
+                .build())
         {/if}
         {/for}
         {/for});
@@ -119,6 +143,12 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
                 .build())
         {/if}
         {/for}
+        {#else if defaultSecurityScheme == auth.name}
+            .addOperation(OperationAuthInfo.builder()
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+                .withId("{op.operationId}")
+                .withMethod("{op.httpMethod}")
+                .build())
         {/if}
         {/for}
         {/for});
@@ -137,6 +167,12 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
                 .build())
         {/if}
         {/for}
+        {#else if defaultSecurityScheme == auth.name}
+            .addOperation(OperationAuthInfo.builder()
+                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+                .withId("{op.operationId}")
+                .withMethod("{op.httpMethod}")
+                .build())
         {/if}
         {/for}
         {/for});
