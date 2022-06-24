@@ -79,7 +79,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         // add the default server url to the context
         additionalProperties.put(DEFAULT_SERVER_URL, URLPathUtils.getServerURL(this.openAPI, serverVariableOverrides()));
         additionalProperties.put(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
-                GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME, null));
+                GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME));
     }
 
     @Override
