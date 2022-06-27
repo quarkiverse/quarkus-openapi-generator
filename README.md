@@ -4,6 +4,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/0.7.0/README.md) if you are looking for instructions.
+
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
 This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
@@ -18,7 +20,7 @@ Add the following dependency to your project's `pom.xml` file:
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator</artifactId>
-  <version>0.8.0</version>
+  <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
