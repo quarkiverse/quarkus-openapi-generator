@@ -6,6 +6,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveM
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.requireNonNull;
+import static org.openapitools.codegen.languages.AbstractJavaCodegen.ADDITIONAL_MODEL_TYPE_ANNOTATIONS;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -100,6 +101,19 @@ public class OpenApiClientGeneratorWrapper {
      */
     public OpenApiClientGeneratorWrapper withSkipFormModelConfig(final String skipFormModel) {
         GlobalSettings.setProperty(CodegenConstants.SKIP_FORM_MODEL, skipFormModel);
+        return this;
+    }
+
+    /**
+     * Sets the global 'additionalModelTypeAnnotations' setting. If not set this setting will default to empty.
+     *
+     * @param additionalModelTypeAnnotations the list of extra additional annotations to be included in a model
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withAdditionalModelTypeAnnotationsConfig(final String additionalModelTypeAnnotations) {
+        if (additionalModelTypeAnnotations != null) {
+            this.configurator.addAdditionalProperty(ADDITIONAL_MODEL_TYPE_ANNOTATIONS, additionalModelTypeAnnotations);
+        }
         return this;
     }
 

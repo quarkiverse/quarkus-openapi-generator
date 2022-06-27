@@ -22,6 +22,7 @@ public class CodegenConfig {
     static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
+    private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
 
     /**
      * OpenAPI Spec details for codegen configuration.
@@ -54,6 +55,10 @@ public class CodegenConfig {
 
     public static String getSkipFormModelPropertyName(final Path openApiFilePath) {
         return String.format(SKIP_FORM_MODEL_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
+    public static String getAdditionalModelTypeAnnotationsPropertyName(final Path openApiFilePath) {
+        return String.format(ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
     /**
