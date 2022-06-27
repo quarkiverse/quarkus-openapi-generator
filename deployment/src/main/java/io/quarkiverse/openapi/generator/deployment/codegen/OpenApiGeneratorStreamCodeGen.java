@@ -1,12 +1,14 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -67,13 +69,17 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
                 }
-                final Path openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
-                try (ReadableByteChannel channel = Channels.newChannel(inputModel.getInputStream());
-                        FileOutputStream output = new FileOutputStream(openApiFilePath.toString())) {
-                    output.getChannel().transferFrom(channel, 0, Integer.MAX_VALUE);
-                    LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
-                    this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir);
-                    generated = true;
+                try {
+                    final Path openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
+                    Files.createDirectories(openApiFilePath.getParent());
+                    try (ReadableByteChannel inChannel = Channels.newChannel(inputModel.getInputStream());
+                            FileChannel outChannel = FileChannel.open(openApiFilePath, StandardOpenOption.WRITE,
+                                    StandardOpenOption.CREATE)) {
+                        outChannel.transferFrom(inChannel, 0, Integer.MAX_VALUE);
+                        LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
+                        this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir);
+                        generated = true;
+                    }
                 } catch (IOException e) {
                     throw new UncheckedIOException("Failed to save InputStream from provider " + provider + " into location ",
                             e);
