@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment;
 import java.nio.file.Path;
 import java.util.Map;
 
+import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -72,6 +73,7 @@ public class CodegenConfig {
     }
 
     public static String getSanitizedFileName(final Path openApiFilePath) {
-        return StringUtil.replaceNonAlphanumericByUnderscores(openApiFilePath.getFileName().toString());
+        return StringUtil
+                .replaceNonAlphanumericByUnderscores(OpenApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
     }
 }

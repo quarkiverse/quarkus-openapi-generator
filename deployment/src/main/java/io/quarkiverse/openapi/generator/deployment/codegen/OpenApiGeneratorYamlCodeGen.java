@@ -4,7 +4,7 @@ public class OpenApiGeneratorYamlCodeGen extends OpenApiGeneratorCodeGenBase {
 
     @Override
     public String providerId() {
-        return "open-api-yaml";
+        return OpenApiGeneratorOutputPaths.YAML_PATH;
     }
 
     @Override
