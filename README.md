@@ -123,7 +123,7 @@ will [register `ClientRequestFilter`providers](https://download.eclipse.org/micr
 implement the given authentication mechanism.
 
 To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this
-pattern: `quarkus.openapi-generator.[filename].[security_scheme_name].auth.[auth_property_name]`. Where:
+pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth_property_name]`. Where:
 
 - `filename` is the sanitized name of file containing the OpenAPI spec, for example `petstore_json`.
 - `security_scheme_name` is the sanitized name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
