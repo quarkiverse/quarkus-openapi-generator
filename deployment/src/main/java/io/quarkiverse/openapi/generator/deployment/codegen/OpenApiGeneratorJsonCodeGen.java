@@ -4,7 +4,7 @@ public class OpenApiGeneratorJsonCodeGen extends OpenApiGeneratorCodeGenBase {
 
     @Override
     public String providerId() {
-        return "open-api-json";
+        return OpenApiGeneratorOutputPaths.JSON_PATH;
     }
 
     @Override

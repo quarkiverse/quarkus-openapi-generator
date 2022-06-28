@@ -42,7 +42,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
     @Override
     public String providerId() {
-        return "open-api-stream";
+        return OpenApiGeneratorOutputPaths.STREAM_PATH;
     }
 
     // unused by this CodeGenProvider since we rely on the input coming from ServiceLoaders
