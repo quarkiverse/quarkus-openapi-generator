@@ -410,7 +410,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
 @Path("")
-@RegisterRestClient(baseUri="http://localhost/", configKey="simple-openapi_json")
+@RegisterRestClient(configKey="simple-openapi_json")
 public interface DefaultApi {
 
     @GET
@@ -499,6 +499,8 @@ public interface MultipartService {
 
 See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and
 the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
+
+`baseURI` value of `RegisterRestClient` annotation is extracted from the `servers` section of the file, if present. If not, it will be left empty and it is expected you set up the uri to be used in your configuration.
 
 Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting
 the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
