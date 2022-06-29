@@ -1,6 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -9,11 +13,12 @@ import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     private static final String AUTH_PACKAGE = "auth";
-    /**
+    /*
      * Default server URL (the first one in the OpenAPI spec file servers definition.
      */
     private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
@@ -73,11 +78,22 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         return apiPackage().replace('.', File.separatorChar) + File.separator + AUTH_PACKAGE;
     }
 
+    public static Optional<URL> getServerURL(OpenAPI openAPI, Map<String, String> userDefinedVariables) {
+        final List<Server> servers = openAPI.getServers();
+        if (servers == null || servers.isEmpty()) {
+            return Optional.empty();
+        }
+        final Server server = servers.get(0);
+        return server.getUrl().equals("/") ? Optional.empty()
+                : Optional.ofNullable(URLPathUtils.getServerURL(server, userDefinedVariables));
+    }
+
     @Override
     public void preprocessOpenAPI(OpenAPI openAPI) {
         super.preprocessOpenAPI(openAPI);
         // add the default server url to the context
-        additionalProperties.put(DEFAULT_SERVER_URL, URLPathUtils.getServerURL(this.openAPI, serverVariableOverrides()));
+        getServerURL(this.openAPI, serverVariableOverrides())
+                .ifPresent(url -> additionalProperties.put(DEFAULT_SERVER_URL, url));
         additionalProperties.put(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
                 GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME));
     }
