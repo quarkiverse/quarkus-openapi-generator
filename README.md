@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 > **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/0.9.0/README.md) if you are looking for instructions.
@@ -567,6 +567,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/wmedvede"><img src="https://avatars.githubusercontent.com/u/2431454?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Walter Medvedeo</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=wmedvede" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/miguelchico"><img src="https://avatars.githubusercontent.com/u/6106661?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Miguel Angel Chico</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=miguelchico" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/martinweiler"><img src="https://avatars.githubusercontent.com/u/619410?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin Weiler</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=martinweiler" title="Code">💻</a></td>
+    <td align="center"><a href="https://leibnizhu.github.io/"><img src="https://avatars.githubusercontent.com/u/13050963?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Leibniz.Hu</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=Leibnizhu" title="Code">💻</a></td>
   </tr>
 </table>
 
