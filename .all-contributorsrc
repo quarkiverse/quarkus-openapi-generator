@@ -97,6 +97,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Leibnizhu",
+      "name": "Leibniz.Hu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13050963?v=4",
+      "profile": "https://leibnizhu.github.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
