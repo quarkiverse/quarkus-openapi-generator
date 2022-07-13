@@ -29,9 +29,10 @@
             return String.valueOf(value);
         }
 
+        @com.fasterxml.jackson.annotation.JsonCreator
         public static {e.datatypeWithEnum} fromValue(String v) {
             for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
-                if (String.valueOf(b.value).equals(v)) {
+                if (String.valueOf(b.value).equalsIgnoreCase(v)) {
                     return b;
                 }
             }

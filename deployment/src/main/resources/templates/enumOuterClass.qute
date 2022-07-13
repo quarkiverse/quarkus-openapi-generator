@@ -30,7 +30,7 @@ import java.util.EnumSet;
     @JsonCreator
     public static {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} fromValue(String text) {
         for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
-            if (String.valueOf(b.value).equals(text)) {
+            if (String.valueOf(b.value).equalsIgnoreCase(text)) {
                 return b;
             }
         }
