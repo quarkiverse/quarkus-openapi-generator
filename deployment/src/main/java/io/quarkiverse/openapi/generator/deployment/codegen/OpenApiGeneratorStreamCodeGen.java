@@ -27,15 +27,10 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiGeneratorStreamCodeGen.class);
 
-    private List<OpenApiSpecInputProvider> providers;
-    private final ServiceLoader<OpenApiSpecInputProvider> loader;
+    private final List<OpenApiSpecInputProvider> providers;
 
     public OpenApiGeneratorStreamCodeGen() {
-        loader = ServiceLoader.load(OpenApiSpecInputProvider.class);
-    }
-
-    private void loadServices() {
-        loader.reload();
+        ServiceLoader<OpenApiSpecInputProvider> loader = ServiceLoader.load(OpenApiSpecInputProvider.class);
         providers = loader.stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
         LOGGER.debug("Loaded {} OpenApiSpecInputProviders", providers);
     }
@@ -99,7 +94,6 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
-        this.loadServices();
         return !this.providers.isEmpty();
     }
 }
