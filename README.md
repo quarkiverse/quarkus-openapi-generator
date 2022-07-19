@@ -537,6 +537,44 @@ file. By default, these attributes are generated. You can fine tune this behavio
 
 Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to disable the deprecated attributes in the given model. For example `org.acme.weather.Country.generatedDeprecated=false`.
 
+## Custom Register Providers for generated api
+
+In some cases, we need custom `RegisterProvider` , e.g. logging. You can define custom Providers in `application.properties` :
+
+| Property Key                                                                                                                                                                        | Example                                                                                                                                |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `quarkus.openapi-generator.codegen.spec.[filename].custom-register-providers` | `quarkus.openapi-generator.codegen.spec.simple_openapi_json.custom-register-providers=org.test.Foo,org.test.Bar`<br/>Provider classes are separated by commas |
+
+With the above configuration, your Rest Clients will be created with a code similar to the following:
+
+````java
+package org.acme.openapi.simple.api;
+
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
+
+@Path("")
+@RegisterRestClient(configKey="simple-openapi_json")
+@RegisterProvider(org.test.Foo.class)
+@RegisterProvider(org.test.Bar.class)
+public interface DefaultApi {
+
+    @GET
+    @Path("/bye")
+    @Produces({ "text/plain" })
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
+    public String byeGet();
+}
+````
+
 ## Known Limitations
 
 These are the known limitations of this pre-release version:
