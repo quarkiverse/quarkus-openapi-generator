@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -29,6 +27,8 @@ import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
@@ -276,8 +276,8 @@ public class OpenApiClientGeneratorWrapperTest {
                         CompilationUnit compilationUnit = StaticJavaParser.parse(file);
                         compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
                                 .forEach(c -> {
-                                    assertThat(getAnnotationByNameAndValue(c, "RegisterProvider", "org.test.Foo.class")).isPresent();
-                                    assertThat(getAnnotationByNameAndValue(c, "RegisterProvider", "org.test.Bar.class")).isPresent();
+                                    assertThat(getRegisterProviderAnnotation(c, "org.test.Foo.class")).isPresent();
+                                    assertThat(getRegisterProviderAnnotation(c, "org.test.Bar.class")).isPresent();
                                 });
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e.getMessage());
@@ -285,14 +285,15 @@ public class OpenApiClientGeneratorWrapperTest {
                 });
     }
 
-    private Optional<AnnotationExpr> getAnnotationByNameAndValue(ClassOrInterfaceDeclaration declaration,
-            String annotationName,
+    private Optional<AnnotationExpr> getRegisterProviderAnnotation(ClassOrInterfaceDeclaration declaration,
             String annotationValue) {
-        return declaration.getAnnotations().stream().filter(annotationExpr -> {
-            return annotationName.equals(annotationExpr.getNameAsString()) &&
-                   annotationExpr instanceof SingleMemberAnnotationExpr &&
-                   annotationValue.equals(((SingleMemberAnnotationExpr) annotationExpr).getMemberValue().toString());
-        }).findFirst();
+        return declaration.getAnnotations()
+                .stream()
+                .filter(annotationExpr -> "RegisterProvider".equals(annotationExpr.getNameAsString()) &&
+                        annotationExpr instanceof SingleMemberAnnotationExpr &&
+                        annotationValue.equals(((SingleMemberAnnotationExpr) annotationExpr).getMemberValue()
+                                .toString()))
+                .findFirst();
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
