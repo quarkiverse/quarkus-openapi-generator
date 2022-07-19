@@ -11,9 +11,6 @@ import javax.ws.rs.client.ClientRequestFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Leibniz on 2022/7/19.
- */
 public class CountProvider implements ClientRequestFilter {
 
     private final Logger log = LoggerFactory.getLogger(CountProvider.class);
