@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -258,6 +260,39 @@ public class OpenApiClientGeneratorWrapperTest {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Test
+    void verifyCustomRegisterProviderAnnotations() throws URISyntaxException {
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
+                .withCustomRegisterProviders("org.test.Foo,org.test.Bar")
+                .generate("org.test");
+        assertFalse(generatedFiles.isEmpty());
+
+        generatedFiles.stream()
+                .filter(file -> file.getPath().matches(".*/api/.*Api.java"))
+                .forEach(file -> {
+                    try {
+                        CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+                        compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                                .forEach(c -> {
+                                    assertThat(getAnnotationByNameAndValue(c, "RegisterProvider", "org.test.Foo.class")).isPresent();
+                                    assertThat(getAnnotationByNameAndValue(c, "RegisterProvider", "org.test.Bar.class")).isPresent();
+                                });
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                });
+    }
+
+    private Optional<AnnotationExpr> getAnnotationByNameAndValue(ClassOrInterfaceDeclaration declaration,
+            String annotationName,
+            String annotationValue) {
+        return declaration.getAnnotations().stream().filter(annotationExpr -> {
+            return annotationName.equals(annotationExpr.getNameAsString()) &&
+                   annotationExpr instanceof SingleMemberAnnotationExpr &&
+                   annotationValue.equals(((SingleMemberAnnotationExpr) annotationExpr).getMemberValue().toString());
+        }).findFirst();
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {

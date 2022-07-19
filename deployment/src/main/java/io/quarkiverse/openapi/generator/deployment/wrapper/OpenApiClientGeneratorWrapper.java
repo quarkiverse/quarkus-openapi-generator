@@ -93,6 +93,13 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withCustomRegisterProviders(String config) {
+        if (config != null) {
+            configurator.addAdditionalProperty("custom-register-providers", config.split(","));
+        }
+        return this;
+    }
+
     /**
      * Sets the global 'skipFormModel' setting. If not set this setting will default to true.
      *
@@ -139,5 +146,4 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.setModelPackage(modelPackage);
         this.configurator.setInvokerPackage(apiPackage);
     }
-
 }
