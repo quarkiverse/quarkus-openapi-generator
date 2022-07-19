@@ -539,7 +539,7 @@ Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to 
 
 ## Custom Register Providers for generated api
 
-In some cases, we need custom `RegisterProvider` , e.g. logging. You can define custom Providers in `application.properties` :
+In some cases, we need custom `RegisterProvider` for generated api, e.g. logging. You can define your own Providers in `application.properties` :
 
 | Property Key                                                                                                                                                                        | Example                                                                                                                                |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
