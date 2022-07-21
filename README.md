@@ -545,7 +545,7 @@ In some cases, we need custom `RegisterProvider` for generated api, e.g. logging
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | `quarkus.openapi-generator.codegen.spec.[filename].custom-register-providers` | `quarkus.openapi-generator.codegen.spec.simple_openapi_json.custom-register-providers=org.test.Foo,org.test.Bar`<br/>Provider classes are separated by commas |
 
-With the above configuration, your Rest Clients will be created with a code similar to the following:
+With the above configuration, the extension generates your Rest Clients with a code similar to the following:
 
 ````java
 package org.acme.openapi.simple.api;
