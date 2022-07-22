@@ -25,6 +25,8 @@ public class CodegenConfig {
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
     private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
 
+    private static final String CUSTOM_REGISTER_PROVIDERS_FORMAT = "%s.custom-register-providers";
+
     /**
      * OpenAPI Spec details for codegen configuration.
      */
@@ -75,5 +77,9 @@ public class CodegenConfig {
     public static String getSanitizedFileName(final Path openApiFilePath) {
         return StringUtil
                 .replaceNonAlphanumericByUnderscores(OpenApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
+    }
+
+    public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {
+        return String.format(CUSTOM_REGISTER_PROVIDERS_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 }

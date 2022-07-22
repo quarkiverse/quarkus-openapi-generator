@@ -39,6 +39,9 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 @RegisterProvider(CompositeAuthenticationProvider.class)
 @RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
 {/if}
+{#for crpClassConfig in custom-register-providers.orEmpty}
+@RegisterProvider({crpClassConfig}.class)
+{/for}
 @ApplicationScoped
 public interface {classname} {
 

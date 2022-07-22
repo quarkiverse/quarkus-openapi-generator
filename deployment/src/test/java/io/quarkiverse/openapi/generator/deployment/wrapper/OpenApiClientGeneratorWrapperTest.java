@@ -27,6 +27,8 @@ import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
@@ -258,6 +260,40 @@ public class OpenApiClientGeneratorWrapperTest {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Test
+    void verifyCustomRegisterProviderAnnotations() throws URISyntaxException {
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
+                .withCustomRegisterProviders("org.test.Foo,org.test.Bar")
+                .generate("org.test");
+        assertFalse(generatedFiles.isEmpty());
+
+        generatedFiles.stream()
+                .filter(file -> file.getPath().matches(".*/api/.*Api.java"))
+                .forEach(file -> {
+                    try {
+                        CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+                        compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                                .forEach(c -> {
+                                    assertThat(getRegisterProviderAnnotation(c, "org.test.Foo.class")).isPresent();
+                                    assertThat(getRegisterProviderAnnotation(c, "org.test.Bar.class")).isPresent();
+                                });
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                });
+    }
+
+    private Optional<AnnotationExpr> getRegisterProviderAnnotation(ClassOrInterfaceDeclaration declaration,
+            String annotationValue) {
+        return declaration.getAnnotations()
+                .stream()
+                .filter(annotationExpr -> "RegisterProvider".equals(annotationExpr.getNameAsString()) &&
+                        annotationExpr instanceof SingleMemberAnnotationExpr &&
+                        annotationValue.equals(((SingleMemberAnnotationExpr) annotationExpr).getMemberValue()
+                                .toString()))
+                .findFirst();
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
