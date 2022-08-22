@@ -309,7 +309,7 @@ public class OpenApiClientGeneratorWrapperTest {
                 .of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
         final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
 
-        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath, false);
+        return new OpenApiClientGeneratorWrapper(openApiSpec, targetPath, false, true);
     }
 
     private String getTargetDir() throws URISyntaxException {

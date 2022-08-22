@@ -18,6 +18,7 @@ public class CodegenConfig {
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
+    public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
     public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
     // package visibility for unit tests
     static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
@@ -38,6 +39,13 @@ public class CodegenConfig {
      */
     @ConfigItem(name = "verbose", defaultValue = "false")
     public boolean verbose;
+
+    /**
+     * Whether or not to skip validating the input spec prior to generation. By default, invalid specifications will result in
+     * an error.
+     */
+    @ConfigItem(name = "validateSpec", defaultValue = "true")
+    public boolean validateSpec;
     /**
      * Security type for which security constraints should be created automatically if not explicitly defined
      */

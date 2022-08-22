@@ -579,6 +579,10 @@ public interface DefaultApi {
 }
 ````
 
+## Skip OpenAPI schema validation
+
+Use the property key `quarkus.openapi-generator.codegen.validateSpec=false` to disable validating the input specification file before code generation. By default, invalid specifications will result in an error.
+
 ## Known Limitations
 
 These are the known limitations of this pre-release version:
