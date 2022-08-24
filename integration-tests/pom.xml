@@ -11,6 +11,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>example-project</module>
+    <module>test-project</module>
     <module>generation-tests</module>
     <module>generation-input</module>
   </modules>

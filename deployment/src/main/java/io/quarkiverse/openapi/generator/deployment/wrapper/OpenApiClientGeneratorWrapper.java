@@ -40,7 +40,8 @@ public class OpenApiClientGeneratorWrapper {
     private String apiPackage = "";
     private String modelPackage = "";
 
-    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final boolean verbose) {
+    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final boolean verbose,
+            final boolean validateSpec) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -60,6 +61,7 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("quarkus-generator",
                 Collections.singletonMap("openApiSpecId", getSanitizedFileName(specFilePath)));
         this.configurator.addAdditionalProperty("openApiNullable", false);
+        this.configurator.setValidateSpec(validateSpec);
         this.generator = new DefaultGenerator();
     }
 
