@@ -33,149 +33,155 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
     @PostConstruct
     public void init() {
         {#for auth in httpBasicMethods.orEmpty}
-        this.addAuthenticationProvider(new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig)
+        BasicAuthenticationProvider basicAuthProvider = new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
+        this.addAuthenticationProvider(basicAuthProvider);
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        basicAuthProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        basicAuthProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
-        {/for});
+        {/for}
         {/for}
         {#for auth in oauthMethods.orEmpty}
-        this.addAuthenticationProvider(new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig)
+        OAuth2AuthenticationProvider oAuth2Provider = new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
+        this.addAuthenticationProvider(oAuth2Provider);
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        oAuth2Provider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        oAuth2Provider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
-        {/for});
+        {/for}
         {/for}
         {#for auth in httpBearerMethods.orEmpty}
-        this.addAuthenticationProvider(new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig)
+        BearerAuthenticationProvider bearerProvider = new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig);
+        this.addAuthenticationProvider(bearerProvider);
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        bearerProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        bearerProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
-        {/for});
+        {/for}
         {/for}
         {#for auth in apiKeyMethods.orEmpty}
         {#if auth.isKeyInQuery}
-        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", generatorConfig)
+        ApiKeyAuthenticationProvider apiKeyQueryProvider = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", generatorConfig);
+        this.addAuthenticationProvider(apiKeyQueryProvider);
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        apiKeyQueryProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        apiKeyQueryProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
-        {/for});
+        {/for}
         {/if}
         {#if auth.isKeyInHeader}
-        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", generatorConfig)
+        ApiKeyAuthenticationProvider apiKeyHeaderProvider = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", generatorConfig);
+        this.addAuthenticationProvider(apiKeyHeaderProvider);
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        apiKeyHeaderProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        apiKeyHeaderProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
-        {/for});
+        {/for}
         {/if}
         {#if auth.isKeyInCookie}
-        this.addAuthenticationProvider(new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig)
+        ApiKeyAuthenticationProvider apiKeyCookieProvider = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig);
+        this.addAuthenticationProvider(apiKeyCookieProvider);
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        apiKeyCookieProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-            .addOperation(OperationAuthInfo.builder()
-                .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-                .withId("{op.operationId}")
-                .withMethod("{op.httpMethod}")
-                .build())
+        apiKeyCookieProvider.addOperation(OperationAuthInfo.builder()
+            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
+            .withId("{op.operationId}")
+            .withMethod("{op.httpMethod}")
+            .build());
         {/if}
         {/for}
-        {/for});
+        {/for}
         {/if}
         {/for}
     }
