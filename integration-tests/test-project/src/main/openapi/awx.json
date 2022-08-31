@@ -27429,6 +27429,7 @@
       }
     }
   },
+  "security": [ { "basic": [] } ],
   "schemes": [
     "https"
   ],
