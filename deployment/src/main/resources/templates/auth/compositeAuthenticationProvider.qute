@@ -33,14 +33,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
     @PostConstruct
     public void init() {
         {#for auth in httpBasicMethods.orEmpty}
-        BasicAuthenticationProvider basicAuthProvider = new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
-        this.addAuthenticationProvider(basicAuthProvider);
+        BasicAuthenticationProvider basicAuthProvider{auth_index} = new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
+        this.addAuthenticationProvider(basicAuthProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        basicAuthProvider.addOperation(OperationAuthInfo.builder()
+        basicAuthProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -48,7 +48,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        basicAuthProvider.addOperation(OperationAuthInfo.builder()
+        basicAuthProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -58,14 +58,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/for}
         {#for auth in oauthMethods.orEmpty}
-        OAuth2AuthenticationProvider oAuth2Provider = new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
-        this.addAuthenticationProvider(oAuth2Provider);
+        OAuth2AuthenticationProvider oAuth2Provider{auth_index} = new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
+        this.addAuthenticationProvider(oAuth2Provider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        oAuth2Provider.addOperation(OperationAuthInfo.builder()
+        oAuth2Provider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -73,7 +73,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        oAuth2Provider.addOperation(OperationAuthInfo.builder()
+        oAuth2Provider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -83,14 +83,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/for}
         {#for auth in httpBearerMethods.orEmpty}
-        BearerAuthenticationProvider bearerProvider = new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig);
-        this.addAuthenticationProvider(bearerProvider);
+        BearerAuthenticationProvider bearerProvider{auth_index} = new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig);
+        this.addAuthenticationProvider(bearerProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        bearerProvider.addOperation(OperationAuthInfo.builder()
+        bearerProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -98,7 +98,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        bearerProvider.addOperation(OperationAuthInfo.builder()
+        bearerProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -109,14 +109,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {#for auth in apiKeyMethods.orEmpty}
         {#if auth.isKeyInQuery}
-        ApiKeyAuthenticationProvider apiKeyQueryProvider = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", generatorConfig);
-        this.addAuthenticationProvider(apiKeyQueryProvider);
+        ApiKeyAuthenticationProvider apiKeyQueryProvider{auth_index} = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", generatorConfig);
+        this.addAuthenticationProvider(apiKeyQueryProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        apiKeyQueryProvider.addOperation(OperationAuthInfo.builder()
+        apiKeyQueryProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -124,7 +124,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        apiKeyQueryProvider.addOperation(OperationAuthInfo.builder()
+        apiKeyQueryProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -134,14 +134,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/if}
         {#if auth.isKeyInHeader}
-        ApiKeyAuthenticationProvider apiKeyHeaderProvider = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", generatorConfig);
-        this.addAuthenticationProvider(apiKeyHeaderProvider);
+        ApiKeyAuthenticationProvider apiKeyHeaderProvider{auth_index} = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", generatorConfig);
+        this.addAuthenticationProvider(apiKeyHeaderProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        apiKeyHeaderProvider.addOperation(OperationAuthInfo.builder()
+        apiKeyHeaderProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -149,7 +149,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        apiKeyHeaderProvider.addOperation(OperationAuthInfo.builder()
+        apiKeyHeaderProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -159,14 +159,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/if}
         {#if auth.isKeyInCookie}
-        ApiKeyAuthenticationProvider apiKeyCookieProvider = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig);
-        this.addAuthenticationProvider(apiKeyCookieProvider);
+        ApiKeyAuthenticationProvider apiKeyCookieProvider{auth_index} = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig);
+        this.addAuthenticationProvider(apiKeyCookieProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        apiKeyCookieProvider.addOperation(OperationAuthInfo.builder()
+        apiKeyCookieProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -174,7 +174,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        apiKeyCookieProvider.addOperation(OperationAuthInfo.builder()
+        apiKeyCookieProvider{auth_index}.addOperation(OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
