@@ -532,7 +532,7 @@ the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvide
 interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file
 saved locally in your project.
 
-See the example implementation [here](test-utils/src/main/java/io/quarkiverse/openapi/generator/testutils/codegen/ClassPathPetstoreOpenApiSpecInputProvider.java)
+See the example implementation [here](/integration-tests/generation-input/src/main/java/io/quarkiverse/openapi/generator/codegen/ClassPathPetstoreOpenApiSpecInputProvider.java)
 
 ## Skip Deprecated Attributes in Model classes
 
