@@ -36,6 +36,18 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
     }
 
+    /**
+     * @param pkg name of the given package
+     * @param classname name of the Model class
+     * @param codegenConfig Map with the model codegen properties
+     * @return true if the given model class should generate the deprecated attributes
+     */
+    public boolean genDeprecatedApiAttr(final String pkg, final String classname,
+            final HashMap<String, Object> codegenConfig) {
+        final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
+        return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
+    }
+
     public String parseUri(String uri) {
         return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString();
     }

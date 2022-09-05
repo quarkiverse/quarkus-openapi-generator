@@ -45,6 +45,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 public interface {classname} {
 
     {#for op in operations.operation}
+    {#if !op.deprecated || openapi:genDeprecatedApiAttr(package, classname, codegen)}
     {#if op.summary}
     /**
      * {op.summary}
@@ -89,6 +90,6 @@ public interface {classname} {
     {#include multipartFormdataPojo.qute param=op/}
     {/if}
 
-
+    {/if} {! check deprecated !}
     {/for}
 }
