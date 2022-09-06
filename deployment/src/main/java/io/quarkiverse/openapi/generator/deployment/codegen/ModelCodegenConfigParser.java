@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
 
 import java.util.HashMap;
@@ -17,16 +18,19 @@ import org.eclipse.microprofile.config.Config;
 public final class ModelCodegenConfigParser {
 
     public static Map<String, Object> parse(final Config config, final String basePackage) {
-        final List<String> modelProperties = filterModelPropertyNames(config.getPropertyNames(),
+        final List<String> modelProperties = filterPropertyNames(config.getPropertyNames(),
                 resolveModelPackage(basePackage));
+        final List<String> apiProperties = filterPropertyNames(config.getPropertyNames(),
+                resolveApiPackage(basePackage));
+        modelProperties.addAll(apiProperties);
         final Map<String, Object> modelConfig = new HashMap<>();
         modelProperties.forEach(m -> modelConfig.put(m, config.getValue(m, String.class)));
         return modelConfig;
     }
 
-    private static List<String> filterModelPropertyNames(final Iterable<String> propertyNames, final String modelPackage) {
+    private static List<String> filterPropertyNames(final Iterable<String> propertyNames, final String findPackage) {
         return StreamSupport.stream(propertyNames.spliterator(), false)
-                .filter(propertyName -> propertyName.startsWith(modelPackage))
+                .filter(propertyName -> propertyName.startsWith(findPackage))
                 .collect(Collectors.toList());
     }
 }

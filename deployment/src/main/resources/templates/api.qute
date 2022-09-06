@@ -45,7 +45,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 public interface {classname} {
 
     {#for op in operations.operation}
-    {#if !op.deprecated || openapi:genDeprecatedApiAttr(package, classname, codegen)}
+    {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, model-codegen)}
     {#if op.summary}
     /**
      * {op.summary}

@@ -146,6 +146,46 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyDeprecatedOperations() throws URISyntaxException, FileNotFoundException {
+        final Map<String, Object> codegenConfig = ModelCodegenConfigParser
+                .parse(MockConfigUtils.getTestConfig("/deprecated/application.properties"), "org.deprecated");
+        List<File> generatedFiles = this.createGeneratorWrapper("deprecated.json")
+                .withModelCodeGenConfig(codegenConfig)
+                .generate("org.deprecated");
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+
+        compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                .forEach(c -> assertThat(c.getAnnotationByClass(GeneratedClass.class)).isPresent());
+
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        methodDeclarations.forEach(m -> assertThat(m.getAnnotationByClass(GeneratedMethod.class)).isPresent());
+
+        // hello operation is NOT deprecated and should be generated
+        Optional<MethodDeclaration> helloMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("helloGet"))
+                .findAny();
+
+        assertThat(helloMethod).isNotEmpty();
+
+        // bye operation is deprecated and should NOT be generated
+        Optional<MethodDeclaration> byeMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("byeGet"))
+                .findAny();
+
+        assertThat(byeMethod).isEmpty();
+    }
+
+    @Test
     void checkAnnotations() throws URISyntaxException, FileNotFoundException {
         List<File> restClientFiles = generateRestClientFiles();
 
