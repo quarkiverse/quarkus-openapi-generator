@@ -166,10 +166,22 @@ public class OpenApiClientGeneratorWrapperTest {
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
         assertThat(methodDeclarations).isNotEmpty();
 
-        methodDeclarations.forEach(m -> assertThat(m.getAnnotationByClass(GeneratedMethod.class)).isPresent());
+        String byeMethodGet = "byeMethodGet";
+        String helloMethod = "helloMethod";
+        methodDeclarations.forEach(m -> {
+            Optional<AnnotationExpr> annotation = m.getAnnotationByClass(GeneratedMethod.class);
+            assertThat(annotation).isPresent();
+            if (byeMethodGet.equals(m.getNameAsString())) {
+                assertThat(annotation.get().asSingleMemberAnnotationExpr().getMemberValue().asStringLiteralExpr().getValue())
+                        .isEqualTo("Bye method_get");
+            } else if (helloMethod.equals(m.getNameAsString())) {
+                assertThat(annotation.get().asSingleMemberAnnotationExpr().getMemberValue().asStringLiteralExpr().getValue())
+                        .isEqualTo("helloMethod");
+            }
+        });
 
         Optional<MethodDeclaration> byeMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals("byeGet"))
+                .filter(m -> m.getNameAsString().equals(byeMethodGet))
                 .findAny();
 
         assertThat(byeMethod).isNotEmpty();
@@ -179,7 +191,7 @@ public class OpenApiClientGeneratorWrapperTest {
                 .doesNotHaveAnyCircuitBreakerAttribute();
 
         methodDeclarations.stream()
-                .filter(m -> !m.getNameAsString().equals("byeGet"))
+                .filter(m -> !m.getNameAsString().equals(byeMethodGet))
                 .forEach(m -> assertThat(m).doesNotHaveCircuitBreakerAnnotation());
     }
 
@@ -299,7 +311,7 @@ public class OpenApiClientGeneratorWrapperTest {
     private List<File> generateRestClientFiles() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
                 .withCircuitBreakerConfig(Map.of(
-                        "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeGet")));
+                        "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeMethodGet")));
 
         return generatorWrapper.generate("org.openapitools.client");
     }
