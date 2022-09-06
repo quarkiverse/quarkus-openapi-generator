@@ -541,12 +541,12 @@ file. By default, these attributes are generated. You can fine tune this behavio
 
 Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to disable the deprecated attributes in the given model. For example `org.acme.weather.Country.generatedDeprecated=false`.
 
-## Skip Deprecated Attributes in API classes
+## Skip Deprecated Operations in API classes
 
-The client objects are classes generated in the `api` package. These classes might have [deprecated attributes](https://spec.openapis.org/oas/v3.1.0#fixed-fields-9) in the Open API specification
-file. By default, these attributes are generated. You can fine tune this behavior if the deprecated attributes should not be generated.
+The client objects are classes generated in the `api` package. These classes might have [deprecated operations](https://spec.openapis.org/oas/v3.1.0#operation-object) in the Open API specification
+file. By default, these operations are generated. You can fine tune this behavior if the deprecated operations should not be generated.
 
-Use the property key `<base_package>.api.MyClass.generateDeprecated=false` to disable the deprecated attributes in the given API. For example `org.acme.openapi.simple.api.DefaultApi.generatedDeprecated=false`.
+Use the property key `<base_package>.api.MyClass.generateDeprecated=false` to disable the deprecated operations in the given API. For example `org.acme.openapi.simple.api.DefaultApi.generatedDeprecated=false`.
 
 ## Custom Register Providers for generated api
 
