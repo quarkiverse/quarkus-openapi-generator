@@ -12,10 +12,10 @@ import java.util.stream.StreamSupport;
 import org.eclipse.microprofile.config.Config;
 
 /**
- * Extracts the Model codegen properties from a given {@link Config} reference.
+ * Extracts the codegen properties from a given {@link Config} reference.
  * These properties are then injected in the OpenAPI generator to tweak the code generation properties.
  */
-public final class ModelCodegenConfigParser {
+public final class ClassCodegenConfigParser {
 
     public static Map<String, Object> parse(final Config config, final String basePackage) {
         final List<String> modelProperties = filterPropertyNames(config.getPropertyNames(),

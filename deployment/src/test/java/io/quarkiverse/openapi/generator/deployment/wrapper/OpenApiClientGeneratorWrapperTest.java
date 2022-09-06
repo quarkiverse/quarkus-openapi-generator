@@ -33,7 +33,7 @@ import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
 import io.quarkiverse.openapi.generator.deployment.MockConfigUtils;
-import io.quarkiverse.openapi.generator.deployment.codegen.ModelCodegenConfigParser;
+import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigParser;
 
 public class OpenApiClientGeneratorWrapperTest {
 
@@ -100,10 +100,10 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyDeprecatedFields() throws URISyntaxException, FileNotFoundException {
-        final Map<String, Object> codegenConfig = ModelCodegenConfigParser
+        final Map<String, Object> codegenConfig = ClassCodegenConfigParser
                 .parse(MockConfigUtils.getTestConfig("/codegen/application.properties"), "org.issue38");
         final List<File> generatedFiles = this.createGeneratorWrapper("issue-38.yaml")
-                .withModelCodeGenConfig(codegenConfig)
+                .withClassesCodeGenConfig(codegenConfig)
                 .generate("org.issue38");
 
         // we have two attributes that will be generated with the same name, one of them is deprecated
@@ -147,10 +147,10 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyDeprecatedOperations() throws URISyntaxException, FileNotFoundException {
-        final Map<String, Object> codegenConfig = ModelCodegenConfigParser
+        final Map<String, Object> codegenConfig = ClassCodegenConfigParser
                 .parse(MockConfigUtils.getTestConfig("/deprecated/application.properties"), "org.deprecated");
         List<File> generatedFiles = this.createGeneratorWrapper("deprecated.json")
-                .withModelCodeGenConfig(codegenConfig)
+                .withClassesCodeGenConfig(codegenConfig)
                 .generate("org.deprecated");
         assertFalse(generatedFiles.isEmpty());
 
