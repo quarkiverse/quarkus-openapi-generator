@@ -65,7 +65,7 @@ public interface {classname} {
     {#if op.hasProduces}
     @Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
-    @GeneratedMethod ("{op.operationId}")
+    @GeneratedMethod ("{op.operationIdOriginal}")
     {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == package + classname}
     {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
