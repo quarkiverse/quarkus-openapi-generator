@@ -88,9 +88,9 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withModelCodeGenConfig(final Map<String, Object> config) {
+    public OpenApiClientGeneratorWrapper withClassesCodeGenConfig(final Map<String, Object> config) {
         if (config != null) {
-            configurator.addAdditionalProperty("model-codegen", config);
+            configurator.addAdditionalProperty("classes-codegen", config);
         }
         return this;
     }

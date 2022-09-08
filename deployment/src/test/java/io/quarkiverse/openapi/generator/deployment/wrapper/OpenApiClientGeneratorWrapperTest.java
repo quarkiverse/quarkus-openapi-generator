@@ -33,7 +33,7 @@ import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
 import io.quarkiverse.openapi.generator.deployment.MockConfigUtils;
-import io.quarkiverse.openapi.generator.deployment.codegen.ModelCodegenConfigParser;
+import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigParser;
 
 public class OpenApiClientGeneratorWrapperTest {
 
@@ -100,10 +100,10 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyDeprecatedFields() throws URISyntaxException, FileNotFoundException {
-        final Map<String, Object> codegenConfig = ModelCodegenConfigParser
+        final Map<String, Object> codegenConfig = ClassCodegenConfigParser
                 .parse(MockConfigUtils.getTestConfig("/codegen/application.properties"), "org.issue38");
         final List<File> generatedFiles = this.createGeneratorWrapper("issue-38.yaml")
-                .withModelCodeGenConfig(codegenConfig)
+                .withClassesCodeGenConfig(codegenConfig)
                 .generate("org.issue38");
 
         // we have two attributes that will be generated with the same name, one of them is deprecated
@@ -143,6 +143,46 @@ public class OpenApiClientGeneratorWrapperTest {
                 .flatMap(v -> v.getVariables().stream())
                 .anyMatch(f -> f.getNameAsString().equals("availableUpgrades")))
                         .isTrue();
+    }
+
+    @Test
+    void verifyDeprecatedOperations() throws URISyntaxException, FileNotFoundException {
+        final Map<String, Object> codegenConfig = ClassCodegenConfigParser
+                .parse(MockConfigUtils.getTestConfig("/deprecated/application.properties"), "org.deprecated");
+        List<File> generatedFiles = this.createGeneratorWrapper("deprecated.json")
+                .withClassesCodeGenConfig(codegenConfig)
+                .generate("org.deprecated");
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+
+        compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                .forEach(c -> assertThat(c.getAnnotationByClass(GeneratedClass.class)).isPresent());
+
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        methodDeclarations.forEach(m -> assertThat(m.getAnnotationByClass(GeneratedMethod.class)).isPresent());
+
+        // hello operation is NOT deprecated and should be generated
+        Optional<MethodDeclaration> helloMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("helloGet"))
+                .findAny();
+
+        assertThat(helloMethod).isNotEmpty();
+
+        // bye operation is deprecated and should NOT be generated
+        Optional<MethodDeclaration> byeMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("byeGet"))
+                .findAny();
+
+        assertThat(byeMethod).isEmpty();
     }
 
     @Test
