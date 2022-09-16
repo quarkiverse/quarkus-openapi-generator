@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
 import org.acme.openapi.typemapping.api.TypeMappingApi;
-import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 
@@ -31,9 +30,6 @@ public class TypeAndImportMappingTest {
     @RestClient
     @Inject
     TypeMappingApi typeMappingApi;
-
-    @Inject
-    Config config;
 
     @Test
     public void canMapTypesAndImportToDifferentValues() {

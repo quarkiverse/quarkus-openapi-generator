@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment;
 
+import java.util.Map;
 import java.util.Optional;
 
 import io.quarkus.runtime.annotations.ConfigGroup;
@@ -26,4 +27,29 @@ public class SpecItemConfig {
     @ConfigItem(name = "skip-form-model")
     public Optional<Boolean> skipFormModel;
 
+    /**
+     * Type Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be used for a
+     * given OAS datatype (the keys of this map)
+     */
+    @ConfigItem(name = "type-mappings")
+    public Optional<Map<String, String>> typeMappings;
+
+    /**
+     * Import Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be
+     * imported when a given OAS datatype (the keys of this map) is used
+     */
+    @ConfigItem(name = "import-mappings")
+    public Optional<Map<String, String>> importMappings;
+
+    /**
+     * The specified annotations will be added to the generated model files
+     */
+    @ConfigItem(name = "additional-model-type-annotations")
+    public Optional<String> additionalModelTypeAnnotations;
+
+    /**
+     * Provider classes that should be registered on the generated rest client
+     */
+    @ConfigItem(name = "custom-register-providers")
+    public Optional<String> customRegisterProviders;
 }
