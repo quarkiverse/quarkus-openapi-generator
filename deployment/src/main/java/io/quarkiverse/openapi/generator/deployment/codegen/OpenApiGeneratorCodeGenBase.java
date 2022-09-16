@@ -76,6 +76,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                         .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
                                 config));
+
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
 
@@ -85,12 +86,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
                 .ifPresent(generator::withCustomRegisterProviders);
 
-        ((SmallRyeConfig) config) // Cast in order to load multiple values as a map
-                .getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
+        SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
+        smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
                 .ifPresent(generator::withTypeMappings);
 
-        ((SmallRyeConfig) config)
-                .getOptionalValues(getImportMappingsPropertyName(openApiFilePath), String.class, String.class)
+        smallRyeConfig.getOptionalValues(getImportMappingsPropertyName(openApiFilePath), String.class, String.class)
                 .ifPresent(generator::withImportMappings);
 
         generator.generate(basePackage);
