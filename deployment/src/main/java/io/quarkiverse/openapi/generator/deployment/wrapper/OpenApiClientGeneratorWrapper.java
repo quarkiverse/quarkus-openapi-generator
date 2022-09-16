@@ -113,6 +113,11 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withTypeMappings(final Map<String, String> typeMappings){
+        typeMappings.forEach(configurator::addTypeMapping);
+        return this;
+    }
+
     /**
      * Sets the global 'additionalModelTypeAnnotations' setting. If not set this setting will default to empty.
      *

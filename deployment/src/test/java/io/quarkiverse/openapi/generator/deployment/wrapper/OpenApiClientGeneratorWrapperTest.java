@@ -27,6 +27,7 @@ import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 
@@ -282,11 +283,48 @@ public class OpenApiClientGeneratorWrapperTest {
                 .findAny();
         assertThat(multipartPojo).isNotEmpty();
 
-        assertThat(multipartPojo.orElseThrow().getFields()).hasSize(3);
-        multipartPojo.orElseThrow().getFields().forEach(field -> {
+        List<FieldDeclaration> fields = multipartPojo.orElseThrow().getFields();
+        assertThat(fields).hasSize(3);
+        fields.forEach(field -> {
             assertThat(field.getAnnotationByName("FormParam")).isPresent();
             assertThat(field.getAnnotationByName("PartType")).isPresent();
         });
+
+        Optional<VariableDeclarator> fileUploadVariable = findVariableByName(fields, "profileImage");
+        assertThat(fileUploadVariable.orElseThrow().getType().asString()).isEqualTo("File");
+    }
+
+    @Test
+    void verifyMultipartPojoGeneratesWithInputStreamWhenEnabled() throws URISyntaxException, FileNotFoundException {
+        final String inputStreamType = "java.io.InputStream";
+
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
+                .withSkipFormModelConfig("false")
+                .withTypeMappings(Map.of("File", inputStreamType))
+                .generate("org.acme");
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        Optional<ClassOrInterfaceDeclaration> multipartPojo = compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                .stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm"))
+                .findAny();
+        assertThat(multipartPojo).isNotEmpty();
+
+        List<FieldDeclaration> fields = multipartPojo.orElseThrow().getFields();
+        assertThat(fields).hasSize(3);
+        fields.forEach(field -> {
+            assertThat(field.getAnnotationByName("FormParam")).isPresent();
+            assertThat(field.getAnnotationByName("PartType")).isPresent();
+        });
+
+        Optional<VariableDeclarator> fileUploadVariable = findVariableByName(fields, "profileImage");
+        assertThat(fileUploadVariable.orElseThrow().getType().asString()).isEqualTo(inputStreamType);
     }
 
     @Test
@@ -366,5 +404,11 @@ public class OpenApiClientGeneratorWrapperTest {
 
     private String getTargetDir() throws URISyntaxException {
         return Paths.get(requireNonNull(getClass().getResource("/")).toURI()).getParent().toString();
+    }
+
+    private Optional<VariableDeclarator> findVariableByName(List<FieldDeclaration> fields, String name){
+        return fields.stream().map(field -> field.getVariable(0))
+                .filter((VariableDeclarator variable) -> name.equals(variable.getName().asString()))
+                .findFirst();
     }
 }
