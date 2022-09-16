@@ -558,7 +558,7 @@ In some cases, we need custom `RegisterProvider` for generated api, e.g. logging
 
 With the above configuration, the extension generates your Rest Clients with a code similar to the following:
 
-````java
+```java
 package org.acme.openapi.simple.api;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -584,11 +584,24 @@ public interface DefaultApi {
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     public String byeGet();
 }
-````
+```
 
 ## Skip OpenAPI schema validation
 
 Use the property key `quarkus.openapi-generator.codegen.validateSpec=false` to disable validating the input specification file before code generation. By default, invalid specifications will result in an error.
+
+## Type and import mappings
+
+It's possible to remap types in the generated files. For example, instead of a `File` you can configure the code generator to use `InputStream` for all file upload parts of multipart request, or you could change all `UUID` types to `String`. You can configure this in your `application.properties` using the following configuration keys:
+
+| Description    | Property Key                                                                   | Example                                                                                                                                                                        |
+|----------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Type Mapping   | `quarkus.openapi-generator.codegen.spec.[filename].type-mappings.[oas_type]`   | `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=InputStream` will use `InputStream` as type for all objects of the OAS File type.                       |
+| Import Mapping | `quarkus.openapi-generator.codegen.spec.[filename].import-mappings.[oas_type]` | `quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.File=java.io.InputStream` will replace the default `import java.io.File` with `import java.io.InputStream` |
+
+Note that these configuration properties are maps where the keys are OAS data types and the values are Java types. 
+
+It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on [Type Mappings and Import Mappings](https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings). (Note that you won't be able to change all types as some are hardcoded in the generator, e.g. the OAS type DateTime.)
 
 ## Known Limitations
 
