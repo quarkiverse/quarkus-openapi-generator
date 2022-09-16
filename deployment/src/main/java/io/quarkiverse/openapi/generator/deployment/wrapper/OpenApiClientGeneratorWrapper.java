@@ -113,8 +113,13 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withTypeMappings(final Map<String, String> typeMappings){
+    public OpenApiClientGeneratorWrapper withTypeMappings(final Map<String, String> typeMappings) {
         typeMappings.forEach(configurator::addTypeMapping);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withImportMappings(final Map<String, String> typeMappings) {
+        typeMappings.forEach(configurator::addImportMapping);
         return this;
     }
 

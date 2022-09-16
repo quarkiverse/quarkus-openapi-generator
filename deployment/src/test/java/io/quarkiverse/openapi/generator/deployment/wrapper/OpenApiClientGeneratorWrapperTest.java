@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +23,7 @@ import org.openapitools.codegen.config.GlobalSettings;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -295,12 +297,9 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void verifyMultipartPojoGeneratesWithInputStreamWhenEnabled() throws URISyntaxException, FileNotFoundException {
-        final String inputStreamType = "java.io.InputStream";
-
+    void shouldMapFileTypeToFullyQualifiedInputStream() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
-                .withSkipFormModelConfig("false")
-                .withTypeMappings(Map.of("File", inputStreamType))
+                .withTypeMappings(Map.of("File", "java.io.InputStream"))
                 .generate("org.acme");
         assertFalse(generatedFiles.isEmpty());
 
@@ -316,15 +315,42 @@ public class OpenApiClientGeneratorWrapperTest {
                 .findAny();
         assertThat(multipartPojo).isNotEmpty();
 
-        List<FieldDeclaration> fields = multipartPojo.orElseThrow().getFields();
-        assertThat(fields).hasSize(3);
-        fields.forEach(field -> {
-            assertThat(field.getAnnotationByName("FormParam")).isPresent();
-            assertThat(field.getAnnotationByName("PartType")).isPresent();
-        });
+        Optional<VariableDeclarator> fileUploadVariable = findVariableByName(multipartPojo.orElseThrow().getFields(),
+                "profileImage");
+        assertThat(fileUploadVariable.orElseThrow().getType().asString()).isEqualTo("java.io.InputStream");
+    }
 
-        Optional<VariableDeclarator> fileUploadVariable = findVariableByName(fields, "profileImage");
-        assertThat(fileUploadVariable.orElseThrow().getType().asString()).isEqualTo(inputStreamType);
+    @Test
+    void shouldReplaceFileImportWithInputStream() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
+                .withSkipFormModelConfig("false")
+                .withTypeMappings(Map.of("File", "InputStream"))
+                .withImportMappings(Map.of("File", "java.io.InputStream"))
+                .generate("org.acme");
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        Optional<ClassOrInterfaceDeclaration> multipartPojo = compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                .stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm"))
+                .findAny();
+        assertThat(multipartPojo).isNotEmpty();
+
+        Optional<VariableDeclarator> fileUploadVariable = findVariableByName(multipartPojo.orElseThrow().getFields(),
+                "profileImage");
+        assertThat(fileUploadVariable.orElseThrow().getType().asString()).isEqualTo("InputStream");
+
+        List<String> imports = compilationUnit.findAll(ImportDeclaration.class)
+                .stream()
+                .map(importDeclaration -> importDeclaration.getName().asString())
+                .collect(Collectors.toList());
+        assertThat(imports).contains("java.io.InputStream");
+        assertThat(imports).doesNotContain("java.io.File");
     }
 
     @Test
@@ -406,7 +432,7 @@ public class OpenApiClientGeneratorWrapperTest {
         return Paths.get(requireNonNull(getClass().getResource("/")).toURI()).getParent().toString();
     }
 
-    private Optional<VariableDeclarator> findVariableByName(List<FieldDeclaration> fields, String name){
+    private Optional<VariableDeclarator> findVariableByName(List<FieldDeclaration> fields, String name) {
         return fields.stream().map(field -> field.getVariable(0))
                 .filter((VariableDeclarator variable) -> name.equals(variable.getName().asString()))
                 .findFirst();

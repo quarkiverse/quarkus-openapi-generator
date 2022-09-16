@@ -1,12 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +16,7 @@ import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGenerato
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.smallrye.config.SmallRyeConfig;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
@@ -89,6 +84,14 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
                 .ifPresent(generator::withCustomRegisterProviders);
+
+        ((SmallRyeConfig) config) // Cast in order to load multiple values as a map
+                .getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
+                .ifPresent(generator::withTypeMappings);
+
+        ((SmallRyeConfig) config)
+                .getOptionalValues(getImportMappingsPropertyName(openApiFilePath), String.class, String.class)
+                .ifPresent(generator::withImportMappings);
 
         generator.generate(basePackage);
     }
