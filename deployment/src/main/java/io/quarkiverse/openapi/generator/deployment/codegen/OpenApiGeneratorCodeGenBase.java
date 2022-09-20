@@ -1,12 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +16,7 @@ import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGenerato
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.smallrye.config.SmallRyeConfig;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
@@ -81,6 +76,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                         .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
                                 config));
+
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
 
@@ -89,6 +85,13 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
                 .ifPresent(generator::withCustomRegisterProviders);
+
+        SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
+        smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
+                .ifPresent(generator::withTypeMappings);
+
+        smallRyeConfig.getOptionalValues(getImportMappingsPropertyName(openApiFilePath), String.class, String.class)
+                .ifPresent(generator::withImportMappings);
 
         generator.generate(basePackage);
     }
