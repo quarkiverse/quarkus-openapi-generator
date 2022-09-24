@@ -30,6 +30,7 @@ public class CodegenConfig {
     private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
     private static final String TYPE_MAPPINGS_PROP_FORMAT = "%s.type-mappings";
     private static final String IMPORT_MAPPINGS_PROP_FORMAT = "%s.import-mappings";
+    private static final String CODEGEN_LANGUAGE_PROP_FORMAT = "%s.codegen-language";
 
     private static final String CUSTOM_REGISTER_PROVIDERS_FORMAT = "%s.custom-register-providers";
 
@@ -83,6 +84,10 @@ public class CodegenConfig {
 
     public static String getImportMappingsPropertyName(final Path openApiFilePath) {
         return String.format(IMPORT_MAPPINGS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
+    public static String getCodegenLanguagePropertyName(final Path openApiFilePath) {
+        return String.format(CODEGEN_LANGUAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
     /**
