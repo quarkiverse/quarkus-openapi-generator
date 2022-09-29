@@ -123,6 +123,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
                 .ifPresent(generator::withCustomRegisterProviders);
 
+        config.getOptionalValue(getCodegenLanguagePropertyName(openApiFilePath), String.class)
+                .ifPresent(generator::withCodegenLanguage);
+
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
         smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
                 .ifPresent(generator::withTypeMappings);

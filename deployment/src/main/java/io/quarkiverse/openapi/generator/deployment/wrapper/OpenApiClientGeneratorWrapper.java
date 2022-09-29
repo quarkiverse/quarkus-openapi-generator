@@ -145,6 +145,20 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withCodegenLanguage(final String codegenLanguage) {
+        switch (codegenLanguage) {
+            case "java":
+                configurator.setGeneratorName("quarkus");
+                break;
+            case "kotlin":
+                configurator.setGeneratorName("quarkus-kotlin");
+                break;
+            default:
+                throw new IllegalArgumentException("codegenLanguage must be java or kotlin");
+        }
+        return this;
+    }
+
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();
