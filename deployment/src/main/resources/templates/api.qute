@@ -5,8 +5,10 @@ import {imp.import};
 {/for}
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+{#if hasAuthMethods || custom-register-providers.orEmpty.size > 0}
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider; 
+{/if}
 {#if hasAuthMethods}
-import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import {package}.auth.CompositeAuthenticationProvider;
 import {package}.auth.AuthenticationPropagationHeadersFactory;
