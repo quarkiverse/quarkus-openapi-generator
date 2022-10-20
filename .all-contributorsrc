@@ -124,6 +124,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "YassinHajaj",
+      "name": "YassinHajaj",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18174180?v=4",
+      "profile": "https://github.com/YassinHajaj",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -131,5 +140,6 @@
   "projectOwner": "quarkiverse",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
