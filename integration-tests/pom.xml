@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.quarkiverse.openapi.generator</groupId>
     <artifactId>quarkus-openapi-generator-parent</artifactId>
-    <version>0.12.0</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
   <name>Quarkus - Openapi Generator - Integration Tests</name>
