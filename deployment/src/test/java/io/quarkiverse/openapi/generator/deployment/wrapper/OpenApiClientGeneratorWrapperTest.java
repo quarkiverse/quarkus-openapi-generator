@@ -121,7 +121,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(fields.stream()
                 .flatMap(v -> v.getVariables().stream())
                 .anyMatch(f -> f.getNameAsString().equals("lastTransitionTime")))
-                        .isTrue();
+                .isTrue();
 
         // this one we optionally removed the deprecated attribute
         final Optional<File> connectorDeploymentSpec = generatedFiles.stream()
@@ -133,7 +133,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(fields2.stream()
                 .flatMap(v -> v.getVariables().stream())
                 .anyMatch(f -> f.getNameAsString().equals("allowUpgrade")))
-                        .isFalse();
+                .isFalse();
 
         // this class has a deprecated attribute, so we check the default behavior
         final Optional<File> connectorDeploymentStatus = generatedFiles.stream()
@@ -145,7 +145,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(fields3.stream()
                 .flatMap(v -> v.getVariables().stream())
                 .anyMatch(f -> f.getNameAsString().equals("availableUpgrades")))
-                        .isTrue();
+                .isTrue();
     }
 
     @Test

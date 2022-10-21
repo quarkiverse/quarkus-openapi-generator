@@ -73,9 +73,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 outDir,
                 verbose,
                 validateSpec)
-                        .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
-                        .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
-                                config));
+                .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
+                .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
+                        config));
 
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);

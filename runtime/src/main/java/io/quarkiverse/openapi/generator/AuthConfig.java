@@ -26,7 +26,7 @@ public class AuthConfig {
      * must be used.
      * <p>
      * quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true
-     * 
+     *
      * @see AuthsConfig
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig
@@ -42,7 +42,7 @@ public class AuthConfig {
      * must be used.
      * <p>
      * quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyParticularHttpHeaderName
-     * 
+     *
      * @see AuthsConfig
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig
@@ -60,7 +60,7 @@ public class AuthConfig {
      * <p>
      * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.username=MyUserName
      * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
-     * 
+     *
      * @see AuthsConfig
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig

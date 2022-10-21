@@ -78,7 +78,7 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
         authConfig.tokenPropagation = Optional.of(true);
         assertThatThrownBy(() -> new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.header,
                 API_KEY_NAME, generatorConfig))
-                        .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
-                                AUTH_SCHEME_NAME);
+                .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
+                        AUTH_SCHEME_NAME);
     }
 }
