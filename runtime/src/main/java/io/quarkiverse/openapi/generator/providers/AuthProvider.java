@@ -11,7 +11,7 @@ public interface AuthProvider extends ClientRequestFilter {
 
     /**
      * Get the name of the Security Provider as defined in the OpenAPI Spec file.
-     * 
+     *
      * @see <a href="https://spec.openapis.org/oas/v3.1.0#security-requirement-object">OpenAPI Spec - Security Requirement
      *      Object</a>
      */

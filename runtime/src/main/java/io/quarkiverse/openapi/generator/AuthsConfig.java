@@ -17,7 +17,7 @@ public class AuthsConfig {
      * name is sanitized into the name petstore_json and the security scheme name is sanitized into the name
      * "petstore_auth". And thus, the specific configurations for this security scheme must start with the prefix
      * quarkus.openapi-generator.petstore_json.auth.petstore_auth
-     * 
+     *
      * @see SpecItemConfig
      * @see AuthConfig
      */
