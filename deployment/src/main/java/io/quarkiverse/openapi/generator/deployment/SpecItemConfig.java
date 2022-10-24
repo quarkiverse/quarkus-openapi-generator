@@ -32,14 +32,14 @@ public class SpecItemConfig {
      * given OAS datatype (the keys of this map)
      */
     @ConfigItem(name = "type-mappings")
-    public Optional<Map<String, String>> typeMappings;
+    public Map<String, String> typeMappings;
 
     /**
      * Import Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be
      * imported when a given OAS datatype (the keys of this map) is used
      */
     @ConfigItem(name = "import-mappings")
-    public Optional<Map<String, String>> importMappings;
+    public Map<String, String> importMappings;
 
     /**
      * The specified annotations will be added to the generated model files
