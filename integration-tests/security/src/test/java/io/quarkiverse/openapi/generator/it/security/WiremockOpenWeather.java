@@ -1,9 +1,12 @@
 package io.quarkiverse.openapi.generator.it.security;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+
 import java.util.Map;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
@@ -19,8 +22,8 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
         wireMockServer = new WireMockServer(8888);
         wireMockServer.start();
 
-        wireMockServer.stubFor(WireMock.get(WireMock.urlPathEqualTo("/data/2.5/weather"))
-                .willReturn(WireMock.aResponse()
+        wireMockServer.stubFor(get(urlPathEqualTo("/data/2.5/weather"))
+                .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(
