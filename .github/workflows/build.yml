@@ -42,4 +42,4 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn -B formatter:validate verify --file pom.xml
+        run: mvn -Dorg.slf4j.simpleLogger.log.org.openapitools=off -B formatter:validate verify --file pom.xml

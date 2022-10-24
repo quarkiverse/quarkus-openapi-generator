@@ -10,10 +10,15 @@
   <name>Quarkus - Openapi Generator - Integration Tests</name>
   <packaging>pom</packaging>
   <modules>
-    <module>example-project</module>
-    <module>test-project</module>
+    <module>simple</module>
+    <module>skip-validation</module>
     <module>generation-tests</module>
     <module>generation-input</module>
+    <module>multipart-request</module>
+    <module>type-mapping</module>
+    <module>circuit-breaker</module>
+    <module>register-provider</module>
+    <module>security</module>
   </modules>
   <dependencyManagement>
     <dependencies>

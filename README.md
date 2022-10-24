@@ -160,6 +160,8 @@ If the OpenAPI specification file has `securitySchemes` definitions, but no [Sec
 | -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
 | Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default.security.scheme` | `quarkus.openapi-generator.codegen.default.security.scheme=api_key` |
 
+See the module [security](integration-tests/security) for an example of how to use this feature.
+
 ### Basic HTTP Authentication
 
 For Basic HTTP Authentication, these are the supported configurations:
@@ -239,6 +241,7 @@ For this to work you **must** add [Quarkus OIDC Client Filter Extension](https:/
 </dependency>
 ````
 
+See the module [generation-tests](integration-tests/generation-tests) for an example of how to use this feature.
 
 ## Authorization Token Propagation
 
@@ -444,6 +447,8 @@ org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failureRatio=3.14
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/successThreshold=22
 ````
 
+See the module [circuit-breaker](integration-tests/circuit-breaker) for an example of how to use this feature.
+
 ## Sending multipart/form-data
 
 The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request
@@ -512,6 +517,8 @@ the `skip-form-model` property corresponding to your spec in the `application.pr
 ```properties
 quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model=false
 ```
+
+See the module [multipart-request](integration-tests/multipart-request) for an example of how to use this feature.
 
 ### Default content-types according to OpenAPI Specification and limitations
 
@@ -586,6 +593,8 @@ public interface DefaultApi {
 }
 ```
 
+See the module [register-provider](integration-tests/register-provider) for an example of how to use this feature.
+
 ## Skip OpenAPI schema validation
 
 Use the property key `quarkus.openapi-generator.codegen.validateSpec=false` to disable validating the input specification file before code generation. By default, invalid specifications will result in an error.
@@ -602,6 +611,8 @@ It's possible to remap types in the generated files. For example, instead of a `
 Note that these configuration properties are maps where the keys are OAS data types and the values are Java types. 
 
 It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on [Type Mappings and Import Mappings](https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings). (Note that you won't be able to change all types as some are hardcoded in the generator, e.g. the OAS type DateTime.)
+
+See the module [type-mapping](integration-tests/type-mapping) for an example of how to use this feature.
 
 ## Known Limitations
 
