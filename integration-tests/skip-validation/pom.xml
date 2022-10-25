@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <groupId>io.quarkiverse.openapi.generator</groupId>
     <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
+    <groupId>io.quarkiverse.openapi.generator</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>quarkus-openapi-generator-it-generation-tests</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Generation Tests</name>
-  <description>Example Project that uses the OpenApiSpecProvider (via input Stream) to provide the OpenAPI Spec input. See the module "generation-input", which has this implementation.</description>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>quarkus-openapi-generator-it-skip-validation</artifactId>
+  <name>Quarkus - Openapi Generator - Integration Tests - Skip Spec Validation</name>
+  <description>Skip OpenAPI Spec Validation</description>
+
   <dependencies>
-    <!-- petstore requires OAuth2 -->
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-oidc-client-filter</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator-it-generation-input</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -31,11 +24,6 @@
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-jre8</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator-test-utils</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -49,6 +37,7 @@
           <execution>
             <goals>
               <goal>build</goal>
+              <goal>generate-code</goal>
               <goal>generate-code-tests</goal>
             </goals>
           </execution>
@@ -97,4 +86,5 @@
       </properties>
     </profile>
   </profiles>
+
 </project>
