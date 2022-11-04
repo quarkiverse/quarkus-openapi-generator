@@ -26,7 +26,6 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImpor
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
-import static java.util.function.Predicate.not;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
@@ -58,12 +57,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
-                        .filter(not(path -> ignoredFiles.contains(path.getFileName().toString())))
-                        .map(Path::toString)
-                        .filter(s -> s.endsWith(this.inputExtension()))
-                        .map(Path::of).forEach(openApiFilePath -> {
-                            this.generate(context.config(), openApiFilePath, outDir);
-                        });
+                        .filter(path -> {
+                            String fileName = path.getFileName().toString();
+                            return fileName.endsWith(inputExtension()) && !ignoredFiles.contains(fileName);
+                        })
+                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
                         e);
