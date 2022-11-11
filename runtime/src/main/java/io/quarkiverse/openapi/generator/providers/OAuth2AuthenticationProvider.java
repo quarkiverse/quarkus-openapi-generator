@@ -5,8 +5,8 @@ import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.ws.rs.client.ClientRequestContext;
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

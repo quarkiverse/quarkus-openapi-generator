@@ -1,8 +1,8 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkus.arc.DefaultBean;

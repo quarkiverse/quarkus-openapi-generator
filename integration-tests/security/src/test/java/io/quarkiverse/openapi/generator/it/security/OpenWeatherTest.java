@@ -3,7 +3,7 @@ package io.quarkiverse.openapi.generator.it.security;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.acme.openapi.weather.api.CurrentWeatherDataApi;
 import org.acme.openapi.weather.model.Model200;

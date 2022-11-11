@@ -66,7 +66,7 @@
           <artifactId>checker-qual</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>javax.validation</groupId>
+          <groupId>jakarta.validation</groupId>
           <artifactId>validation-api</artifactId>
         </exclusion>
         <exclusion>

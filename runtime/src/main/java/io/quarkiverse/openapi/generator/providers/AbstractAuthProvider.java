@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import io.quarkiverse.openapi.generator.AuthConfig;
 import io.quarkiverse.openapi.generator.AuthsConfig;

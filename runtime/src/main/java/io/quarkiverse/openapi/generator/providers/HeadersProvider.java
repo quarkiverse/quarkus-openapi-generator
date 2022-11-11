@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
