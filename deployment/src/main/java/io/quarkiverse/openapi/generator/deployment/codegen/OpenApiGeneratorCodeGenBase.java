@@ -1,10 +1,9 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
@@ -17,6 +16,16 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 import io.smallrye.config.SmallRyeConfig;
+
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
@@ -41,16 +50,18 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
         final Path openApiDir = context.inputDir();
+        final List<String> ignoredFiles = context.config()
+                .getOptionalValues("quarkus.openapi-generator.codegen.ignore", String.class).orElse(List.of());
 
         if (Files.isDirectory(openApiDir)) {
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
-                        .map(Path::toString)
-                        .filter(s -> s.endsWith(this.inputExtension()))
-                        .map(Path::of).forEach(openApiFilePath -> {
-                            this.generate(context.config(), openApiFilePath, outDir);
-                        });
+                        .filter(path -> {
+                            String fileName = path.getFileName().toString();
+                            return fileName.endsWith(inputExtension()) && !ignoredFiles.contains(fileName);
+                        })
+                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
                         e);

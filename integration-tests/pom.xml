@@ -19,6 +19,7 @@
     <module>circuit-breaker</module>
     <module>register-provider</module>
     <module>security</module>
+    <module>ignore</module>
   </modules>
   <dependencyManagement>
     <dependencies>

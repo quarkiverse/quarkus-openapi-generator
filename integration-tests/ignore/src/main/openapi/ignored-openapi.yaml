@@ -1,0 +1,18 @@
+---
+openapi: 3.0.3
+info:
+  title: greeting-flow API
+  version: "1.0"
+paths:
+  /hello_ignored:
+    get:
+      tags:
+        - Ignored OpenAPI Resource
+      operationId: hello_ignored
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string

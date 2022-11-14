@@ -120,6 +120,18 @@ Since the most part of this extension work is in the `generate-code` execution p
 
 For more information, see the [Maven Logging Configuration](https://maven.apache.org/maven-logging.html) guide.
 
+## Ignoring OpenAPI Specification Files
+
+To ignore code generation for specific OpenAPI specification files, you can set the `quarkus.openapi-generator.codegen.ignore` property.
+
+For instance, if you want to ignore code generation for `ignored-openapi.yaml` and `ignored-openapi-2.yaml` files, you need to define the `quarkus.openapi-generator.codegen.ignore` property like the following:
+
+```properties
+quarkus.openapi-generator.codegen.ignore=ignored-openapi.yaml,ignored-openapi-2.yaml
+```
+
+See the module [ignore](integration-tests/ignore) for an example of how to use this feature. 
+
 ## Authentication Support
 
 If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator
