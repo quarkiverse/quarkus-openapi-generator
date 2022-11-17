@@ -1,9 +1,8 @@
-package io.quarkiverse.openapi.generator.deployment;
+package io.quarkiverse.xapi.generator.deployment.codegen;
 
 import java.nio.file.Path;
 import java.util.Map;
 
-import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -94,7 +93,8 @@ public class CodegenConfig {
 
     public static String getSanitizedFileName(final Path openApiFilePath) {
         return StringUtil
-                .replaceNonAlphanumericByUnderscores(OpenApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
+                .replaceNonAlphanumericByUnderscores(
+                        XApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
     }
 
     public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {

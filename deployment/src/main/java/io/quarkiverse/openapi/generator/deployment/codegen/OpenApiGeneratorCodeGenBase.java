@@ -1,31 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Stream;
+import static io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig.*;
 
-import org.eclipse.microprofile.config.Config;
-import org.openapitools.codegen.config.GlobalSettings;
-
-import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
-import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
-import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
-import io.quarkus.bootstrap.prebuild.CodeGenException;
-import io.quarkus.deployment.CodeGenContext;
-import io.quarkus.deployment.CodeGenProvider;
-import io.smallrye.config.SmallRyeConfig;
-
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiGeneratorCodeGenBase;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
@@ -33,83 +10,30 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeM
  * <p>
  * Wraps the <a href="https://openapi-generator.tech/docs/generators/java">OpenAPI Generator Client for Java</a>
  */
-public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
+public abstract class OpenApiGeneratorCodeGenBase extends XApiGeneratorCodeGenBase {
 
-    static final String YAML = ".yaml";
-    static final String YML = ".yml";
-    static final String JSON = ".json";
+    public OpenApiGeneratorCodeGenBase() {
+        super(new OpenApiGeneratorCodeGenerator());
+    }
 
-    private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
+    static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
+
+    static final String INPUT_DIR = "openapi";
+
+    static final String PROVIDER_PREFIX = "open-api";
+
+    @Override
+    public String providerPrefix() {
+        return PROVIDER_PREFIX;
+    }
 
     @Override
     public String inputDirectory() {
-        return "openapi";
+        return INPUT_DIR;
     }
 
     @Override
-    public boolean trigger(CodeGenContext context) throws CodeGenException {
-        final Path outDir = context.outDir();
-        final Path openApiDir = context.inputDir();
-        final List<String> ignoredFiles = context.config()
-                .getOptionalValues("quarkus.openapi-generator.codegen.ignore", String.class).orElse(List.of());
-
-        if (Files.isDirectory(openApiDir)) {
-            try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
-                openApiFilesPaths
-                        .filter(Files::isRegularFile)
-                        .filter(path -> {
-                            String fileName = path.getFileName().toString();
-                            return fileName.endsWith(inputExtension()) && !ignoredFiles.contains(fileName);
-                        })
-                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
-            } catch (IOException e) {
-                throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
-                        e);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-    protected void generate(final Config config, final Path openApiFilePath, final Path outDir) {
-        final String basePackage = getBasePackage(config, openApiFilePath);
-        final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
-        final Boolean validateSpec = config.getOptionalValue(VALIDATE_SPEC_PROPERTY_NAME, Boolean.class).orElse(true);
-        GlobalSettings.setProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
-                config.getOptionalValue(CodegenConfig.DEFAULT_SECURITY_SCHEME, String.class).orElse(""));
-
-        final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                openApiFilePath.normalize(),
-                outDir,
-                verbose,
-                validateSpec)
-                .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
-                .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
-                        config));
-
-        config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
-                .ifPresent(generator::withSkipFormModelConfig);
-
-        config.getOptionalValue(getAdditionalModelTypeAnnotationsPropertyName(openApiFilePath), String.class)
-                .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
-
-        config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
-                .ifPresent(generator::withCustomRegisterProviders);
-
-        SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
-        smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
-                .ifPresent(generator::withTypeMappings);
-
-        smallRyeConfig.getOptionalValues(getImportMappingsPropertyName(openApiFilePath), String.class, String.class)
-                .ifPresent(generator::withImportMappings);
-
-        generator.generate(basePackage);
-    }
-
-    private String getBasePackage(final Config config, final Path openApiFilePath) {
-        return config
-                .getOptionalValue(getBasePackagePropertyName(openApiFilePath), String.class)
-                .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
+    protected String getDefaultPackage() {
+        return DEFAULT_PACKAGE;
     }
 }

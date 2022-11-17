@@ -1,11 +1,13 @@
-package io.quarkiverse.openapi.generator.deployment;
+package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.BUILD_TIME_SPEC_PREFIX_FORMAT;
+import static io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig.BUILD_TIME_SPEC_PREFIX_FORMAT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
+
+import io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig;
 
 class CodegenConfigTest {
 

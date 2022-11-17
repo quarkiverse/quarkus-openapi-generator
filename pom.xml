@@ -14,6 +14,7 @@
   <modules>
     <module>deployment</module>
     <module>runtime</module>
+    <module>common</module>
     <module>test-utils</module>
   </modules>
   <properties>

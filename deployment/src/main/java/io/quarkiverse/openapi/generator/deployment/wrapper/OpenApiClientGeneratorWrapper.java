@@ -1,8 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
+import static io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig.resolveApiPackage;
+import static io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig.resolveModelPackage;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.requireNonNull;

@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator.deployment.codegen;
+package io.quarkiverse.xapi.generator.deployment.codegen;
 
 import static java.util.Objects.requireNonNull;
 
@@ -10,7 +10,6 @@ import java.util.Objects;
 
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
-import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.smallrye.config.PropertiesConfigSource;
 
 public class SpecInputModel {

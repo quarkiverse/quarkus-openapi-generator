@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
-import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiGeneratorOutputPaths;
 import io.quarkus.qute.EvalContext;
 import io.quarkus.qute.Expression;
 import io.quarkus.qute.NamespaceResolver;
@@ -49,7 +49,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
     }
 
     public String parseUri(String uri) {
-        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString();
+        return XApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString();
     }
 
     @Override
