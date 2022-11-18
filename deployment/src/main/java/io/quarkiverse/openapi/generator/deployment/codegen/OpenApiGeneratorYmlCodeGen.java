@@ -8,5 +8,4 @@ public class OpenApiGeneratorYmlCodeGen extends XApiGeneratorCodeGenBase {
     public OpenApiGeneratorYmlCodeGen() {
         super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(XApiConstants.YML));
     }
-
 }

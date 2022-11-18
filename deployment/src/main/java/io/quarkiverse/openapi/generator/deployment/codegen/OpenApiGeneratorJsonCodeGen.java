@@ -8,5 +8,4 @@ public class OpenApiGeneratorJsonCodeGen extends XApiGeneratorCodeGenBase {
     public OpenApiGeneratorJsonCodeGen() {
         super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(XApiConstants.JSON));
     }
-
 }

@@ -23,7 +23,7 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.smallrye.config.SmallRyeConfigBuilder;
 
-public abstract class XApiGeneratorStreamCodeGen<V extends XSpecInputModel, T extends XApiSpecInputProvider<V>>
+public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider<? extends XSpecInputModel>>
         extends XApiGeneratorCodeGenBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XApiGeneratorStreamCodeGen.class);
@@ -43,7 +43,7 @@ public abstract class XApiGeneratorStreamCodeGen<V extends XSpecInputModel, T ex
         boolean generated = false;
 
         for (final T provider : this.providers) {
-            for (V inputModel : provider.read(context)) {
+            for (XSpecInputModel inputModel : provider.read(context)) {
                 LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
