@@ -1,7 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
@@ -17,16 +20,6 @@ import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 import io.smallrye.config.SmallRyeConfig;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
-
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
  * src/test/openapi
@@ -41,17 +34,23 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
+    // It will be ignored if INPUT_BASE_DIR is specified
     @Override
     public String inputDirectory() {
         return "openapi";
     }
 
     @Override
+    public boolean shouldRun(Path sourceDir, Config config) {
+        return Files.isDirectory(config.getOptionalValue(INPUT_BASE_DIR, Path.class).orElse(sourceDir), new LinkOption[0]);
+    }
+
+    @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
-        final Path openApiDir = context.inputDir();
-        final List<String> ignoredFiles = context.config()
-                .getOptionalValues("quarkus.openapi-generator.codegen.ignore", String.class).orElse(List.of());
+        final Path openApiDir = context.config().getOptionalValue(INPUT_BASE_DIR, Path.class).orElse(context.inputDir());
+        final List<String> filesToInclude = context.config().getOptionalValues(INCLUDE_FILES, String.class).orElse(List.of());
+        final List<String> filesToExclude = context.config().getOptionalValues(EXCLUDE_FILES, String.class).orElse(List.of());
 
         if (Files.isDirectory(openApiDir)) {
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
@@ -59,7 +58,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .filter(Files::isRegularFile)
                         .filter(path -> {
                             String fileName = path.getFileName().toString();
-                            return fileName.endsWith(inputExtension()) && !ignoredFiles.contains(fileName);
+                            return fileName.endsWith(inputExtension())
+                                    && !filesToExclude.contains(fileName)
+                                    && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
                         })
                         .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
             } catch (IOException e) {

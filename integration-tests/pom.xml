@@ -20,6 +20,7 @@
     <module>register-provider</module>
     <module>security</module>
     <module>ignore</module>
+    <module>change-base-dir</module>
   </modules>
   <dependencyManagement>
     <dependencies>

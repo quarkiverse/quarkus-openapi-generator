@@ -18,6 +18,9 @@ public class CodegenConfig {
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
+    public static final String INPUT_BASE_DIR = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".inputBaseDir";
+    public static final String INCLUDE_FILES = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".include";
+    public static final String EXCLUDE_FILES = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".exclude";
     public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
     public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
     // package visibility for unit tests
