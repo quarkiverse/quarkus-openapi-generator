@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class XApiGeneratorOutputPaths {
-    public static final String STREAM = "-stream";
+    private static final String STREAM_SUFFIX = "-" + XApiConstants.STREAM;
 
     public static Path getRelativePath(Path path) {
         List<String> paths = new ArrayList<>();
         Path currentPath = path;
         while (currentPath != null && currentPath.getFileName() != null) {
-            if (currentPath.getFileName().toString().endsWith(STREAM)) {
+            if (currentPath.getFileName().toString().endsWith(STREAM_SUFFIX)) {
                 Iterator<String> iter = paths.iterator();
                 Path result = Path.of(iter.next());
                 while (iter.hasNext()) {

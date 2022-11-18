@@ -23,21 +23,17 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.smallrye.config.SmallRyeConfigBuilder;
 
-public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider> extends XApiGeneratorCodeGenBase {
+public abstract class XApiGeneratorStreamCodeGen<V extends XSpecInputModel, T extends XApiSpecInputProvider<V>>
+        extends XApiGeneratorCodeGenBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XApiGeneratorStreamCodeGen.class);
 
     private final List<T> providers;
 
-    public XApiGeneratorStreamCodeGen(CodeGenerator codeGenerator, Class<T> clazz) {
-        super(codeGenerator);
+    public XApiGeneratorStreamCodeGen(CodeGenerator codeGenerator, XApiConstants constants, Class<T> clazz) {
+        super(codeGenerator, constants);
         providers = ServiceLoader.load(clazz).stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
         LOGGER.debug("Loaded {} OpenApiSpecInputProviders", providers);
-    }
-
-    @Override
-    public String inputExtension() {
-        return XApiGeneratorOutputPaths.STREAM;
     }
 
     @Override
@@ -47,7 +43,7 @@ public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider
         boolean generated = false;
 
         for (final T provider : this.providers) {
-            for (SpecInputModel inputModel : provider.read(context)) {
+            for (V inputModel : provider.read(context)) {
                 LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
@@ -73,7 +69,7 @@ public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider
         return generated;
     }
 
-    private Config mergeConfig(CodeGenContext context, SpecInputModel inputModel) {
+    private Config mergeConfig(CodeGenContext context, XSpecInputModel inputModel) {
         final List<ConfigSource> sources = new ArrayList<>();
         context.config().getConfigSources().forEach(sources::add);
         return new SmallRyeConfigBuilder()

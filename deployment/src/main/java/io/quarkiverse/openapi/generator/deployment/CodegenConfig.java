@@ -1,27 +1,25 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.openapi.generator.deployment;
 
 import java.nio.file.Path;
 import java.util.Map;
 
+import io.quarkiverse.xapi.generator.deployment.codegen.SpecItemConfig;
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
-import io.smallrye.config.common.utils.StringUtil;
 
 // This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
 @ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
 public class CodegenConfig {
 
-    static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
+    public static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
 
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
     public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
     public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
-    // package visibility for unit tests
-    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
-    private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
     private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
     private static final String TYPE_MAPPINGS_PROP_FORMAT = "%s.type-mappings";
@@ -62,7 +60,7 @@ public class CodegenConfig {
     }
 
     public static String getBasePackagePropertyName(final Path openApiFilePath) {
-        return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+        return XApiCodeGenUtils.getBasePackagePropertyName(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
     }
 
     public static String getSkipFormModelPropertyName(final Path openApiFilePath) {
@@ -88,13 +86,7 @@ public class CodegenConfig {
      * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
-        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getSanitizedFileName(openApiFilePath));
-    }
-
-    public static String getSanitizedFileName(final Path openApiFilePath) {
-        return StringUtil
-                .replaceNonAlphanumericByUnderscores(
-                        XApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
+        return XApiCodeGenUtils.getBuildTimeSpecPropertyPrefix(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
     }
 
     public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {

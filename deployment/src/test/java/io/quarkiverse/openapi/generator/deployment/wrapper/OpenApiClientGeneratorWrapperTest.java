@@ -36,7 +36,7 @@ import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
 import io.quarkiverse.openapi.generator.deployment.MockConfigUtils;
-import io.quarkiverse.xapi.generator.deployment.codegen.ClassCodegenConfigParser;
+import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigParser;
 
 public class OpenApiClientGeneratorWrapperTest {
 

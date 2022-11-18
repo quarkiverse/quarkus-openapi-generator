@@ -1,8 +1,12 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-public class OpenApiGeneratorJsonCodeGen extends OpenApiGeneratorCodeGenBase {
-    @Override
-    public String inputExtension() {
-        return JSON;
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiConstants;
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiGeneratorCodeGenBase;
+
+public class OpenApiGeneratorJsonCodeGen extends XApiGeneratorCodeGenBase {
+
+    public OpenApiGeneratorJsonCodeGen() {
+        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(XApiConstants.JSON));
     }
+
 }

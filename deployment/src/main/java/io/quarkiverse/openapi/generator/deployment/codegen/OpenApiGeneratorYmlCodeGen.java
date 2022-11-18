@@ -1,9 +1,12 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-public class OpenApiGeneratorYmlCodeGen extends OpenApiGeneratorCodeGenBase {
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiConstants;
+import io.quarkiverse.xapi.generator.deployment.codegen.XApiGeneratorCodeGenBase;
 
-    @Override
-    public String inputExtension() {
-        return YML;
+public class OpenApiGeneratorYmlCodeGen extends XApiGeneratorCodeGenBase {
+
+    public OpenApiGeneratorYmlCodeGen() {
+        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(XApiConstants.YML));
     }
+
 }

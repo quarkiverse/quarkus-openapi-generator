@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider;
-import io.quarkiverse.xapi.generator.deployment.codegen.SpecInputModel;
+import io.quarkiverse.openapi.generator.deployment.codegen.SpecInputModel;
 import io.quarkus.deployment.CodeGenContext;
 
 /**

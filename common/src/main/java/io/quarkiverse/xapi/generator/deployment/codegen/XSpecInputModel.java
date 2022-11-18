@@ -1,5 +1,6 @@
 package io.quarkiverse.xapi.generator.deployment.codegen;
 
+import static io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils.getBuildTimeSpecPropertyPrefix;
 import static java.util.Objects.requireNonNull;
 
 import java.io.InputStream;
@@ -12,13 +13,15 @@ import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import io.smallrye.config.PropertiesConfigSource;
 
-public class SpecInputModel {
+public abstract class XSpecInputModel {
 
     private final InputStream inputStream;
     private final String filename;
     private final Map<String, String> codegenProperties = new HashMap<>();
 
-    public SpecInputModel(final String filename, final InputStream inputStream) {
+    protected abstract String getConfigPrefix();
+
+    protected XSpecInputModel(final String filename, final InputStream inputStream) {
         requireNonNull(inputStream, "InputStream can't be null");
         requireNonNull(filename, "File name can't be null");
         this.inputStream = inputStream;
@@ -30,9 +33,9 @@ public class SpecInputModel {
      * @param inputStream the content of the spec file
      * @param basePackageName the name of the package where the files will be generated
      */
-    public SpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
+    public XSpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
         this(filename, inputStream);
-        this.codegenProperties.put(CodegenConfig.getBasePackagePropertyName(Path.of(filename)), basePackageName);
+        this.codegenProperties.put(getBuildTimeSpecPropertyPrefix(Path.of(filename), getConfigPrefix()), basePackageName);
     }
 
     public String getFileName() {
@@ -62,12 +65,12 @@ public class SpecInputModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SpecInputModel that = (SpecInputModel) o;
-        return inputStream.equals(that.inputStream) && filename.equals(that.filename);
+        XSpecInputModel that = (XSpecInputModel) o;
+        return filename.equals(that.filename);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inputStream, filename);
+        return Objects.hash(filename);
     }
 }

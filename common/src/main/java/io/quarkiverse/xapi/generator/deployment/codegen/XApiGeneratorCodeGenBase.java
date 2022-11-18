@@ -1,6 +1,7 @@
 package io.quarkiverse.xapi.generator.deployment.codegen;
 
-import static io.quarkiverse.xapi.generator.deployment.codegen.CodegenConfig.*;
+import static io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils.getBasePackagePropertyName;
+import static io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils.getSanitizedFileName;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,14 +23,17 @@ import io.quarkus.deployment.CodeGenProvider;
  */
 public abstract class XApiGeneratorCodeGenBase implements CodeGenProvider {
 
-    protected static final String YAML = ".yaml";
-    protected static final String YML = ".yml";
-    protected static final String JSON = ".json";
-
     protected final CodeGenerator generator;
+    private final XApiConstants constants;
 
-    protected XApiGeneratorCodeGenBase(CodeGenerator generator) {
+    protected XApiGeneratorCodeGenBase(CodeGenerator generator, XApiConstants constants) {
         this.generator = generator;
+        this.constants = constants;
+    }
+
+    @Override
+    public String inputDirectory() {
+        return constants.getInputDirectory();
     }
 
     @Override
@@ -60,18 +64,17 @@ public abstract class XApiGeneratorCodeGenBase implements CodeGenProvider {
 
     @Override
     public String providerId() {
-        return providerPrefix() + "-" + inputExtension().substring(1);
+        return constants.getProviderPrefix() + "-" + constants.getExtension();
     }
 
-    protected abstract String getDefaultPackage();
-
-    protected String providerPrefix() {
-        return inputDirectory();
+    @Override
+    public String inputExtension() {
+        return "." + constants.getExtension();
     }
 
     protected final String getBasePackage(final Config config, final Path openApiFilePath) {
         return config
-                .getOptionalValue(getBasePackagePropertyName(openApiFilePath), String.class)
-                .orElse(String.format("%s.%s", getDefaultPackage(), getSanitizedFileName(openApiFilePath)));
+                .getOptionalValue(getBasePackagePropertyName(openApiFilePath, constants.getConfigPrefix()), String.class)
+                .orElse(String.format("%s.%s", constants.getDefaultPackage(), getSanitizedFileName(openApiFilePath)));
     }
 }
