@@ -3,7 +3,6 @@ package io.quarkiverse.openapi.generator.deployment;
 import java.nio.file.Path;
 import java.util.Map;
 
-import io.quarkiverse.xapi.generator.deployment.codegen.SpecItemConfig;
 import io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;

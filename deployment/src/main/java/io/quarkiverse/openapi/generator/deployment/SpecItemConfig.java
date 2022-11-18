@@ -1,4 +1,4 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.openapi.generator.deployment;
 
 import java.util.Map;
 import java.util.Optional;
