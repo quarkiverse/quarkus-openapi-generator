@@ -8,8 +8,8 @@
         <groupId>io.quarkiverse.openapi.generator</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>quarkus-openapi-generator-it-change-base-dir</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Change base dir</name>
+    <artifactId>quarkus-openapi-generator-it-change-directory</artifactId>
+    <name>Quarkus - Openapi Generator - Integration Tests - Change directory</name>
 
     <dependencies>
         <!-- petstore requires OAuth2 -->
@@ -48,6 +48,7 @@
                     <execution>
                         <goals>
                             <goal>build</goal>
+                            <goal>generate-code</goal>
                             <goal>generate-code-tests</goal>
                         </goals>
                     </execution>

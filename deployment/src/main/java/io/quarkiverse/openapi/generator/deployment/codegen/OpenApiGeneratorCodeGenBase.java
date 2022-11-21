@@ -4,14 +4,15 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
+import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
@@ -34,7 +35,15 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
-    // It will be ignored if INPUT_BASE_DIR is specified
+    /**
+     * The input base directory from
+     *
+     * <pre>
+     * src/main
+     *
+     * <pre>
+     * directory. Ignored if INPUT_BASE_DIR is specified.
+     **/
     @Override
     public String inputDirectory() {
         return "openapi";
@@ -42,7 +51,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
-        return Files.isDirectory(config.getOptionalValue(INPUT_BASE_DIR, Path.class).orElse(sourceDir), new LinkOption[0]);
+        final Optional<Path> inputBaseDir = config.getOptionalValue(INPUT_BASE_DIR, Path.class);
+        if (inputBaseDir.isPresent() && !Files.isDirectory(inputBaseDir.get())) {
+            throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, inputBaseDir.get()));
+        }
+        return inputBaseDir.isPresent() || Files.isDirectory(sourceDir);
     }
 
     @Override

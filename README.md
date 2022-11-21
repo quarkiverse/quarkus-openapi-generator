@@ -53,16 +53,17 @@ You probably already have this configuration if you created your application wit
 
 Now, create the directory `openapi` under your `src/main/` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
 
-If you want to change the directory where openapi files must be found, use the following property:
+If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi-generator.codegen.input-base-dir`.
+IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property: 
 
 ```properties
-quarkus.openapi-generator.codegen.inputBaseDir=PATH_TO_THE_NEW_FOLDER_RELATIVE_TO_PROJECT_BASE_DIR
+quarkus.openapi-generator.codegen.input-base-dir=openapi-definitions
 ```
 
 To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
 ```properties
-quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme.openapi
+º
 quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annotations=@org.test.Foo;@org.test.Bar
 ```
 
@@ -128,7 +129,8 @@ For more information, see the [Maven Logging Configuration](https://maven.apache
 
 ## Filtering OpenAPI Specification Files
 
-To limit code generation for only a specific set of OpenAPI specification files, you can set the `quarkus.openapi-generator.codegen.include` property. 
+By default, the extension will process every OpenAPI specification file in the given path.
+To limit code generation to only a specific set of OpenAPI specification files, you can set the `quarkus.openapi-generator.codegen.include` property. 
 For instance, if you want to limit code generation for `include-openapi.yaml` and `include-openapi-2.yaml` files, you need to define the property like:
 
 ```properties
@@ -136,11 +138,13 @@ quarkus.openapi-generator.codegen.include=include-openapi.yaml,include-openapi-2
 ```
 
 If you prefer to specify which files you want to skip, you can set the `quarkus.openapi-generator.codegen.exclude` property.
-For instance, if you want to limit code generation for `exclude-openapi.yaml` and `exclude-openapi-2.yaml` files, you need to define the property like:
+For instance, if you want to skip code generation for `exclude-openapi.yaml` and `exclude-openapi-2.yaml` files, you need to define the property like:
 
 ```properties
-quarkus.openapi-generator.codegen.include=exclude-openapi.yaml,exclude-openapi-2.yaml
+quarkus.openapi-generator.codegen.exclude=exclude-openapi.yaml,exclude-openapi-2.yaml
 ```
+
+IMPORTANT: `exclude` supersedes `include`, meaning that if a file is in both property it will NOT be analysed.
 
 See the module [ignore](integration-tests/ignore) for an example of how to use this feature. 
 
