@@ -4,7 +4,10 @@ import java.nio.file.Path;
 
 import io.smallrye.config.common.utils.StringUtil;
 
-public class XApiCodeGenUtils {
+public final class XApiCodeGenUtils {
+
+    private XApiCodeGenUtils() {
+    }
 
     private static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus.%s.spec.%s";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
