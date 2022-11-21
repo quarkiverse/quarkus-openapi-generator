@@ -1,6 +1,6 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
-import static io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils.getBuildTimeSpecPropertyPrefix;
+import static io.quarkiverse.spec.generator.deployment.codegen.SpecApiCodeGenUtils.getBuildTimeSpecPropertyPrefix;
 import static java.util.Objects.requireNonNull;
 
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import io.smallrye.config.PropertiesConfigSource;
 
-public abstract class XSpecInputModel {
+public abstract class BaseSpecInputModel {
 
     private final InputStream inputStream;
     private final String filename;
@@ -21,7 +21,7 @@ public abstract class XSpecInputModel {
 
     protected abstract String getConfigPrefix();
 
-    protected XSpecInputModel(final String filename, final InputStream inputStream) {
+    protected BaseSpecInputModel(final String filename, final InputStream inputStream) {
         requireNonNull(inputStream, "InputStream can't be null");
         requireNonNull(filename, "File name can't be null");
         this.inputStream = inputStream;
@@ -33,7 +33,7 @@ public abstract class XSpecInputModel {
      * @param inputStream the content of the spec file
      * @param basePackageName the name of the package where the files will be generated
      */
-    protected XSpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
+    protected BaseSpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
         this(filename, inputStream);
         this.codegenProperties.put(getBuildTimeSpecPropertyPrefix(Path.of(filename), getConfigPrefix()), basePackageName);
     }
@@ -65,7 +65,7 @@ public abstract class XSpecInputModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        XSpecInputModel that = (XSpecInputModel) o;
+        BaseSpecInputModel that = (BaseSpecInputModel) o;
         return filename.equals(that.filename);
     }
 

@@ -1,4 +1,4 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
 import java.io.InputStream;
 import java.util.List;
@@ -8,7 +8,7 @@ import io.quarkus.deployment.CodeGenContext;
 /**
  * Provider interface for clients to dynamically provide their own XAPI specification files.
  */
-public interface XApiSpecInputProvider<T extends XSpecInputModel> {
+public interface BaseApiSpecInputProvider<T extends BaseSpecInputModel> {
 
     /**
      * Fetch XAPI specification files from a given source.

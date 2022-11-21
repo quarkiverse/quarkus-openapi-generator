@@ -16,10 +16,10 @@ import org.openapitools.codegen.config.GlobalSettings;
 
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
-import io.quarkiverse.xapi.generator.deployment.codegen.CodeGenerator;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecCodeGenerator;
 import io.smallrye.config.SmallRyeConfig;
 
-public class OpenApiGeneratorCodeGenerator implements CodeGenerator {
+public class OpenApiGeneratorCodeGenerator implements SpecCodeGenerator {
 
     @Override
     public void generate(Config config, Path openApiFilePath, Path outDir, String basePackage) {

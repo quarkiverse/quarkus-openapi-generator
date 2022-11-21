@@ -1,12 +1,12 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
 import java.nio.file.Path;
 
 import io.smallrye.config.common.utils.StringUtil;
 
-public final class XApiCodeGenUtils {
+public final class SpecApiCodeGenUtils {
 
-    private XApiCodeGenUtils() {
+    private SpecApiCodeGenUtils() {
     }
 
     private static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus.%s.spec.%s";
@@ -15,7 +15,7 @@ public final class XApiCodeGenUtils {
     public static String getSanitizedFileName(final Path openApiFilePath) {
         return StringUtil
                 .replaceNonAlphanumericByUnderscores(
-                        XApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
+                        SpecApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
     }
 
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath, String configPrefix) {

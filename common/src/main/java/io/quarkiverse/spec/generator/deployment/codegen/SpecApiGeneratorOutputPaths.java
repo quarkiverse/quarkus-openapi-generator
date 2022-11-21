@@ -1,16 +1,16 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class XApiGeneratorOutputPaths {
-    
-    private XApiGeneratorOutputPaths() {
+public class SpecApiGeneratorOutputPaths {
+
+    private SpecApiGeneratorOutputPaths() {
     }
-    
-    private static final String STREAM_SUFFIX = "-" + XApiConstants.STREAM;
+
+    private static final String STREAM_SUFFIX = "-" + SpecApiConstants.STREAM;
 
     public static Path getRelativePath(Path path) {
         List<String> paths = new ArrayList<>();

@@ -1,4 +1,4 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -23,14 +23,14 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.smallrye.config.SmallRyeConfigBuilder;
 
-public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider<? extends XSpecInputModel>>
-        extends XApiGeneratorCodeGenBase {
+public abstract class SpecApiGeneratorStreamCodeGen<T extends BaseApiSpecInputProvider<? extends BaseSpecInputModel>>
+        extends SpecApiGeneratorCodeGenBase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(XApiGeneratorStreamCodeGen.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpecApiGeneratorStreamCodeGen.class);
 
     private final List<T> providers;
 
-    protected XApiGeneratorStreamCodeGen(CodeGenerator codeGenerator, XApiConstants constants, Class<T> clazz) {
+    protected SpecApiGeneratorStreamCodeGen(SpecCodeGenerator codeGenerator, SpecApiConstants constants, Class<T> clazz) {
         super(codeGenerator, constants);
         providers = ServiceLoader.load(clazz).stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
         LOGGER.debug("Loaded {} OpenApiSpecInputProviders", providers);
@@ -43,7 +43,7 @@ public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider
         boolean generated = false;
 
         for (final T provider : this.providers) {
-            for (XSpecInputModel inputModel : provider.read(context)) {
+            for (BaseSpecInputModel inputModel : provider.read(context)) {
                 LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
                 if (inputModel == null) {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
@@ -69,7 +69,7 @@ public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider
         return generated;
     }
 
-    private Config mergeConfig(CodeGenContext context, XSpecInputModel inputModel) {
+    private Config mergeConfig(CodeGenContext context, BaseSpecInputModel inputModel) {
         final List<ConfigSource> sources = new ArrayList<>();
         context.config().getConfigSources().forEach(sources::add);
         return new SmallRyeConfigBuilder()

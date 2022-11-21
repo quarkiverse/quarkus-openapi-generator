@@ -1,11 +1,12 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import io.quarkiverse.xapi.generator.deployment.codegen.XApiConstants;
-import io.quarkiverse.xapi.generator.deployment.codegen.XApiGeneratorStreamCodeGen;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiConstants;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiGeneratorStreamCodeGen;
 
-public class OpenApiGeneratorStreamCodeGen extends XApiGeneratorStreamCodeGen<OpenApiSpecInputProvider> {
+public class OpenApiGeneratorStreamCodeGen extends SpecApiGeneratorStreamCodeGen<OpenApiSpecInputProvider> {
 
     public OpenApiGeneratorStreamCodeGen() {
-        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(XApiConstants.STREAM), OpenApiSpecInputProvider.class);
+        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(SpecApiConstants.STREAM),
+                OpenApiSpecInputProvider.class);
     }
 }

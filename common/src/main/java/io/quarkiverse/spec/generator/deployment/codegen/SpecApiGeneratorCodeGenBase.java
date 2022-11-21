@@ -1,7 +1,7 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
-import static io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils.getBasePackagePropertyName;
-import static io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils.getSanitizedFileName;
+import static io.quarkiverse.spec.generator.deployment.codegen.SpecApiCodeGenUtils.getBasePackagePropertyName;
+import static io.quarkiverse.spec.generator.deployment.codegen.SpecApiCodeGenUtils.getSanitizedFileName;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,12 +21,12 @@ import io.quarkus.deployment.CodeGenProvider;
  * <p>
  * Wraps the <a href="https://openapi-generator.tech/docs/generators/java">OpenAPI Generator Client for Java</a>
  */
-public abstract class XApiGeneratorCodeGenBase implements CodeGenProvider {
+public abstract class SpecApiGeneratorCodeGenBase implements CodeGenProvider {
 
-    protected final CodeGenerator generator;
-    private final XApiConstants constants;
+    protected final SpecCodeGenerator generator;
+    private final SpecApiConstants constants;
 
-    protected XApiGeneratorCodeGenBase(CodeGenerator generator, XApiConstants constants) {
+    protected SpecApiGeneratorCodeGenBase(SpecCodeGenerator generator, SpecApiConstants constants) {
         this.generator = generator;
         this.constants = constants;
     }

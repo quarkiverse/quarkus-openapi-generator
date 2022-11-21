@@ -6,10 +6,9 @@
     <artifactId>quarkus-openapi-generator-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <groupId>io.quarkiverse.xapi.generator</groupId>
-  <artifactId>quarkus-xapi-generator-common</artifactId>
-  <version>1.0.0</version>
-  <name>Quarkus - XApi Generator - Common library</name>
+  <groupId>io.quarkiverse.spec.generator</groupId>
+  <artifactId>quarkus-spec-generator-common</artifactId>
+  <name>Quarkus - Spec Generator - Common library</name>
   <dependencies>
     <!-- Quarkus -->
     <dependency>

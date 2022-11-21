@@ -3,9 +3,9 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 import java.io.InputStream;
 
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
-import io.quarkiverse.xapi.generator.deployment.codegen.XSpecInputModel;
+import io.quarkiverse.spec.generator.deployment.codegen.BaseSpecInputModel;
 
-public class SpecInputModel extends XSpecInputModel {
+public class SpecInputModel extends BaseSpecInputModel {
 
     public SpecInputModel(final String fileName, final InputStream inputStream) {
         super(fileName, inputStream);

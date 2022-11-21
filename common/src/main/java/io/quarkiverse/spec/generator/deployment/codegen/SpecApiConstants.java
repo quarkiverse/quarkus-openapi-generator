@@ -1,6 +1,6 @@
-package io.quarkiverse.xapi.generator.deployment.codegen;
+package io.quarkiverse.spec.generator.deployment.codegen;
 
-public abstract class XApiConstants {
+public abstract class SpecApiConstants {
 
     public static final String YAML = "yaml";
     public static final String YML = "yml";
@@ -13,7 +13,7 @@ public abstract class XApiConstants {
     private final String configPrefix;
     private final String extension;
 
-    protected XApiConstants(String providerPrefix, String inputDirectory, String defaultPackage, String configPrefix,
+    protected SpecApiConstants(String providerPrefix, String inputDirectory, String defaultPackage, String configPrefix,
             String extension) {
         this.providerPrefix = providerPrefix;
         this.inputDirectory = inputDirectory;

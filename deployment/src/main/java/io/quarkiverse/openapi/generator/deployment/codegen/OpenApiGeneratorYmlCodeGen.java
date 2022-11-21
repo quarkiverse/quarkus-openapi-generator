@@ -1,11 +1,11 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import io.quarkiverse.xapi.generator.deployment.codegen.XApiConstants;
-import io.quarkiverse.xapi.generator.deployment.codegen.XApiGeneratorCodeGenBase;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiConstants;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiGeneratorCodeGenBase;
 
-public class OpenApiGeneratorYmlCodeGen extends XApiGeneratorCodeGenBase {
+public class OpenApiGeneratorYmlCodeGen extends SpecApiGeneratorCodeGenBase {
 
     public OpenApiGeneratorYmlCodeGen() {
-        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(XApiConstants.YML));
+        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(SpecApiConstants.YML));
     }
 }

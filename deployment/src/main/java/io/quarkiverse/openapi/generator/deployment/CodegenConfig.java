@@ -3,7 +3,7 @@ package io.quarkiverse.openapi.generator.deployment;
 import java.nio.file.Path;
 import java.util.Map;
 
-import io.quarkiverse.xapi.generator.deployment.codegen.XApiCodeGenUtils;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiCodeGenUtils;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -59,7 +59,7 @@ public class CodegenConfig {
     }
 
     public static String getBasePackagePropertyName(final Path openApiFilePath) {
-        return XApiCodeGenUtils.getBasePackagePropertyName(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
+        return SpecApiCodeGenUtils.getBasePackagePropertyName(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
     }
 
     public static String getSkipFormModelPropertyName(final Path openApiFilePath) {
@@ -85,7 +85,7 @@ public class CodegenConfig {
      * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
-        return XApiCodeGenUtils.getBuildTimeSpecPropertyPrefix(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
+        return SpecApiCodeGenUtils.getBuildTimeSpecPropertyPrefix(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
     }
 
     public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {
