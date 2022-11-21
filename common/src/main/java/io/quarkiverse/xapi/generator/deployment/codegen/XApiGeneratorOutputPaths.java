@@ -6,6 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class XApiGeneratorOutputPaths {
+    
+    private XApiGeneratorOutputPaths() {
+    }
+    
     private static final String STREAM_SUFFIX = "-" + XApiConstants.STREAM;
 
     public static Path getRelativePath(Path path) {
