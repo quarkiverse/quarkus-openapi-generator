@@ -33,7 +33,7 @@ public abstract class XSpecInputModel {
      * @param inputStream the content of the spec file
      * @param basePackageName the name of the package where the files will be generated
      */
-    public XSpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
+    protected XSpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
         this(filename, inputStream);
         this.codegenProperties.put(getBuildTimeSpecPropertyPrefix(Path.of(filename), getConfigPrefix()), basePackageName);
     }

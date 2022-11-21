@@ -30,7 +30,7 @@ public abstract class XApiGeneratorStreamCodeGen<T extends XApiSpecInputProvider
 
     private final List<T> providers;
 
-    public XApiGeneratorStreamCodeGen(CodeGenerator codeGenerator, XApiConstants constants, Class<T> clazz) {
+    protected XApiGeneratorStreamCodeGen(CodeGenerator codeGenerator, XApiConstants constants, Class<T> clazz) {
         super(codeGenerator, constants);
         providers = ServiceLoader.load(clazz).stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
         LOGGER.debug("Loaded {} OpenApiSpecInputProviders", providers);
