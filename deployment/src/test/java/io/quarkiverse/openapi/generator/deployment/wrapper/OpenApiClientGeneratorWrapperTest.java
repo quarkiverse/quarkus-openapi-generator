@@ -24,6 +24,7 @@ import org.openapitools.codegen.config.GlobalSettings;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -32,6 +33,8 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithName;
+import com.github.javaparser.ast.type.Type;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
@@ -351,6 +354,87 @@ public class OpenApiClientGeneratorWrapperTest {
                 .collect(Collectors.toList());
         assertThat(imports).contains("java.io.InputStream");
         assertThat(imports).doesNotContain("java.io.File");
+    }
+
+    @Test
+    void withoutAnyTypeOrImportMappingsItShouldGenerateUsingJava8DatesAndTimes()
+            throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
+                .generate("org.datetime.regression");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("SomeName.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
+        assertThat(classes).hasSize(1);
+        ClassOrInterfaceDeclaration generatedPojoClass = classes.get(0);
+
+        verifyGeneratedDateAndTimeTypes(
+                generatedPojoClass,
+                Map.of(
+                        "someDate", "LocalDate",
+                        "someDateTime", "OffsetDateTime",
+                        "dateArray", "List<LocalDate>",
+                        "dateTimeArray", "List<OffsetDateTime>",
+                        "dateSet", "Set<LocalDate>",
+                        "dateTimeSet", "Set<OffsetDateTime>",
+                        "dateMap", "Map<String,LocalDate>",
+                        "dateTimeMap", "Map<String,OffsetDateTime>"));
+        assertThat(compilationUnit.getImports().stream().map(NodeWithName::getNameAsString))
+                .contains("java.time.LocalDate", "java.time.OffsetDateTime");
+    }
+
+    @Test
+    void shouldBeAbleToAddCustomeDateAndTimeMappings() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
+                .withTypeMappings(Map.of(
+                        "date", "ThaiBuddhistDate",
+                        "DateTime", "Instant"))
+                .withImportMappings(Map.of(
+                        "ThaiBuddhistDate", "java.time.chrono.ThaiBuddhistDate",
+                        "Instant", "java.time.Instant"))
+                .generate("org.datetime.mappings");
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("SomeName.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
+        assertThat(classes).hasSize(1);
+        ClassOrInterfaceDeclaration generatedPojoClass = classes.get(0);
+
+        verifyGeneratedDateAndTimeTypes(
+                generatedPojoClass,
+                Map.of(
+                        "someDate", "ThaiBuddhistDate",
+                        "someDateTime", "Instant",
+                        "dateArray", "List<ThaiBuddhistDate>",
+                        "dateTimeArray", "List<Instant>",
+                        "dateSet", "Set<ThaiBuddhistDate>",
+                        "dateTimeSet", "Set<Instant>",
+                        "dateMap", "Map<String,ThaiBuddhistDate>",
+                        "dateTimeMap", "Map<String,Instant>"));
+        assertThat(compilationUnit.getImports().stream().map(NodeWithName::getNameAsString))
+                .contains("java.time.chrono.ThaiBuddhistDate", "java.time.Instant");
+    }
+
+    private void verifyGeneratedDateAndTimeTypes(
+            ClassOrInterfaceDeclaration classDeclaration,
+            Map<String, String> expectedFieldsAndTypes) {
+        expectedFieldsAndTypes.forEach((fieldName, expectedFieldType) -> {
+            Optional<FieldDeclaration> fieldDeclaration = classDeclaration.getFieldByName(fieldName);
+            assertThat(fieldDeclaration).isPresent();
+
+            Optional<Node> fieldVariableDeclaration = fieldDeclaration.orElseThrow().getChildNodes().stream()
+                    .filter(it -> it instanceof VariableDeclarator)
+                    .findFirst();
+            assertThat(fieldVariableDeclaration).isPresent();
+
+            Type fieldType = ((VariableDeclarator) fieldVariableDeclaration.orElseThrow()).getType();
+            assertThat(fieldType.asString()).isEqualTo(expectedFieldType);
+        });
     }
 
     @Test

@@ -33,6 +33,12 @@ public class OpenApiClientGeneratorWrapper {
      * Security scheme for which to apply security constraints even if the OpenAPI definition has no security definition
      */
     public static final String DEFAULT_SECURITY_SCHEME = "defaultSecurityScheme";
+    private static final Map<String, String> defaultTypeMappings = Map.of(
+            "date", "LocalDate",
+            "DateTime", "OffsetDateTime");
+    private static final Map<String, String> defaultImportMappings = Map.of(
+            "LocalDate", "java.time.LocalDate",
+            "OffsetDateTime", "java.time.OffsetDateTime");
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
 
@@ -62,6 +68,8 @@ public class OpenApiClientGeneratorWrapper {
                 Collections.singletonMap("openApiSpecId", getSanitizedFileName(specFilePath)));
         this.configurator.addAdditionalProperty("openApiNullable", false);
         this.configurator.setValidateSpec(validateSpec);
+        defaultTypeMappings.forEach(this.configurator::addTypeMapping);
+        defaultImportMappings.forEach(this.configurator::addImportMapping);
         this.generator = new DefaultGenerator();
     }
 
