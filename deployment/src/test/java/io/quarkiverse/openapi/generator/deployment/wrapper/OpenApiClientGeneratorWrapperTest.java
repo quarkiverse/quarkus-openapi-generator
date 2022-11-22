@@ -387,7 +387,7 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void shouldBeAbleToAddCustomeDateAndTimeMappings() throws URISyntaxException, FileNotFoundException {
+    void shouldBeAbleToAddCustomDateAndTimeMappings() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
                 .withTypeMappings(Map.of(
                         "date", "ThaiBuddhistDate",

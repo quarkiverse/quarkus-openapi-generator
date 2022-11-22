@@ -70,6 +70,7 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.setValidateSpec(validateSpec);
         defaultTypeMappings.forEach(this.configurator::addTypeMapping);
         defaultImportMappings.forEach(this.configurator::addImportMapping);
+
         this.generator = new DefaultGenerator();
     }
 
