@@ -8,17 +8,14 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-class IncludeExcludeTest {
+class IncludeTest {
 
     @Test
-    void onlyNonIgnoredClassesAreGenerated() throws ClassNotFoundException {
+    void onlyIncludedClassesAreGenerated() throws ClassNotFoundException {
         assertThat(Class.forName("org.openapi.quarkus.include_openapi_yaml.api.SimpleOpenApiResourceApi"))
                 .isNotNull();
 
-        assertThatCode(() -> Class.forName("org.openapi.quarkus.exclude_openapi_yaml.api.ExcludedOpenApiResourceApi"))
-                .isInstanceOf(ClassNotFoundException.class);
-
-        assertThatCode(() -> Class.forName("org.openapi.quarkus.exclude_openapi_2_yaml.api.ExcludedOpenApiResource2Api"))
+        assertThatCode(() -> Class.forName("org.openapi.quarkus.exclude_openapi_yaml.api.IgnoredOpenApiResourceApi"))
                 .isInstanceOf(ClassNotFoundException.class);
     }
 }

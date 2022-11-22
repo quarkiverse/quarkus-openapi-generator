@@ -63,7 +63,6 @@ quarkus.openapi-generator.codegen.input-base-dir=openapi-definitions
 To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
 ```properties
-º
 quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annotations=@org.test.Foo;@org.test.Bar
 ```
 
