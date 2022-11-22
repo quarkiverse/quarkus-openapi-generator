@@ -13,6 +13,7 @@
     <version.org.openapitools>5.4.0</version.org.openapitools>
     <version.org.slf4j>2.0.3</version.org.slf4j>
     <version.com.github.jknack>4.3.1</version.com.github.jknack>
+    <version.io.quarkiverse.specs>1.0.0</version.io.quarkiverse.specs>
   </properties>
 
   <dependencies>
@@ -38,9 +39,9 @@
       <artifactId>quarkus-openapi-generator</artifactId>
     </dependency>
    <dependency>
-     <groupId>io.quarkiverse.spec.generator</groupId>
-     <artifactId>quarkus-spec-generator-common</artifactId>
-     <version>${project.version}</version>
+     <groupId>io.quarkiverse.specs</groupId>
+     <artifactId>quarkiverse-specs-common</artifactId>
+     <version>${version.io.quarkiverse.specs}</version>
    </dependency>
 
 
