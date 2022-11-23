@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: "Multipart form data API"
+  version: 1.0.0
+
+servers:
+  - url: "http://my.endpoint.com/api/v1"
+
+paths:
+  /dates-and-times:
+    get:
+      responses:
+        "200":
+          description: The response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SomeName'
+
+components:
+  schemas:
+    SomeName:
+      type: object
+      properties:
+        someDate:
+          type: string
+          format: date
+        someDateTime:
+          type: string
+          format: date-time
+        dateArray:
+          type: array
+          items:
+            type: string
+            format: date
+        dateTimeArray:
+          type: array
+          items:
+            type: string
+            format: date-time
+        dateSet:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            format: date
+        dateTimeSet:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            format: date-time
+        dateMap:
+          type: object
+          additionalProperties:
+            type: string
+            format: date
+        dateTimeMap:
+          type: object
+          additionalProperties:
+            type: string
+            format: date-time
+
+
