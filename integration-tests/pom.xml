@@ -19,8 +19,8 @@
     <module>circuit-breaker</module>
     <module>register-provider</module>
     <module>security</module>
-      <module>include</module>
-      <module>exclude</module>
+    <module>include</module>
+    <module>exclude</module>
     <module>change-directory</module>
   </modules>
   <dependencyManagement>

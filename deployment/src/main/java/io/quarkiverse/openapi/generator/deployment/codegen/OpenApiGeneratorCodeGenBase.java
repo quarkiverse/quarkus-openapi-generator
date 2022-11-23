@@ -1,6 +1,5 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +46,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
     /**
-     * The input base directory from <pre>src/main<pre> directory. Ignored if INPUT_BASE_DIR is specified.
+     * The input base directory from <pre>src/main<pre> directory.
+     * Ignored if INPUT_BASE_DIR is specified.
      **/
     @Override
     public String inputDirectory() {
@@ -74,16 +74,17 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         if (Files.isDirectory(openApiDir)) {
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 openApiFilesPaths
-                    .filter(Files::isRegularFile)
-                    .filter(path -> {
-                        String fileName = path.getFileName().toString();
-                        return fileName.endsWith(inputExtension())
-                            && !filesToExclude.contains(fileName)
-                            && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
-                    })
-                    .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
+                        .filter(Files::isRegularFile)
+                        .filter(path -> {
+                            String fileName = path.getFileName().toString();
+                            return fileName.endsWith(inputExtension())
+                                    && !filesToExclude.contains(fileName)
+                                    && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
+                        })
+                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
             } catch (IOException e) {
-                throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(), e);
+                throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
+                        e);
             }
             return true;
         }
@@ -96,40 +97,40 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
         final Boolean validateSpec = config.getOptionalValue(VALIDATE_SPEC_PROPERTY_NAME, Boolean.class).orElse(true);
         GlobalSettings.setProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
-            config.getOptionalValue(CodegenConfig.DEFAULT_SECURITY_SCHEME, String.class).orElse(""));
+                config.getOptionalValue(CodegenConfig.DEFAULT_SECURITY_SCHEME, String.class).orElse(""));
 
         final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-            openApiFilePath.normalize(),
-            outDir,
-            verbose,
-            validateSpec)
-            .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
-            .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
-                config));
+                openApiFilePath.normalize(),
+                outDir,
+                verbose,
+                validateSpec)
+                .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
+                .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
+                        config));
 
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
-            .ifPresent(generator::withSkipFormModelConfig);
+                .ifPresent(generator::withSkipFormModelConfig);
 
         config.getOptionalValue(getAdditionalModelTypeAnnotationsPropertyName(openApiFilePath), String.class)
-            .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
+                .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
 
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
-            .ifPresent(generator::withCustomRegisterProviders);
+                .ifPresent(generator::withCustomRegisterProviders);
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
         smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
-            .ifPresent(generator::withTypeMappings);
+                .ifPresent(generator::withTypeMappings);
 
         smallRyeConfig.getOptionalValues(getImportMappingsPropertyName(openApiFilePath), String.class, String.class)
-            .ifPresent(generator::withImportMappings);
+                .ifPresent(generator::withImportMappings);
 
         generator.generate(basePackage);
     }
 
     private String getBasePackage(final Config config, final Path openApiFilePath) {
         return config
-            .getOptionalValue(getBasePackagePropertyName(openApiFilePath), String.class)
-            .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
+                .getOptionalValue(getBasePackagePropertyName(openApiFilePath), String.class)
+                .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
     }
 
     private String getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
