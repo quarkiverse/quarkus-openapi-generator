@@ -1,7 +1,9 @@
 package io.quarkiverse.openapi.generator.deployment;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import io.quarkiverse.spec.generator.deployment.codegen.SpecApiCodeGenUtils;
 import io.quarkus.runtime.annotations.ConfigItem;
@@ -12,13 +14,17 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 @ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
 public class CodegenConfig {
 
-    public static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
+    static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
 
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
     public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
     public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
     public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
+    public static final String EXCLUDED_FILES_PROP_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".ignore";
+    // package visibility for unit tests
+    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
+    private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
     private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
     private static final String TYPE_MAPPINGS_PROP_FORMAT = "%s.type-mappings";
@@ -50,6 +56,12 @@ public class CodegenConfig {
     @ConfigItem(name = "default.security.scheme", defaultValue = "none")
     public String defaultSecurityScheme;
 
+    /**
+     * List of files to be excluded
+     */
+    @ConfigItem(name = "ignore")
+    public Optional<List<String>> excluded;
+
     public static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);
     }
@@ -59,7 +71,7 @@ public class CodegenConfig {
     }
 
     public static String getBasePackagePropertyName(final Path openApiFilePath) {
-        return SpecApiCodeGenUtils.getBasePackagePropertyName(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
+        return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
     public static String getSkipFormModelPropertyName(final Path openApiFilePath) {
@@ -85,7 +97,7 @@ public class CodegenConfig {
      * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
-        return SpecApiCodeGenUtils.getBuildTimeSpecPropertyPrefix(openApiFilePath, CODEGEN_TIME_CONFIG_PREFIX);
+        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, SpecApiCodeGenUtils.getSanitizedFileName(openApiFilePath));
     }
 
     public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {

@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import java.io.InputStream;
+import java.nio.file.Path;
 
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.spec.generator.deployment.codegen.BaseSpecInputModel;
@@ -16,7 +17,7 @@ public class SpecInputModel extends BaseSpecInputModel {
     }
 
     @Override
-    protected String getConfigPrefix() {
-        return CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX;
+    protected String getBasePackageNameProperty(String fileName) {
+        return CodegenConfig.getBasePackagePropertyName(Path.of(fileName));
     }
 }

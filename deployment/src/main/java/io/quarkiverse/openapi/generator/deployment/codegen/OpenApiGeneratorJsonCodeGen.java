@@ -1,11 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import io.quarkiverse.spec.generator.deployment.codegen.SpecApiConstants;
-import io.quarkiverse.spec.generator.deployment.codegen.SpecApiGeneratorCodeGenBase;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiParameters;
 
-public class OpenApiGeneratorJsonCodeGen extends SpecApiGeneratorCodeGenBase {
+public class OpenApiGeneratorJsonCodeGen extends OpenApiGeneratorCodeGenBase {
 
     public OpenApiGeneratorJsonCodeGen() {
-        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(SpecApiConstants.JSON));
+        super(SpecApiParameters.JSON);
     }
 }

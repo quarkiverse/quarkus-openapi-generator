@@ -1,11 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import io.quarkiverse.spec.generator.deployment.codegen.SpecApiConstants;
-import io.quarkiverse.spec.generator.deployment.codegen.SpecApiGeneratorCodeGenBase;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecApiParameters;
 
-public class OpenApiGeneratorYamlCodeGen extends SpecApiGeneratorCodeGenBase {
+public class OpenApiGeneratorYamlCodeGen extends OpenApiGeneratorCodeGenBase {
 
     public OpenApiGeneratorYamlCodeGen() {
-        super(new OpenApiGeneratorCodeGenerator(), new OpenApiConstants(SpecApiConstants.YAML));
+        super(SpecApiParameters.YAML);
     }
 }
