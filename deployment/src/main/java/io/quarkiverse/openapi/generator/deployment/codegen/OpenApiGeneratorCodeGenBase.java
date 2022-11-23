@@ -6,9 +6,9 @@ import java.util.Collections;
 import org.eclipse.microprofile.config.Config;
 
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
-import io.quarkiverse.spec.generator.deployment.codegen.SpecApiGeneratorCodeGenBase;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecGeneratorCodeGenBase;
 
-public abstract class OpenApiGeneratorCodeGenBase extends SpecApiGeneratorCodeGenBase {
+public abstract class OpenApiGeneratorCodeGenBase extends SpecGeneratorCodeGenBase {
 
     protected OpenApiGeneratorCodeGenBase(String extension) {
         super(new OpenApiGeneratorCodeGenerator(), new OpenApiParameters(extension));

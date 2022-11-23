@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import io.quarkiverse.spec.generator.deployment.codegen.SpecApiCodeGenUtils;
+import io.quarkiverse.spec.generator.deployment.codegen.SpecCodeGenUtils;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
@@ -97,7 +97,7 @@ public class CodegenConfig {
      * Every the periods (.) in the file name will be replaced by underscore (_).
      */
     public static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
-        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, SpecApiCodeGenUtils.getSanitizedFileName(openApiFilePath));
+        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, SpecCodeGenUtils.getSanitizedFileName(openApiFilePath));
     }
 
     public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {
