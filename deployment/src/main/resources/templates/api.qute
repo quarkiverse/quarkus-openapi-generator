@@ -74,7 +74,11 @@ public interface {classname} {
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     {/if}{/for}
     {/if}{/for}
+        {#if return-response}
+    public jakarta.ws.rs.core.Response {op.nickname}(
+        {#else}
     public {#if op.returnType}{op.returnType}{#else}void{/if} {op.nickname}(
+        {/if}
         {#if op.hasFormParams}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
         !}{#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!

@@ -127,6 +127,11 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withReturnResponse(Boolean returnResponse) {
+        configurator.addAdditionalProperty("return-response", returnResponse);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withImportMappings(final Map<String, String> typeMappings) {
         typeMappings.forEach(configurator::addImportMapping);
         return this;

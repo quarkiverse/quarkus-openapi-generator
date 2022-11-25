@@ -52,4 +52,10 @@ public class SpecItemConfig {
      */
     @ConfigItem(name = "custom-register-providers")
     public Optional<String> customRegisterProviders;
+
+    /**
+     * Defines if the methods should return {@link jakarta.ws.rs.core.Response} or a model. Default is <code>false</code>.
+     */
+    @ConfigItem(name = "return-response")
+    public Optional<Boolean> returnResponse;
 }

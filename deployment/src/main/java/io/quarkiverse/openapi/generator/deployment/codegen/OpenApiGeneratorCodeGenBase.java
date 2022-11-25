@@ -9,6 +9,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAddit
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getReturnResponsePropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
@@ -122,6 +123,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
                 .ifPresent(generator::withCustomRegisterProviders);
+
+        generator.withReturnResponse(config.getOptionalValue(getReturnResponsePropertyName(openApiFilePath), Boolean.class)
+                .orElse(false));
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
         smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
