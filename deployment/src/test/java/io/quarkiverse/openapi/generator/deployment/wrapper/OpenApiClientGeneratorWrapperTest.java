@@ -353,7 +353,7 @@ public class OpenApiClientGeneratorWrapperTest {
                 .map(importDeclaration -> importDeclaration.getName().asString())
                 .collect(Collectors.toList());
         assertThat(imports).contains("java.io.InputStream")
-                           .doesNotContain("java.io.File");
+                .doesNotContain("java.io.File");
     }
 
     @Test
