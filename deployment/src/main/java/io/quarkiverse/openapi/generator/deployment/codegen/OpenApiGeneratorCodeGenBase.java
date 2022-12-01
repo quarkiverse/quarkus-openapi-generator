@@ -140,7 +140,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private String getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        String baseModuleDirectory = sourceDir.toString().split("src")[0];
+        String baseModuleDirectory = sourceDir.toString().substring(0, sourceDir.toString().lastIndexOf("src"));
         return config.getOptionalValue(INPUT_BASE_DIR, String.class).map(s -> baseModuleDirectory + s).orElse(null);
     }
 }
