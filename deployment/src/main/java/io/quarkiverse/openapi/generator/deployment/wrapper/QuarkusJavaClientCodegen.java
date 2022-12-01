@@ -25,7 +25,6 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     public QuarkusJavaClientCodegen() {
         // immutable properties
-        this.setDateLibrary(JavaClientCodegen.JAVA8_MODE);
         this.setSerializationLibrary(SERIALIZATION_LIBRARY_JACKSON);
         this.setTemplateDir("templates");
     }

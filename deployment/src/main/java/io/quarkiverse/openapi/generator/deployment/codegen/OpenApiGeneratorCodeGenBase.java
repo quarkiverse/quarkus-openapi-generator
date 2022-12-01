@@ -1,5 +1,18 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.EXCLUDE_FILES;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INCLUDE_FILES;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INPUT_BASE_DIR;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,19 +31,6 @@ import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 import io.smallrye.config.SmallRyeConfig;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INPUT_BASE_DIR;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INCLUDE_FILES;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.EXCLUDE_FILES;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSkipFormModelPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getTypeMappingsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
  * src/test/openapi
@@ -46,7 +46,13 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
     /**
-     * The input base directory from <pre>src/main<pre> directory.
+     * The input base directory from
+     *
+     * <pre>
+     * src/main
+     *
+     * <pre>
+     * directory.
      * Ignored if INPUT_BASE_DIR is specified.
      **/
     @Override
