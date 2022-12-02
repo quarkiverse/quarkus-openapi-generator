@@ -1,5 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.EXCLUDE_FILES;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INCLUDE_FILES;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
@@ -19,6 +22,7 @@ import java.util.stream.Stream;
 import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
+import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
@@ -41,17 +45,37 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
+    /**
+     * The input base directory from
+     *
+     * <pre>
+     * src/main
+     *
+     * <pre>
+     * directory.
+     * Ignored if INPUT_BASE_DIR is specified.
+     **/
     @Override
     public String inputDirectory() {
         return "openapi";
     }
 
     @Override
+    public boolean shouldRun(Path sourceDir, Config config) {
+        String inputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config);
+        if (inputBaseDir != null && !Files.isDirectory(Path.of(inputBaseDir))) {
+            throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, inputBaseDir));
+        }
+        return inputBaseDir != null || Files.isDirectory(sourceDir);
+    }
+
+    @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
-        final Path openApiDir = context.inputDir();
-        final List<String> ignoredFiles = context.config()
-                .getOptionalValues("quarkus.openapi-generator.codegen.ignore", String.class).orElse(List.of());
+        String inputBaseDir = getInputBaseDirRelativeToModule(context.inputDir(), context.config());
+        final Path openApiDir = inputBaseDir != null ? Path.of(inputBaseDir) : context.inputDir();
+        final List<String> filesToInclude = context.config().getOptionalValues(INCLUDE_FILES, String.class).orElse(List.of());
+        final List<String> filesToExclude = context.config().getOptionalValues(EXCLUDE_FILES, String.class).orElse(List.of());
 
         if (Files.isDirectory(openApiDir)) {
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
@@ -59,7 +83,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .filter(Files::isRegularFile)
                         .filter(path -> {
                             String fileName = path.getFileName().toString();
-                            return fileName.endsWith(inputExtension()) && !ignoredFiles.contains(fileName);
+                            return fileName.endsWith(inputExtension())
+                                    && !filesToExclude.contains(fileName)
+                                    && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
                         })
                         .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
             } catch (IOException e) {
@@ -111,5 +137,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return config
                 .getOptionalValue(getBasePackagePropertyName(openApiFilePath), String.class)
                 .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
+    }
+
+    private String getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
+        String baseModuleDirectory = sourceDir.toString().substring(0, sourceDir.toString().lastIndexOf("src"));
+        return config.getOptionalValue(INPUT_BASE_DIR, String.class).map(s -> baseModuleDirectory + s).orElse(null);
     }
 }
