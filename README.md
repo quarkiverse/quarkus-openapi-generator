@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/workflow/status/quarkiverse/quarkus-openapi-generator/Build?logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
@@ -682,6 +682,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="http://melloware.com"><img src="https://avatars.githubusercontent.com/u/4399574?v=4?s=100" width="100px;" alt="Melloware"/><br /><sub><b>Melloware</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=melloware" title="Documentation">📖</a></td>
       <td align="center"><a href="https://github.com/cristianonicolai"><img src="https://avatars.githubusercontent.com/u/570894?v=4?s=100" width="100px;" alt="Cristiano Nicolai"/><br /><sub><b>Cristiano Nicolai</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=cristianonicolai" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/YassinHajaj"><img src="https://avatars.githubusercontent.com/u/18174180?v=4?s=100" width="100px;" alt="YassinHajaj"/><br /><sub><b>YassinHajaj</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=YassinHajaj" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://github.com/gwydionmv"><img src="https://avatars.githubusercontent.com/u/118427625?v=4?s=100" width="100px;" alt="Gwydion Martín"/><br /><sub><b>Gwydion Martín</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=gwydionmv" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
