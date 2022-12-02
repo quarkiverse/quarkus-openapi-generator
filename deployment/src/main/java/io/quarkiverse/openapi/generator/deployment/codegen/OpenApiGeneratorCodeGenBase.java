@@ -66,7 +66,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         if (inputBaseDir != null && !Files.isDirectory(Path.of(inputBaseDir))) {
             throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, inputBaseDir));
         }
-        return inputBaseDir != null || Files.isDirectory(sourceDir);
+        if (inputBaseDir == null && !Files.isDirectory(sourceDir)) {
+            throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, sourceDir));
+        }
+
+        return true;
     }
 
     @Override
