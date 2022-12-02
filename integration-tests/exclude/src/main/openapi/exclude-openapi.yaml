@@ -4,11 +4,11 @@ info:
   title: greeting-flow API
   version: "1.0"
 paths:
-  /hello_ignored:
+  /hello_excluded:
     get:
       tags:
-        - Ignored OpenAPI Resource
-      operationId: hello_ignored
+        - Excluded OpenAPI Resource
+      operationId: hello_excluded
       responses:
         "200":
           description: OK

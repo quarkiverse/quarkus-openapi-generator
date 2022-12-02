@@ -352,8 +352,8 @@ public class OpenApiClientGeneratorWrapperTest {
                 .stream()
                 .map(importDeclaration -> importDeclaration.getName().asString())
                 .collect(Collectors.toList());
-        assertThat(imports).contains("java.io.InputStream");
-        assertThat(imports).doesNotContain("java.io.File");
+        assertThat(imports).contains("java.io.InputStream")
+                .doesNotContain("java.io.File");
     }
 
     @Test
@@ -446,7 +446,7 @@ public class OpenApiClientGeneratorWrapperTest {
 
         generatedFiles.stream()
                 .filter(file -> file.getPath().matches(".*/model/.*.java"))
-                .forEach(file -> verifyModelAdditionalAnnotations(file));
+                .forEach(this::verifyModelAdditionalAnnotations);
     }
 
     private void verifyModelAdditionalAnnotations(File file) {
