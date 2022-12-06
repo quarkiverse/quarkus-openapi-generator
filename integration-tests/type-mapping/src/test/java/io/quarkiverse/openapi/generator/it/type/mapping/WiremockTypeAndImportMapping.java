@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
@@ -15,7 +16,7 @@ public class WiremockTypeAndImportMapping implements QuarkusTestResourceLifecycl
 
     @Override
     public Map<String, String> start() {
-        wireMockServer = new WireMockServer(8890);
+        wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
         wireMockServer.start();
 
         wireMockServer.stubFor(post(anyUrl())

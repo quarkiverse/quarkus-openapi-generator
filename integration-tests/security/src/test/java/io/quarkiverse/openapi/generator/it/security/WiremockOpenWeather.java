@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import java.util.Map;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
@@ -19,7 +20,7 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
 
     @Override
     public Map<String, String> start() {
-        wireMockServer = new WireMockServer(8888);
+        wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
         wireMockServer.start();
 
         wireMockServer.stubFor(get(urlPathEqualTo("/data/2.5/weather"))
