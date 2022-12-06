@@ -8,6 +8,7 @@ import static java.util.Collections.singletonMap;
 import java.util.Map;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
@@ -19,7 +20,7 @@ public class WiremockAWX implements QuarkusTestResourceLifecycleManager {
 
     @Override
     public Map<String, String> start() {
-        wireMockServer = new WireMockServer(8890);
+        wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
         wireMockServer.start();
         wireMockServer.stubFor(post(urlPathEqualTo("/api/v2/job_templates/7/launch/"))
                 .willReturn(aResponse().withStatus(200)));

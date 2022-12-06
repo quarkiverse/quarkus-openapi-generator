@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
@@ -17,7 +18,7 @@ public class WiremockPetStore implements QuarkusTestResourceLifecycleManager {
 
     @Override
     public Map<String, String> start() {
-        wireMockServer = new WireMockServer(8887);
+        wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
         wireMockServer.start();
 
         wireMockServer.stubFor(get(urlEqualTo("/pet/1234"))
