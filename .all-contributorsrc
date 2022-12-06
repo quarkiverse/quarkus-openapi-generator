@@ -142,6 +142,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dritoferro",
+      "name": "Adriano Augusto Tagliaferro",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1286247?v=4",
+      "profile": "https://www.linkedin.com/in/adrianotagliaferro/",
+      "contributions": [
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
