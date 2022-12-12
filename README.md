@@ -10,6 +10,8 @@
 
 > **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/0.12.0/README.md) if you are looking for instructions.
 
+> **⚠️** Version 2.x.x of this extension (`main` branch) supports Quarkus 3, and version 1.x.x (`quarkus2` branch) supports Quarkus 2.
+
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
 This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
@@ -18,6 +20,8 @@ project: https://opencollective.com/openapi_generator/donate
 ## Getting Started
 
 Add the following dependency to your project's `pom.xml` file:
+
+> **⚠️** Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2.
 
 ```xml
 
