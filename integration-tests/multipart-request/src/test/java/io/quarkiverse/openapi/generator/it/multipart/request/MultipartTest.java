@@ -14,8 +14,8 @@ import java.nio.file.Path;
 import java.util.Base64;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.MediaType;
 
 import org.acme.openapi.multipart.api.UserProfileDataApi;
 import org.acme.openapi.multipart.api.UserProfileDataApi.PostUserProfileDataMultipartForm;

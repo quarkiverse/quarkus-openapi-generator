@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.junit.jupiter.api.Test;
 

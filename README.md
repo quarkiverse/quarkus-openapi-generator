@@ -10,6 +10,8 @@
 
 > **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md) if you are looking for instructions.
 
+> **⚠️** Version 2.x.x of this extension (`main` branch) supports Quarkus 3, and version 1.x.x (`quarkus2` branch) supports Quarkus 2.
+
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
 This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
@@ -19,12 +21,13 @@ project: https://opencollective.com/openapi_generator/donate
 
 Add the following dependency to your project's `pom.xml` file:
 
-```xml
+> **⚠️** Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2. 
 
+```xml
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -94,11 +97,11 @@ Run `mvn compile` to generate your classes in `target/generated-sources/open-api
 You can reference the generated code in your project, for example:
 
 ```java
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 import org.acme.openapi.api.PetApi;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -439,9 +442,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("")
 @RegisterRestClient(configKey="simple-openapi_json")
@@ -493,7 +496,7 @@ You need to add the following additional dependency to your `pom.xml`:
 
 For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
 
-- `javax.ws.rs.FormParam`, where the value parameter denotes the part name,
+- `jakarta.ws.rs.FormParam`, where the value parameter denotes the part name,
 - `org.jboss.resteasy.annotations.providers.multipart.PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
 - and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the
   Content-Disposition header of the part.
@@ -602,9 +605,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("")
 @RegisterRestClient(configKey="simple-openapi_json")

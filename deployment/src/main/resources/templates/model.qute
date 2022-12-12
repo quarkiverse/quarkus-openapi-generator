@@ -10,8 +10,8 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 {#if useBeanValidation}
 
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 {/if}
 {#for m in models}
 {#if m.model.isEnum}{#include enumOuterClass.qute e=m.model/}
