@@ -1,26 +1,26 @@
 {#if e.withXml}
-    @XmlType(name="{e.datatypeWithEnum}")
-    @XmlEnum({e.dataType}.class)
+    @XmlType(name={#if e.isEnum}"{e.items.enumName}"{#else}"{e.enumName}"{/if})
+    @XmlEnum({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.class)
 {/if}
-    {#include additionalEnumTypeAnnotations.qute e=e /}public enum {e.datatypeWithEnum} {
+    {#include additionalEnumTypeAnnotations.qute e=e /}public enum {e.enumName} {
         {#if e.allowableValues}
         {#if e.withXml}
-        {#for v in e.allowableValues.enumVars}@XmlEnumValue({#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}{v.value}{#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}) {v.name}({e.dataType}.valueOf({v.value})){#if v_hasNext}, {#else}; {/if}{/for}
+        {#for v in e.allowableValues.enumVars}@XmlEnumValue({#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}{v.value}{#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}) {v.name}({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value})){#if v_hasNext}, {#else}; {/if}{/for}
         {#else}
-        {#for v in e.allowableValues.enumVars}{v.name}({e.dataType}.valueOf({v.value})){#if v_hasNext}, {#else};{/if}{/for}
+        {#for v in e.allowableValues.enumVars}{v.name}({v.value}){#if v_hasNext}, {#else};{/if}{/for}
         {/if}
         {/if}
 
         // caching enum access
-        private static final java.util.EnumSet<{e.datatypeWithEnum}> values = java.util.EnumSet.allOf({e.datatypeWithEnum}.class);
+        private static final java.util.EnumSet<{e.enumName}> values = java.util.EnumSet.allOf({e.enumName}.class);
 
-        {e.dataType} value;
+        {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value;
 
-        {e.datatypeWithEnum} ({e.dataType} v) {
+        {e.enumName} ({#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} v) {
             value = v;
         }
 
-        public {e.dataType} value() {
+        public {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value() {
             return value;
         }
 
@@ -30,8 +30,8 @@
         }
 
         @com.fasterxml.jackson.annotation.JsonCreator
-        public static {e.datatypeWithEnum} fromValue(String v) {
-            for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
+        public static {e.enumName} fromValue(String v) {
+            for ({#if e.enumName}{e.enumName}{#else}{e.classname}{/if} b : values) {
                 if (String.valueOf(b.value).equalsIgnoreCase(v)) {
                     return b;
                 }
