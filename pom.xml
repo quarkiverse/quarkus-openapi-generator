@@ -21,7 +21,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>2.15.0.Final</quarkus.version>
+    <quarkus.version>2.15.1.Final</quarkus.version>
 
     <version.com.github.javaparser>3.24.9</version.com.github.javaparser>
     <version.org.assertj>3.23.1</version.org.assertj>
