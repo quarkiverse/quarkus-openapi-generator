@@ -9,5 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    target-branch: "main/quarkus2"
     ignore:
       - dependency-name: "org.apache.maven.plugins:maven-compiler-plugin"
