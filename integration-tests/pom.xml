@@ -10,6 +10,7 @@
   <name>Quarkus - Openapi Generator - Integration Tests</name>
   <packaging>pom</packaging>
   <modules>
+    <module>array-enum</module>
     <module>simple</module>
     <module>skip-validation</module>
     <module>generation-tests</module>
