@@ -1,0 +1,49 @@
+---
+openapi: 3.0.3
+info:
+  title: greeting-flow API
+  version: "1.0"
+paths:
+  /hello:
+    get:
+      tags:
+        - Array Enum Resource
+      operationId: create-a-webhook
+      summary: Add a webhook
+      description: Add a webhook subscription to the account
+      parameters:
+        - name: data
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/webhook_create_update_payload'
+      responses:
+        "200":
+          description: OK
+  /messaging/topics:
+    get:
+      tags:
+        - Quarkus Topics Information Resource
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    webhook_create_update_payload:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The url where the events should be sent
+        subscriptions:
+          type: array
+          items:
+            type: string
+            enum:
+              - conversation_created
+              - conversation_status_changed
+              - conversation_updated
+              - message_created
+              - message_updated
+              - webwidget_triggered
+          description: The events you want to subscribe to.
