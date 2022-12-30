@@ -151,6 +151,11 @@ public class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withRestEasyReactive(Boolean isRestEasyReactive) {
+        configurator.addAdditionalProperty("is-resteasy-reactive", isRestEasyReactive);
+        return this;
+    }
+
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();

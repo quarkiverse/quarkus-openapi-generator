@@ -2,12 +2,25 @@
     {#for p in op.formParams}
         @FormParam("{p.baseName}")
     {#if p.isFile || (p.isString && p.dataFormat == 'base64')}
+        {#if is-resteasy-reactive}
+        @org.jboss.resteasy.reactive.PartFilename("{p.baseName}File")
+        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        {#else}
         @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}File")
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        {/if}
     {#else if p.isPrimitiveType or (p.isArray && p.items.isPrimitiveType)}
+        {#if is-resteasy-reactive}
+        @org.jboss.resteasy.reactive.PartType(MediaType.TEXT_PLAIN)
+        {#else}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.TEXT_PLAIN)
+        {/if}
     {#else}
+        {#if is-resteasy-reactive}
+        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_JSON)
+        {#else}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_JSON)
+        {/if}
     {/if}
         public {p.dataType} {p.paramName};
     {/for}

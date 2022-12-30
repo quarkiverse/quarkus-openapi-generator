@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +20,7 @@ import org.acme.openapi.multipart.api.UserProfileDataApi;
 import org.acme.openapi.multipart.api.UserProfileDataApi.PostUserProfileDataMultipartForm;
 import org.acme.openapi.multipart.model.Address;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -33,7 +33,8 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @QuarkusTestResource(WiremockMultipart.class)
-public class MultipartTest {
+@Tag("resteasy-classic")
+public class MultipartRestEasyClassicTest {
 
     WireMockServer multipartServer;
 
@@ -50,7 +51,7 @@ public class MultipartTest {
 
         PostUserProfileDataMultipartForm requestBody = new PostUserProfileDataMultipartForm();
         requestBody.address = new Address().street("Champs-Elysees").city("Paris");
-        requestBody.id = UUID.fromString("00112233-4455-6677-8899-aabbccddeeff");
+        requestBody.id = "00112233-4455-6677-8899-aabbccddeeff";
         requestBody.profileImage = testFile;
 
         userProfileDataApi.postUserProfileData(requestBody);
@@ -60,12 +61,16 @@ public class MultipartTest {
                         .withName("id")
                         // Primitive => text/plain
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
-                        .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build())
+                        .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build()));
+
+        multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("address")
                         // Complex value => application/json
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_JSON))
-                        .withBody(equalToJson("{\"street\":\"Champs-Elysees\", \"city\":\"Paris\"}")).build())
+                        .withBody(equalToJson("{\"street\":\"Champs-Elysees\", \"city\":\"Paris\"}")).build()));
+
+        multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("profileImage")
                         .withHeader("Content-Disposition", containing("filename="))

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
@@ -30,6 +31,7 @@ import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGenerato
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.quarkus.maven.dependency.ResolvedDependency;
 import io.smallrye.config.SmallRyeConfig;
 
 /**
@@ -70,6 +72,14 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return inputBaseDir != null || Files.isDirectory(sourceDir);
     }
 
+    protected boolean isRestEasyReactive(CodeGenContext context) {
+        List<String> appDependencies = context.applicationModel().getDependencies().stream()
+                .map(ResolvedDependency::getArtifactId)
+                .collect(Collectors.toList());
+
+        return RestEasyImplementationVerifier.get().isRestEasyReactive(appDependencies);
+    }
+
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
@@ -79,6 +89,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         final List<String> filesToExclude = context.config().getOptionalValues(EXCLUDE_FILES, String.class).orElse(List.of());
 
         if (Files.isDirectory(openApiDir)) {
+            final boolean isRestEasyReactive = isRestEasyReactive(context);
+
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
@@ -88,7 +100,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                                     && !filesToExclude.contains(fileName)
                                     && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
                         })
-                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
+                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir, isRestEasyReactive));
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
                         e);
@@ -99,7 +111,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-    protected void generate(final Config config, final Path openApiFilePath, final Path outDir) {
+    protected void generate(final Config config, final Path openApiFilePath, final Path outDir, Boolean isRestEasyReactive) {
         final String basePackage = getBasePackage(config, openApiFilePath);
         final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
         final Boolean validateSpec = config.getOptionalValue(VALIDATE_SPEC_PROPERTY_NAME, Boolean.class).orElse(true);
@@ -113,7 +125,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 validateSpec)
                 .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                 .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
-                        config));
+                        config))
+                .withRestEasyReactive(isRestEasyReactive);
 
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
