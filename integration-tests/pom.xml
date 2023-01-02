@@ -11,6 +11,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>array-enum</module>
+    <module>enum-property</module>
     <module>simple</module>
     <module>skip-validation</module>
     <module>generation-tests</module>
