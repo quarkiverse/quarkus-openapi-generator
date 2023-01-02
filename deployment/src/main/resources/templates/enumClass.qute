@@ -20,6 +20,7 @@
             value = v;
         }
 
+        @com.fasterxml.jackson.annotation.JsonValue
         public {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value() {
             return value;
         }
