@@ -19,7 +19,7 @@ public class SpecItemConfig {
      * Base package for where the generated code for the given OpenAPI specification will be added.
      */
     @ConfigItem(name = "base-package")
-    public String basePackage;
+    public Optional<String> basePackage;
 
     /**
      * Whether to skip the generation of models for form parameters
