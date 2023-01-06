@@ -24,6 +24,7 @@
     <module>include</module>
     <module>exclude</module>
     <module>change-directory</module>
+    <module>return-response</module>
   </modules>
   <dependencyManagement>
     <dependencies>
