@@ -120,6 +120,18 @@ public class PetResource {
 
 See the [integration-tests](integration-tests) module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
 
+## Returning `Response` objects
+
+By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If you want to return `javax.ws.rs.core.Response` instead, you can set the `return-response` property to `true`.
+
+### Example
+
+Given you want to return `javax.ws.rs.core.Response` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=true
+```
+
 ## Logging
 
 Since the most part of this extension work is in the `generate-code` execution phase of the Quarkus Maven's plugin, the log configuration must be set in the Maven context. When building your project, add `-Dorg.slf4j.simpleLogger.log.org.openapitools=off` to the `mvn` command to reduce the internal generator noise. For example:
