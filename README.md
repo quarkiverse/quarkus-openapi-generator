@@ -121,11 +121,11 @@ See the [integration-tests](integration-tests) module for more information of ho
 
 ## Returning `Response` objects
 
-By default, this extension generates methods that return `void`, values as `String`, `Integer`, etc., or an object model, like `Product` for instance. If you always want to return `jakarta.ws.rs.core.Response`, you can set the `return-response` property.
+By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If you want to return `jakarta.ws.rs.core.Response` instead, you can set the `return-response` property to `true`.
 
 ### Example
 
-Given you want to return `Response` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
+Given you want to return `jakarta.ws.rs.core.Response` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
 
 ```properties
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=true
