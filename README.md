@@ -17,6 +17,8 @@ Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/re
 This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
 project: https://opencollective.com/openapi_generator/donate
 
+This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
+
 ## Getting Started
 
 Add the following dependency to your project's `pom.xml` file:
