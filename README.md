@@ -3,7 +3,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-[![Build](<https://img.shields.io/github/workflow/status/quarkiverse/quarkus-openapi-generator/Build?logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
+[![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
@@ -16,6 +16,8 @@ Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/re
 
 This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
 project: https://opencollective.com/openapi_generator/donate
+
+This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
 
 ## Getting Started
 
