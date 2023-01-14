@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator.providers;
+package {apiPackage}.auth;
 
 import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
@@ -12,21 +12,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
 import io.quarkus.oidc.client.filter.OidcClientRequestFilter;
 import io.quarkus.oidc.common.runtime.OidcConstants;
 
-public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
+@io.quarkus.arc.Priority(javax.ws.rs.Priorities.AUTHENTICATION)
+@javax.enterprise.context.ApplicationScoped
+public class {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2AuthenticationProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger({quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider.class);
 
-    private final OidcClientRequestFilter delegate;
+    private static final String SCHEMA_NAME = "oauth";
 
-    public OAuth2AuthenticationProvider(final String openApiSpecId, final String name,
-            final OpenApiGeneratorConfig generatorConfig) {
-        super(openApiSpecId, name, generatorConfig);
-        this.delegate = createDelegate();
-        // it's fine calling it here since this class will be created on `init()` method of the generated CompositeAuthenticationProvider
-        delegate.init();
+    private final OidcClientRequestFilterDelegate delegate;
+
+    {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider() {
+        // Required by CDI. Not supposed to be used.
+        delegate = null;
+    }
+
+    @javax.inject.Inject
+    public {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider(
+            final OpenApiGeneratorConfig generatorConfig, final OidcClientRequestFilterDelegate delegate) {
+        super("{quarkus-generator.openApiSpecId}", SCHEMA_NAME, generatorConfig);
+        this.delegate = delegate;
         validateConfig();
     }
 
@@ -49,21 +58,12 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
         }
     }
 
-    OidcClientRequestFilterDelegate createDelegate() {
-        return new OidcClientRequestFilterDelegate(getName());
-    }
-
+    @javax.enterprise.context.ApplicationScoped
     static class OidcClientRequestFilterDelegate extends OidcClientRequestFilter {
-
-        private final String clientId;
-
-        public OidcClientRequestFilterDelegate(String clientId) {
-            this.clientId = clientId;
-        }
 
         @Override
         protected Optional<String> clientId() {
-            return Optional.of(this.clientId);
+            return Optional.of(SCHEMA_NAME);
         }
     }
 }
