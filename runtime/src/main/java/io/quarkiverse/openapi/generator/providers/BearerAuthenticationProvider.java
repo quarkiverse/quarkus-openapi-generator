@@ -20,7 +20,8 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
             final OpenApiGeneratorConfig generatorConfig) {
-        super(openApiSpecId, name, generatorConfig);
+        super(generatorConfig);
+        init(name, openApiSpecId);
         this.scheme = scheme;
     }
 

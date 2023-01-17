@@ -1,9 +1,8 @@
-package {apiPackage}.auth;
+package io.quarkiverse.openapi.generator.providers;
 
 import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -12,30 +11,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
-import io.quarkus.oidc.client.filter.OidcClientRequestFilter;
 import io.quarkus.oidc.common.runtime.OidcConstants;
 
 @io.quarkus.arc.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
-@jakarta.enterprise.context.ApplicationScoped
-public class {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider extends AbstractAuthProvider {
+@jakarta.enterprise.context.Dependent
+public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger({quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2AuthenticationProvider.class);
 
-    private static final String SCHEMA_NAME = "oauth";
+    private OidcClientRequestFilterDelegate delegate;
 
-    private final OidcClientRequestFilterDelegate delegate;
-
-    {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider() {
+    @SuppressWarnings("unused")
+    OAuth2AuthenticationProvider() {
         // Required by CDI. Not supposed to be used.
         delegate = null;
     }
 
     @jakarta.inject.Inject
-    public {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider(
-            final OpenApiGeneratorConfig generatorConfig, final OidcClientRequestFilterDelegate delegate) {
-        super("{quarkus-generator.openApiSpecId}", SCHEMA_NAME, generatorConfig);
+    public OAuth2AuthenticationProvider(final OpenApiGeneratorConfig generatorConfig) {
+        super(generatorConfig);
+    }
+
+    public void init(String name, String openApiSpecId, OidcClientRequestFilterDelegate delegate) {
         this.delegate = delegate;
+        super.init(name, openApiSpecId);
         validateConfig();
     }
 
@@ -58,12 +57,7 @@ public class {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider exten
         }
     }
 
-    @jakarta.enterprise.context.ApplicationScoped
-    static class OidcClientRequestFilterDelegate extends OidcClientRequestFilter {
-
-        @Override
-        protected Optional<String> clientId() {
-            return Optional.of(SCHEMA_NAME);
-        }
+    public interface OidcClientRequestFilterDelegate {
+        void filter(ClientRequestContext requestContext) throws IOException;
     }
 }

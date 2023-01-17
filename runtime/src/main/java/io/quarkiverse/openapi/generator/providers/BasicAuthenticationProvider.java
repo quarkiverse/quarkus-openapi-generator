@@ -21,7 +21,8 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     static final String PASSWORD = "password";
 
     public BasicAuthenticationProvider(final String openApiSpecId, String name, final OpenApiGeneratorConfig generatorConfig) {
-        super(openApiSpecId, name, generatorConfig);
+        super(generatorConfig);
+        init(name, openApiSpecId);
         validateConfig();
     }
 
