@@ -17,6 +17,8 @@ import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
+    public static final String QUARKUS_GENERATOR_NAME = "quarkus-generator";
+
     private static final String AUTH_PACKAGE = "auth";
     /*
      * Default server URL (the first one in the OpenAPI spec file servers definition.
@@ -62,6 +64,18 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                             authFileFolder(),
                             "AuthenticationPropagationHeadersFactory.java"));
 
+            Object quarkusGeneratorProperties = additionalProperties.get(QUARKUS_GENERATOR_NAME);
+
+            if (!(quarkusGeneratorProperties instanceof Map)) {
+                throw new IllegalStateException("Quarkus generator properties not found.");
+            }
+
+            Object openApiSpecId = ((Map<?, ?>) quarkusGeneratorProperties).get("openApiSpecId");
+
+            supportingFiles.add(
+                    new SupportingFile("auth/oauth2AuthenticationProvider.qute",
+                            authFileFolder(),
+                            openApiSpecId + "OAuth2AuthenticationProvider.java"));
         }
 
         apiTemplateFiles.clear();
