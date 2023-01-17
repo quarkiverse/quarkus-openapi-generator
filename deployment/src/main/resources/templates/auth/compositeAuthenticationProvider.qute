@@ -1,6 +1,5 @@
 package {apiPackage}.auth;
 
-import javax.inject.Inject;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.Priorities;
 
@@ -18,17 +17,19 @@ import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
 {#if hasHttpBearerMethods}
 import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
 {/if}
-{#if hasOAuthMethods}
-import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider;
-{/if}
 import io.quarkiverse.openapi.generator.providers.AbstractCompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 
 @Priority(Priorities.AUTHENTICATION)
 public class CompositeAuthenticationProvider extends AbstractCompositeAuthenticationProvider {
 
-    @Inject
+    @javax.inject.Inject
     OpenApiGeneratorConfig generatorConfig;
+
+    {#for auth in oauthMethods.orEmpty}
+    @javax.inject.Inject
+    {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider oAuth2Provider{auth_index};
+    {/for}
 
     @PostConstruct
     public void init() {
@@ -58,7 +59,6 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/for}
         {#for auth in oauthMethods.orEmpty}
-        OAuth2AuthenticationProvider oAuth2Provider{auth_index} = new OAuth2AuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
         this.addAuthenticationProvider(oAuth2Provider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
