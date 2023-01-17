@@ -28,6 +28,13 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private AuthConfig authConfig;
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
+    protected AbstractAuthProvider() {
+        // Required by CDI. Not supposed to be used.
+        openApiSpecId = null;
+        name = null;
+        generatorConfig = null;
+    }
+
     protected AbstractAuthProvider(String openApiSpecId, String name, OpenApiGeneratorConfig generatorConfig) {
         this.openApiSpecId = openApiSpecId;
         this.name = name;
