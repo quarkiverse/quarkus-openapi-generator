@@ -8,6 +8,7 @@
   </parent>
   <artifactId>quarkus-openapi-generator</artifactId>
   <name>Quarkus - Openapi Generator - Runtime</name>
+  <description>Generation of Rest Clients based on OpenAPI specification files</description>
   <dependencies>
     <!-- Quarkus -->
     <dependency>
