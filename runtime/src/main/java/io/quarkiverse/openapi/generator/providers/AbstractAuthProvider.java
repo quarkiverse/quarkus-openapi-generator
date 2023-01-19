@@ -22,24 +22,31 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private static final String CANONICAL_AUTH_CONFIG_PROPERTY_NAME = "quarkus." +
             RUNTIME_TIME_CONFIG_PREFIX + ".%s.auth.%s.%s";
 
-    private final String openApiSpecId;
-    private final String name;
+    private String openApiSpecId;
+    private String name;
     private final OpenApiGeneratorConfig generatorConfig;
     private AuthConfig authConfig;
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
     protected AbstractAuthProvider() {
         // Required by CDI. Not supposed to be used.
-        openApiSpecId = null;
         name = null;
         generatorConfig = null;
     }
 
-    protected AbstractAuthProvider(String openApiSpecId, String name, OpenApiGeneratorConfig generatorConfig) {
-        this.openApiSpecId = openApiSpecId;
-        this.name = name;
+    protected AbstractAuthProvider(OpenApiGeneratorConfig generatorConfig) {
         this.generatorConfig = generatorConfig;
-        Optional<SpecItemConfig> specItemConfig = generatorConfig.getItemConfig(openApiSpecId);
+    }
+
+    protected void init(String name, String openApiSpecId) {
+        this.name = name;
+        setOpenApiSpecId(openApiSpecId);
+    }
+
+    private void setOpenApiSpecId(String openApiSpecId) {
+        this.openApiSpecId = openApiSpecId;
+        Optional<SpecItemConfig> specItemConfig = Objects.requireNonNull(generatorConfig, "generatorConfig can't be null.")
+                .getItemConfig(openApiSpecId);
         if (specItemConfig.isPresent()) {
             Optional<AuthsConfig> authsConfig = specItemConfig.get().getAuth();
             authsConfig.ifPresent(

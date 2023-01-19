@@ -24,7 +24,8 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     public ApiKeyAuthenticationProvider(final String openApiSpecId, final String name, final ApiKeyIn apiKeyIn,
             final String apiKeyName,
             final OpenApiGeneratorConfig generatorConfig) {
-        super(openApiSpecId, name, generatorConfig);
+        super(generatorConfig);
+        init(name, openApiSpecId);
         this.apiKeyIn = apiKeyIn;
         this.apiKeyName = apiKeyName;
         validateConfig();
