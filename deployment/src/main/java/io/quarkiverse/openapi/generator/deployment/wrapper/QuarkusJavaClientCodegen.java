@@ -63,19 +63,6 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                     new SupportingFile("auth/headersFactory.qute",
                             authFileFolder(),
                             "AuthenticationPropagationHeadersFactory.java"));
-
-            Object quarkusGeneratorProperties = additionalProperties.get(QUARKUS_GENERATOR_NAME);
-
-            if (!(quarkusGeneratorProperties instanceof Map)) {
-                throw new IllegalStateException("Quarkus generator properties not found.");
-            }
-
-            Object openApiSpecId = ((Map<?, ?>) quarkusGeneratorProperties).get("openApiSpecId");
-
-            supportingFiles.add(
-                    new SupportingFile("auth/oauth2AuthenticationProvider.qute",
-                            authFileFolder(),
-                            openApiSpecId + "OAuth2AuthenticationProvider.java"));
         }
 
         apiTemplateFiles.clear();
