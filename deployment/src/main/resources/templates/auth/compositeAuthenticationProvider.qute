@@ -20,6 +20,8 @@ import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.AbstractCompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 
+import java.util.Optional;
+
 @Priority(Priorities.AUTHENTICATION)
 public class CompositeAuthenticationProvider extends AbstractCompositeAuthenticationProvider {
 
@@ -28,11 +30,18 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
 
     {#for auth in oauthMethods.orEmpty}
     @javax.inject.Inject
-    {quarkus-generator.openApiSpecId}OAuth2AuthenticationProvider oAuth2Provider{auth_index};
+    io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider oAuth2Provider{auth_index};
+
+    @javax.inject.Inject
+    OidcClientRequestFilterDelegateImpl{auth_index} oidcClientRequestFilterDelegate{auth_index};
     {/for}
 
     @PostConstruct
     public void init() {
+        {#for auth in oauthMethods.orEmpty}
+        oAuth2Provider{auth_index}.init(sanitizeAuthName("{auth.name}"), "{quarkus-generator.openApiSpecId}", oidcClientRequestFilterDelegate{auth_index});
+        {/for}
+
         {#for auth in httpBasicMethods.orEmpty}
         BasicAuthenticationProvider basicAuthProvider{auth_index} = new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
         this.addAuthenticationProvider(basicAuthProvider{auth_index});
@@ -186,4 +195,16 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
     }
 
+    {#for auth in oauthMethods.orEmpty}
+    @javax.enterprise.context.Dependent
+    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.filter.OidcClientRequestFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
+
+        private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
+
+        @Override
+        protected Optional<String> clientId() {
+            return Optional.of(clientId);
+        }
+    }
+    {/for}
 }
