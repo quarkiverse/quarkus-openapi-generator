@@ -49,6 +49,11 @@ public class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final boolean verbose,
             final boolean validateSpec) {
+        this(specFilePath, outputDir, verbose, validateSpec, false);
+    }
+
+    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final boolean verbose,
+            final boolean validateSpec, final boolean restClientReactive) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -71,7 +76,7 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.setValidateSpec(validateSpec);
         defaultTypeMappings.forEach(this.configurator::addTypeMapping);
         defaultImportMappings.forEach(this.configurator::addImportMapping);
-
+        this.configurator.addAdditionalProperty("isRestClientReactive", restClientReactive);
         this.generator = new DefaultGenerator();
     }
 
@@ -173,4 +178,5 @@ public class OpenApiClientGeneratorWrapper {
         this.configurator.setModelPackage(modelPackage);
         this.configurator.setInvokerPackage(apiPackage);
     }
+
 }

@@ -13,18 +13,19 @@ import io.smallrye.config.common.utils.StringUtil;
 @ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
 public class CodegenConfig {
 
+    private static final String QUARKUS_PREFIX = "quarkus.";
     static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
 
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
-    public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
-    public static final String INPUT_BASE_DIR = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
-    public static final String INCLUDE_FILES = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".include";
-    public static final String EXCLUDE_FILES = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".exclude";
-    public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
-    public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
+    public static final String VERBOSE_PROPERTY_NAME = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
+    public static final String INPUT_BASE_DIR = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
+    public static final String INCLUDE_FILES = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".include";
+    public static final String EXCLUDE_FILES = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".exclude";
+    public static final String VALIDATE_SPEC_PROPERTY_NAME = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
+    public static final String DEFAULT_SECURITY_SCHEME = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
     // package visibility for unit tests
-    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
+    static final String BUILD_TIME_SPEC_PREFIX_FORMAT = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
     private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
@@ -34,6 +35,8 @@ public class CodegenConfig {
     private static final String CUSTOM_REGISTER_PROVIDERS_FORMAT = "%s.custom-register-providers";
 
     private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
+
+    public static final String REST_CLIENT_REACTIVE = QUARKUS_PREFIX + CODEGEN_TIME_CONFIG_PREFIX + ".rest-client-reactive";
 
     /**
      * OpenAPI Spec details for codegen configuration.
@@ -58,6 +61,12 @@ public class CodegenConfig {
      */
     @ConfigItem(name = "default.security.scheme", defaultValue = "none")
     public String defaultSecurityScheme;
+
+    /**
+     * Defines whether the reactive rest client implementation shall be used or not.
+     */
+    @ConfigItem(name = "rest-client-reactive", defaultValue = "false")
+    public boolean restClientReactive;
 
     public static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);

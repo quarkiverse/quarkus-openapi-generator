@@ -197,13 +197,18 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
 
     {#for auth in oauthMethods.orEmpty}
     @javax.enterprise.context.Dependent
-    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.filter.OidcClientRequestFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
+    static class OidcClientRequestFilterDelegateImpl{auth_index} extends {isRestClientReactive ? 'io.quarkus.oidc.client.reactive.filter.OidcClientRequestReactiveFilter' : 'io.quarkus.oidc.client.filter.OidcClientRequestFilter'} implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
 
         private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
 
         @Override
         protected Optional<String> clientId() {
             return Optional.of(clientId);
+        }
+
+        @Override
+        public void filter(javax.ws.rs.client.ClientRequestContext requestContext) throws java.io.IOException {
+            super.filter(requestContext);
         }
     }
     {/for}

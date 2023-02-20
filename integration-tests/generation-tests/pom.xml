@@ -10,11 +10,6 @@
   <name>Quarkus - Openapi Generator - Integration Tests - Generation Tests</name>
   <description>Example Project that uses the OpenApiSpecProvider (via input Stream) to provide the OpenAPI Spec input. See the module "generation-input", which has this implementation.</description>
   <dependencies>
-    <!-- petstore requires OAuth2 -->
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-oidc-client-filter</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator</artifactId>

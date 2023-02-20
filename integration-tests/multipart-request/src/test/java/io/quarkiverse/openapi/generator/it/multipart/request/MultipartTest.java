@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -50,7 +49,7 @@ public class MultipartTest {
 
         PostUserProfileDataMultipartForm requestBody = new PostUserProfileDataMultipartForm();
         requestBody.address = new Address().street("Champs-Elysees").city("Paris");
-        requestBody.id = UUID.fromString("00112233-4455-6677-8899-aabbccddeeff");
+        requestBody.id = "00112233-4455-6677-8899-aabbccddeeff";
         requestBody.profileImage = testFile;
 
         userProfileDataApi.postUserProfileData(requestBody);
@@ -59,7 +58,7 @@ public class MultipartTest {
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("id")
                         // Primitive => text/plain
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
+                        .withHeader(ContentTypeHeader.KEY, containing(MediaType.TEXT_PLAIN))
                         .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build())
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("address")
@@ -88,7 +87,7 @@ public class MultipartTest {
                         .withName("file")
                         .withHeader("Content-Disposition", containing("filename="))
                         // base64 string => application/octet-stream
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_OCTET_STREAM))
+                        .withHeader(ContentTypeHeader.KEY, containing(MediaType.APPLICATION_OCTET_STREAM))
                         .withBody(equalTo(base64Data)).build()));
     }
 }

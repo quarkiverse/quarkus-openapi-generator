@@ -3,6 +3,8 @@ openapi: 3.0.3
 info:
   title: greeting-flow API
   version: "1.0"
+servers:
+  - url: "http://my.endpoint.com/api/v1"
 paths:
   /:
     post:

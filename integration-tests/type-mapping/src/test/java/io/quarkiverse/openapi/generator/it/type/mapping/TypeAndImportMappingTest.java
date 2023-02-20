@@ -47,15 +47,15 @@ public class TypeAndImportMappingTest {
         typeMappingServer.verify(postRequestedFor(urlEqualTo("/type-mapping"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("id")
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
+                        .withHeader(ContentTypeHeader.KEY, containing(MediaType.TEXT_PLAIN))
                         .withBody(equalTo(testUuid)).build())
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("dateTime")
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
+                        .withHeader(ContentTypeHeader.KEY, containing(MediaType.TEXT_PLAIN))
                         .withBody(equalTo("2000-02-13T04:05:06Z")).build())
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("binaryStringFile")
-                        .withHeader("Content-Disposition", containing("filename="))
+                        .withHeader("Content-Disposition", containing("name="))
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_OCTET_STREAM))
                         .withBody(equalTo("Content of the file")).build()));
     }

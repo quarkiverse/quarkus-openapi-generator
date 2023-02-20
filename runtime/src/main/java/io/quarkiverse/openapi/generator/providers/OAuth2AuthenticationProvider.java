@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-import io.quarkus.oidc.common.runtime.OidcConstants;
 
 @io.quarkus.arc.Priority(javax.ws.rs.Priorities.AUTHENTICATION)
 @javax.enterprise.context.Dependent
@@ -43,7 +42,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
         if (isTokenPropagation()) {
             String bearerToken = getTokenForPropagation(requestContext.getHeaders());
             bearerToken = sanitizeBearerToken(bearerToken);
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, OidcConstants.BEARER_SCHEME + " " + bearerToken);
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + bearerToken);
         } else {
             delegate.filter(requestContext);
         }

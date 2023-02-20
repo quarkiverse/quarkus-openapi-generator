@@ -19,11 +19,13 @@ public class QuteTemplatingEngineAdapterTest {
     @Test
     void checkTemplateGenerator() throws IOException {
         final String petstoreOpenApi = requireNonNull(this.getClass().getResource("/openapi/petstore-openapi.json")).getPath();
+        // fixes getResource puts a leading / before the disk name on Windows
+        final File petstoreOpenApiFile = new File(petstoreOpenApi);
         final DefaultGenerator generator = new DefaultGenerator();
         final CodegenConfigurator configurator = new QuarkusCodegenConfigurator();
-        final File apiFile = File.createTempFile("api", "java");
+        final File apiFile = File.createTempFile("api", ".java");
         apiFile.deleteOnExit();
-        configurator.setInputSpec(petstoreOpenApi);
+        configurator.setInputSpec(petstoreOpenApiFile.getAbsolutePath());
         generator.opts(configurator.toClientOptInput());
 
         final File writtenFile = generator.getTemplateProcessor().write(Collections.singletonMap("name", "Jack"), "hello.qute",
