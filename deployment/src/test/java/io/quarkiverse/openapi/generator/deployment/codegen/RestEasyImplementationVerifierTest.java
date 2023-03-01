@@ -45,17 +45,4 @@ class RestEasyImplementationVerifierTest {
         assertThatIllegalStateException()
                 .isThrownBy(() -> RestEasyImplementationVerifier.get().isRestEasyReactive(dependencies));
     }
-
-    @Test
-    void testBoth() {
-        List<String> dependencies = List.of(
-                "dep1",
-                RESTEASY_CLASSIC_ARTIFACT_ID,
-                RESTEASY_REACTIVE_ARTIFACT_ID,
-                "dep2",
-                "dep3");
-
-        assertThatIllegalStateException()
-                .isThrownBy(() -> RestEasyImplementationVerifier.get().isRestEasyReactive(dependencies));
-    }
 }

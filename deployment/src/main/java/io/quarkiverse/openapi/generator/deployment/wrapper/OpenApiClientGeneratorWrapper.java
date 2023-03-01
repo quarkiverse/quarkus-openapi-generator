@@ -26,7 +26,7 @@ import org.openapitools.codegen.config.GlobalSettings;
  *
  * @see <a href="https://openapi-generator.tech/docs/generators/java">OpenAPI Generator Client for Java</a>
  */
-public class OpenApiClientGeneratorWrapper {
+public abstract class OpenApiClientGeneratorWrapper {
 
     public static final String VERBOSE = "verbose";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
@@ -47,7 +47,8 @@ public class OpenApiClientGeneratorWrapper {
     private String apiPackage = "";
     private String modelPackage = "";
 
-    public OpenApiClientGeneratorWrapper(final Path specFilePath, final Path outputDir, final boolean verbose,
+    OpenApiClientGeneratorWrapper(final QuarkusCodegenConfigurator configurator, final Path specFilePath, final Path outputDir,
+            final boolean verbose,
             final boolean validateSpec) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
@@ -62,7 +63,7 @@ public class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(VERBOSE, String.valueOf(verbose));
         GlobalSettings.setProperty(ONCE_LOGGER, verbose ? FALSE.toString() : TRUE.toString());
 
-        this.configurator = new QuarkusCodegenConfigurator();
+        this.configurator = configurator;
         this.configurator.setInputSpec(specFilePath.toString());
         this.configurator.setOutputDir(outputDir.toString());
         this.configurator.addAdditionalProperty(QUARKUS_GENERATOR_NAME,
@@ -148,11 +149,6 @@ public class OpenApiClientGeneratorWrapper {
         if (additionalModelTypeAnnotations != null) {
             this.configurator.addAdditionalProperty(ADDITIONAL_MODEL_TYPE_ANNOTATIONS, additionalModelTypeAnnotations);
         }
-        return this;
-    }
-
-    public OpenApiClientGeneratorWrapper withRestEasyReactive(Boolean isRestEasyReactive) {
-        configurator.addAdditionalProperty("is-resteasy-reactive", isRestEasyReactive);
         return this;
     }
 
