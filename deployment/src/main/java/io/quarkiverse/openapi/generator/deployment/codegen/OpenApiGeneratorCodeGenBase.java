@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
@@ -31,9 +30,9 @@ import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientG
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiReactiveClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
+import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
-import io.quarkus.maven.dependency.ResolvedDependency;
 import io.smallrye.config.SmallRyeConfig;
 
 /**
@@ -75,11 +74,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     protected boolean isRestEasyReactive(CodeGenContext context) {
-        List<String> appDependencies = context.applicationModel().getDependencies().stream()
-                .map(ResolvedDependency::getArtifactId)
-                .collect(Collectors.toList());
-
-        return RestEasyImplementationVerifier.get().isRestEasyReactive(appDependencies);
+        return context.applicationModel().getExtensionCapabilities().stream()
+                .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
+                .anyMatch(Capability.REST_CLIENT_REACTIVE::equals);
     }
 
     @Override
