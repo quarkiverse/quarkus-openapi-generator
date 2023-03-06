@@ -15,6 +15,11 @@
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -36,35 +41,6 @@
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>resteasy-classic</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-rest-client-jackson</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-oidc-client-filter</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>resteasy-reactive</id>
-      <dependencies>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
     <profile>
       <id>native-image</id>
       <activation>
