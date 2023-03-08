@@ -33,6 +33,7 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.quarkus.maven.dependency.ResolvedDependency;
 import io.smallrye.config.SmallRyeConfig;
 
 /**
@@ -90,6 +91,15 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         if (Files.isDirectory(openApiDir)) {
             final boolean isRestEasyReactive = isRestEasyReactive(context);
 
+            if (isRestEasyReactive) {
+                if (!isJacksonReactiveClientPresent(context)) {
+                    throw new CodeGenException(
+                            "You need to add io.quarkus:quarkus-rest-client-reactive-jackson to your dependencies.");
+                }
+            } else if (!isJacksonClassicClientPresent(context)) {
+                throw new CodeGenException("You need to add io.quarkus:quarkus-rest-client-jackson to your dependencies.");
+            }
+
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
@@ -107,6 +117,22 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             return true;
         }
         return false;
+    }
+
+    private boolean isJacksonReactiveClientPresent(CodeGenContext context) {
+        return context.applicationModel().getDependencies().stream()
+                .anyMatch(this::isJacksonReactiveClient);
+    }
+
+    private boolean isJacksonClassicClientPresent(CodeGenContext context) {
+        return context.applicationModel().getExtensionCapabilities().stream()
+                .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
+                .anyMatch(Capability.RESTEASY_JSON_JACKSON_CLIENT::equals);
+    }
+
+    private boolean isJacksonReactiveClient(ResolvedDependency resolvedDependency) {
+        return "quarkus-rest-client-reactive-jackson".equals(resolvedDependency.getArtifactId())
+                && "io.quarkus".equals(resolvedDependency.getGroupId());
     }
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
