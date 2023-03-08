@@ -122,6 +122,12 @@ public class PetResource {
 
 See the [integration-tests](integration-tests) module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
 
+## RESTEasy Reactive and Classic support
+
+This extension supports both RESTEasy implementations (Classic and Reactive). The generated code is based on the implementation that is present in the application's dependencies.  
+
+For both implementations, the generated code is always blocking code.
+
 ## Returning `Response` objects
 
 By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If you want to return `javax.ws.rs.core.Response` instead, you can set the `return-response` property to `true`.
