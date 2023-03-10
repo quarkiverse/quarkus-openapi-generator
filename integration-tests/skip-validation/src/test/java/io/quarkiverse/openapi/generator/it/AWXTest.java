@@ -10,7 +10,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 import org.openapi.quarkus.awx_json.api.JobTemplatesApi;
-import org.openapi.quarkus.awx_json.model.InlineObject55;
+import org.openapi.quarkus.awx_json.model.JobTemplatesJobTemplatesLaunchCreateRequest;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 
@@ -33,7 +33,7 @@ public class AWXTest {
 
     @Test
     public void verifyAWXApi() {
-        jobsApi.jobTemplatesJobTemplatesLaunchCreate("7", new InlineObject55());
+        jobsApi.jobTemplatesJobTemplatesLaunchCreate("7", new JobTemplatesJobTemplatesLaunchCreateRequest());
         assertNotNull(awxUrl);
         awxServer.verify(postRequestedFor(urlEqualTo("/api/v2/job_templates/7/launch/")));
     }
