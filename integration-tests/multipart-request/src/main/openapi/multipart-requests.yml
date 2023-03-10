@@ -62,7 +62,7 @@ components:
           example: New Delhi
     UserId:
       type: string
-      format: uuid
+      format: string
     ProfileImage:
       type: string
       format: binary

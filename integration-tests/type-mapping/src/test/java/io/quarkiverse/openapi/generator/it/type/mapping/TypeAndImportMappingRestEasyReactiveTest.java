@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.acme.openapi.typemapping.api.TypeMappingApi;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -23,7 +24,8 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @QuarkusTestResource(WiremockTypeAndImportMapping.class)
-public class TypeAndImportMappingTest {
+@Tag("resteasy-reactive")
+public class TypeAndImportMappingRestEasyReactiveTest {
 
     WireMockServer typeMappingServer;
 
@@ -47,15 +49,19 @@ public class TypeAndImportMappingTest {
         typeMappingServer.verify(postRequestedFor(urlEqualTo("/type-mapping"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("id")
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
-                        .withBody(equalTo(testUuid)).build())
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN + "; charset=UTF-8"))
+                        .withBody(equalTo(testUuid)).build()));
+
+        typeMappingServer.verify(postRequestedFor(urlEqualTo("/type-mapping"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("dateTime")
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
-                        .withBody(equalTo("2000-02-13T04:05:06Z")).build())
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN + "; charset=UTF-8"))
+                        .withBody(equalTo("2000-02-13T04:05:06Z")).build()));
+
+        typeMappingServer.verify(postRequestedFor(urlEqualTo("/type-mapping"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("binaryStringFile")
-                        .withHeader("Content-Disposition", containing("filename="))
+                        .withHeader("Content-Disposition", containing("name="))
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_OCTET_STREAM))
                         .withBody(equalTo("Content of the file")).build()));
     }

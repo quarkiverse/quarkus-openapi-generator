@@ -122,6 +122,35 @@ public class PetResource {
 
 See the [integration-tests](integration-tests) module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
 
+## RESTEasy Reactive and Classic support
+
+You can use the `quarkus-openapi-generator` with REST Client Classic or REST Client Reactive respectively. To do so add either the classic or reactive jackson dependency to your project's `pom.xml` file:
+
+### RESTEasy Classic
+
+```xml
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-rest-client-jackson</artifactId>
+</dependency>
+```
+> **⚠️** After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
+
+### RESTEasy Reactive
+
+```xml
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
+</dependency>
+```
+
+For both implementations, the generated code is always blocking code.
+
+When using RESTEasy Reactive:
+  - The client must not declare multiple MIME-TYPES with `@Consumes`
+  - You might need to implement a `ParamConverter` for each complex type
+
 ## Returning `Response` objects
 
 By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If you want to return `javax.ws.rs.core.Response` instead, you can set the `return-response` property to `true`.
@@ -278,13 +307,23 @@ The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for th
 
 For this to work you **must** add [Quarkus OIDC Client Filter Extension](https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter) to your project:
 
-````xml
+RESTEasy Classic:
 
+````xml
 <dependency>
   <groupId>io.quarkus</groupId>
   <artifactId>quarkus-oidc-client-filter</artifactId>
 </dependency>
 ````
+
+RESTEasy Reactive:
+
+```xml
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
+</dependency>
+```
 
 See the module [generation-tests](integration-tests/generation-tests) for an example of how to use this feature.
 
@@ -499,10 +538,11 @@ See the module [circuit-breaker](integration-tests/circuit-breaker) for an examp
 The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request
 bodies.
 
-You need to add the following additional dependency to your `pom.xml`:
+> **⚠️** Tip: RESTEasy Reactive supports multipart/form-data [out of the box](https://quarkus.io/guides/rest-client-reactive#multipart). Thus, no additional dependency is required.
+
+If you're using RESTEasy Classic, you need to add the following additional dependency to your `pom.xml`:
 
 ```xml
-
 <dependency>
   <groupId>io.quarkus</groupId>
   <artifactId>quarkus-resteasy-multipart</artifactId>
@@ -512,8 +552,8 @@ You need to add the following additional dependency to your `pom.xml`:
 For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
 
 - `javax.ws.rs.FormParam`, where the value parameter denotes the part name,
-- `org.jboss.resteasy.annotations.providers.multipart.PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
-- and, if the part contains a file, `org.jboss.resteasy.annotations.providers.multipart.PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the
+- `PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
+- and, if the part contains a file, `PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the
   Content-Disposition header of the part.
 
 For example, the model for a request that requires a file, a string and some complex object will look like this:
@@ -536,7 +576,7 @@ public class MultipartBody {
 }
 ```
 
-Then in the client the `org.jboss.resteasy.annotations.providers.multipart.MultipartForm` annotation is added in front of the multipart parameter:
+Then in the client, when using RESTEasy Classic, the `org.jboss.resteasy.annotations.providers.multipart.MultipartForm` annotation is added in front of the multipart parameter:
 
 ```java
 @Path("/echo")
@@ -551,8 +591,25 @@ public interface MultipartService {
 }
 ```
 
+When using RESTEasy Reactive, the `javax.ws.rs.BeanParam` annotation is added in front of the multipart parameter:
+
+```java
+@Path("/echo")
+@RegisterRestClient(baseUri="http://my.endpoint.com/api/v1", configKey="multipart-requests_yml")
+public interface MultipartService {
+
+  @POST
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.TEXT_PLAIN)
+  String sendMultipartData(@javax.ws.rs.BeanParam MultipartBody data);
+
+}
+```
+
 See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and
 the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
+
+> **⚠️** `MultipartForm`  is deprecated when using RESTEasy Reactive.
 
 `baseURI` value of `RegisterRestClient` annotation is extracted from the `servers` section of the file, if present. If not, it will be left empty and it is expected you set up the uri to be used in your configuration.
 
@@ -669,7 +726,6 @@ See the module [type-mapping](integration-tests/type-mapping) for an example of 
 
 These are the known limitations of this pre-release version:
 
-- No reactive support
 - Only Jackson support
 
 We will work in the next few releases to address these use cases, until there please provide feedback for the current state of this extension. We also love contributions :heart:

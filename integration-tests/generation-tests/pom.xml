@@ -12,10 +12,6 @@
   <dependencies>
     <!-- petstore requires OAuth2 -->
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-oidc-client-filter</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator</artifactId>
     </dependency>

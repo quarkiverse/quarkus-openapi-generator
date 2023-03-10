@@ -60,16 +60,6 @@
               "schema": {
                 "$ref": "#/components/schemas/Pet"
               }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
             }
           },
           "required": true
@@ -120,16 +110,6 @@
           "description": "Create a new pet in the store",
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            },
-            "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/Pet"
               }
