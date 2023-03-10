@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 
 import org.acme.openapi.typemapping.api.TypeMappingApi;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -27,7 +28,8 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @QuarkusTestResource(WiremockTypeAndImportMapping.class)
-public class TypeAndImportMappingTest {
+@Tag("resteasy-classic")
+class TypeAndImportMappingRestEasyClassicTest {
 
     WireMockServer typeMappingServer;
 

@@ -58,6 +58,8 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
         boolean generated = false;
 
+        boolean isRestEasyReactive = isRestEasyReactive(context);
+
         for (final OpenApiSpecInputProvider provider : this.providers) {
             for (SpecInputModel inputModel : provider.read(context)) {
                 LOGGER.debug("Processing OpenAPI spec input model {}", inputModel);
@@ -72,7 +74,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                                     StandardOpenOption.CREATE)) {
                         outChannel.transferFrom(inChannel, 0, Integer.MAX_VALUE);
                         LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
-                        this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir);
+                        this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir, isRestEasyReactive);
                         generated = true;
                     }
                 } catch (IOException e) {

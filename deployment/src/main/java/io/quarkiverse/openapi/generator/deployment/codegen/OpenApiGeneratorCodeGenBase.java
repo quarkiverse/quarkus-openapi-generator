@@ -26,10 +26,14 @@ import org.openapitools.codegen.config.GlobalSettings;
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
+import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
+import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiReactiveClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
+import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.quarkus.maven.dependency.ResolvedDependency;
 import io.smallrye.config.SmallRyeConfig;
 
 /**
@@ -70,6 +74,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return inputBaseDir != null || Files.isDirectory(sourceDir);
     }
 
+    protected boolean isRestEasyReactive(CodeGenContext context) {
+        return context.applicationModel().getExtensionCapabilities().stream()
+                .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
+                .anyMatch(Capability.REST_CLIENT_REACTIVE::equals);
+    }
+
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
@@ -79,6 +89,17 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         final List<String> filesToExclude = context.config().getOptionalValues(EXCLUDE_FILES, String.class).orElse(List.of());
 
         if (Files.isDirectory(openApiDir)) {
+            final boolean isRestEasyReactive = isRestEasyReactive(context);
+
+            if (isRestEasyReactive) {
+                if (!isJacksonReactiveClientPresent(context)) {
+                    throw new CodeGenException(
+                            "You need to add io.quarkus:quarkus-rest-client-reactive-jackson to your dependencies.");
+                }
+            } else if (!isJacksonClassicClientPresent(context)) {
+                throw new CodeGenException("You need to add io.quarkus:quarkus-rest-client-jackson to your dependencies.");
+            }
+
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
@@ -88,7 +109,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                                     && !filesToExclude.contains(fileName)
                                     && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
                         })
-                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir));
+                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir, isRestEasyReactive));
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
                         e);
@@ -98,20 +119,34 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return false;
     }
 
+    private boolean isJacksonReactiveClientPresent(CodeGenContext context) {
+        return context.applicationModel().getDependencies().stream()
+                .anyMatch(this::isJacksonReactiveClient);
+    }
+
+    private boolean isJacksonClassicClientPresent(CodeGenContext context) {
+        return context.applicationModel().getExtensionCapabilities().stream()
+                .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
+                .anyMatch(Capability.RESTEASY_JSON_JACKSON_CLIENT::equals);
+    }
+
+    private boolean isJacksonReactiveClient(ResolvedDependency resolvedDependency) {
+        return "quarkus-rest-client-reactive-jackson".equals(resolvedDependency.getArtifactId())
+                && "io.quarkus".equals(resolvedDependency.getGroupId());
+    }
+
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-    protected void generate(final Config config, final Path openApiFilePath, final Path outDir) {
+    protected void generate(final Config config, final Path openApiFilePath, final Path outDir, boolean isRestEasyReactive) {
         final String basePackage = getBasePackage(config, openApiFilePath);
         final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
         final Boolean validateSpec = config.getOptionalValue(VALIDATE_SPEC_PROPERTY_NAME, Boolean.class).orElse(true);
         GlobalSettings.setProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
                 config.getOptionalValue(CodegenConfig.DEFAULT_SECURITY_SCHEME, String.class).orElse(""));
 
-        final OpenApiClientGeneratorWrapper generator = new OpenApiClientGeneratorWrapper(
-                openApiFilePath.normalize(),
-                outDir,
-                verbose,
-                validateSpec)
-                .withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
+        final OpenApiClientGeneratorWrapper generator = createGeneratorWrapper(openApiFilePath, outDir, isRestEasyReactive,
+                verbose, validateSpec);
+
+        generator.withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                 .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
                         config));
 
@@ -135,6 +170,23 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .ifPresent(generator::withImportMappings);
 
         generator.generate(basePackage);
+    }
+
+    private static OpenApiClientGeneratorWrapper createGeneratorWrapper(Path openApiFilePath, Path outDir,
+            boolean isRestEasyReactive, Boolean verbose, Boolean validateSpec) {
+        if (isRestEasyReactive) {
+            return new OpenApiReactiveClientGeneratorWrapper(
+                    openApiFilePath.normalize(),
+                    outDir,
+                    verbose,
+                    validateSpec);
+        } else {
+            return new OpenApiClassicClientGeneratorWrapper(
+                    openApiFilePath.normalize(),
+                    outDir,
+                    verbose,
+                    validateSpec);
+        }
     }
 
     private String getBasePackage(final Config config, final Path openApiFilePath) {
