@@ -17,17 +17,29 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client-jackson</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-qute</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.microprofile.rest.client</groupId>
+      <artifactId>microprofile-rest-client-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-oidc-common</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- We need an impl of RuntimeDelegate for testing purposes only. Thus, it doesn't matter whether it has a reactive or classic rest client dependency -->
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-oidc-client-filter</artifactId>
-      <scope>provided</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
