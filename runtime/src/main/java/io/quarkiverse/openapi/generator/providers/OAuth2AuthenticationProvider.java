@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkus.oidc.common.runtime.OidcConstants;
 
-@io.quarkus.arc.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
+@jakarta.annotation.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
 @jakarta.enterprise.context.Dependent
 public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
