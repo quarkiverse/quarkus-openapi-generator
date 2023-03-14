@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.Priorities;
 
-import io.quarkus.arc.Priority;
+import jakarta.annotation.Priority;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
