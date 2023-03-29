@@ -33,7 +33,6 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
-import io.quarkus.maven.dependency.ResolvedDependency;
 import io.smallrye.config.SmallRyeConfig;
 
 /**
@@ -119,20 +118,18 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return false;
     }
 
-    private boolean isJacksonReactiveClientPresent(CodeGenContext context) {
-        return context.applicationModel().getDependencies().stream()
-                .anyMatch(this::isJacksonReactiveClient);
+    private static boolean isJacksonReactiveClientPresent(CodeGenContext context) {
+        return isExtensionCapabilityPresent(context, Capability.REST_CLIENT_REACTIVE_JACKSON);
     }
 
-    private boolean isJacksonClassicClientPresent(CodeGenContext context) {
+    private static boolean isJacksonClassicClientPresent(CodeGenContext context) {
+        return isExtensionCapabilityPresent(context, Capability.RESTEASY_JSON_JACKSON_CLIENT);
+    }
+
+    private static boolean isExtensionCapabilityPresent(CodeGenContext context, String capability) {
         return context.applicationModel().getExtensionCapabilities().stream()
                 .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
-                .anyMatch(Capability.RESTEASY_JSON_JACKSON_CLIENT::equals);
-    }
-
-    private boolean isJacksonReactiveClient(ResolvedDependency resolvedDependency) {
-        return "quarkus-rest-client-reactive-jackson".equals(resolvedDependency.getArtifactId())
-                && "io.quarkus".equals(resolvedDependency.getGroupId());
+                .anyMatch(capability::equals);
     }
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
