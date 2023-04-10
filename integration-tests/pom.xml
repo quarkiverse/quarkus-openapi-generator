@@ -25,6 +25,7 @@
     <module>exclude</module>
     <module>change-directory</module>
     <module>return-response</module>
+    <module>beanparam</module>
   </modules>
   <dependencyManagement>
     <dependencies>
