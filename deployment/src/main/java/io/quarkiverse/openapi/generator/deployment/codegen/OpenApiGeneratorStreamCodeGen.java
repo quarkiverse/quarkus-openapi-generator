@@ -96,6 +96,9 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
+        //        if (this.providers.isEmpty()) {
+        //            throw new OpenApiGeneratorException("Providers are empty");
+        //        }
         return !this.providers.isEmpty();
     }
 }

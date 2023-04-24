@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
@@ -66,11 +67,18 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
-        String inputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config);
-        if (inputBaseDir != null && !Files.isDirectory(Path.of(inputBaseDir))) {
-            throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, inputBaseDir));
-        }
-        return inputBaseDir != null || Files.isDirectory(sourceDir);
+        Optional<String> inputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config);
+        inputBaseDir.ifPresentOrElse(s -> {
+            if (!Files.isDirectory(Path.of(s))) {
+                throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, s));
+            }
+        }, () -> {
+            if (!Files.isDirectory(sourceDir)) {
+                throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, sourceDir));
+            }
+        });
+
+        return true;
     }
 
     protected boolean isRestEasyReactive(CodeGenContext context) {
@@ -82,8 +90,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
-        String inputBaseDir = getInputBaseDirRelativeToModule(context.inputDir(), context.config());
-        final Path openApiDir = inputBaseDir != null ? Path.of(inputBaseDir) : context.inputDir();
+        Optional<String> inputBaseDir = getInputBaseDirRelativeToModule(context.inputDir(), context.config());
+        final Path openApiDir = inputBaseDir.map(Path::of).orElseGet(context::inputDir);
         final List<String> filesToInclude = context.config().getOptionalValues(INCLUDE_FILES, String.class).orElse(List.of());
         final List<String> filesToExclude = context.config().getOptionalValues(EXCLUDE_FILES, String.class).orElse(List.of());
 
@@ -133,7 +141,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-    protected void generate(final Config config, final Path openApiFilePath, final Path outDir, boolean isRestEasyReactive) {
+    protected void generate(final Config config, final Path openApiFilePath, final Path outDir,
+            boolean isRestEasyReactive) {
         final String basePackage = getBasePackage(config, openApiFilePath);
         final Boolean verbose = config.getOptionalValue(VERBOSE_PROPERTY_NAME, Boolean.class).orElse(false);
         final Boolean validateSpec = config.getOptionalValue(VALIDATE_SPEC_PROPERTY_NAME, Boolean.class).orElse(true);
@@ -192,10 +201,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
     }
 
-    private String getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
+    private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
         return config.getOptionalValue(INPUT_BASE_DIR, String.class).map(inputBaseDir -> {
             int srcIndex = sourceDir.toString().lastIndexOf("src");
             return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + inputBaseDir;
-        }).orElse(null);
+        });
     }
 }
