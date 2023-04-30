@@ -55,6 +55,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+        java: [
+          { 'version': '11' },
+          { 'version': '17' }
+        ]
     steps:
       - name: Prepare git
         run: git config --global core.autocrlf false
