@@ -34,7 +34,7 @@ public class AuthorizationHeaderApiKeyCanFilterWithoutDuplicateAuthorizationTest
                 123465L);
         assertNotNull(foos);
         fooServer.verify(WireMock.getRequestedFor(
-                        WireMock.urlEqualTo("/api/foo/v2.0/foo?something=123465"))
+                WireMock.urlEqualTo("/api/foo/v2.0/foo?something=123465"))
                 .withHeader("Authorization", equalTo("fooapikey"))
 
         );
