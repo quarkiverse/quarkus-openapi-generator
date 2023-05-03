@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
+import com.github.tomakehurst.wiremock.http.HttpHeaders;
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import jakarta.inject.Inject;
 
@@ -36,14 +38,17 @@ public class AuthorizationHeaderApiKeyCanFilterWithoutDuplicateAuthorizationTest
         List<FooDTO> foos = fooResourceApi.getFoosUsingGET("not the fooapikey",
                 123465L);
         assertNotNull(foos);
-        fooServer.verify(getRequestedFor(
-                urlEqualTo("/api/foo/v2.0/foo?something=123465"))
-                .withHeader("Authorization", equalTo("fooapikey"))
-        );
 
-        List<LoggedRequest> requestsWithAuthHeader = fooServer.findAll(getRequestedFor(
+        RequestPatternBuilder builder = getRequestedFor(
                 urlEqualTo("/api/foo/v2.0/foo?something=123465"))
-                .withHeader("Authorization", equalTo("fooapikey")));
-        assertEquals(1, requestsWithAuthHeader.size());
+                .withHeader("Authorization", equalTo("fooapikey"));
+        List<LoggedRequest> requestsWithAuthHeader = fooServer.findAll(builder);
+        assertEquals(1, requestsWithAuthHeader.size(), "more than one request");
+
+        LoggedRequest loggedRequest = requestsWithAuthHeader.get(0);
+        HttpHeaders httpHeaders = loggedRequest.getHeaders();
+        long authHeaderCount = httpHeaders.all().stream().filter(
+                httpHeader -> httpHeader.keyEquals("Authorization")).count();
+        assertEquals(1, authHeaderCount, "multiple Authorization headers found");
     }
 }
