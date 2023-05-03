@@ -139,6 +139,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
+        configurator.setOpenAPINormalizer(openApiNormalizer);
+        return this;
+    }
+
     /**
      * Sets the global 'additionalModelTypeAnnotations' setting. If not set this setting will default to empty.
      *

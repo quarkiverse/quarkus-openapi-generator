@@ -58,4 +58,10 @@ public class SpecItemConfig {
      */
     @ConfigItem(name = "return-response")
     public Optional<Boolean> returnResponse;
+
+    /**
+     * Defines the normalizer options.
+     */
+    @ConfigItem(name = "open-api-normalizer")
+    public Map<String, String> normalizer;
 }
