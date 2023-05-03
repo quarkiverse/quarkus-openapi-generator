@@ -10,11 +10,15 @@ import jakarta.ws.rs.core.UriBuilder;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provider for API Key authentication.
  */
 public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiKeyAuthenticationProvider.class);
 
     static final String API_KEY = "api-key";
 
@@ -47,7 +51,11 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getApiKey() {
-        return getAuthConfigParam(API_KEY, "");
+        final String key = getAuthConfigParam(API_KEY, "");
+        if ("".equals(key)) {
+            LOGGER.warn("configured " + API_KEY + " property (see application.properties) is empty. hint: configure it.");
+        }
+        return key;
     }
 
     private void validateConfig() {
