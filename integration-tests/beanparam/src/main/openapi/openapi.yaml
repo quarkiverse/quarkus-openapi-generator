@@ -1,0 +1,104 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: "4.0.0"
+tags:
+  - name: GetTest
+    description: GetTest Controller
+paths:
+  /get:
+    get:
+      tags:
+        - GetTest
+      summary: getTest
+      operationId: getTest
+      parameters:
+        - name: testObj
+          in: query
+          schema:
+            $ref: "#/components/schemas/TestObj"
+        - name: unpaged
+          in: query
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+        400:
+          $ref: "#/components/responses/ErrorResponse"
+        403:
+          $ref: "#/components/responses/ForbiddenResponse"
+      deprecated: false
+components:
+  schemas:
+    TestObj:
+      title: Pageable
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+        page:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/Sort"
+    Sort:
+      title: Sort
+      type: array
+      items:
+        type: string
+    ResponseDto:
+      title: ResponseDto
+      type: object
+      discriminator:
+        propertyName: response_type
+      required:
+        - message
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        optionals:
+          type: array
+          items:
+            type: string
+    ErrorResponseObject:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  responses:
+    ErrorResponse:
+      description: Common error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseObject"
+    UnauthorizedResponse:
+      description: The user have typed the wrong credentials or don't have an account. This error only shows on login.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseObject"
+    ForbiddenResponse:
+      description: The user doesn't have permission to make the operation.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponseObject"

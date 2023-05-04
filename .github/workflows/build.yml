@@ -29,17 +29,21 @@ jobs:
     strategy:
      matrix:
         os: [ubuntu-latest, windows-latest]
+        java: [
+          { 'version': '11' },
+          { 'version': '17' }
+        ]
     steps:
       - name: Prepare git
         run: git config --global core.autocrlf false
         if: startsWith(matrix.os, 'windows')
 
       - uses: actions/checkout@v3
-      - name: Set up JDK 11
+      - name: Set up JDK  ${{matrix.java.version}}
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 11
+          java-version: ${{matrix.java.version}}
           cache: 'maven'
 
       - name: Build with Maven
@@ -51,17 +55,21 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+        java: [
+          { 'version': '11' },
+          { 'version': '17' }
+        ]
     steps:
       - name: Prepare git
         run: git config --global core.autocrlf false
         if: startsWith(matrix.os, 'windows')
 
       - uses: actions/checkout@v3
-      - name: Set up JDK 11
+      - name: Set up JDK ${{matrix.java.version}}
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 11
+          java-version: ${{matrix.java.version}}
           cache: 'maven'
 
       - name: Build with Maven
