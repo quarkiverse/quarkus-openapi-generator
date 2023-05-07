@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>quarkus-openapi-generator-it-open-api-normalizer</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Open API Normalizer</name>
+    <name>Quarkus - Openapi Generator - Integration Tests - OpenAPI Normalizer</name>
 
     <dependencies>
         <dependency>
