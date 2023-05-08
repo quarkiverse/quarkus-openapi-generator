@@ -52,7 +52,7 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
 
     private String getApiKey() {
         final String key = getAuthConfigParam(API_KEY, "");
-        if ("".equals(key)) {
+        if (key.isEmpty()) {
             LOGGER.warn("configured " + API_KEY + " property (see application.properties) is empty. hint: configure it.");
         }
         return key;
