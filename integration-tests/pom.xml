@@ -26,6 +26,7 @@
     <module>change-directory</module>
     <module>return-response</module>
     <module>beanparam</module>
+    <module>open-api-normalizer</module>
   </modules>
   <dependencyManagement>
     <dependencies>
