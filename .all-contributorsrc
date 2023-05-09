@@ -187,6 +187,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bpasson",
+      "name": "Bas Passon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6814512?v=4",
+      "profile": "https://github.com/bpasson",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
