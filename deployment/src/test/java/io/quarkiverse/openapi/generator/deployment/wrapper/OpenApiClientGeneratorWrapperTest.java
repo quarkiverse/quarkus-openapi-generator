@@ -32,6 +32,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.type.Type;
@@ -518,6 +519,27 @@ public class OpenApiClientGeneratorWrapperTest {
                 throw new RuntimeException(e.getMessage());
             }
         });
+    }
+
+    @Test
+    void verifyAPINormalization() throws Exception {
+        final List<File> generatedFiles = this.createGeneratorWrapper("open-api-normalizer.json")
+                .withOpenApiNormalizer(Map.of("REF_AS_PARENT_IN_ALLOF", "true"))
+                .generate("org.acme.openapi.animals");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("Primate.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<ClassOrInterfaceDeclaration> types = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
+
+        assertThat(types).hasSize(1);
+        assertThat(types.get(0).getExtendedTypes()).hasSize(1);
+        assertThat(types.get(0).getExtendedTypes(0).getName()).isEqualTo(new SimpleName("Mammal"));
     }
 
     private Optional<AnnotationExpr> getRegisterProviderAnnotation(ClassOrInterfaceDeclaration declaration,
