@@ -1,20 +1,21 @@
 package io.quarkiverse.openapi.generator.it;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
-import org.apache.commons.io.IOUtils;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+
+import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
 public class WiremockTestResource implements QuarkusTestResourceLifecycleManager {
 
@@ -32,8 +33,11 @@ public class WiremockTestResource implements QuarkusTestResourceLifecycleManager
     }
 
     private String resourceToString(String resource, Charset charset) {
-        try {
-            return IOUtils.resourceToString(resource, charset);
+        try (InputStream in = getClass().getResourceAsStream(resource)) {
+            if (in == null) {
+                throw new IOException("Could not open resource " + resource);
+            }
+            return new String(in.readAllBytes(), charset);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
