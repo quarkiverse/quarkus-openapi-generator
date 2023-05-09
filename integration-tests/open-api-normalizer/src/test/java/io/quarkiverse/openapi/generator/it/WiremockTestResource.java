@@ -33,7 +33,7 @@ public class WiremockTestResource implements QuarkusTestResourceLifecycleManager
     }
 
     private String resourceToString(String resource, Charset charset) {
-        try (InputStream in = getClass().getResourceAsStream(resource)) {
+        try (InputStream in = WiremockTestResource.class.getResourceAsStream(resource)) {
             if (in == null) {
                 throw new IOException("Could not open resource " + resource);
             }
