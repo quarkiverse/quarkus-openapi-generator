@@ -8,10 +8,11 @@ import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.UriBuilder;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
  * Provider for API Key authentication.
