@@ -30,7 +30,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 {#if appName}
 /**
   * {appName}
-  * {#if appDescription}<p/>{appDescription}{/if}
+  * {#if appDescription}<p>{appDescription}</p>{/if}
   */
 {/if}
 @Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
