@@ -43,7 +43,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate verify --file pom.xml
+        run: mvn '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml
 
   build_reactive:
     name: Build - RESTEasy Reactive
@@ -65,4 +65,4 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn -Presteasy-reactive '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B verify --file pom.xml
+        run: mvn -Presteasy-reactive '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml
