@@ -1,0 +1,93 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "More description about the API",
+        "version": "1.0.0",
+        "title": "Swagger API Doc"
+    },
+    "host": "api.foo.fr/api",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "foo-resource",
+            "description": "Foo Resource"
+        }
+    ],
+    "paths": {
+        "/foo/v2.0/foo": {
+            "get": {
+                "tags": [
+                    "foo-resource"
+                ],
+                "summary": "getFoos",
+                "operationId": "getFoosUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "something",
+                        "in": "query",
+                        "description": "something int",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FooDTO"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": [
+                            "global"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "FooDTO": {
+            "type": "object",
+            "properties": {               
+                "fubar": {
+                    "type": "string"
+                }             
+            },
+            "title": "FooDTO"
+        }
+
+    }
+}
