@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
@@ -69,19 +68,13 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
-        Optional<String> inputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config);
-        inputBaseDir.ifPresentOrElse(s -> {
-            if (!Files.isDirectory(Path.of(s))) {
-                throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, s));
-            }
-        }, () -> {
-            if (!Files.isDirectory(sourceDir)
-                    && !sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()))) {
-                throw new OpenApiGeneratorException(String.format("Invalid path on %s: %s", INPUT_BASE_DIR, sourceDir));
-            }
-        });
+        String inputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config).orElse(null);
 
-        return true;
+        if (inputBaseDir != null) {
+            return Files.isDirectory(Path.of(inputBaseDir));
+        } else {
+            return Files.isDirectory(sourceDir) || sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()));
+        }
     }
 
     protected boolean isRestEasyReactive(CodeGenContext context) {
