@@ -35,20 +35,35 @@ public class AuthorizationHeaderApiKeyCanFilterWithoutDuplicateAuthorizationTest
 
     @Test
     public void testNoMultipleAuthorizationHeadersAreSent() {
-        List<FooDTO> foos = fooResourceApi.getFoosUsingGET("not the fooapikey",
+        List<FooDTO> foos = fooResourceApi.getFoosUsingGET("dynamicapikey",
                 123465L);
         assertNotNull(foos);
 
         RequestPatternBuilder builder = getRequestedFor(
                 urlEqualTo("/api/foo/v2.0/foo?something=123465"))
-                .withHeader("Authorization", equalTo("fooapikey"));
+                .withHeader("Authorization", equalTo("dynamicapikey"));
         List<LoggedRequest> requestsWithAuthHeader = fooServer.findAll(builder);
-        assertEquals(1, requestsWithAuthHeader.size(), "more than one request");
+        assertEquals(1, requestsWithAuthHeader.size(), "unexpected Authorization header in request");
 
         LoggedRequest loggedRequest = requestsWithAuthHeader.get(0);
         HttpHeaders httpHeaders = loggedRequest.getHeaders();
         long authHeaderCount = httpHeaders.all().stream().filter(
                 httpHeader -> httpHeader.keyEquals("Authorization")).count();
         assertEquals(1, authHeaderCount, "multiple Authorization headers found");
+    }
+
+    @Test
+    public void testStaticApiKeyAsPrecedenceOverDynamicApiKey() {
+        List<FooDTO> foos = fooResourceApi.getFoosUsingGET("",
+                123465L);
+        assertNotNull(foos);
+
+        RequestPatternBuilder builder = getRequestedFor(
+                urlEqualTo("/api/foo/v2.0/foo?something=123465"))
+                .withHeader("Authorization", equalTo("staticapikey"));
+        List<LoggedRequest> requestsWithAuthHeader = fooServer.findAll(builder);
+        assertEquals(1, requestsWithAuthHeader.size(),
+                "did not use staticapikey from application.properties for Authorization header");
+
     }
 }
