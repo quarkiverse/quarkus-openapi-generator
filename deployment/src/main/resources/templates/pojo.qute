@@ -48,9 +48,6 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
       * {m.description}
      **/
     {/if}
-    {#if !v.isEnum}
-    @jakarta.ws.rs.QueryParam("{v.name}")
-    {/if}
     {#if v.isContainer}
     private {v.datatypeWithEnum} {v.name}{#if v.required} = {v.defaultValue}{#else} = null{/if};
     {#else}
@@ -150,4 +147,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+    {#include pojoQueryParam.qute m=m.model withXml=withXml codegen=classes-codegen package=modelPackage/}
+
 }

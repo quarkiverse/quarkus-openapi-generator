@@ -120,7 +120,7 @@ public class OpenApiClientGeneratorWrapperTest {
         final CompilationUnit cu = StaticJavaParser.parse(metaV1Condition.orElseThrow());
         final List<FieldDeclaration> fields = cu.findAll(FieldDeclaration.class);
 
-        assertThat(fields).extracting(FieldDeclaration::getVariables).hasSize(5);
+        assertThat(fields).extracting(FieldDeclaration::getVariables).hasSize(10);
 
         assertThat(fields.stream()
                 .flatMap(v -> v.getVariables().stream())
@@ -369,7 +369,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
-        assertThat(classes).hasSize(1);
+        assertThat(classes).hasSize(2);
         ClassOrInterfaceDeclaration generatedPojoClass = classes.get(0);
 
         verifyGeneratedDateAndTimeTypes(
@@ -403,7 +403,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
-        assertThat(classes).hasSize(1);
+        assertThat(classes).hasSize(2);
         ClassOrInterfaceDeclaration generatedPojoClass = classes.get(0);
 
         verifyGeneratedDateAndTimeTypes(
@@ -537,7 +537,7 @@ public class OpenApiClientGeneratorWrapperTest {
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<ClassOrInterfaceDeclaration> types = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
 
-        assertThat(types).hasSize(1);
+        assertThat(types).hasSize(2);
         assertThat(types.get(0).getExtendedTypes()).hasSize(1);
         assertThat(types.get(0).getExtendedTypes(0).getName()).isEqualTo(new SimpleName("Mammal"));
     }
