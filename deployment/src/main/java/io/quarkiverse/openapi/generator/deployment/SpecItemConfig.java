@@ -60,6 +60,12 @@ public class SpecItemConfig {
     public Optional<Boolean> returnResponse;
 
     /**
+     * Defines if default client header factory should be used. Default is <code>false</code>.
+     */
+    @ConfigItem(name = "client-header-factory")
+    public Optional<String> clientHeaderFactory;
+
+    /**
      * Defines the normalizer options.
      */
     @ConfigItem(name = "open-api-normalizer")
