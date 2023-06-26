@@ -337,6 +337,18 @@ Let's see how it works by following a simple example:
 Imagine that we have a `updatePet` operation defined in the `petstore.json` specification file and secured with the `petstore_auth` security scheme.
 The code below shows a simple example of the usage of this operation in a user-programmed service.
 
+## Headers propagation
+Custom headers propagation can be set via microprofile configuration `org.eclipse.microprofile.rest.client.propagateHeaders`
+In order to consider this configuration you must force @RegisterClientHeaders to use its default microprofile ClientHeadersFactory implementation. Therefore there is an option `client-headers-factory` where you can set any implementation of ClientHeadersFactory.
+
+| Description  | Property Key                                                               | Example                                                                                                                                                    |
+| -------------|----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Bearer Token | `quarkus.openapi-generator.codegen.spec.[fileName].client-headers-factory` | `quarkus.openapi-generator.codegen.spec.open_weather_yaml.client-headers-factory=org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl` |
+
+If `client-headers-factory` is set to `none` @RegisterClientHeaders will use its default implicit implementation as in example above.
+
+If no option is set then default generated AuthenticationPropagationHeadersFactory class is used.
+
 ```java
 import org.acme.api.PetApi;
 import org.acme.model.Pet;

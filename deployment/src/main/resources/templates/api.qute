@@ -11,7 +11,7 @@ import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 {#if hasAuthMethods}
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import {package}.auth.CompositeAuthenticationProvider;
-{#if client-header-factory is 'default'}
+{#if client-headers-factory is 'default'}
 import {package}.auth.AuthenticationPropagationHeadersFactory;
 {/if}
 {/if}
@@ -40,13 +40,13 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)
-{#when client-header-factory}
+{#when client-headers-factory}
 {#is 'default'}
 @RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
 {#is 'none'}
 @RegisterClientHeaders
 {#else}
-@RegisterClientHeaders({client-header-factory}.class)
+@RegisterClientHeaders({client-headers-factory}.class)
 {/when}
 {/if}
 {#for crpClassConfig in custom-register-providers.orEmpty}

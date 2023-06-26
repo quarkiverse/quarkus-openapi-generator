@@ -135,7 +135,7 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     public OpenApiClientGeneratorWrapper withClientHeaderFactory(String clientHeaderFactory) {
-        configurator.addAdditionalProperty("client-header-factory", clientHeaderFactory);
+        configurator.addAdditionalProperty("client-headers-factory", clientHeaderFactory);
         return this;
     }
 

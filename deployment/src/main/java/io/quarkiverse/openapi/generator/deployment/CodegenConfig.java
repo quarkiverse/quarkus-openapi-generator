@@ -34,7 +34,7 @@ public class CodegenConfig {
     private static final String CUSTOM_REGISTER_PROVIDERS_FORMAT = "%s.custom-register-providers";
 
     private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
-    private static final String CLIENT_HEADER_FACTORY_PROP_FORMAT = "%s.client-header-factory";
+    private static final String CLIENT_HEADER_FACTORY_PROP_FORMAT = "%s.client-headers-factory";
 
     /**
      * OpenAPI Spec details for codegen configuration.

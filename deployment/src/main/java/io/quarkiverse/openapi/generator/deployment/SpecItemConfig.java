@@ -60,10 +60,13 @@ public class SpecItemConfig {
     public Optional<Boolean> returnResponse;
 
     /**
-     * Defines if default client header factory should be used. Default is <code>false</code>.
+     * ClientHeaderFactory class that should be used in @RegisterClientHeaders.
+     * Full class name is expected
+     * By default generated AuthenticationPropagationHeadersFactory class is set.
+     * Can also be set to 'none' to use default microprofile implementation (DefaultClientHeadersFactoryImpl)
      */
-    @ConfigItem(name = "client-header-factory")
-    public Optional<String> clientHeaderFactory;
+    @ConfigItem(name = "client-headers-factory")
+    public Optional<String> clientHeadersFactory;
 
     /**
      * Defines the normalizer options.
