@@ -345,7 +345,7 @@ In order to consider this configuration you must force `@RegisterClientHeaders` 
 | -------------|----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Bearer Token | `quarkus.openapi-generator.codegen.spec.[fileName].client-headers-factory` | `quarkus.openapi-generator.codegen.spec.open_weather_yaml.client-headers-factory=org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl` |
 
-If `client-headers-factory` is set to `none` @RegisterClientHeaders will use its default implicit implementation as in example above.
+If `client-headers-factory` is set to `none` `@RegisterClientHeaders` will use its default implicit implementation as in the example above.
 
 If no option is set then default generated AuthenticationPropagationHeadersFactory class is used.
 
