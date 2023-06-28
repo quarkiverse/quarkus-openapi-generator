@@ -62,8 +62,8 @@ public class SpecItemConfig {
     /**
      * ClientHeaderFactory class that should be used in @RegisterClientHeaders.
      * Full class name is expected
-     * By default generated AuthenticationPropagationHeadersFactory class is set.
-     * Can also be set to 'none' to use default microprofile implementation (DefaultClientHeadersFactoryImpl)
+     * If option is not set then AuthenticationPropagationHeadersFactory is generated and used as value for @RegisterClientHeaders
+     * If set to 'none' then @RegisterClientHeaders will be generated without value and default microprofile implementation will be used
      */
     @ConfigItem(name = "client-headers-factory")
     public Optional<String> clientHeadersFactory;
