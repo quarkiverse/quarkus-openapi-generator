@@ -48,11 +48,10 @@ public class OpenWeatherTest {
 
     @Test
     public void testClientHeadersFactory_defaultClientHeadersFactory() throws ClassNotFoundException {
-        Class currentWeatherDataV2Api = this.getClass().getClassLoader()
+        Class<?> currentWeatherDataV2Api = this.getClass().getClassLoader()
                 .loadClass("org.acme.openapi.weather.v2.api.CurrentWeatherDataV2Api");
         assertTrue(currentWeatherDataV2Api.isAnnotationPresent(RegisterClientHeaders.class));
         RegisterClientHeaders annotation = currentWeatherDataV2Api.getAnnotation(RegisterClientHeaders.class);
-                .getAnnotation(RegisterClientHeaders.class);
         assertEquals(AuthenticationPropagationHeadersFactory.class, annotation.value());
     }
 
@@ -61,8 +60,7 @@ public class OpenWeatherTest {
         Class<?> currentWeatherDataV3Api = this.getClass().getClassLoader()
                 .loadClass("org.acme.openapi.weather.v3.api.CurrentWeatherDataV3Api");
         assertTrue(currentWeatherDataV3Api.isAnnotationPresent(RegisterClientHeaders.class));
-        RegisterClientHeaders annotation = (RegisterClientHeaders) currentWeatherDataV3Api
-                .getAnnotation(RegisterClientHeaders.class);
+        RegisterClientHeaders annotation =  currentWeatherDataV3Api.getAnnotation(RegisterClientHeaders.class);
         assertEquals(org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl.class, annotation.value());
     }
 
@@ -71,8 +69,7 @@ public class OpenWeatherTest {
         Class<?> currentWeatherDataV4Api = this.getClass().getClassLoader()
                 .loadClass("org.acme.openapi.weather.v4.api.CurrentWeatherDataV4Api");
         assertTrue(currentWeatherDataV4Api.isAnnotationPresent(RegisterClientHeaders.class));
-        RegisterClientHeaders annotation = (RegisterClientHeaders) currentWeatherDataV4Api
-                .getAnnotation(RegisterClientHeaders.class);
+        RegisterClientHeaders annotation = currentWeatherDataV4Api.getAnnotation(RegisterClientHeaders.class);
         assertEquals(org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl.class, annotation.value());
     }
 
