@@ -338,7 +338,7 @@ Imagine that we have a `updatePet` operation defined in the `petstore.json` spec
 The code below shows a simple example of the usage of this operation in a user-programmed service.
 
 ## Headers propagation
-Custom headers propagation can be set via microprofile configuration `org.eclipse.microprofile.rest.client.propagateHeaders`
+Custom headers propagation can be set via MicroProfile configuration `org.eclipse.microprofile.rest.client.propagateHeaders`.
 In order to consider this configuration you must force @RegisterClientHeaders to use its default microprofile ClientHeadersFactory implementation. Therefore there is an option `client-headers-factory` where you can set any implementation of ClientHeadersFactory.
 
 | Description  | Property Key                                                               | Example                                                                                                                                                    |
