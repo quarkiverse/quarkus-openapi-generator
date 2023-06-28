@@ -339,7 +339,7 @@ The code below shows a simple example of the usage of this operation in a user-p
 
 ## Headers propagation
 Custom headers propagation can be set via MicroProfile configuration `org.eclipse.microprofile.rest.client.propagateHeaders`.
-In order to consider this configuration you must force @RegisterClientHeaders to use its default microprofile ClientHeadersFactory implementation. Therefore there is an option `client-headers-factory` where you can set any implementation of ClientHeadersFactory.
+In order to consider this configuration you must force `@RegisterClientHeaders` to use its default MicroProfile `ClientHeadersFactory` implementation. Therefore there is an option `client-headers-factory` where you can set any implementation of `ClientHeadersFactory`.
 
 | Description  | Property Key                                                               | Example                                                                                                                                                    |
 | -------------|----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
