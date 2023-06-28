@@ -68,7 +68,7 @@ public class OpenWeatherTest {
 
     @Test
     public void testClientHeadersFactory_customClientHeadersFactory() throws ClassNotFoundException {
-        Class currentWeatherDataV4Api = this.getClass().getClassLoader()
+        Class<?> currentWeatherDataV4Api = this.getClass().getClassLoader()
                 .loadClass("org.acme.openapi.weather.v4.api.CurrentWeatherDataV4Api");
         assertTrue(currentWeatherDataV4Api.isAnnotationPresent(RegisterClientHeaders.class));
         RegisterClientHeaders annotation = (RegisterClientHeaders) currentWeatherDataV4Api
