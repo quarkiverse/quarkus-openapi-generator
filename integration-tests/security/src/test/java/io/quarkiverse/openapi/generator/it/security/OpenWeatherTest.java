@@ -51,7 +51,7 @@ public class OpenWeatherTest {
         Class currentWeatherDataV2Api = this.getClass().getClassLoader()
                 .loadClass("org.acme.openapi.weather.v2.api.CurrentWeatherDataV2Api");
         assertTrue(currentWeatherDataV2Api.isAnnotationPresent(RegisterClientHeaders.class));
-        RegisterClientHeaders annotation = (RegisterClientHeaders) currentWeatherDataV2Api
+        RegisterClientHeaders annotation = currentWeatherDataV2Api.getAnnotation(RegisterClientHeaders.class);
                 .getAnnotation(RegisterClientHeaders.class);
         assertEquals(AuthenticationPropagationHeadersFactory.class, annotation.value());
     }
