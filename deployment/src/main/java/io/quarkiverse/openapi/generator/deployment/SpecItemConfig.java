@@ -1,10 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
-
 import java.util.Map;
 import java.util.Optional;
+
+import io.quarkus.runtime.annotations.ConfigGroup;
+import io.quarkus.runtime.annotations.ConfigItem;
 
 /*
  * Model for the configuration of this extension.

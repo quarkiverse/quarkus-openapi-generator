@@ -60,7 +60,7 @@ public class OpenWeatherTest {
         Class<?> currentWeatherDataV3Api = this.getClass().getClassLoader()
                 .loadClass("org.acme.openapi.weather.v3.api.CurrentWeatherDataV3Api");
         assertTrue(currentWeatherDataV3Api.isAnnotationPresent(RegisterClientHeaders.class));
-        RegisterClientHeaders annotation =  currentWeatherDataV3Api.getAnnotation(RegisterClientHeaders.class);
+        RegisterClientHeaders annotation = currentWeatherDataV3Api.getAnnotation(RegisterClientHeaders.class);
         assertEquals(org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl.class, annotation.value());
     }
 
