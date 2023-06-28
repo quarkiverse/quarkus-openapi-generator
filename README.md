@@ -347,7 +347,7 @@ In order to consider this configuration you must force `@RegisterClientHeaders` 
 
 If `client-headers-factory` is set to `none` `@RegisterClientHeaders` will use its default implicit implementation as in the example above.
 
-If no option is set then default generated AuthenticationPropagationHeadersFactory class is used.
+If no option is set then default generated `AuthenticationPropagationHeadersFactory` class is used.
 
 ```java
 import org.acme.api.PetApi;
