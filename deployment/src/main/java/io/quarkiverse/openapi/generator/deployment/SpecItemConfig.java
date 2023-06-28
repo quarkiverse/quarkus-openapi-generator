@@ -1,10 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment;
 
-import java.util.Map;
-import java.util.Optional;
-
 import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigItem;
+
+import java.util.Map;
+import java.util.Optional;
 
 /*
  * Model for the configuration of this extension.
@@ -62,8 +62,10 @@ public class SpecItemConfig {
     /**
      * ClientHeaderFactory class that should be used in @RegisterClientHeaders.
      * Full class name is expected
-     * If option is not set then AuthenticationPropagationHeadersFactory is generated and used as value for @RegisterClientHeaders
-     * If set to 'none' then @RegisterClientHeaders will be generated without value and default microprofile implementation will be used
+     * If option is not set then AuthenticationPropagationHeadersFactory is generated and used as value
+     * for @RegisterClientHeaders
+     * If set to 'none' then @RegisterClientHeaders will be generated without value and default microprofile implementation will
+     * be used
      */
     @ConfigItem(name = "client-headers-factory")
     public Optional<String> clientHeadersFactory;
