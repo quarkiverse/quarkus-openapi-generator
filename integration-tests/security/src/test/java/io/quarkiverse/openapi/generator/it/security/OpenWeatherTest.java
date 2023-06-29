@@ -2,12 +2,15 @@ package io.quarkiverse.openapi.generator.it.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.inject.Inject;
 
-import org.acme.openapi.weather.api.CurrentWeatherDataApi;
-import org.acme.openapi.weather.model.Model200;
+import org.acme.openapi.weather.v2.api.CurrentWeatherDataV2Api;
+import org.acme.openapi.weather.v2.api.auth.AuthenticationPropagationHeadersFactory;
+import org.acme.openapi.weather.v2.model.Model200;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 
@@ -32,15 +35,42 @@ public class OpenWeatherTest {
 
     @RestClient
     @Inject
-    CurrentWeatherDataApi weatherApi;
+    CurrentWeatherDataV2Api weatherApiv2;
 
     @Test
     public void testGetWeatherByLatLon() {
-        final Model200 model = weatherApi.currentWeatherData("", "", "10", "-10", "", "", "", "");
+        final Model200 model = weatherApiv2.currentWeatherData("", "", "10", "-10", "", "", "", "");
         assertEquals("Nowhere", model.getName());
         assertNotNull(weatherUrl);
         openWeatherServer.verify(WireMock.getRequestedFor(
                 WireMock.urlEqualTo("/data/2.5/weather?q=&id=&lat=10&lon=-10&zip=&units=&lang=&mode=&appid=" + apiKey)));
+    }
+
+    @Test
+    public void testClientHeadersFactory_defaultClientHeadersFactory() throws ClassNotFoundException {
+        Class<?> currentWeatherDataV2Api = this.getClass().getClassLoader()
+                .loadClass("org.acme.openapi.weather.v2.api.CurrentWeatherDataV2Api");
+        assertTrue(currentWeatherDataV2Api.isAnnotationPresent(RegisterClientHeaders.class));
+        RegisterClientHeaders annotation = currentWeatherDataV2Api.getAnnotation(RegisterClientHeaders.class);
+        assertEquals(AuthenticationPropagationHeadersFactory.class, annotation.value());
+    }
+
+    @Test
+    public void testClientHeadersFactory_noneClientHeadersFactory() throws ClassNotFoundException {
+        Class<?> currentWeatherDataV3Api = this.getClass().getClassLoader()
+                .loadClass("org.acme.openapi.weather.v3.api.CurrentWeatherDataV3Api");
+        assertTrue(currentWeatherDataV3Api.isAnnotationPresent(RegisterClientHeaders.class));
+        RegisterClientHeaders annotation = currentWeatherDataV3Api.getAnnotation(RegisterClientHeaders.class);
+        assertEquals(org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl.class, annotation.value());
+    }
+
+    @Test
+    public void testClientHeadersFactory_customClientHeadersFactory() throws ClassNotFoundException {
+        Class<?> currentWeatherDataV4Api = this.getClass().getClassLoader()
+                .loadClass("org.acme.openapi.weather.v4.api.CurrentWeatherDataV4Api");
+        assertTrue(currentWeatherDataV4Api.isAnnotationPresent(RegisterClientHeaders.class));
+        RegisterClientHeaders annotation = currentWeatherDataV4Api.getAnnotation(RegisterClientHeaders.class);
+        assertEquals(org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl.class, annotation.value());
     }
 
 }

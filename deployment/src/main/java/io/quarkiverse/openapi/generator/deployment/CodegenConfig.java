@@ -34,6 +34,7 @@ public class CodegenConfig {
     private static final String CUSTOM_REGISTER_PROVIDERS_FORMAT = "%s.custom-register-providers";
 
     private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
+    private static final String CLIENT_HEADER_FACTORY_PROP_FORMAT = "%s.client-headers-factory";
 
     /**
      * OpenAPI Spec details for codegen configuration.
@@ -112,5 +113,9 @@ public class CodegenConfig {
 
     public static String getReturnResponsePropertyName(final Path openApiFilePath) {
         return String.format(RETURN_RESPONSE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
+    public static String getClientHeaderFactoryPropertyName(final Path openApiFilePath) {
+        return String.format(CLIENT_HEADER_FACTORY_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 }
