@@ -7,6 +7,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getClientHeaderFactoryPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getNormalizerPropertyName;
@@ -162,6 +163,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         generator.withReturnResponse(config.getOptionalValue(getReturnResponsePropertyName(openApiFilePath), Boolean.class)
                 .orElse(false));
+
+        generator.withClientHeaderFactory(
+                config.getOptionalValue(getClientHeaderFactoryPropertyName(openApiFilePath), String.class)
+                        .orElse("default"));
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
         smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
