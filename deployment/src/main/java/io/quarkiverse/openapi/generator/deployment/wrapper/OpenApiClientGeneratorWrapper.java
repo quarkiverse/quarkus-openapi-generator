@@ -134,6 +134,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withClientHeaderFactory(String clientHeaderFactory) {
+        configurator.addAdditionalProperty("client-headers-factory", clientHeaderFactory);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withImportMappings(final Map<String, String> typeMappings) {
         typeMappings.forEach(configurator::addImportMapping);
         return this;
