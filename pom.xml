@@ -27,7 +27,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>2.16.7.Final</quarkus.version>
-    <version.com.github.javaparser>3.25.3</version.com.github.javaparser>
+    <version.com.github.javaparser>3.25.4</version.com.github.javaparser>
     <version.org.assertj>3.24.2</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.0.2</version.org.eclipse.microprofile.fault-tolerance>
     <version.com.github.tomakehurst>2.35.0</version.com.github.tomakehurst>
