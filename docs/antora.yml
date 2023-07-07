@@ -1,5 +1,5 @@
 name: quarkus-openapi-generator
-title: Quarkus - Openapi Generator
+title: Openapi Generator
 version: dev
 nav:
   - modules/ROOT/nav.adoc
