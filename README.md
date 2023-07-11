@@ -144,7 +144,12 @@ You can use the `quarkus-openapi-generator` with REST Client Classic or REST Cli
 </dependency>
 ```
 
-For both implementations, the generated code is always blocking code.
+To make truly non-blocking calls, you need to also set the `mutiny` option to `true`. This
+will wrap all API return types in a `io.smallrye.mutiny.Uni`.
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny=true
+```
 
 When using RESTEasy Reactive:
   - The client must not declare multiple MIME-TYPES with `@Consumes`
