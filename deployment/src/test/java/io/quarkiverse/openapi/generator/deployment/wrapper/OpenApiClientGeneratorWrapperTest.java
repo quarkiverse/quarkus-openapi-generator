@@ -403,7 +403,7 @@ public class OpenApiClientGeneratorWrapperTest {
 
         methodDeclarations.forEach(m -> {
             var returnType = m.getType().toString();
-            assertTrue(returnType.startsWith("Uni<"));
+            assertTrue(returnType.startsWith("io.smallrye.mutiny.Uni<"));
             assertTrue(returnType.endsWith(">"));
         });
 

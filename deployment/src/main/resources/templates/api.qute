@@ -4,9 +4,6 @@ package {package};
 import {imp.import};
 {/for}
 
-{#if mutiny}
-import io.smallrye.mutiny.Uni;
-{/if}
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 {#if hasAuthMethods || custom-register-providers.orEmpty.size > 0}
@@ -89,9 +86,9 @@ public interface {classname} {
     {/if}{/for}
         {#if mutiny}
             {#if return-response}
-    public Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
             {#else}
-    public {#if op.returnType}Uni<{op.returnType}>{#else}Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
             {/if}
         {#else}
             {#if return-response}
