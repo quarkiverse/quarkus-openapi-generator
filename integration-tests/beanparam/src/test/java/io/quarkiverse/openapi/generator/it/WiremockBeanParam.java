@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.it;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.patch;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 
 import java.util.Map;
@@ -28,6 +29,9 @@ public class WiremockBeanParam implements QuarkusTestResourceLifecycleManager {
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                                 "{\"message\": \"Hello\"}")));
+
+        wireMockServer.stubFor(patch(urlPathEqualTo("/patch"))
+                .willReturn(aResponse().withStatus(202)));
 
         return Map.of(URL_KEY, wireMockServer.baseUrl());
     }

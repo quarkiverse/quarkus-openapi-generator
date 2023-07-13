@@ -205,6 +205,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "lordvlad",
+      "name": "Waldemar Reusch",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1217769?v=4",
+      "profile": "https://github.com/lordvlad",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
