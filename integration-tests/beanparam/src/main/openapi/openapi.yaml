@@ -8,13 +8,13 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0
   version: "4.0.0"
 tags:
-  - name: GetTest
-    description: GetTest Controller
+  - name: BeanParamTest
+    description: BeanParam Test Controller
 paths:
   /get:
     get:
       tags:
-        - GetTest
+        - BeanParamTest
       summary: getTest
       operationId: getTest
       parameters:
@@ -38,8 +38,41 @@ paths:
         403:
           $ref: "#/components/responses/ForbiddenResponse"
       deprecated: false
+  /patch:
+    patch:
+      tags:
+        - BeanParamTest
+      summary: patchTest
+      operationId: patchTest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchRequestDto'
+      responses:
+        202:
+          description: Accepted
+        400:
+          $ref: "#/components/responses/ErrorResponse"
+        403:
+          $ref: "#/components/responses/ForbiddenResponse"
+      deprecated: false
 components:
   schemas:
+    PatchRequestDto:
+      title: PatchRequest
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+          minimum: 0
+          default: 0
+      required:
+        - name
     TestObj:
       title: Pageable
       type: object
