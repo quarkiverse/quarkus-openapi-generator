@@ -86,7 +86,7 @@ public interface {classname} {
         {#if return-response}
     public javax.ws.rs.core.Response {op.nickname}(
         {#else}
-    public {#if op.returnType}{op.returnType}{#else}void{/if} {op.nickname}(
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
         {/if}
         {#if op.hasFormParams}
         {#if is-resteasy-reactive}
