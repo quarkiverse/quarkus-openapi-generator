@@ -75,4 +75,10 @@ public class SpecItemConfig {
      */
     @ConfigItem(name = "open-api-normalizer")
     public Map<String, String> normalizer;
+
+    /**
+     * Enable SmallRye Mutiny support. If you set this to `true`, all return types will be wrapped in `io.smallrye.mutiny.Uni`.
+     */
+    @ConfigItem(name = "mutiny")
+    public Optional<Boolean> supportMutiny;
 }
