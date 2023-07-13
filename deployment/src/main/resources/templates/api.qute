@@ -3,7 +3,6 @@ package {package};
 {#for imp in imports}
 import {imp.import};
 {/for}
-
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 {#if hasAuthMethods || custom-register-providers.orEmpty.size > 0}
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider; 
@@ -83,10 +82,18 @@ public interface {classname} {
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     {/if}{/for}
     {/if}{/for}
-        {#if return-response}
-    public javax.ws.rs.core.Response {op.nickname}(
+        {#if mutiny}
+            {#if return-response}
+    public io.smallrye.mutiny.Uni<javax.ws.rs.core.Response> {op.nickname}(
+            {#else}
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>{/if} {op.nickname}(
+            {/if}
         {#else}
+            {#if return-response}
+    public javax.ws.rs.core.Response {op.nickname}(
+            {#else}
     public {#if op.returnType}{op.returnType}{#else}javax.ws.rs.core.Response{/if} {op.nickname}(
+            {/if}
         {/if}
         {#if op.hasFormParams}
         {#if is-resteasy-reactive}
