@@ -153,9 +153,9 @@ When using RESTEasy Reactive:
 
 ## Returning `Response` objects
 
-By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If no response model is defined, `jakarta.ws.rs.core.Response` is returned.
+By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If no response model is defined, `javax.ws.rs.core.Response` is returned.
 
-If you want to return `jakarta.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `true`.
+If you want to return `javax.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `true`.
 
 ### Example
 
