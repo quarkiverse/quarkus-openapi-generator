@@ -388,6 +388,28 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void shouldBeAbleToEnableMutiny() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json")
+                .withMutiny(true)
+                .generate("org.mutiny.enabled");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        methodDeclarations.forEach(m -> {
+            var returnType = m.getType().toString();
+            assertTrue(returnType.startsWith("io.smallrye.mutiny.Uni<"));
+            assertTrue(returnType.endsWith(">"));
+        });
+
+    }
+
+    @Test
     void shouldBeAbleToAddCustomDateAndTimeMappings() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
                 .withTypeMappings(Map.of(

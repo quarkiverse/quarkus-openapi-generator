@@ -113,6 +113,13 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withMutiny(final Boolean config) {
+        if (config != null) {
+            configurator.addAdditionalProperty("mutiny", config);
+        }
+        return this;
+    }
+
     /**
      * Sets the global 'skipFormModel' setting. If not set this setting will default to true.
      *
