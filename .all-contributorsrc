@@ -151,6 +151,70 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "chberger",
+      "name": "Christian Berger",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3606282?v=4",
+      "profile": "https://techspace.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "brunobaiano",
+      "name": "Bruno Alves",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13356327?v=4",
+      "profile": "https://github.com/brunobaiano",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "mcruzdev",
+      "name": "Matheus Cruz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56329339?v=4",
+      "profile": "https://github.com/mcruzdev",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "laurentperez",
+      "name": "Laurent Perez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1085201?v=4",
+      "profile": "http://laurentperez.fr",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bpasson",
+      "name": "Bas Passon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6814512?v=4",
+      "profile": "https://github.com/bpasson",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "michalsomora",
+      "name": "Michal Somora",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10022003?v=4",
+      "profile": "https://github.com/michalsomora",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lordvlad",
+      "name": "Waldemar Reusch",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1217769?v=4",
+      "profile": "https://github.com/lordvlad",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
