@@ -35,7 +35,7 @@
          **/
         {/if}
         {#if !v.isEnum}
-        @jakarta.ws.rs.QueryParam("{v.name}")
+        @javax.ws.rs.QueryParam("{v.name}")
         {/if}
         {#if v.isContainer}
         private {v.datatypeWithEnum} {v.name}{#if v.required} = {v.defaultValue}{#else} = null{/if};
