@@ -17,6 +17,7 @@
     <module>generation-tests</module>
     <module>generation-input</module>
     <module>multipart-request</module>
+    <module>mutiny</module>
     <module>type-mapping</module>
     <module>circuit-breaker</module>
     <module>register-provider</module>
