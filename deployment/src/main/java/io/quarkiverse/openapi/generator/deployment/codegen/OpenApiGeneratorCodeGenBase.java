@@ -10,6 +10,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBaseP
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getClientHeaderFactoryPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getMutinyPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getNormalizerPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getReturnResponsePropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
@@ -151,6 +152,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         generator.withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                 .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
                         config));
+
+        config.getOptionalValue(getMutinyPropertyName(openApiFilePath), Boolean.class)
+                .ifPresent(generator::withMutiny);
 
         config.getOptionalValue(getSkipFormModelPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
