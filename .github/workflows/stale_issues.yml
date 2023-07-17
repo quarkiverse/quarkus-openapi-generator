@@ -1,0 +1,16 @@
+name: Close stale issues and PRs
+on:
+  schedule:
+    - cron: '0 12 * * *'
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v4.1.1
+        with:
+          exempt-issue-labels: 'pinned'
