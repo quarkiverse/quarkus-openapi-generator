@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       Maintainers: "@ricardozanini @hbelmiro"
-      Stale_Message: "$Maintainers This is being labeled as Stale."
-      Close_Message: "$Maintainers This is being closed due to inactivity."
+      Stale_Message: "${{ env.Maintainers }} This is being labeled as Stale."
+      Close_Message: "${{ env.Maintainers }} This is being closed due to inactivity."
     steps:
       - uses: actions/stale@v4.1.1
         with:
           exempt-issue-labels: "pinned"
-          stale-issue-message: "$Stale_Message"
-          stale-pr-message: "$Stale_Message"
-          close-issue-message: "$Close_Message"
-          close-pr-message: "$Close_Message"
+          stale-issue-message: "${{ env.Stale_Message }}"
+          stale-pr-message: "${{ env.Stale_Message }}"
+          close-issue-message: "${{ env.Close_Message }}"
+          close-pr-message: "${{ env.Close_Message }}"
