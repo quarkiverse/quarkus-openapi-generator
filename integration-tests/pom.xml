@@ -11,23 +11,23 @@
   <packaging>pom</packaging>
   <modules>
     <module>array-enum</module>
+    <module>beanparam</module>
+    <module>change-directory</module>
+    <module>circuit-breaker</module>
     <module>enum-property</module>
-    <module>simple</module>
-    <module>skip-validation</module>
-    <module>generation-tests</module>
+    <module>exclude</module>
     <module>generation-input</module>
+    <module>generation-tests</module>
+    <module>include</module>
     <module>multipart-request</module>
     <module>mutiny</module>
-    <module>type-mapping</module>
-    <module>circuit-breaker</module>
-    <module>register-provider</module>
-    <module>security</module>
-    <module>include</module>
-    <module>exclude</module>
-    <module>change-directory</module>
-    <module>return-response</module>
-    <module>beanparam</module>
     <module>open-api-normalizer</module>
+    <module>register-provider</module>
+    <module>return-response</module>
+    <module>security</module>
+    <module>simple</module>
+    <module>skip-validation</module>
+    <module>type-mapping</module>
   </modules>
   <dependencyManagement>
     <dependencies>
