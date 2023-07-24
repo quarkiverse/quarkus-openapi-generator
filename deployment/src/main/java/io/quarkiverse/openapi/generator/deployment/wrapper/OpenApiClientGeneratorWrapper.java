@@ -175,6 +175,10 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public void withTemplateDir(Path templateDir) {
+        this.configurator.addAdditionalProperty("templateDir", templateDir.toString());
+    }
+
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();

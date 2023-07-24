@@ -48,6 +48,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         this.projectTestFolder = "";
         this.sourceFolder = "";
         this.testFolder = "";
+        this.embeddedTemplateDir = "templates";
 
         this.replaceWithQuarkusTemplateFiles();
     }
