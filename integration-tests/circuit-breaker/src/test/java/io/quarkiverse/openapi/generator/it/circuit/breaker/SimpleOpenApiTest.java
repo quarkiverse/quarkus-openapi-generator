@@ -37,7 +37,7 @@ class SimpleOpenApiTest {
         compilationUnit.findAll(ClassOrInterfaceDeclaration.class).stream()
                 .map(c -> c.getAnnotationByClass(RegisterRestClient.class)).filter(Optional::isPresent).map(Optional::get)
                 .map(a -> a.asNormalAnnotationExpr().getPairs())
-                .forEach(n -> n.forEach(p -> assertNotEquals("baseUri", p.getName())));
+                .forEach(n -> n.forEach(p -> assertNotEquals("baseUri", p.getName().asString())));
 
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
         assertThat(methodDeclarations).isNotEmpty();
