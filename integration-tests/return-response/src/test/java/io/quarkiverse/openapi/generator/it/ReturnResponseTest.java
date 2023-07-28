@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.ws.rs.core.Response;
 
-import org.acme.openapi.api.ModelApi;
-import org.acme.openapi.api.ResponseApi;
+import org.acme.openapi.api.ReturnResponseFalseStringApi;
+import org.acme.openapi.api.ReturnResponseFalseVoidApi;
+import org.acme.openapi.api.ReturnResponseTrueStringApi;
+import org.acme.openapi.api.ReturnResponseTrueVoidApi;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,14 +16,26 @@ import io.quarkus.test.junit.QuarkusTest;
 class ReturnResponseTest {
 
     @Test
-    void testModel() throws NoSuchMethodException {
-        assertThat(ModelApi.class.getMethod("hello").getReturnType())
+    void testReturnResponseFalseString() throws NoSuchMethodException {
+        assertThat(ReturnResponseFalseStringApi.class.getMethod("hello").getReturnType())
                 .isEqualTo(String.class);
     }
 
     @Test
-    void testResponse() throws NoSuchMethodException {
-        assertThat(ResponseApi.class.getMethod("hello").getReturnType())
+    void testReturnResponseTrueString() throws NoSuchMethodException {
+        assertThat(ReturnResponseTrueStringApi.class.getMethod("hello").getReturnType())
+                .isEqualTo(Response.class);
+    }
+
+    @Test
+    void testReturnResponseFalseVoid() throws NoSuchMethodException {
+        assertThat(ReturnResponseFalseVoidApi.class.getMethod("hello").getReturnType())
+                .isEqualTo(Void.TYPE);
+    }
+
+    @Test
+    void testReturnResponseTrueVoid() throws NoSuchMethodException {
+        assertThat(ReturnResponseTrueVoidApi.class.getMethod("hello").getReturnType())
                 .isEqualTo(Response.class);
     }
 }

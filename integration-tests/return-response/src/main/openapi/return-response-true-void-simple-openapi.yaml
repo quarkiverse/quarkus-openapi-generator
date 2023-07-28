@@ -21,15 +21,11 @@ paths:
   /hello:
     get:
       tags:
-        - Model
+        - ReturnResponseTrueVoid
       operationId: hello
       responses:
         "200":
           description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
   /messaging/topics:
     get:
       tags:
