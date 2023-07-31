@@ -12,7 +12,6 @@ import org.acme.openapi.api.ReturnResponseFalseStringApi;
 import org.acme.openapi.api.ReturnResponseFalseVoidApi;
 import org.acme.openapi.api.ReturnResponseTrueStringApi;
 import org.acme.openapi.api.ReturnResponseTrueVoidApi;
-
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
