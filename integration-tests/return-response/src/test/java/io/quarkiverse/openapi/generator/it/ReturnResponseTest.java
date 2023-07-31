@@ -4,7 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.ws.rs.core.Response;
 
-import org.acme.openapi.api.*;
+import org.acme.openapi.api.MutinyReturnResponseFalseStringApi;
+import org.acme.openapi.api.MutinyReturnResponseFalseVoidApi;
+import org.acme.openapi.api.MutinyReturnResponseTrueStringApi;
+import org.acme.openapi.api.MutinyReturnResponseTrueVoidApi;
+import org.acme.openapi.api.ReturnResponseFalseStringApi;
+import org.acme.openapi.api.ReturnResponseFalseVoidApi;
+import org.acme.openapi.api.ReturnResponseTrueStringApi;
+import org.acme.openapi.api.ReturnResponseTrueVoidApi;
+
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
