@@ -106,13 +106,6 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withCustomRegisterProviders(String config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("custom-register-providers", config.split(","));
-        }
-        return this;
-    }
-
     public OpenApiClientGeneratorWrapper withMutiny(final Boolean config) {
         if (config != null) {
             configurator.addAdditionalProperty("mutiny", config);
@@ -138,11 +131,6 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withReturnResponse(Boolean returnResponse) {
         configurator.addAdditionalProperty("return-response", returnResponse);
-        return this;
-    }
-
-    public OpenApiClientGeneratorWrapper withClientHeaderFactory(String clientHeaderFactory) {
-        configurator.addAdditionalProperty("client-headers-factory", clientHeaderFactory);
         return this;
     }
 

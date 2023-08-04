@@ -53,30 +53,11 @@ public class SpecItemConfig {
     @ConfigItem(name = "additional-api-type-annotations")
     public Optional<String> additionalApiTypeAnnotations;
 
-    //TODO: remove
-    /**
-     * Provider classes that should be registered on the generated rest client
-     */
-    @ConfigItem(name = "custom-register-providers")
-    public Optional<String> customRegisterProviders;
-
     /**
      * Defines if the methods should return {@link javax.ws.rs.core.Response} or a model. Default is <code>false</code>.
      */
     @ConfigItem(name = "return-response")
     public Optional<Boolean> returnResponse;
-
-    /**
-     * ClientHeaderFactory class that should be used in @RegisterClientHeaders.
-     * Full class name is expected
-     * If option is not set then AuthenticationPropagationHeadersFactory is generated and used as value
-     * for @RegisterClientHeaders
-     * If set to 'none' then @RegisterClientHeaders will be generated without value and default microprofile implementation will
-     * be used
-     */
-    //TODO: remove
-    @ConfigItem(name = "client-headers-factory")
-    public Optional<String> clientHeadersFactory;
 
     /**
      * Defines if security support classes should be generated

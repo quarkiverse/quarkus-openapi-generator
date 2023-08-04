@@ -33,10 +33,8 @@ public class CodegenConfig {
     private static final String TYPE_MAPPINGS_PROP_FORMAT = "%s.type-mappings";
     private static final String IMPORT_MAPPINGS_PROP_FORMAT = "%s.import-mappings";
     private static final String NORMALIZER_PROP_FORMAT = "%s.open-api-normalizer";
-    private static final String CUSTOM_REGISTER_PROVIDERS_FORMAT = "%s.custom-register-providers";
 
     private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
-    private static final String CLIENT_HEADER_FACTORY_PROP_FORMAT = "%s.client-headers-factory";
     private static final String ENABLE_SECURITY_GENERATION = "%s.enable-security-generation";
 
     /**
@@ -118,16 +116,8 @@ public class CodegenConfig {
                 .replaceNonAlphanumericByUnderscores(OpenApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
     }
 
-    public static String getCustomRegisterProvidersFormat(final Path openApiFilePath) {
-        return String.format(CUSTOM_REGISTER_PROVIDERS_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
     public static String getReturnResponsePropertyName(final Path openApiFilePath) {
         return String.format(RETURN_RESPONSE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getClientHeaderFactoryPropertyName(final Path openApiFilePath) {
-        return String.format(CLIENT_HEADER_FACTORY_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
     public static String getEnabledSecurityGenerationPropertyName(final Path openApiFilePath) {

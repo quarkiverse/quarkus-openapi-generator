@@ -8,8 +8,6 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalApiTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getClientHeaderFactoryPropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getEnabledSecurityGenerationPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getMutinyPropertyName;
@@ -170,15 +168,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         config.getOptionalValue(getAdditionalApiTypeAnnotationsPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);
 
-        config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
-                .ifPresent(generator::withCustomRegisterProviders);
-
         generator.withReturnResponse(config.getOptionalValue(getReturnResponsePropertyName(openApiFilePath), Boolean.class)
                 .orElse(false));
-
-        generator.withClientHeaderFactory(
-                config.getOptionalValue(getClientHeaderFactoryPropertyName(openApiFilePath), String.class)
-                        .orElse("default"));
 
         generator.withEnabledSecurityGeneration(
                 config.getOptionalValue(getEnabledSecurityGenerationPropertyName(openApiFilePath), Boolean.class).orElse(true));

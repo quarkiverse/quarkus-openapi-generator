@@ -67,13 +67,6 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                                 authFileFolder(),
                                 "CompositeAuthenticationProvider.java"));
 
-                if (this.additionalProperties.get("client-headers-factory") == null ||
-                        this.additionalProperties.get("client-headers-factory").equals("default")) {
-                    supportingFiles.add(
-                            new SupportingFile("auth/headersFactory.qute",
-                                    authFileFolder(),
-                                    "AuthenticationPropagationHeadersFactory.java"));
-                }
             }
         } else {
             LOGGER.info("Generating of security classes is disabled!");

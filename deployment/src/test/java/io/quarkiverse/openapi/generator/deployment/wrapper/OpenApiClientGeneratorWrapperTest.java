@@ -515,64 +515,6 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void verifyCustomRegisterProviderAnnotations() throws URISyntaxException {
-        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
-                .withCustomRegisterProviders("org.test.Foo,org.test.Bar")
-                .generate("org.test");
-        assertFalse(generatedFiles.isEmpty());
-
-        List<File> filteredGeneratedFiles = generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*api.*Api.java")).collect(Collectors.toList());
-
-        assertThat(filteredGeneratedFiles).isNotEmpty();
-
-        filteredGeneratedFiles.forEach(file -> {
-            try {
-                CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-                compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                        .forEach(c -> {
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Foo.class")).isPresent();
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Bar.class")).isPresent();
-                        });
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        });
-    }
-
-    @Test
-    void verifyCustomRegisterProviderAnnotationsWithoutSecurity() throws URISyntaxException {
-        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-custom-register-provider.json")
-                .withCustomRegisterProviders("org.test.Foo,org.test.Bar")
-                .generate("org.test");
-        assertFalse(generatedFiles.isEmpty());
-
-        List<File> filteredGeneratedFiles = generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*api.*Api.java")).collect(Collectors.toList());
-
-        assertThat(filteredGeneratedFiles).isNotEmpty();
-
-        filteredGeneratedFiles.forEach(file -> {
-            try {
-                CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-                compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                        .forEach(c -> {
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Foo.class")).isPresent();
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Bar.class")).isPresent();
-                        });
-
-                List<String> imports = compilationUnit.findAll(ImportDeclaration.class)
-                        .stream()
-                        .map(importDeclaration -> importDeclaration.getName().asString())
-                        .collect(Collectors.toList());
-                assertThat(imports).contains("org.eclipse.microprofile.rest.client.annotation.RegisterProvider");
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        });
-    }
-
-    @Test
     void verifyAPINormalization() throws Exception {
         final List<File> generatedFiles = this.createGeneratorWrapper("open-api-normalizer.json")
                 .withOpenApiNormalizer(Map.of("REF_AS_PARENT_IN_ALLOF", "true"))

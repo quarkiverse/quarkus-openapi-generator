@@ -419,18 +419,6 @@ The token propagation can be used with type "oauth2" or "bearer" security scheme
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].token-propagation=[true,false]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true`<br/>Enables the token propagation for all the operations that are secured with the `petstore_auth` scheme in the `petstore_json` file.
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].header-name=[http_header_name]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyHeaderName`<br/>Says that the authorization token to propagate will be read from the HTTP header `MyHeaderName` instead of the standard HTTP `Authorization` header.
 
-## Headers propagation
-Custom headers propagation can be set via MicroProfile configuration `org.eclipse.microprofile.rest.client.propagateHeaders`.
-In order to consider this configuration you must force `@RegisterClientHeaders` to use its default MicroProfile `ClientHeadersFactory` implementation. Therefore there is an option `client-headers-factory` where you can set any implementation of `ClientHeadersFactory`.
-
-| Description  | Property Key                                                               | Example                                                                                                                                                    |
-| -------------|----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Bearer Token | `quarkus.openapi-generator.codegen.spec.[fileName].client-headers-factory` | `quarkus.openapi-generator.codegen.spec.open_weather_yaml.client-headers-factory=org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl` |
-
-If `client-headers-factory` is set to `none` `@RegisterClientHeaders` will use its default implicit implementation as in the example above.
-
-If no option is set then default generated `AuthenticationPropagationHeadersFactory` class is used.
-
 ## Circuit Breaker
 
 You can define the [CircuitBreaker annotation from MicroProfile Fault Tolerance](https://microprofile.io/project/eclipse/microprofile-fault-tolerance/spec/src/main/asciidoc/circuitbreaker.asciidoc)
@@ -675,16 +663,6 @@ The client objects are classes generated in the `api` package. These classes mig
 file. By default, these operations are generated. You can fine tune this behavior if the deprecated operations should not be generated.
 
 Use the property key `<base_package>.api.MyClass.generateDeprecated=false` to disable the deprecated operations in the given API. For example `org.acme.openapi.simple.api.DefaultApi.generatedDeprecated=false`.
-
-## Custom Register Providers for generated api
-
-In some cases, we need custom `RegisterProvider` for generated api, e.g. logging. You can define your own Providers in `application.properties` :
-
-| Property Key                                                                                                                                                                        | Example                                                                                                                                |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `quarkus.openapi-generator.codegen.spec.[filename].custom-register-providers` | `quarkus.openapi-generator.codegen.spec.simple_openapi_json.custom-register-providers=org.test.Foo,org.test.Bar`<br/>Provider classes are separated by commas |
-
-With the above configuration, the extension generates your Rest Clients with a code similar to the following:
 
 ```java
 package org.acme.openapi.simple.api;
