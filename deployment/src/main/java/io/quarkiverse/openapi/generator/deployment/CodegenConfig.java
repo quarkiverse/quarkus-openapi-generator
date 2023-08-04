@@ -29,6 +29,7 @@ public class CodegenConfig {
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
     private static final String MUTINY_PROP_FORMAT = "%s.mutiny";
     private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
+    private static final String ADDITIONAL_API_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-api-type-annotations";
     private static final String TYPE_MAPPINGS_PROP_FORMAT = "%s.type-mappings";
     private static final String IMPORT_MAPPINGS_PROP_FORMAT = "%s.import-mappings";
     private static final String NORMALIZER_PROP_FORMAT = "%s.open-api-normalizer";
@@ -36,6 +37,7 @@ public class CodegenConfig {
 
     private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
     private static final String CLIENT_HEADER_FACTORY_PROP_FORMAT = "%s.client-headers-factory";
+    private static final String ENABLE_SECURITY_GENERATION = "%s.enable-security-generation";
 
     /**
      * OpenAPI Spec details for codegen configuration.
@@ -85,6 +87,10 @@ public class CodegenConfig {
         return String.format(ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
+    public static String getAdditionalApiTypeAnnotationsPropertyName(final Path openApiFilePath) {
+        return String.format(ADDITIONAL_API_TYPE_ANNOTATIONS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
     public static String getTypeMappingsPropertyName(final Path openApiFilePath) {
         return String.format(TYPE_MAPPINGS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
@@ -122,5 +128,9 @@ public class CodegenConfig {
 
     public static String getClientHeaderFactoryPropertyName(final Path openApiFilePath) {
         return String.format(CLIENT_HEADER_FACTORY_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
+    public static String getEnabledSecurityGenerationPropertyName(final Path openApiFilePath) {
+        return String.format(ENABLE_SECURITY_GENERATION, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 }

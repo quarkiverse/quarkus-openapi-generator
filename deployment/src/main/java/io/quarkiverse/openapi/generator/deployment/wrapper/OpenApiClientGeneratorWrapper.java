@@ -146,6 +146,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withEnabledSecurityGeneration(Boolean enableSecurityGeneration) {
+        configurator.addAdditionalProperty("enable-security-generation", enableSecurityGeneration);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withImportMappings(final Map<String, String> typeMappings) {
         typeMappings.forEach(configurator::addImportMapping);
         return this;
@@ -165,6 +170,19 @@ public abstract class OpenApiClientGeneratorWrapper {
     public OpenApiClientGeneratorWrapper withAdditionalModelTypeAnnotationsConfig(final String additionalModelTypeAnnotations) {
         if (additionalModelTypeAnnotations != null) {
             this.configurator.addAdditionalProperty(ADDITIONAL_MODEL_TYPE_ANNOTATIONS, additionalModelTypeAnnotations);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the global 'additionalApiTypeAnnotations' setting. If not set this setting will default to empty.
+     *
+     * @param additionalApiTypeAnnotations the list of extra additional annotations to be included in a api
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {
+        if (additionalApiTypeAnnotations != null) {
+            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(","));
         }
         return this;
     }

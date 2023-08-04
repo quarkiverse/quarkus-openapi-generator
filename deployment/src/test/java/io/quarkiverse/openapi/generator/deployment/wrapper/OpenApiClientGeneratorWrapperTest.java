@@ -486,6 +486,35 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyAdditionalApiTypeAnnotations() throws URISyntaxException {
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
+                .withEnabledSecurityGeneration(false)
+                .withAdditionalModelTypeAnnotationsConfig("@org.test.Foo;@org.test.Bar")
+                .withAdditionalApiTypeAnnotationsConfig(
+                        "@org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders")
+                .generate("org.additionalapitypeannotations");
+        assertFalse(generatedFiles.isEmpty());
+
+        generatedFiles.stream()
+                .filter(file -> file.getPath().matches(".*api.*Api.java"))
+                .forEach(this::verifyApiAdditionalAnnotations);
+    }
+
+    private void verifyApiAdditionalAnnotations(File file) {
+        try {
+            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                    .forEach(c -> {
+                        assertThat(
+                                c.getAnnotationByName("RegisterClientHeaders"))
+                                .isPresent();
+                    });
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Test
     void verifyCustomRegisterProviderAnnotations() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
                 .withCustomRegisterProviders("org.test.Foo,org.test.Bar")

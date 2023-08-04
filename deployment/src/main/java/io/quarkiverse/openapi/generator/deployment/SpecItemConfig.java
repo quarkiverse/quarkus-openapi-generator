@@ -48,6 +48,13 @@ public class SpecItemConfig {
     public Optional<String> additionalModelTypeAnnotations;
 
     /**
+     * The specified annotations will be added to the generated api files
+     */
+    @ConfigItem(name = "additional-api-type-annotations")
+    public Optional<String> additionalApiTypeAnnotations;
+
+    //TODO: remove
+    /**
      * Provider classes that should be registered on the generated rest client
      */
     @ConfigItem(name = "custom-register-providers")
@@ -67,8 +74,15 @@ public class SpecItemConfig {
      * If set to 'none' then @RegisterClientHeaders will be generated without value and default microprofile implementation will
      * be used
      */
+    //TODO: remove
     @ConfigItem(name = "client-headers-factory")
     public Optional<String> clientHeadersFactory;
+
+    /**
+     * Defines if security support classes should be generated
+     */
+    @ConfigItem(name = "enable-security-generation")
+    public Optional<String> enableSecurityGeneration;
 
     /**
      * Defines the normalizer options.

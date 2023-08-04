@@ -5,10 +5,12 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INCLUDE_
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VALIDATE_SPEC_PROPERTY_NAME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_PROPERTY_NAME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalApiTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getClientHeaderFactoryPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getCustomRegisterProvidersFormat;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getEnabledSecurityGenerationPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getMutinyPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getNormalizerPropertyName;
@@ -165,6 +167,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         config.getOptionalValue(getAdditionalModelTypeAnnotationsPropertyName(openApiFilePath), String.class)
                 .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
 
+        config.getOptionalValue(getAdditionalApiTypeAnnotationsPropertyName(openApiFilePath), String.class)
+                .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);
+
         config.getOptionalValue(getCustomRegisterProvidersFormat(openApiFilePath), String.class)
                 .ifPresent(generator::withCustomRegisterProviders);
 
@@ -174,6 +179,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         generator.withClientHeaderFactory(
                 config.getOptionalValue(getClientHeaderFactoryPropertyName(openApiFilePath), String.class)
                         .orElse("default"));
+
+        generator.withEnabledSecurityGeneration(
+                config.getOptionalValue(getEnabledSecurityGenerationPropertyName(openApiFilePath), Boolean.class).orElse(true));
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
         smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)

@@ -11,11 +11,15 @@ import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuarkusJavaClientCodegen.class);
 
     public static final String QUARKUS_GENERATOR_NAME = "quarkus-generator";
 
@@ -51,22 +55,28 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     private void replaceWithQuarkusTemplateFiles() {
         supportingFiles.clear();
 
-        if (ProcessUtils.hasHttpBasicMethods(this.openAPI) ||
-                ProcessUtils.hasApiKeyMethods(this.openAPI) ||
-                ProcessUtils.hasHttpBearerMethods(this.openAPI) ||
-                ProcessUtils.hasOAuthMethods(this.openAPI)) {
-            supportingFiles.add(
-                    new SupportingFile(AUTH_PACKAGE + "/compositeAuthenticationProvider.qute",
-                            authFileFolder(),
-                            "CompositeAuthenticationProvider.java"));
+        Boolean enableSecurityGeneration = (Boolean) this.additionalProperties.get("enable-security-generation");
 
-            if (this.additionalProperties.get("client-headers-factory") == null ||
-                    this.additionalProperties.get("client-headers-factory").equals("default")) {
+        if (enableSecurityGeneration == null || enableSecurityGeneration) {
+            if (ProcessUtils.hasHttpBasicMethods(this.openAPI) ||
+                    ProcessUtils.hasApiKeyMethods(this.openAPI) ||
+                    ProcessUtils.hasHttpBearerMethods(this.openAPI) ||
+                    ProcessUtils.hasOAuthMethods(this.openAPI)) {
                 supportingFiles.add(
-                        new SupportingFile("auth/headersFactory.qute",
+                        new SupportingFile(AUTH_PACKAGE + "/compositeAuthenticationProvider.qute",
                                 authFileFolder(),
-                                "AuthenticationPropagationHeadersFactory.java"));
+                                "CompositeAuthenticationProvider.java"));
+
+                if (this.additionalProperties.get("client-headers-factory") == null ||
+                        this.additionalProperties.get("client-headers-factory").equals("default")) {
+                    supportingFiles.add(
+                            new SupportingFile("auth/headersFactory.qute",
+                                    authFileFolder(),
+                                    "AuthenticationPropagationHeadersFactory.java"));
+                }
             }
+        } else {
+            LOGGER.info("Generating of security classes is disabled!");
         }
 
         apiTemplateFiles.clear();
