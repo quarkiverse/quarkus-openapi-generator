@@ -76,6 +76,8 @@ If a base package name is not provided, it will be used the default `org.openapi
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in [OpenApi Generator Doc](https://openapi-generator.tech/docs/generators/java/#config-options)).
 
+The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`.
+
 > **⚠️** Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
@@ -331,6 +333,10 @@ RESTEasy Reactive:
   <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
 </dependency>
 ```
+If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
+Option can be set globally with `quarkus.openapi-generator.codegen.spec.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
+
+Custom authentication provide can be used with `additional-api-type-annotations`
 
 See the module [generation-tests](integration-tests/generation-tests) for an example of how to use this feature.
 
@@ -418,6 +424,8 @@ The token propagation can be used with type "oauth2" or "bearer" security scheme
 | ------------------------------------------------------------------ | -------------------------------------------------------- |
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].token-propagation=[true,false]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true`<br/>Enables the token propagation for all the operations that are secured with the `petstore_auth` scheme in the `petstore_json` file.
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].header-name=[http_header_name]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyHeaderName`<br/>Says that the authorization token to propagate will be read from the HTTP header `MyHeaderName` instead of the standard HTTP `Authorization` header.
+
+
 
 ## Circuit Breaker
 

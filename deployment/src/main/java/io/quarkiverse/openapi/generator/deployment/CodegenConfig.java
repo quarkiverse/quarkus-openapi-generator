@@ -25,6 +25,7 @@ public class CodegenConfig {
     public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
     // package visibility for unit tests
     static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
+
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
     private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
     private static final String MUTINY_PROP_FORMAT = "%s.mutiny";
@@ -35,7 +36,7 @@ public class CodegenConfig {
     private static final String NORMALIZER_PROP_FORMAT = "%s.open-api-normalizer";
 
     private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
-    private static final String ENABLE_SECURITY_GENERATION = "%s.enable-security-generation";
+    public static final String ENABLE_SECURITY_GENERATION = "enable-security-generation";
 
     /**
      * OpenAPI Spec details for codegen configuration.
@@ -79,6 +80,14 @@ public class CodegenConfig {
 
     public static String getMutinyPropertyName(final Path openApiFilePath) {
         return String.format(MUTINY_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    }
+
+    public static String getDefaultConfigName(String configName) {
+        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, configName);
+    }
+
+    public static String getApiSpecConfigName(String configName, final Path openApiFilePath) {
+        return String.format("%s." + configName, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
     public static String getAdditionalModelTypeAnnotationsPropertyName(final Path openApiFilePath) {

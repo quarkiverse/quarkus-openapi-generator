@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.it.security.auth;
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -16,7 +17,7 @@ import io.quarkus.arc.Priority;
 @Priority(Priorities.AUTHENTICATION)
 public class DummyApiKeyAuthenticationProvider implements ClientRequestFilter {
 
-    @javax.inject.Inject
+    @Inject
     OpenApiGeneratorConfig generatorConfig;
 
     private AuthProvider authProvider;

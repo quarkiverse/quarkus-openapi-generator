@@ -489,7 +489,6 @@ public class OpenApiClientGeneratorWrapperTest {
     void verifyAdditionalApiTypeAnnotations() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
                 .withEnabledSecurityGeneration(false)
-                .withAdditionalModelTypeAnnotationsConfig("@org.test.Foo;@org.test.Bar")
                 .withAdditionalApiTypeAnnotationsConfig(
                         "@org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders")
                 .generate("org.additionalapitypeannotations");

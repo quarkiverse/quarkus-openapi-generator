@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ENABLE_SECURITY_GENERATION;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.EXCLUDE_FILES;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INCLUDE_FILES;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.INPUT_BASE_DIR;
@@ -8,7 +9,6 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.VERBOSE_
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalApiTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getAdditionalModelTypeAnnotationsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getEnabledSecurityGenerationPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getImportMappingsPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getMutinyPropertyName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getNormalizerPropertyName;
@@ -172,7 +172,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .orElse(false));
 
         generator.withEnabledSecurityGeneration(
-                config.getOptionalValue(getEnabledSecurityGenerationPropertyName(openApiFilePath), Boolean.class).orElse(true));
+                getValues(config, openApiFilePath, ENABLE_SECURITY_GENERATION, Boolean.class).orElse(true));
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
         smallRyeConfig.getOptionalValues(getTypeMappingsPropertyName(openApiFilePath), String.class, String.class)
@@ -215,5 +215,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             int srcIndex = sourceDir.toString().lastIndexOf("src");
             return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + inputBaseDir;
         });
+    }
+
+    private <T> Optional<T> getValues(final Config config, final Path openApiFilePath, String configName,
+            Class<T> propertyType) {
+        Optional<T> apiSpecConfigValue = config
+                .getOptionalValue(CodegenConfig.getApiSpecConfigName(configName, openApiFilePath), propertyType);
+        if (apiSpecConfigValue.isPresent()) {
+            return apiSpecConfigValue;
+        }
+        //return default spec value
+        return config.getOptionalValue(CodegenConfig.getDefaultConfigName(configName), propertyType);
     }
 }

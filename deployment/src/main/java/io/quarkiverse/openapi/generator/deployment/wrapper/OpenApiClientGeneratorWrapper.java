@@ -165,7 +165,7 @@ public abstract class OpenApiClientGeneratorWrapper {
     /**
      * Sets the global 'additionalApiTypeAnnotations' setting. If not set this setting will default to empty.
      *
-     * @param additionalApiTypeAnnotations the list of extra additional annotations to be included in a api
+     * @param additionalApiTypeAnnotations the list of extra additional annotations to be included in an api
      * @return this wrapper
      */
     public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {

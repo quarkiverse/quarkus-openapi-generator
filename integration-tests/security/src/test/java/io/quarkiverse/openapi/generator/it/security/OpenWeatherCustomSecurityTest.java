@@ -14,14 +14,12 @@ import org.junit.jupiter.api.Test;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 
-import io.quarkiverse.openapi.generator.it.security.auth.DummyApiKeyAuthenticationProvider;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTestResource(WiremockOpenWeather.class)
 @QuarkusTest
-@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(DummyApiKeyAuthenticationProvider.class)
-public class OpenWeatherCustomSecurityTest {
+class OpenWeatherCustomSecurityTest {
 
     // injected by quarkus test resource
     WireMockServer openWeatherServer;
@@ -34,7 +32,7 @@ public class OpenWeatherCustomSecurityTest {
     CurrentWeatherDataWithCustomSecurityApi currentWeatherDataWithCustomSecurityApi;
 
     @Test
-    public void testApiWithCustomSecurity() {
+    void testApiWithCustomSecurity() {
         Model200 model = currentWeatherDataWithCustomSecurityApi.currentWeatherData("", "", "10", "-10", "", "", "", "");
         assertEquals("Nowhere", model.getName());
         assertNotNull(weatherUrl);
