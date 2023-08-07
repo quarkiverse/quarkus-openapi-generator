@@ -333,7 +333,7 @@ RESTEasy Reactive:
   <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
 </dependency>
 ```
-If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
+If authentication support doesn't suit your needs, you can disable it with `enable-security-generation=false`. In such case `CompositeAuthenticationProvider` and `AuthenticationPropagationHeadersFactory` won't be generated and used with your api.
 Option can be set globally with `quarkus.openapi-generator.codegen.spec.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
 
 Custom authentication provide can be used with `additional-api-type-annotations`
