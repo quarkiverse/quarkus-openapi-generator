@@ -243,9 +243,9 @@ pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth
 
 If the OpenAPI specification file has `securitySchemes` definitions, but no [Security Requirement Object](https://spec.openapis.org/oas/v3.1.0#security-requirement-object) definitions, the generator can be configured to create these by default. In this case, for all operations without a security requirement the default one will be created. Note that the property value needs to match the name of a security scheme object definition, eg. `api_key` or `basic_auth` in the `securitySchemes` list above.
 
-| Description          | Property Key                                                   | Example                                              |
-| -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
-| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default.security.scheme` | `quarkus.openapi-generator.codegen.default.security.scheme=api_key` |
+| Description          | Property Key                                                | Example                                                             |
+| -------------------- |-------------------------------------------------------------|---------------------------------------------------------------------|
+| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default-security-scheme` | `quarkus.openapi-generator.codegen.default-security-scheme=api_key` |
 
 See the module [security](integration-tests/security) for an example of how to use this feature.
 

@@ -1,68 +1,59 @@
 package io.quarkiverse.openapi.generator.deployment;
 
 import java.nio.file.Path;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
-import io.quarkus.runtime.annotations.ConfigItem;
-import io.quarkus.runtime.annotations.ConfigPhase;
-import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.common.utils.StringUtil;
 
-// This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
-@ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
 public class CodegenConfig {
 
     static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
 
     public static final String API_PKG_SUFFIX = ".api";
     public static final String MODEL_PKG_SUFFIX = ".model";
-    public static final String VERBOSE_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".verbose";
-    public static final String INPUT_BASE_DIR = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
-    public static final String INCLUDE_FILES = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".include";
-    public static final String EXCLUDE_FILES = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".exclude";
-    public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
-    public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
     // package visibility for unit tests
     static final String BUILD_TIME_GLOBAL_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".%s";
     static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
 
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
 
-    public static final String SKIP_FORM_MODEL = "skip-form-model";
-    public static final String MUTINY = "mutiny";
-    public static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS = "additional-model-type-annotations";
-    public static final String ADDITIONAL_API_TYPE_ANNOTATIONS = "additional-api-type-annotations";
-    public static final String TYPE_MAPPINGS = "type-mappings";
-    public static final String IMPORT_MAPPINGS = "import-mappings";
-    public static final String NORMALIZER = "open-api-normalizer";
+    public static final List<String> SUPPORTED_CONFIGURATIONS = Arrays.stream(ConfigName.values()).map(cn -> cn.name)
+            .collect(Collectors.toList());
 
-    public static final String RETURN_RESPONSE = "return-response";
-    public static final String ENABLE_SECURITY_GENERATION = "enable-security-generation";
+    public enum ConfigName {
+        //global configs
+        VERBOSE("verbose"),
+        INPUT_BASE_DIR("input-base-dir"),
+        INCLUDE("include"),
+        EXCLUDE("exclude"),
+        VALIDATE_SPEC("validateSpec"),
+        DEFAULT_SECURITY_SCHEME("default-security-scheme"),
 
-    /**
-     * OpenAPI Spec details for codegen configuration.
-     */
-    @ConfigItem(name = "spec")
-    public Map<String, SpecItemConfig> specItem;
+        //spec configs only
+        BASE_PACKAGE("base-package"),
 
-    /**
-     * Whether to log the internal generator codegen process in the default output or not.
-     */
-    @ConfigItem(name = "verbose", defaultValue = "false")
-    public boolean verbose;
+        //global & spec configs
+        SKIP_FORM_MODEL("skip-form-model"),
+        MUTINY("mutiny"),
+        ADDITIONAL_MODEL_TYPE_ANNOTATIONS("additional-model-type-annotations"),
+        ADDITIONAL_API_TYPE_ANNOTATIONS("additional-api-type-annotations"),
+        TYPE_MAPPINGS("type-mappings"),
+        IMPORT_MAPPINGS("import-mappings"),
+        NORMALIZER("open-api-normalizer"),
+        RETURN_RESPONSE("return-response"),
+        ENABLE_SECURITY_GENERATION("enable-security-generation");
 
-    /**
-     * Whether or not to skip validating the input spec prior to generation. By default, invalid specifications will result in
-     * an error.
-     */
-    @ConfigItem(name = "validateSpec", defaultValue = "true")
-    public boolean validateSpec;
-    /**
-     * Security type for which security constraints should be created automatically if not explicitly defined
-     */
-    @ConfigItem(name = "default.security.scheme", defaultValue = "none")
-    public String defaultSecurityScheme;
+        private String name;
+        //TODO: type, default
+
+        ConfigName(String name) {
+            this.name = name;
+        }
+
+    }
 
     public static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);
@@ -72,16 +63,18 @@ public class CodegenConfig {
         return String.format("%s%s", basePackage, MODEL_PKG_SUFFIX);
     }
 
-    public static String getBasePackagePropertyName(final Path openApiFilePath) {
-        return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+    /**
+     * Return global config name, openapi-generator.codegen.config-name
+     */
+    public static String getGlobalConfigName(ConfigName configName) {
+        return String.format(BUILD_TIME_GLOBAL_PREFIX_FORMAT, configName.name);
     }
 
-    public static String getGlobalConfigName(String configName) {
-        return String.format(BUILD_TIME_GLOBAL_PREFIX_FORMAT, configName);
-    }
-
-    public static String getApiSpecConfigName(String configName, final Path openApiFilePath) {
-        return String.format("%s.%s", getBuildTimeSpecPropertyPrefix(openApiFilePath), configName);
+    /**
+     * Return spec config name openapi-generator.codegen.spec.%s.config-name
+     */
+    public static String getSpecConfigName(ConfigName configName, final Path openApiFilePath) {
+        return String.format("%s.%s", getBuildTimeSpecPropertyPrefix(openApiFilePath), configName.name);
     }
 
     /**

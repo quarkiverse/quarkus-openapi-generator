@@ -35,9 +35,6 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 {#if enable-security-generation && hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)
 {/if}
-{#for crpClassConfig in custom-register-providers.orEmpty}
-@RegisterProvider({crpClassConfig}.class)
-{/for}
 @ApplicationScoped
 {#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
 {apiAnnotation}
