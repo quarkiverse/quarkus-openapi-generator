@@ -24,18 +24,20 @@ public class CodegenConfig {
     public static final String VALIDATE_SPEC_PROPERTY_NAME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".validateSpec";
     public static final String DEFAULT_SECURITY_SCHEME = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".default.security.scheme";
     // package visibility for unit tests
+    static final String BUILD_TIME_GLOBAL_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".%s";
     static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
 
     private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
-    private static final String SKIP_FORM_MODEL_PROP_FORMAT = "%s.skip-form-model";
-    private static final String MUTINY_PROP_FORMAT = "%s.mutiny";
-    private static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-model-type-annotations";
-    private static final String ADDITIONAL_API_TYPE_ANNOTATIONS_PROP_FORMAT = "%s.additional-api-type-annotations";
-    private static final String TYPE_MAPPINGS_PROP_FORMAT = "%s.type-mappings";
-    private static final String IMPORT_MAPPINGS_PROP_FORMAT = "%s.import-mappings";
-    private static final String NORMALIZER_PROP_FORMAT = "%s.open-api-normalizer";
 
-    private static final String RETURN_RESPONSE_PROP_FORMAT = "%s.return-response";
+    public static final String SKIP_FORM_MODEL = "skip-form-model";
+    public static final String MUTINY = "mutiny";
+    public static final String ADDITIONAL_MODEL_TYPE_ANNOTATIONS = "additional-model-type-annotations";
+    public static final String ADDITIONAL_API_TYPE_ANNOTATIONS = "additional-api-type-annotations";
+    public static final String TYPE_MAPPINGS = "type-mappings";
+    public static final String IMPORT_MAPPINGS = "import-mappings";
+    public static final String NORMALIZER = "open-api-normalizer";
+
+    public static final String RETURN_RESPONSE = "return-response";
     public static final String ENABLE_SECURITY_GENERATION = "enable-security-generation";
 
     /**
@@ -74,40 +76,12 @@ public class CodegenConfig {
         return String.format(BASE_PACKAGE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 
-    public static String getSkipFormModelPropertyName(final Path openApiFilePath) {
-        return String.format(SKIP_FORM_MODEL_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getMutinyPropertyName(final Path openApiFilePath) {
-        return String.format(MUTINY_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getDefaultConfigName(String configName) {
-        return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, configName);
+    public static String getGlobalConfigName(String configName) {
+        return String.format(BUILD_TIME_GLOBAL_PREFIX_FORMAT, configName);
     }
 
     public static String getApiSpecConfigName(String configName, final Path openApiFilePath) {
-        return String.format("%s." + configName, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getAdditionalModelTypeAnnotationsPropertyName(final Path openApiFilePath) {
-        return String.format(ADDITIONAL_MODEL_TYPE_ANNOTATIONS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getAdditionalApiTypeAnnotationsPropertyName(final Path openApiFilePath) {
-        return String.format(ADDITIONAL_API_TYPE_ANNOTATIONS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getTypeMappingsPropertyName(final Path openApiFilePath) {
-        return String.format(TYPE_MAPPINGS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getImportMappingsPropertyName(final Path openApiFilePath) {
-        return String.format(IMPORT_MAPPINGS_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getNormalizerPropertyName(final Path openApiFilePath) {
-        return String.format(NORMALIZER_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
+        return String.format("%s.%s", getBuildTimeSpecPropertyPrefix(openApiFilePath), configName);
     }
 
     /**
@@ -123,13 +97,5 @@ public class CodegenConfig {
     public static String getSanitizedFileName(final Path openApiFilePath) {
         return StringUtil
                 .replaceNonAlphanumericByUnderscores(OpenApiGeneratorOutputPaths.getRelativePath(openApiFilePath).toString());
-    }
-
-    public static String getReturnResponsePropertyName(final Path openApiFilePath) {
-        return String.format(RETURN_RESPONSE_PROP_FORMAT, getBuildTimeSpecPropertyPrefix(openApiFilePath));
-    }
-
-    public static String getEnabledSecurityGenerationPropertyName(final Path openApiFilePath) {
-        return String.format(ENABLE_SECURITY_GENERATION, getBuildTimeSpecPropertyPrefix(openApiFilePath));
     }
 }

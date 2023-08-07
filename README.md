@@ -76,7 +76,11 @@ If a base package name is not provided, it will be used the default `org.openapi
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in [OpenApi Generator Doc](https://openapi-generator.tech/docs/generators/java/#config-options)).
 
-The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`.
+The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`. Given you want to include Foo and Bar annotations, you must define additional-api-type-annotations as:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Foo;@org.test.Bar
+```
 
 > **⚠️** Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
@@ -333,10 +337,9 @@ RESTEasy Reactive:
   <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
 </dependency>
 ```
-If authentication support doesn't suit your needs, you can disable it with `enable-security-generation=false`. In such case `CompositeAuthenticationProvider` and `AuthenticationPropagationHeadersFactory` won't be generated and used with your api.
-Option can be set globally with `quarkus.openapi-generator.codegen.spec.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
-
-Custom authentication provide can be used with `additional-api-type-annotations`
+If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
+The option can be set globally with `quarkus.openapi-generator.codegen.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
+Custom authentication provider can be used with `additional-api-type-annotations`
 
 See the module [generation-tests](integration-tests/generation-tests) for an example of how to use this feature.
 
