@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,7 +50,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YML = ".yml";
     static final String JSON = ".json";
 
-    static Pattern CONFIG_PATTERN = Pattern.compile(
+    static final Pattern CONFIG_PATTERN = Pattern.compile(
             "quarkus\\.openapi-generator\\.codegen\\.(spec.(?<specId>[A-Za-z0-9_]*)\\.)?(?<configName>[A-Za-z0-9_\\-]*)\\.?(?<configMap>.*)?");
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
@@ -131,16 +132,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private void validateUserConfiguration(CodeGenContext context) throws CodeGenException {
-        List<String> userOpenaApiConfigurations = StreamSupport.stream(context.config().getPropertyNames().spliterator(), false)
+        List<String> userOpenApiConfigurations = StreamSupport.stream(context.config().getPropertyNames().spliterator(), false)
                 .filter(pn -> pn.startsWith("quarkus.openapi-generator.codegen"))
-                .map(p -> CONFIG_PATTERN.matcher(p))
-                .filter(matcher -> matcher.find())
+                .map(CONFIG_PATTERN::matcher)
+                .filter(Matcher::find)
                 .map(matcher -> matcher.group("configName"))
                 .collect(Collectors.toList());
 
-        if (!userOpenaApiConfigurations.isEmpty()) {
+        if (!userOpenApiConfigurations.isEmpty()) {
 
-            List<String> unsupportedConfigNames = userOpenaApiConfigurations.stream()
+            List<String> unsupportedConfigNames = userOpenApiConfigurations.stream()
                     .filter(uc -> !SUPPORTED_CONFIGURATIONS.contains(uc)).collect(Collectors.toList());
 
             if (!unsupportedConfigNames.isEmpty()) {
@@ -250,26 +251,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private <T> Optional<T> getValues(final Config config, final Path openApiFilePath, CodegenConfig.ConfigName configName,
             Class<T> propertyType) {
-        Optional<T> apiSpecConfigValue = config
-                .getOptionalValue(CodegenConfig.getSpecConfigName(configName, openApiFilePath), propertyType);
-        if (apiSpecConfigValue.isPresent()) {
-            return apiSpecConfigValue;
-        }
-        //return global value
-        return apiSpecConfigValue
+        return config
+                .getOptionalValue(CodegenConfig.getSpecConfigName(configName, openApiFilePath), propertyType)
                 .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(configName), propertyType));
     }
 
     private <K, V> Optional<Map<K, V>> getValues(final SmallRyeConfig config, final Path openApiFilePath,
             CodegenConfig.ConfigName configName,
             Class<K> kClass, Class<V> vClass) {
-        Optional<Map<K, V>> apiSpecConfigValue = config
-                .getOptionalValues(CodegenConfig.getSpecConfigName(configName, openApiFilePath), kClass, vClass);
-        if (apiSpecConfigValue.isPresent()) {
-            return apiSpecConfigValue;
-        }
-        //return global value
-        return apiSpecConfigValue
+        return config
+                .getOptionalValues(CodegenConfig.getSpecConfigName(configName, openApiFilePath), kClass, vClass)
                 .or(() -> config.getOptionalValues(CodegenConfig.getGlobalConfigName(configName), kClass, vClass));
     }
 }

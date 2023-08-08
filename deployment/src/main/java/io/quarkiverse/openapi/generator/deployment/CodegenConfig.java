@@ -18,8 +18,6 @@ public class CodegenConfig {
     static final String BUILD_TIME_GLOBAL_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".%s";
     static final String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
 
-    private static final String BASE_PACKAGE_PROP_FORMAT = "%s.base-package";
-
     public static final List<String> SUPPORTED_CONFIGURATIONS = Arrays.stream(ConfigName.values()).map(cn -> cn.name)
             .collect(Collectors.toList());
 
@@ -46,8 +44,7 @@ public class CodegenConfig {
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation");
 
-        private String name;
-        //TODO: type, default
+        private final String name;
 
         ConfigName(String name) {
             this.name = name;
