@@ -1,6 +1,5 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.SUPPORTED_CONFIGURATIONS;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
@@ -17,7 +16,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -132,24 +130,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private void validateUserConfiguration(CodeGenContext context) throws CodeGenException {
-        List<String> userOpenApiConfigurations = StreamSupport.stream(context.config().getPropertyNames().spliterator(), false)
-                .filter(pn -> pn.startsWith("quarkus.openapi-generator.codegen"))
-                .map(CONFIG_PATTERN::matcher)
-                .filter(Matcher::find)
-                .map(matcher -> matcher.group("configName"))
+        List<String> configurations = StreamSupport.stream(context.config().getPropertyNames().spliterator(), false)
                 .collect(Collectors.toList());
-
-        if (!userOpenApiConfigurations.isEmpty()) {
-
-            List<String> unsupportedConfigNames = userOpenApiConfigurations.stream()
-                    .filter(uc -> !SUPPORTED_CONFIGURATIONS.contains(uc)).collect(Collectors.toList());
-
-            if (!unsupportedConfigNames.isEmpty()) {
-                throw new CodeGenException(
-                        "Found unsupported configuration: " + unsupportedConfigNames + ". Supported configurations are :"
-                                + SUPPORTED_CONFIGURATIONS);
-            }
-        }
+        OpenApiConfigValidator.validateInputConfiguration(configurations);
     }
 
     private boolean isJacksonReactiveClientPresent(CodeGenContext context) {
