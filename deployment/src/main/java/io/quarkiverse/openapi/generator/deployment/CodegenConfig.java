@@ -3,12 +3,18 @@ package io.quarkiverse.openapi.generator.deployment;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
+import io.quarkus.runtime.annotations.ConfigItem;
+import io.quarkus.runtime.annotations.ConfigPhase;
+import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.common.utils.StringUtil;
 
-public class CodegenConfig {
+// This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
+@ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
+public class CodegenConfig extends GlobalCodegenConfig {
 
     static final String CODEGEN_TIME_CONFIG_PREFIX = "openapi-generator.codegen";
 
@@ -51,6 +57,12 @@ public class CodegenConfig {
         }
 
     }
+
+    /**
+     * OpenAPI Spec details for codegen configuration.
+     */
+    @ConfigItem(name = "spec")
+    public Map<String, SpecItemConfig> specItem;
 
     public static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);
