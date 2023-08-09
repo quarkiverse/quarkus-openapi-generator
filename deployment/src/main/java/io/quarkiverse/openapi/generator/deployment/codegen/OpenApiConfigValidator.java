@@ -19,7 +19,7 @@ public class OpenApiConfigValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiConfigValidator.class);
 
     static final Pattern CONFIG_PATTERN = Pattern.compile(
-            "quarkus\\.openapi-generator\\.codegen\\.(spec.(?<specId>[A-Za-z0-9_]*)\\.)?(?<configName>[A-Za-z0-9_\\-]*)\\.?(?<configMap>.*)?");
+            "quarkus\\.openapi-generator\\.codegen\\.(spec.(?<specId>\\w*)\\.)?(?<configName>[A-Za-z0-9_\\-]*)\\.?(?<configMap>.+)?");
 
     public static void validateInputConfiguration(List<String> configNames) throws CodeGenException {
         List<Matcher> userOpenApiConfigurations = configNames.stream()
