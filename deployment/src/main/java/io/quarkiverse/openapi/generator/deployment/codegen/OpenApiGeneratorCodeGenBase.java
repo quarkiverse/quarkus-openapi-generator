@@ -48,9 +48,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String YML = ".yml";
     static final String JSON = ".json";
 
-    static final Pattern CONFIG_PATTERN = Pattern.compile(
-            "quarkus\\.openapi-generator\\.codegen\\.(spec.(?<specId>[A-Za-z0-9_]*)\\.)?(?<configName>[A-Za-z0-9_\\-]*)\\.?(?<configMap>.*)?");
-
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
 
     /**
