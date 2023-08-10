@@ -12,6 +12,7 @@ import java.util.Map;
 
 import jakarta.ws.rs.core.HttpHeaders;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -21,6 +22,8 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTestResource(TokenPropagationExternalServicesMock.class)
 @QuarkusTestResource(KeycloakServiceMock.class)
 @QuarkusTest
+// Enabled only for RESTEasy Classic while https://github.com/quarkiverse/quarkus-openapi-generator/issues/434 is not fixed
+@Tag("resteasy-classic")
 class TokenPropagationTest {
 
     @ParameterizedTest
