@@ -10,7 +10,7 @@ import static io.restassured.RestAssured.given;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;

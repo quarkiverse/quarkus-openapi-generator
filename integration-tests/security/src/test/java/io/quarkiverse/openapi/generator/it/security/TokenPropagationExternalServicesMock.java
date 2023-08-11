@@ -7,12 +7,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.quarkiverse.openapi.generator.it.security.KeycloakServiceMock.KEYCLOAK_ACCESS_TOKEN;
-import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.Map;
 
-import jakarta.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.HttpHeaders;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 
