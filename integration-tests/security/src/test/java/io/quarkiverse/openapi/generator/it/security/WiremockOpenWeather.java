@@ -17,6 +17,7 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
 
     public static final String URL_KEY = "quarkus.rest-client.open_weather_yaml.url";
     public static final String URL_NO_SEC_KEY = "quarkus.rest-client.open_weather_no_security_yaml.url";
+    public static final String URL_CUSTOM_SECURITY_KEY = "quarkus.rest-client.open_weather_custom_security_yaml.url";
 
     @Override
     public Map<String, String> start() {
@@ -29,8 +30,15 @@ public class WiremockOpenWeather implements QuarkusTestResourceLifecycleManager 
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                                 "{\"name\": \"Nowhere\"}")));
+        wireMockServer.stubFor(get(urlPathEqualTo("/data/4.5/weather"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(
+                                "{\"name\": \"Nowhere\"}")));
         return Map.of(URL_KEY, wireMockServer.baseUrl().concat("/data/2.5"),
-                URL_NO_SEC_KEY, wireMockServer.baseUrl().concat("/data/2.5"));
+                URL_NO_SEC_KEY, wireMockServer.baseUrl().concat("/data/2.5"),
+                URL_CUSTOM_SECURITY_KEY, wireMockServer.baseUrl().concat("/data/4.5"));
     }
 
     @Override

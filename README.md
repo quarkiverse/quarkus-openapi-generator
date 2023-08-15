@@ -29,7 +29,7 @@ Add the following dependency to your project's `pom.xml` file:
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -74,6 +74,12 @@ quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annot
 If a base package name is not provided, it will be used the default `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in [OpenApi Generator Doc](https://openapi-generator.tech/docs/generators/java/#config-options)).
+
+The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`. Given you want to include Foo and Bar annotations, you must define additional-api-type-annotations as:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Foo;@org.test.Bar
+```
 
 > **⚠️** Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
@@ -236,9 +242,9 @@ pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth
 
 If the OpenAPI specification file has `securitySchemes` definitions, but no [Security Requirement Object](https://spec.openapis.org/oas/v3.1.0#security-requirement-object) definitions, the generator can be configured to create these by default. In this case, for all operations without a security requirement the default one will be created. Note that the property value needs to match the name of a security scheme object definition, eg. `api_key` or `basic_auth` in the `securitySchemes` list above.
 
-| Description          | Property Key                                                   | Example                                              |
-| -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
-| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default.security.scheme` | `quarkus.openapi-generator.codegen.default.security.scheme=api_key` |
+| Description          | Property Key                                                | Example                                                             |
+| -------------------- |-------------------------------------------------------------|---------------------------------------------------------------------|
+| Create security for the referenced security scheme | `quarkus.openapi-generator.codegen.default-security-scheme` | `quarkus.openapi-generator.codegen.default-security-scheme=api_key` |
 
 See the module [security](integration-tests/security) for an example of how to use this feature.
 
@@ -330,6 +336,9 @@ RESTEasy Reactive:
   <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
 </dependency>
 ```
+If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
+The option can be set globally with `quarkus.openapi-generator.codegen.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
+Custom authentication provider can be used with `additional-api-type-annotations`
 
 See the module [generation-tests](integration-tests/generation-tests) for an example of how to use this feature.
 
@@ -418,17 +427,7 @@ The token propagation can be used with type "oauth2" or "bearer" security scheme
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].token-propagation=[true,false]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true`<br/>Enables the token propagation for all the operations that are secured with the `petstore_auth` scheme in the `petstore_json` file.
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].header-name=[http_header_name]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyHeaderName`<br/>Says that the authorization token to propagate will be read from the HTTP header `MyHeaderName` instead of the standard HTTP `Authorization` header.
 
-## Headers propagation
-Custom headers propagation can be set via MicroProfile configuration `org.eclipse.microprofile.rest.client.propagateHeaders`.
-In order to consider this configuration you must force `@RegisterClientHeaders` to use its default MicroProfile `ClientHeadersFactory` implementation. Therefore there is an option `client-headers-factory` where you can set any implementation of `ClientHeadersFactory`.
 
-| Description  | Property Key                                                               | Example                                                                                                                                                    |
-| -------------|----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Bearer Token | `quarkus.openapi-generator.codegen.spec.[fileName].client-headers-factory` | `quarkus.openapi-generator.codegen.spec.open_weather_yaml.client-headers-factory=org.eclipse.microprofile.rest.client.ext.DefaultClientHeadersFactoryImpl` |
-
-If `client-headers-factory` is set to `none` `@RegisterClientHeaders` will use its default implicit implementation as in the example above.
-
-If no option is set then default generated `AuthenticationPropagationHeadersFactory` class is used.
 
 ## Circuit Breaker
 
@@ -674,16 +673,6 @@ The client objects are classes generated in the `api` package. These classes mig
 file. By default, these operations are generated. You can fine tune this behavior if the deprecated operations should not be generated.
 
 Use the property key `<base_package>.api.MyClass.generateDeprecated=false` to disable the deprecated operations in the given API. For example `org.acme.openapi.simple.api.DefaultApi.generatedDeprecated=false`.
-
-## Custom Register Providers for generated api
-
-In some cases, we need custom `RegisterProvider` for generated api, e.g. logging. You can define your own Providers in `application.properties` :
-
-| Property Key                                                                                                                                                                        | Example                                                                                                                                |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `quarkus.openapi-generator.codegen.spec.[filename].custom-register-providers` | `quarkus.openapi-generator.codegen.spec.simple_openapi_json.custom-register-providers=org.test.Foo,org.test.Bar`<br/>Provider classes are separated by commas |
-
-With the above configuration, the extension generates your Rest Clients with a code similar to the following:
 
 ```java
 package org.acme.openapi.simple.api;
