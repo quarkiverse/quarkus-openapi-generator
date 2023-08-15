@@ -4,15 +4,11 @@ package {package};
 import {imp.import};
 {/for}
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-{#if hasAuthMethods || custom-register-providers.orEmpty.size > 0}
-import org.eclipse.microprofile.rest.client.annotation.RegisterProvider; 
-{/if}
-{#if hasAuthMethods}
+{#if enable-security-generation && hasAuthMethods}
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import {package}.auth.CompositeAuthenticationProvider;
-{#if client-headers-factory is 'default'}
 import {package}.auth.AuthenticationPropagationHeadersFactory;
-{/if}
 {/if}
 
 import java.io.InputStream;
@@ -37,21 +33,14 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 @Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
 @RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if} configKey="{quarkus-generator.openApiSpecId}")
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
-{#if hasAuthMethods}
+{#if enable-security-generation && hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)
-{#when client-headers-factory}
-{#is 'default'}
 @RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
-{#is 'none'}
-@RegisterClientHeaders
-{#else}
-@RegisterClientHeaders({client-headers-factory}.class)
-{/when}
 {/if}
-{#for crpClassConfig in custom-register-providers.orEmpty}
-@RegisterProvider({crpClassConfig}.class)
-{/for}
 @ApplicationScoped
+{#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
+{apiAnnotation}
+{/for}
 public interface {classname} {
 
     {#for op in operations.operation}
