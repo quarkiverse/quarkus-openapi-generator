@@ -486,61 +486,31 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void verifyCustomRegisterProviderAnnotations() throws URISyntaxException {
+    void verifyAdditionalApiTypeAnnotations() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
-                .withCustomRegisterProviders("org.test.Foo,org.test.Bar")
-                .generate("org.test");
+                .withEnabledSecurityGeneration(false)
+                .withAdditionalApiTypeAnnotationsConfig(
+                        "@org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders")
+                .generate("org.additionalapitypeannotations");
         assertFalse(generatedFiles.isEmpty());
 
-        List<File> filteredGeneratedFiles = generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*api.*Api.java")).collect(Collectors.toList());
-
-        assertThat(filteredGeneratedFiles).isNotEmpty();
-
-        filteredGeneratedFiles.forEach(file -> {
-            try {
-                CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-                compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                        .forEach(c -> {
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Foo.class")).isPresent();
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Bar.class")).isPresent();
-                        });
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        });
+        generatedFiles.stream()
+                .filter(file -> file.getPath().matches(".*api.*Api.java"))
+                .forEach(this::verifyApiAdditionalAnnotations);
     }
 
-    @Test
-    void verifyCustomRegisterProviderAnnotationsWithoutSecurity() throws URISyntaxException {
-        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi-custom-register-provider.json")
-                .withCustomRegisterProviders("org.test.Foo,org.test.Bar")
-                .generate("org.test");
-        assertFalse(generatedFiles.isEmpty());
-
-        List<File> filteredGeneratedFiles = generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*api.*Api.java")).collect(Collectors.toList());
-
-        assertThat(filteredGeneratedFiles).isNotEmpty();
-
-        filteredGeneratedFiles.forEach(file -> {
-            try {
-                CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-                compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                        .forEach(c -> {
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Foo.class")).isPresent();
-                            assertThat(getRegisterProviderAnnotation(c, "org.test.Bar.class")).isPresent();
-                        });
-
-                List<String> imports = compilationUnit.findAll(ImportDeclaration.class)
-                        .stream()
-                        .map(importDeclaration -> importDeclaration.getName().asString())
-                        .collect(Collectors.toList());
-                assertThat(imports).contains("org.eclipse.microprofile.rest.client.annotation.RegisterProvider");
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        });
+    private void verifyApiAdditionalAnnotations(File file) {
+        try {
+            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                    .forEach(c -> {
+                        assertThat(
+                                c.getAnnotationByName("RegisterClientHeaders"))
+                                .isPresent();
+                    });
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Test

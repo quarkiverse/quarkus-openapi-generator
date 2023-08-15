@@ -4,15 +4,11 @@ package {package};
 import {imp.import};
 {/for}
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-{#if hasAuthMethods || custom-register-providers.orEmpty.size > 0}
+{#if enable-security-generation && hasAuthMethods}
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
-{/if}
-{#if hasAuthMethods}
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import {package}.auth.CompositeAuthenticationProvider;
-{#if client-headers-factory is 'default'}
 import {package}.auth.AuthenticationPropagationHeadersFactory;
-{/if}
 {/if}
 
 import java.io.InputStream;
@@ -37,21 +33,14 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 @Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
 @RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if} configKey="{quarkus-generator.openApiSpecId}")
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
-{#if hasAuthMethods}
+{#if enable-security-generation && hasAuthMethods}
 @RegisterProvider(CompositeAuthenticationProvider.class)
-{#when client-headers-factory}
-{#is 'default'}
 @RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
-{#is 'none'}
-@RegisterClientHeaders
-{#else}
-@RegisterClientHeaders({client-headers-factory}.class)
-{/when}
 {/if}
-{#for crpClassConfig in custom-register-providers.orEmpty}
-@RegisterProvider({crpClassConfig}.class)
-{/for}
 @ApplicationScoped
+{#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
+{apiAnnotation}
+{/for}
 public interface {classname} {
 
     {#for op in operations.operation}
@@ -86,13 +75,21 @@ public interface {classname} {
             {#if return-response}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
             {#else}
-    public {#if op.returnType && !op.vendorExtensions.x-java-is-response-void}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+                {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+                {#else}
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+                {/if}
             {/if}
         {#else}
             {#if return-response}
     public jakarta.ws.rs.core.Response {op.nickname}(
             {#else}
-    public {#if op.returnType && !op.vendorExtensions.x-java-is-response-void}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
+                {#if op.returnType == "void"}
+    public jakarta.ws.rs.core.Response {op.nickname}(
+                {#else}
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
+                {/if}
             {/if}
         {/if}
         {#if op.hasFormParams}

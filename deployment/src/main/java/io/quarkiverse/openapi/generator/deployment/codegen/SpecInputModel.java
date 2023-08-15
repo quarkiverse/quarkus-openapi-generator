@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
 import static java.util.Objects.requireNonNull;
 
 import java.io.InputStream;
@@ -10,7 +12,6 @@ import java.util.Objects;
 
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
-import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.smallrye.config.PropertiesConfigSource;
 
 public class SpecInputModel {
@@ -33,7 +34,7 @@ public class SpecInputModel {
      */
     public SpecInputModel(final String filename, final InputStream inputStream, final String basePackageName) {
         this(filename, inputStream);
-        this.codegenProperties.put(CodegenConfig.getBasePackagePropertyName(Path.of(filename)), basePackageName);
+        this.codegenProperties.put(getSpecConfigName(BASE_PACKAGE, Path.of(filename)), basePackageName);
     }
 
     public String getFileName() {

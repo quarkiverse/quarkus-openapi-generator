@@ -1,0 +1,23 @@
+---
+openapi: 3.0.3
+info:
+  title: external-service2 API
+  version: 3.0.0-SNAPSHOT
+paths:
+  /token-propagation-external-service2/executeQuery2:
+    post:
+      operationId: executeQuery2
+      responses:
+        "200":
+          description: OK
+      security:
+        - service2-oauth2: []
+components:
+  securitySchemes:
+    service2-oauth2:
+        type: oauth2
+        flows:
+          clientCredentials:
+            authorizationUrl: https://example.com/oauth
+            tokenUrl: https://example.com/oauth/token
+            scopes: {}
