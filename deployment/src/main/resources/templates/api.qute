@@ -76,7 +76,7 @@ public interface {classname} {
     public io.smallrye.mutiny.Uni<javax.ws.rs.core.Response> {op.nickname}(
             {#else}
                 {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+    public io.smallrye.mutiny.Uni<javax.ws.rs.core.Response> {op.nickname}(
                 {#else}
     public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>{/if} {op.nickname}(
                 {/if}
@@ -86,9 +86,9 @@ public interface {classname} {
     public javax.ws.rs.core.Response {op.nickname}(
             {#else}
                 {#if op.returnType == "void"}
-    public jakarta.ws.rs.core.Response {op.nickname}(
+    public javax.ws.rs.core.Response {op.nickname}(
                 {#else}
-    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
+    public {#if op.returnType}{op.returnType}{#else}javax.ws.rs.core.Response{/if} {op.nickname}(
                 {/if}
             {/if}
         {/if}

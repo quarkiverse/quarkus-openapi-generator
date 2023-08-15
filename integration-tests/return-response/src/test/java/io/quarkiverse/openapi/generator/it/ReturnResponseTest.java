@@ -58,20 +58,20 @@ class ReturnResponseTest {
     void testMutinyReturnResponseTrueString() throws NoSuchMethodException {
         var method = MutinyReturnResponseTrueStringApi.class.getMethod("hello");
         assertThat(method.getGenericReturnType().getTypeName())
-                .isEqualTo("io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>");
+                .isEqualTo("io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>");
     }
 
     @Test
     void testMutinyReturnResponseFalseVoid() throws NoSuchMethodException {
         var method = MutinyReturnResponseFalseVoidApi.class.getMethod("hello");
         assertThat(method.getGenericReturnType().getTypeName())
-                .isEqualTo("io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>");
+                .isEqualTo("io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>");
     }
 
     @Test
     void testMutinyReturnResponseTrueVoid() throws NoSuchMethodException {
         var method = MutinyReturnResponseTrueVoidApi.class.getMethod("hello");
         assertThat(method.getGenericReturnType().getTypeName())
-                .isEqualTo("io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>");
+                .isEqualTo("io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>");
     }
 }
