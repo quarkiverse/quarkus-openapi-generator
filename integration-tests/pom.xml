@@ -22,7 +22,6 @@
     <module>multipart-request</module>
     <module>mutiny</module>
     <module>open-api-normalizer</module>
-    <module>register-provider</module>
     <module>return-response</module>
     <module>security</module>
     <module>simple</module>

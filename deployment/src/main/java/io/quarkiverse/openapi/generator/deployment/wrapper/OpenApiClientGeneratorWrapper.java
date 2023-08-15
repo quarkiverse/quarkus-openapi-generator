@@ -106,13 +106,6 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withCustomRegisterProviders(String config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("custom-register-providers", config.split(","));
-        }
-        return this;
-    }
-
     public OpenApiClientGeneratorWrapper withMutiny(final Boolean config) {
         if (config != null) {
             configurator.addAdditionalProperty("mutiny", config);
@@ -141,8 +134,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withClientHeaderFactory(String clientHeaderFactory) {
-        configurator.addAdditionalProperty("client-headers-factory", clientHeaderFactory);
+    public OpenApiClientGeneratorWrapper withEnabledSecurityGeneration(Boolean enableSecurityGeneration) {
+        configurator.addAdditionalProperty("enable-security-generation", enableSecurityGeneration);
         return this;
     }
 
@@ -165,6 +158,19 @@ public abstract class OpenApiClientGeneratorWrapper {
     public OpenApiClientGeneratorWrapper withAdditionalModelTypeAnnotationsConfig(final String additionalModelTypeAnnotations) {
         if (additionalModelTypeAnnotations != null) {
             this.configurator.addAdditionalProperty(ADDITIONAL_MODEL_TYPE_ANNOTATIONS, additionalModelTypeAnnotations);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the global 'additionalApiTypeAnnotations' setting. If not set this setting will default to empty.
+     *
+     * @param additionalApiTypeAnnotations the list of extra additional annotations to be included in an api
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {
+        if (additionalApiTypeAnnotations != null) {
+            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(","));
         }
         return this;
     }
