@@ -737,7 +737,7 @@ You can find an example of using customized templates in [integration-tests/cust
 
 ### **⚠️** Important
 
-While the option to replace templates exists, it's essential to exercise caution and consider this as a final resort. Prior to altering templates, exhaust all possibilities of achieving your objectives through configuration settings. Modifying templates could have broader implications on the extension's functionality and may introduce complexities. Only resort to template replacement when configuration adjustments prove insufficient for your requirements.
+While the option to replace templates exists, it's essential to exercise caution and consider this as a final resort. Prior to altering templates, exhaust all possibilities of achieving your goals through configuration settings. Modifying templates could have broader implications for the extension's functionality and may introduce complexities. Only resort to template replacement when configuration adjustments prove insufficient for your requirements.
 
 Furthermore, be aware that customizing templates increases the risk of compatibility issues during future upgrades. Therefore, exercise discretion and weigh the benefits against the potential risks before opting for template customization.
 
