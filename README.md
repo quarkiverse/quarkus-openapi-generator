@@ -729,6 +729,18 @@ It's also possible to only use a type mapping with a fully qualified name, for i
 
 See the module [type-mapping](integration-tests/type-mapping) for an example of how to use this feature.
 
+## Template Customization
+
+You have the option to swap out the [templates used by this extension](deployment/src/main/resources/templates/libraries/microprofile) with your customized versions. To achieve this, place your custom templates under the `resources/templates` directory. It's crucial that the filename of each custom template matches that of the original template.
+
+You can find an example of using customized templates in [integration-tests/custom-templates](integration-tests/custom-templates).
+
+### **⚠️** Important
+
+While the option to replace templates exists, it's essential to exercise caution and consider this as a final resort. Prior to altering templates, exhaust all possibilities of achieving your goals through configuration settings. Modifying templates could have broader implications for the extension's functionality and may introduce complexities. Only resort to template replacement when configuration adjustments prove insufficient for your requirements.
+
+Furthermore, be aware that customizing templates increases the risk of compatibility issues during future upgrades. Therefore, exercise discretion and weigh the benefits against the potential risks before opting for template customization.
+
 ## Known Limitations
 
 These are the known limitations of this pre-release version:
