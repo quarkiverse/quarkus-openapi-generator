@@ -107,6 +107,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             }
 
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
+                Path templateDir = context.workDir().resolve("classes").resolve("templates");
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
                         .filter(path -> {
@@ -115,7 +116,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                                     && !filesToExclude.contains(fileName)
                                     && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
                         })
-                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir, isRestEasyReactive));
+                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir, templateDir,
+                                isRestEasyReactive));
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
                         e);
@@ -149,8 +151,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
     protected void generate(final Config config, final Path openApiFilePath, final Path outDir,
-            boolean isRestEasyReactive) {
-
+            Path templateDir, boolean isRestEasyReactive) {
         final String basePackage = getBasePackage(config, openApiFilePath);
         final Boolean verbose = config.getOptionalValue(getGlobalConfigName(CodegenConfig.ConfigName.VERBOSE), Boolean.class)
                 .orElse(false);
@@ -160,6 +161,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         final OpenApiClientGeneratorWrapper generator = createGeneratorWrapper(openApiFilePath, outDir, isRestEasyReactive,
                 verbose, validateSpec);
+
+        generator.withTemplateDir(templateDir);
 
         generator.withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                 .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
