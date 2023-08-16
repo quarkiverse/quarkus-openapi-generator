@@ -19,10 +19,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
@@ -87,24 +87,24 @@ public interface {classname} {
     {/if}{/for}
         {#if mutiny}
             {#if return-response}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+    public io.smallrye.mutiny.Uni<javax.ws.rs.core.Response> {op.nickname}(
             {#else}
                 {#if op.returnType == "void"}
-    public {#if op.returnType}io.smallrye.mutiny.Uni<Void>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+    public {#if op.returnType}io.smallrye.mutiny.Uni<Void>{#else}io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>{/if} {op.nickname}(
                 {#else}
-    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<javax.ws.rs.core.Response>{/if} {op.nickname}(
                 {/if}
             {/if}
         {#else}
             {#if return-response}
-    public jakarta.ws.rs.core.Response {op.nickname}(
+    public javax.ws.rs.core.Response {op.nickname}(
             {#else}
-    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
+    public {#if op.returnType}{op.returnType}{#else}javax.ws.rs.core.Response{/if} {op.nickname}(
             {/if}
         {/if}
         {#if op.hasFormParams}
         {#if is-resteasy-reactive}
-        @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
+        @javax.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
         !}{#for p in op.pathParams}{#include templates.path_params param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
         !}{#for p in op.queryParams}{#include templates.query_params param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
         !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
