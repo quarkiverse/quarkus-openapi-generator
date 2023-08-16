@@ -74,7 +74,8 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                                     StandardOpenOption.CREATE)) {
                         outChannel.transferFrom(inChannel, 0, Integer.MAX_VALUE);
                         LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
-                        this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir, isRestEasyReactive);
+                        this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir,
+                                context.workDir().resolve("classes").resolve("templates"), isRestEasyReactive);
                         generated = true;
                     }
                 } catch (IOException e) {
