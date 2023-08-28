@@ -3,10 +3,26 @@
         @FormParam("{p.baseName}")
     {#if p.isFile || (p.isString && p.dataFormat == 'base64')}
         {#if is-resteasy-reactive}
+            {#if generate-part-filename}
+                {#if part-filename-value}
+        @org.jboss.resteasy.reactive.PartFilename("{part-filename-value}")
+                {#else if part-filename-value-suffix}
+        @org.jboss.resteasy.reactive.PartFilename("{p.baseName}{part-filename-value-suffix}")
+                {#else}
         @org.jboss.resteasy.reactive.PartFilename("{p.baseName}File")
+                {/if}
+            {/if}
         @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_OCTET_STREAM)
         {#else}
+            {#if generate-part-filename}
+                {#if part-filename-value}
+        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{part-filename-value}")
+                {#else if part-filename-value-suffix}
+        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}{part-filename-value-suffix}")
+                {#else}
         @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}File")
+                {/if}
+            {/if}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_OCTET_STREAM)
         {/if}
     {#else if p.isPrimitiveType or (p.isArray && p.items.isPrimitiveType)}

@@ -179,6 +179,21 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("templateDir", templateDir.toString());
     }
 
+    public OpenApiClientGeneratorWrapper withGeneratePartFilenameConfig(final Boolean generatePartFilename) {
+        this.configurator.addAdditionalProperty("generate-part-filename", generatePartFilename);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withPartFilenameValueConfig(final String partFilenameValue) {
+        this.configurator.addAdditionalProperty("part-filename-value", partFilenameValue);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withPartFilenameValueSuffixConfig(final String partFilenameValueSiffix) {
+        this.configurator.addAdditionalProperty("part-filename-value-suffix", partFilenameValueSiffix);
+        return this;
+    }
+
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();

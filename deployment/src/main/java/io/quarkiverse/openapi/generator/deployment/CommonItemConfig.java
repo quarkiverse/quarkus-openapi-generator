@@ -71,4 +71,29 @@ public class CommonItemConfig {
      */
     @ConfigItem(name = "mutiny")
     public Optional<Boolean> supportMutiny;
+
+    /**
+     * Defines, whether the `PartFilename` ({@link org.jboss.resteasy.reactive.PartFilename} or
+     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) annotation should be generated for MultipartForm
+     * POJOs. By setting to `false`, the annotation will not be generated.
+     */
+    @ConfigItem(name = "generate-part-filename")
+    public Optional<Boolean> generatePartFilename;
+
+    /**
+     * Defines the filename for a part in case the `PartFilename` annotation ({@link org.jboss.resteasy.reactive.PartFilename}
+     * or
+     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) is generated.
+     */
+    @ConfigItem(name = "part-filename-value")
+    public Optional<String> partFilenameValue;
+
+    /**
+     * Defines the filename's suffix, added to the property name, for a part in case the `PartFilename` annotation
+     * ({@link org.jboss.resteasy.reactive.PartFilename} or
+     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename})
+     * is generated.
+     */
+    @ConfigItem(name = "part-filename-value-suffix")
+    public Optional<String> partFilenameValueSuffix;
 }

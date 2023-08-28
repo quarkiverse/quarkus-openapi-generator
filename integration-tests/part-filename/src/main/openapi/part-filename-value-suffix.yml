@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: "Multipart form data API"
+  description: An api that uses multipart/form-data as request type
+  version: 1.0.0
+
+servers:
+  - url: "http://my.endpoint.com/api/v1"
+
+paths:
+  /user-profile-data:
+    post:
+      tags:
+        - Part Filename Value Suffix
+      description: Upload data for a user profile, adapted from https://swagger.io/docs/specification/describing-request-body/multipart-requests/
+      operationId: PostUserProfileData
+      requestBody:
+        required: true
+        description: The data of a user profile
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfileData'
+      responses:
+        "204":
+          description: "Data uploaded"
+        "400":
+          description: "Invalid ID supplied"
+
+components:
+  schemas:
+    Address:
+      title: Address
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street name
+          example: 7th avenue
+        city:
+          type: string
+          description: Name of the city
+          example: New Delhi
+    UserId:
+      type: string
+      format: string
+    ProfileImage:
+      type: string
+      format: binary
+
+    UserProfileData:
+      type: object
+      properties: # Request parts
+        id: # Part 1 (string value)
+          $ref: '#/components/schemas/UserId'
+        address: # Part2 (object)
+          $ref: '#/components/schemas/Address'
+        profileImage: # Part 3 (an image)
+          $ref: '#/components/schemas/ProfileImage'
+
+

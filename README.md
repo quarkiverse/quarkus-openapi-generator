@@ -580,7 +580,7 @@ public class MultipartBody {
 
     @FormParam("file")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
-    @PartFilename("defaultFileName")
+    @PartFilename("fileFile")
     public File file;
 
     @FormParam("fileName")
@@ -638,6 +638,59 @@ quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model
 ```
 
 See the module [multipart-request](integration-tests/multipart-request) for an example of how to use this feature.
+
+In case the default `PartFilename` annotation is not required, its generation can be disabled by setting the `generate-part-filename` property corresponding to your spec in the `application.properties` to `false`, e.g.:
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.generate-part-filename=false
+```.
+
+And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/support specific extensions), the value can be set by using the `part-filename-value` property corresponding to your spec in the `application.properties`, e.g.:
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_first_multipart_requests_yml.part-filename-value="some.pdf"
+quarkus.openapi-generator.codegen.spec.my_second_multipart_requests_yml.part-filename-value-suffix=".pdf"
+```.
+
+By setting `part-filename-value` to `some.pdf` the generated code will look like this:
+
+```java
+public class MultipartBody {
+
+    @FormParam("file")
+    @PartType(MediaType.APPLICATION_OCTET_STREAM)
+    @PartFilename("some.pdf")
+    public File file;
+
+    @FormParam("fileName")
+    @PartType(MediaType.TEXT_PLAIN)
+    public String fileName;
+
+    @FormParam("someObject")
+    @PartType(MediaType.APPLICATION_JSON)
+    public MyComplexObject someObject;
+}
+
+And by setting `part-filename-value-suffix` to `.pdf` the generated code will look like this:
+
+```java
+public class MultipartBody {
+
+    @FormParam("file")
+    @PartType(MediaType.APPLICATION_OCTET_STREAM)
+    @PartFilename("file.pdf")
+    public File file;
+
+    @FormParam("fileName")
+    @PartType(MediaType.TEXT_PLAIN)
+    public String fileName;
+
+    @FormParam("someObject")
+    @PartType(MediaType.APPLICATION_JSON)
+    public MyComplexObject someObject;
+}
+
+See the module [part-filename](integration-tests/part-filename) for examples of how to use these features.
 
 ### Default content-types according to OpenAPI Specification and limitations
 
