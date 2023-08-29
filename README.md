@@ -19,6 +19,8 @@ project: https://opencollective.com/openapi_generator/donate
 
 This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
 
+**Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read [this page](CONTRIBUTING.md).
+
 ## Getting Started
 
 Add the following dependency to your project's `pom.xml` file:
