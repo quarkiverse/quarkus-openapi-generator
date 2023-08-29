@@ -16,12 +16,14 @@ import org.acme.openapi.api.PartFilenameValueApi;
 import org.acme.openapi.api.PartFilenameValueSuffixApi;
 import org.jboss.resteasy.annotations.providers.multipart.PartFilename;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-class PartFilenameTest {
+@Tag("resteasy-classic")
+class PartFilenameRestEasyClassicTest {
 
     private static final String PROFILE_IMAGE = "profileImage";
 
