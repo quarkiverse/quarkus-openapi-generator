@@ -11,7 +11,7 @@ paths:
   /user-profile-data:
     post:
       tags:
-        - Part Filename Value Suffix
+        - Do Not Use Field Name In Part Filename
       description: Upload data for a user profile, adapted from https://swagger.io/docs/specification/describing-request-body/multipart-requests/
       operationId: PostUserProfileData
       requestBody:

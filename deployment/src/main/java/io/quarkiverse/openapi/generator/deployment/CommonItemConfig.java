@@ -74,26 +74,27 @@ public class CommonItemConfig {
 
     /**
      * Defines, whether the `PartFilename` ({@link org.jboss.resteasy.reactive.PartFilename} or
-     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) annotation should be generated for MultipartForm
-     * POJOs. By setting to `false`, the annotation will not be generated.
+     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) annotation should be generated for
+     * MultipartForm POJOs. By setting to `false`, the annotation will not be generated.
      */
     @ConfigItem(name = "generate-part-filename")
     public Optional<Boolean> generatePartFilename;
 
     /**
-     * Defines the filename for a part in case the `PartFilename` annotation ({@link org.jboss.resteasy.reactive.PartFilename}
-     * or
+     * Defines the filename for a part in case the `PartFilename` annotation
+     * ({@link org.jboss.resteasy.reactive.PartFilename} or
      * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) is generated.
+     * In case no value is set, the default one is `&lt;fieldName&gt;File` or `file`, depending on the
+     * {@link CommonItemConfig#useFieldNameInPartFilename} configuration.
      */
     @ConfigItem(name = "part-filename-value")
     public Optional<String> partFilenameValue;
 
     /**
-     * Defines the filename's suffix, added to the property name, for a part in case the `PartFilename` annotation
+     * Defines, whether the filename should also include the property name in case the `PartFilename` annotation
      * ({@link org.jboss.resteasy.reactive.PartFilename} or
-     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename})
-     * is generated.
+     * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) is generated.
      */
-    @ConfigItem(name = "part-filename-value-suffix")
-    public Optional<String> partFilenameValueSuffix;
+    @ConfigItem(name = "use-field-name-in-part-filename")
+    public Optional<Boolean> useFieldNameInPartFilename;
 }

@@ -191,8 +191,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.PART_FILENAME_VALUE, String.class)
                 .ifPresent(generator::withPartFilenameValueConfig);
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.PART_FILENAME_VALUE_SUFFIX, String.class)
-                .ifPresent(generator::withPartFilenameValueSuffixConfig);
+        generator.withUseFieldNameInPartFilenameConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.USE_FILED_NAME_IN_PART_FILENAME,
+                        Boolean.class)
+                        .orElse(true));
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
 

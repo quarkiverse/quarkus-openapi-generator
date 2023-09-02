@@ -189,8 +189,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withPartFilenameValueSuffixConfig(final String partFilenameValueSiffix) {
-        this.configurator.addAdditionalProperty("part-filename-value-suffix", partFilenameValueSiffix);
+    public OpenApiClientGeneratorWrapper withUseFieldNameInPartFilenameConfig(final Boolean useFieldNameInPartFilename) {
+        this.configurator.addAdditionalProperty("use-field-name-in-part-filename", useFieldNameInPartFilename);
         return this;
     }
 

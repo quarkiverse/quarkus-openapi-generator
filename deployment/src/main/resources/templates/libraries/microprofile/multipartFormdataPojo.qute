@@ -5,22 +5,34 @@
         {#if is-resteasy-reactive}
             {#if generate-part-filename}
                 {#if part-filename-value}
+                    {#if use-field-name-in-part-filename}
+        @org.jboss.resteasy.reactive.PartFilename("{p.baseName}{part-filename-value}")
+                    {#else}
         @org.jboss.resteasy.reactive.PartFilename("{part-filename-value}")
-                {#else if part-filename-value-suffix}
-        @org.jboss.resteasy.reactive.PartFilename("{p.baseName}{part-filename-value-suffix}")
+                    {/if}
                 {#else}
+                    {#if use-field-name-in-part-filename}
         @org.jboss.resteasy.reactive.PartFilename("{p.baseName}File")
+                    {#else}
+        @org.jboss.resteasy.reactive.PartFilename("file")
+                    {/if}
                 {/if}
             {/if}
         @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_OCTET_STREAM)
         {#else}
             {#if generate-part-filename}
                 {#if part-filename-value}
+                    {#if use-field-name-in-part-filename}
+        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}{part-filename-value}")
+                    {#else}
         @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{part-filename-value}")
-                {#else if part-filename-value-suffix}
-        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}{part-filename-value-suffix}")
+                    {/if}
                 {#else}
+                    {#if use-field-name-in-part-filename}
         @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}File")
+                    {#else}
+        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("file")
+                    {/if}
                 {/if}
             {/if}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_OCTET_STREAM)
