@@ -8,22 +8,14 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 
->
-*
-*⚠️
-** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest
-*
-*released
-** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md) if you are looking for instructions.
+> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md) if you are looking for instructions.
 
->
-*
-*⚠️
-** Version 2.x.x of this extension (`main` branch) supports Quarkus 3, and version 1.x.x (`quarkus2` branch) supports Quarkus 2.
+> **⚠️** Version 2.x.x of this extension (`main` branch) supports Quarkus 3, and version 1.x.x (`quarkus2` branch) supports Quarkus 2.
 
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
 
-This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the project: https://opencollective.com/openapi_generator/donate
+This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
+project: https://opencollective.com/openapi_generator/donate
 
 This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
 
@@ -31,10 +23,7 @@ This extension is for REST code generation for client side only. If you're looki
 
 Add the following dependency to your project's `pom.xml` file:
 
->
-*
-*⚠️
-** Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2.
+> **⚠️** Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2. 
 
 ```xml
 <dependency>
@@ -46,10 +35,7 @@ Add the following dependency to your project's `pom.xml` file:
 
 You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
 
->
-*
-*⚠️
-**
+> **⚠️**
 You probably already have this configuration if you created your application with [Code Quarkus](https://code.quarkus.io/). That said, double-check your configuration not to add another `plugin` entry.
 
 ```xml
@@ -72,7 +58,8 @@ You probably already have this configuration if you created your application wit
 
 Now, create the directory `openapi` under your `src/main/` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
 
-If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi-generator.codegen.input-base-dir`. IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property:
+If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi-generator.codegen.input-base-dir`.
+IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property: 
 
 ```properties
 quarkus.openapi-generator.codegen.input-base-dir=openapi-definitions
@@ -94,10 +81,7 @@ The same way you can add any additional annotations to the generated api files w
 quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Foo;@org.test.Bar
 ```
 
->
-*
-*⚠️
-** Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
+> **⚠️** Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the [Environment Variables Mapping Rules](https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules) from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
 
@@ -155,11 +139,7 @@ You can use the `quarkus-openapi-generator` with REST Client Classic or REST Cli
   <artifactId>quarkus-rest-client-jackson</artifactId>
 </dependency>
 ```
-
->
-*
-*⚠️
-** After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
+> **⚠️** After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
 
 ### RESTEasy Reactive
 
@@ -170,23 +150,22 @@ You can use the `quarkus-openapi-generator` with REST Client Classic or REST Cli
 </dependency>
 ```
 
-To make truly non-blocking calls, you need to also set the `mutiny` option to `true`. This will wrap all API return types in a `io.smallrye.mutiny.Uni`.
+To make truly non-blocking calls, you need to also set the `mutiny` option to `true`. This
+will wrap all API return types in a `io.smallrye.mutiny.Uni`.
 
 ```properties
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny=true
 ```
 
 When using RESTEasy Reactive:
-
-- The client must not declare multiple MIME-TYPES with `@Consumes`
-- You might need to implement a `ParamConverter` for each complex type
+  - The client must not declare multiple MIME-TYPES with `@Consumes`
+  - You might need to implement a `ParamConverter` for each complex type
 
 ## Returning `Response` objects
 
 By default, this extension generates the methods according to their returning models based on the [OpenAPI specification Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object). If no response model is defined, `jakarta.ws.rs.core.Response` is returned.
 
-If you want to return `jakarta.ws.rs.core.Response` in
-_all_ cases instead, you can set the `return-response` property to `true`.
+If you want to return `jakarta.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `true`.
 
 ### Example
 
@@ -201,20 +180,23 @@ quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=true
 Since the most part of this extension work is in the `generate-code` execution phase of the Quarkus Maven's plugin, the log configuration must be set in the Maven context. When building your project, add `-Dorg.slf4j.simpleLogger.log.org.openapitools=off` to the `mvn` command to reduce the internal generator noise. For example:
 
 ```shell
- mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
+mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
 ```
 
 For more information, see the [Maven Logging Configuration](https://maven.apache.org/maven-logging.html) guide.
 
 ## Filtering OpenAPI Specification Files
 
-By default, the extension will process every OpenAPI specification file in the given path. To limit code generation to only a specific set of OpenAPI specification files, you can set the `quarkus.openapi-generator.codegen.include` property. For instance, if you want to limit code generation for `include-openapi.yaml` and `include-openapi-2.yaml` files, you need to define the property like:
+By default, the extension will process every OpenAPI specification file in the given path.
+To limit code generation to only a specific set of OpenAPI specification files, you can set the `quarkus.openapi-generator.codegen.include` property. 
+For instance, if you want to limit code generation for `include-openapi.yaml` and `include-openapi-2.yaml` files, you need to define the property like:
 
 ```properties
 quarkus.openapi-generator.codegen.include=include-openapi.yaml,include-openapi-2.yaml
 ```
 
-If you prefer to specify which files you want to skip, you can set the `quarkus.openapi-generator.codegen.exclude` property. For instance, if you want to skip code generation for `exclude-openapi.yaml` and `exclude-openapi-2.yaml` files, you need to define the property like:
+If you prefer to specify which files you want to skip, you can set the `quarkus.openapi-generator.codegen.exclude` property.
+For instance, if you want to skip code generation for `exclude-openapi.yaml` and `exclude-openapi-2.yaml` files, you need to define the property like:
 
 ```properties
 quarkus.openapi-generator.codegen.exclude=exclude-openapi.yaml,exclude-openapi-2.yaml
@@ -222,16 +204,20 @@ quarkus.openapi-generator.codegen.exclude=exclude-openapi.yaml,exclude-openapi-2
 
 IMPORTANT: `exclude` supersedes `include`, meaning that if a file is in both property it will NOT be analysed.
 
-See the module [ignore](integration-tests/ignore) for an example of how to use this feature.
+See the module [ignore](integration-tests/ignore) for an example of how to use this feature. 
 
 ## Authentication Support
 
-If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator will [register `ClientRequestFilter`providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to implement the given authentication mechanism.
+If your OpenAPI specification file has `securitySchemes` [definitions](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), the inner generator
+will [register `ClientRequestFilter`providers](https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration) for you to
+implement the given authentication mechanism.
 
-To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth_property_name]`. Where:
+To provide the credentials for your application, you can use the [Quarkus configuration support](https://quarkus.io/guides/config). The configuration key is composed using this
+pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth_property_name]`. Where:
 
 - `filename` is the sanitized name of file containing the OpenAPI spec, for example `petstore_json`.
-- `security_scheme_name` is the sanitized name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we have `api_key` and `basic_auth` security schemes:
+- `security_scheme_name` is the sanitized name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
+  have `api_key` and `basic_auth` security schemes:
 
 ```json
 {
@@ -248,11 +234,7 @@ To provide the credentials for your application, you can use the [Quarkus config
   }
 }
 ```
-
->
-*
-*⚠️
-** Note that the securityScheme name used to configure the specific information for each spec is sanitized using the same rules as for the file names.
+> **⚠️** Note that the securityScheme name used to configure the specific information for each spec is sanitized using the same rules as for the file names.
 
 - `auth_property_name` varies depending on the authentication provider. For example, for Basic Authentication we have `username` and `password`. See the following sections for more details.
 
@@ -295,9 +277,11 @@ The API Key scheme has an additional property that requires where to add the API
 
 ### OAuth2 Authentication
 
-The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use the [Quarkus OIDC Extension](https://quarkus.io/guides/security-openid-connect-client) configuration to define your authentication flow.
+The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use
+the [Quarkus OIDC Extension](https://quarkus.io/guides/security-openid-connect-client) configuration to define your authentication flow.
 
-The generated code creates a named `OidcClient` for each [Security Scheme](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) listed in the OpenAPI specification files. For example, given the following excerpt:
+The generated code creates a named `OidcClient` for each [Security Scheme](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) listed in the OpenAPI specification files. For example, given
+the following excerpt:
 
 ```json
 {
@@ -333,10 +317,7 @@ quarkus.oidc-client.petstore_auth.client-id=petstore-app
 
 The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the `schemaName` is sanitized by applying the rules described above.
 
-For this to work you
-*
-*must
-** add [Quarkus OIDC Client Filter Extension](https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter) to your project:
+For this to work you **must** add [Quarkus OIDC Client Filter Extension](https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter) to your project:
 
 RESTEasy Classic:
 
@@ -355,19 +336,21 @@ RESTEasy Reactive:
   <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
 </dependency>
 ```
-
-If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api. The option can be set globally with `quarkus.openapi-generator.codegen.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
+If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
+The option can be set globally with `quarkus.openapi-generator.codegen.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
 Custom authentication provider can be used with `additional-api-type-annotations`
 
 See the module [generation-tests](integration-tests/generation-tests) for an example of how to use this feature.
 
 ## Authorization Token Propagation
 
-The authorization token propagation can be used with OpenApi operations secured with a security scheme of type "oauth2" or "bearer". When configured, you can propagate the authorization tokens passed to your service and the invocations to the REST clients generated by the quarkus-openapi-generator.
+The authorization token propagation can be used with OpenApi operations secured with a security scheme of type "oauth2" or "bearer".
+When configured, you can propagate the authorization tokens passed to your service and the invocations to the REST clients generated by the quarkus-openapi-generator.
 
 Let's see how it works by following a simple example:
 
-Imagine that we have a `updatePet` operation defined in the `petstore.json` specification file and secured with the `petstore_auth` security scheme. The code below shows a simple example of the usage of this operation in a user-programmed service.
+Imagine that we have a `updatePet` operation defined in the `petstore.json` specification file and secured with the `petstore_auth` security scheme.
+The code below shows a simple example of the usage of this operation in a user-programmed service.
 
 ```java
 import org.acme.api.PetApi;
@@ -424,25 +407,19 @@ public class PetResource {
 Let's see what happens when the PetResource service `customUpdatePet` operation is invoked by a third party.
 
 ### Default flow
-
 1) The `customUpdatePet` operation is invoked.
 2) An authorization token is obtained using the corresponding `petstore_auth` OidcClient configuration. (for more information see [OAuth2 Authentication](#oauth2-authentication))
 3) The authorization token is automatically passed along the PetApi `updatePet` operation execution using an automatically generated request filter, etc.
 
 ### Propagation flow
-
 However, there are scenarios where we want to propagate the authorization token that was initially passed to the PetResource service when the `customUpdatePet` operation was invoked instead of having to obtain it by using the `OidcClient`.
 
 1) The user service `customUpdatePet` operation is invoked, and an authorization token is passed by the third party typically by using the HTTP `Authorization` header.
 2) The incoming authorization token is automatically passed along the PetApi `updatePet` operation execution according to the user-provided configuration.
 
->
-*
-*⚠️
-** When configured, the token propagation applies to all the operations secured with the same `securityScheme` in the same specification file.
+> **⚠️** When configured, the token propagation applies to all the operations secured with the same `securityScheme` in the same specification file.
 
 ### Propagation flow configuration
-
 The token propagation can be used with type "oauth2" or "bearer" security schemes. Finally, considering that a given security scheme might be configured on a set of operations in the same specification file when configured, it'll apply to all these operations.
 
 | Property Key                                                       | Example                                                  |
@@ -556,7 +533,8 @@ public interface DefaultApi {
 }
 ````
 
-You can also override the default Circuit Breaker configuration by setting the properties in `application.properties` [just as you would for a traditional MicroProfile application](https://quarkus.io/guides/smallrye-fault-tolerance#runtime-configuration):
+You can also override the default Circuit Breaker configuration by setting the properties
+in `application.properties` [just as you would for a traditional MicroProfile application](https://quarkus.io/guides/smallrye-fault-tolerance#runtime-configuration):
 
 ````properties
 org.acme.openapi.simple.api.DefaultApi/byeGet/CircuitBreaker/failOn=java.lang.IllegalArgumentException,java.lang.NullPointerException
@@ -572,12 +550,10 @@ See the module [circuit-breaker](integration-tests/circuit-breaker) for an examp
 
 ## Sending multipart/form-data
 
-The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request bodies.
+The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request
+bodies.
 
->
-*
-*⚠️
-** Tip: RESTEasy Reactive supports multipart/form-data [out of the box](https://quarkus.io/guides/rest-client-reactive#multipart). Thus, no additional dependency is required.
+> **⚠️** Tip: RESTEasy Reactive supports multipart/form-data [out of the box](https://quarkus.io/guides/rest-client-reactive#multipart). Thus, no additional dependency is required.
 
 If you're using RESTEasy Classic, you need to add the following additional dependency to your `pom.xml`:
 
@@ -592,7 +568,8 @@ For any multipart/form-data operation a model for the request body will be gener
 
 - `jakarta.ws.rs.FormParam`, where the value parameter denotes the part name,
 - `PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
-- and, if the part contains a file, `PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the Content-Disposition header of the part.
+- and, if the part contains a file, `PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the
+  Content-Disposition header of the part.
 
 For example, the model for a request that requires a file, a string and some complex object will look like this:
 
@@ -644,16 +621,15 @@ public interface MultipartService {
 }
 ```
 
-See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
+See [Quarkus - Using the REST Client with Multipart](https://quarkus.io/guides/rest-client-multipart) and
+the [RESTEasy JAX-RS specifications](https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html) for more details.
 
->
-*
-*⚠️
-** `MultipartForm`  is deprecated when using RESTEasy Reactive.
+> **⚠️** `MultipartForm`  is deprecated when using RESTEasy Reactive.
 
 `baseURI` value of `RegisterRestClient` annotation is extracted from the `servers` section of the file, if present. If not, it will be left empty and it is expected you set up the uri to be used in your configuration.
 
-Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
+Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting
+the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
 
 ```properties
 quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model=false
@@ -713,24 +689,30 @@ The [OAS 3.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.
 - If the property is complex, or an array of complex values, the default Content-Type is `application/json`
 - If the property is a `type: string` with `format: binary` or `format: base64` (aka a file object), the default Content-Type is `application/octet-stream`
 
-A different content-type may be defined in your api spec, but this is not yet supported in the code generation. Also, this "annotation-oriented" approach of RestEasy (i.e. using `@MultipartForm` to denote the multipart body parameter) does not seem to properly support the unmarshalling of arrays of the same type (e.g. array of files), in these cases it uses Content-Type equal to `application/json`.
+A different content-type may be defined in your api spec, but this is not yet supported in the code generation. Also, this "annotation-oriented" approach of RestEasy (i.e. using `@MultipartForm` to
+denote the multipart body parameter) does not seem to properly support the unmarshalling of arrays of the same type (e.g. array of files), in these cases it uses Content-Type equal
+to `application/json`.
 
 ## Generating files via InputStream
 
-Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider`
-interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file saved locally in your project.
+Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement
+the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider`
+interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file
+saved locally in your project.
 
 See the example implementation [here](/integration-tests/generation-input/src/main/java/io/quarkiverse/openapi/generator/codegen/ClassPathPetstoreOpenApiSpecInputProvider.java)
 
 ## Skip Deprecated Attributes in Model classes
 
-The domain objects are classes generated in the `model` package. These classes might have [deprecated attributes](https://spec.openapis.org/oas/v3.1.0#fixed-fields-9) in the Open API specification file. By default, these attributes are generated. You can fine tune this behavior if the deprecated attributes should not be generated.
+The domain objects are classes generated in the `model` package. These classes might have [deprecated attributes](https://spec.openapis.org/oas/v3.1.0#fixed-fields-9) in the Open API specification
+file. By default, these attributes are generated. You can fine tune this behavior if the deprecated attributes should not be generated.
 
 Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to disable the deprecated attributes in the given model. For example `org.acme.weather.Country.generatedDeprecated=false`.
 
 ## Skip Deprecated Operations in API classes
 
-The client objects are classes generated in the `api` package. These classes might have [deprecated operations](https://spec.openapis.org/oas/v3.1.0#operation-object) in the Open API specification file. By default, these operations are generated. You can fine tune this behavior if the deprecated operations should not be generated.
+The client objects are classes generated in the `api` package. These classes might have [deprecated operations](https://spec.openapis.org/oas/v3.1.0#operation-object) in the Open API specification
+file. By default, these operations are generated. You can fine tune this behavior if the deprecated operations should not be generated.
 
 Use the property key `<base_package>.api.MyClass.generateDeprecated=false` to disable the deprecated operations in the given API. For example `org.acme.openapi.simple.api.DefaultApi.generatedDeprecated=false`.
 
@@ -777,16 +759,15 @@ It's possible to remap types in the generated files. For example, instead of a `
 | Type Mapping   | `quarkus.openapi-generator.codegen.spec.[filename].type-mappings.[oas_type]` | `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=InputStream` will use `InputStream` as type for all objects of the OAS File type.                       |
 | Import Mapping | `quarkus.openapi-generator.codegen.spec.[filename].import-mappings.[type]`   | `quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.File=java.io.InputStream` will replace the default `import java.io.File` with `import java.io.InputStream` |
 
-Note that these configuration properties are maps. For the type-mapping the keys are OAS data types and the values are Java types.
+Note that these configuration properties are maps. For the type-mapping the keys are OAS data types and the values are Java types. 
 
 Another common example is needing `java.time.Instant` as type for date-time fields in your POJO classes. You can achieve with these settings:
-
 ```properties
 quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.DateTime=Instant
 quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.Instant=java.time.Instant
 ```
 
-It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on [Type Mappings and Import Mappings](https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings).
+It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on [Type Mappings and Import Mappings](https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings). 
 
 See the module [type-mapping](integration-tests/type-mapping) for an example of how to use this feature.
 
@@ -796,10 +777,7 @@ You have the option to swap out the [templates used by this extension](deploymen
 
 You can find an example of using customized templates in [integration-tests/custom-templates](integration-tests/custom-templates).
 
-###
-*
-*⚠️
-** Important
+### **⚠️** Important
 
 While the option to replace templates exists, it's essential to exercise caution and consider this as a final resort. Prior to altering templates, exhaust all possibilities of achieving your goals through configuration settings. Modifying templates could have broader implications for the extension's functionality and may introduce complexities. Only resort to template replacement when configuration adjustments prove insufficient for your requirements.
 
