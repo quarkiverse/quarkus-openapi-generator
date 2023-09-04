@@ -192,7 +192,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .ifPresent(generator::withPartFilenameValueConfig);
 
         generator.withUseFieldNameInPartFilenameConfig(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.USE_FILED_NAME_IN_PART_FILENAME,
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.USE_FIELD_NAME_IN_PART_FILENAME,
                         Boolean.class)
                         .orElse(true));
 

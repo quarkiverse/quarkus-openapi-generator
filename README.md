@@ -649,7 +649,7 @@ By default, the `PartFilename`'s value representing the filename is prefixed by 
 quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.use-field-name-in-part-filename=false
 ```
 
-And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/support specific extensions), the value can be set by using the `part-filename-value` property (gloablly or corresponding to your spec) in the `application.properties`, e.g.:
+And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/supports specific extensions), the value can be set by using the `part-filename-value` property (globally or corresponding to your spec) in the `application.properties`, e.g.:
 
 ```properties
 quarkus.openapi-generator.codegen.spec.my_first_multipart_requests_yml.part-filename-value=".pdf"
