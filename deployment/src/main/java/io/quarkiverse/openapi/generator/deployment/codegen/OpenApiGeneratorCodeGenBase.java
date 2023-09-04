@@ -252,7 +252,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             Class<K> kClass, Class<V> vClass) {
 
         Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
-        boolean userConfiguredConfigKey = possibleConfigKey.isPresent() && !possibleConfigKey.get().isEmpty();
+        boolean userConfiguredConfigKey = possibleConfigKey.isPresent() && !possibleConfigKey.get().isBlank();
 
         if (userConfiguredConfigKey) {
             return getValuesByConfigKey(config, configName, kClass, vClass, possibleConfigKey.get());
@@ -292,12 +292,6 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private static Optional<String> getConfigKeyValue(Config config, Path openApiFilePath) {
-        String configKey = String.format("quarkus.openapi-generator.codegen.spec.%s.%s", getSanitizedFileName(openApiFilePath),
-                CONFIG_KEY_PROPERTY);
-        return config.getOptionalValue(configKey, String.class);
-    }
-
-    private static Optional<String> getConfigKeyValue(SmallRyeConfig config, Path openApiFilePath) {
         String configKey = String.format("quarkus.openapi-generator.codegen.spec.%s.%s", getSanitizedFileName(openApiFilePath),
                 CONFIG_KEY_PROPERTY);
         return config.getOptionalValue(configKey, String.class);
