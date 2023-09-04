@@ -205,7 +205,7 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     public void withConfigKey(final String config) {
-        if (config != null && !config.isEmpty()) {
+        if (config != null && !config.isBlank()) {
             this.configurator.addAdditionalProperty("configKey", StringUtil.replaceNonAlphanumericByUnderscores(config));
         }
     }

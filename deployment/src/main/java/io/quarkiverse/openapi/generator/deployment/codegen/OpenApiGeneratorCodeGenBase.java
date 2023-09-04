@@ -294,6 +294,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private static Optional<String> getConfigKeyValue(Config config, Path openApiFilePath) {
         String configKey = String.format("quarkus.openapi-generator.codegen.spec.%s.%s", getSanitizedFileName(openApiFilePath),
                 CONFIG_KEY_PROPERTY);
-        return config.getOptionalValue(configKey, String.class);
+        Optional<String> value = config.getOptionalValue(configKey, String.class);
+        if (value.isPresent()) {
+            return value.get().isBlank() ? Optional.empty() : value;
+        } else {
+            return Optional.empty();
+        }
     }
 }
