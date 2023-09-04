@@ -28,6 +28,7 @@
     <module>simple</module>
     <module>skip-validation</module>
     <module>type-mapping</module>
+    <module>config-key</module>
   </modules>
   <dependencyManagement>
     <dependencies>
