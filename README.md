@@ -183,7 +183,7 @@ quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=true
 Since the most part of this extension work is in the `generate-code` execution phase of the Quarkus Maven's plugin, the log configuration must be set in the Maven context. When building your project, add `-Dorg.slf4j.simpleLogger.log.org.openapitools=off` to the `mvn` command to reduce the internal generator noise. For example:
 
 ```shell
- mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
+mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
 ```
 
 For more information, see the [Maven Logging Configuration](https://maven.apache.org/maven-logging.html) guide.
@@ -430,8 +430,6 @@ The token propagation can be used with type "oauth2" or "bearer" security scheme
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].token-propagation=[true,false]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true`<br/>Enables the token propagation for all the operations that are secured with the `petstore_auth` scheme in the `petstore_json` file.
 | `quarkus.openapi-generator.[filename].auth.[security_scheme_name].header-name=[http_header_name]` | `quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyHeaderName`<br/>Says that the authorization token to propagate will be read from the HTTP header `MyHeaderName` instead of the standard HTTP `Authorization` header.
 
-
-
 ## Circuit Breaker
 
 You can define the [CircuitBreaker annotation from MicroProfile Fault Tolerance](https://microprofile.io/project/eclipse/microprofile-fault-tolerance/spec/src/main/asciidoc/circuitbreaker.asciidoc)
@@ -583,7 +581,7 @@ public class MultipartBody {
 
     @FormParam("file")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
-    @PartFilename("defaultFileName")
+    @PartFilename("fileFile")
     public File file;
 
     @FormParam("fileName")
@@ -641,6 +639,50 @@ quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model
 ```
 
 See the module [multipart-request](integration-tests/multipart-request) for an example of how to use this feature.
+
+In case the default `PartFilename` annotation is not required, its generation can be disabled by setting the `generate-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.generate-part-filename=false
+```
+
+By default, the `PartFilename`'s value representing the filename is prefixed by the field name. This can be changed by setting the `use-field-name-in-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.use-field-name-in-part-filename=false
+```
+
+And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/supports specific extensions), the value can be set by using the `part-filename-value` property (globally or corresponding to your spec) in the `application.properties`, e.g.:
+
+```properties
+quarkus.openapi-generator.codegen.spec.my_first_multipart_requests_yml.part-filename-value=".pdf"
+```
+
+So for instance, by setting `part-filename-value` to `some.pdf` and `use-field-name-in-part-filename` to `false` the generated code will look like this:
+
+```java
+public class MultipartBody {
+
+  @FormParam("file")
+  @PartType(MediaType.APPLICATION_OCTET_STREAM)
+  @PartFilename("some.pdf")
+  public File file;
+}
+```
+
+And by setting only `part-filename-value` to `.pdf`, the generated code will look like this:
+
+```java
+public class MultipartBody {
+
+  @FormParam("file")
+  @PartType(MediaType.APPLICATION_OCTET_STREAM)
+  @PartFilename("file.pdf")
+  public File file;
+}
+```
+
+See the module [part-filename](integration-tests/part-filename) for examples of how to use these features.
 
 ### Default content-types according to OpenAPI Specification and limitations
 
