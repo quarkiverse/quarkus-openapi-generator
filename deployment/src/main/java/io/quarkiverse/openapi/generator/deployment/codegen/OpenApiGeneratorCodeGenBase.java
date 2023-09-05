@@ -187,6 +187,18 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 getValues(config, openApiFilePath, CodegenConfig.ConfigName.ENABLE_SECURITY_GENERATION, Boolean.class)
                         .orElse(true));
 
+        generator.withGeneratePartFilenameConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.GENERATE_PART_FILENAME, Boolean.class)
+                        .orElse(true));
+
+        getValues(config, openApiFilePath, CodegenConfig.ConfigName.PART_FILENAME_VALUE, String.class)
+                .ifPresent(generator::withPartFilenameValueConfig);
+
+        generator.withUseFieldNameInPartFilenameConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.USE_FIELD_NAME_IN_PART_FILENAME,
+                        Boolean.class)
+                        .orElse(true));
+
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.TYPE_MAPPINGS, String.class, String.class)
