@@ -277,10 +277,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private static <T> Optional<T> getValuesByConfigKey(Config config, String configName, Class<T> propertyType,
-            CodegenConfig.ConfigName configName1) {
+            CodegenConfig.ConfigName codegenConfigName) {
         return config
                 .getOptionalValue(configName, propertyType)
-                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(configName1), propertyType));
+                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(codegenConfigName), propertyType));
     }
 
     private static <K, V> Optional<Map<K, V>> getValuesByConfigKey(SmallRyeConfig config, CodegenConfig.ConfigName configName,
