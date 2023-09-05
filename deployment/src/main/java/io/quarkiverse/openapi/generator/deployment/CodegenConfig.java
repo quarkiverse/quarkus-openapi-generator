@@ -48,7 +48,10 @@ public class CodegenConfig extends GlobalCodegenConfig {
         IMPORT_MAPPINGS("import-mappings"),
         NORMALIZER("open-api-normalizer"),
         RETURN_RESPONSE("return-response"),
-        ENABLE_SECURITY_GENERATION("enable-security-generation");
+        ENABLE_SECURITY_GENERATION("enable-security-generation"),
+        GENERATE_PART_FILENAME("generate-part-filename"),
+        PART_FILENAME_VALUE("part-filename-value"),
+        USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename");
 
         private final String name;
 
