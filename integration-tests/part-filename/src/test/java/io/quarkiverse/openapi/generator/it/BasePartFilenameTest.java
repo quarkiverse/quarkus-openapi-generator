@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.lang.reflect.Field;
 
-import jakarta.ws.rs.FormParam;
+import javax.ws.rs.FormParam;
 
 import org.acme.openapi.api.DoNotGeneratePartFilenameApi;
 import org.acme.openapi.api.DoNotUseFieldNameInPartFilenameApi;

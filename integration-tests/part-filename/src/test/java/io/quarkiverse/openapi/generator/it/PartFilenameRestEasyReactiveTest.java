@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.lang.reflect.Field;
 
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.reactive.PartFilename;
 import org.jboss.resteasy.reactive.PartType;
