@@ -49,7 +49,10 @@ public class CodegenConfig extends GlobalCodegenConfig {
         NORMALIZER("open-api-normalizer"),
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation"),
-        CONFIG_KEY("config-key");
+        CONFIG_KEY("config-key"),
+        GENERATE_PART_FILENAME("generate-part-filename"),
+        PART_FILENAME_VALUE("part-filename-value"),
+        USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename");
 
         private final String name;
 
