@@ -236,29 +236,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private <T> Optional<T> getValues(final Config config, final Path openApiFilePath, CodegenConfig.ConfigName configName,
             Class<T> propertyType) {
 
-        Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
-        boolean userConfiguredConfigKeyProperty = possibleConfigKey.isPresent() && !possibleConfigKey.get().isBlank();
-
-        if (userConfiguredConfigKeyProperty) {
-            return getValuesByConfigKey(config, CodegenConfig.getSpecConfigNameByConfigKey(possibleConfigKey.get(), configName),
-                    propertyType, configName);
-        }
-
-        return getValuesBySpecConfigName(config, openApiFilePath, configName, propertyType);
+        return getConfigKeyValues(config, openApiFilePath, configName, propertyType)
+                .or(() -> getValuesBySpecConfigName(config, openApiFilePath, configName, propertyType));
     }
 
     private <K, V> Optional<Map<K, V>> getValues(final SmallRyeConfig config, final Path openApiFilePath,
             CodegenConfig.ConfigName configName,
             Class<K> kClass, Class<V> vClass) {
 
-        Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
-        boolean userConfiguredConfigKey = possibleConfigKey.isPresent() && !possibleConfigKey.get().isBlank();
-
-        if (userConfiguredConfigKey) {
-            return getValuesByConfigKey(config, configName, kClass, vClass, possibleConfigKey.get());
-        }
-
-        return getValuesBySpecConfigName(config, openApiFilePath, configName, kClass, vClass);
+        return getConfigKeyValues(config, openApiFilePath, configName, kClass, vClass)
+                .or(() -> getValuesBySpecConfigName(config, openApiFilePath, configName, kClass, vClass));
     }
 
     private static <T> Optional<T> getValuesBySpecConfigName(Config config, Path openApiFilePath,
@@ -300,5 +287,30 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         } else {
             return Optional.empty();
         }
+    }
+
+    private <T> Optional<T> getConfigKeyValues(final Config config, final Path openApiFilePath,
+            CodegenConfig.ConfigName configName,
+            Class<T> propertyType) {
+
+        Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
+        if (possibleConfigKey.isPresent()) {
+            return getValuesByConfigKey(config, CodegenConfig.getSpecConfigNameByConfigKey(possibleConfigKey.get(), configName),
+                    propertyType, configName);
+        }
+
+        return Optional.empty();
+    }
+
+    private <K, V> Optional<Map<K, V>> getConfigKeyValues(final SmallRyeConfig config, final Path openApiFilePath,
+            CodegenConfig.ConfigName configName,
+            Class<K> kClass, Class<V> vClass) {
+
+        Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
+        if (possibleConfigKey.isPresent()) {
+            return getValuesByConfigKey(config, configName, kClass, vClass, possibleConfigKey.get());
+        }
+
+        return Optional.empty();
     }
 }
