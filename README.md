@@ -773,6 +773,52 @@ It's also possible to only use a type mapping with a fully qualified name, for i
 
 See the module [type-mapping](integration-tests/type-mapping) for an example of how to use this feature.
 
+## Config key
+
+By default, the `@RegisterRestClient` `configKey` property is the sanitized name of the file containing the OpenAPI spec. For example, if the file name is `petstore.json`, the `configKey` will be `petstore_json`:
+
+```java
+/* omitted */
+@RegisterRestClient(configKey="petstore_json")
+public interface DefaultApi { /* omitted */ }
+}
+```
+
+If you want to use a different configKey than the default one, you can set the `quarkus.openapi-generator.codegen.spec.petstore_json.[config-key]` property.
+
+Using the `config-key` the extension allow you to define all allowed properties with `quarkus.openapi-generator.codegen.spec.[my_custom_config_key].*` prefix. For example:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.config-key=petstore
+quarkus.openapi-generator.codegen.spec.petstore.additional-api-type-annotations=@org.test.Foo
+```
+
+With it, you will have the following result:
+
+```java
+/* omitted */
+@RegisterRestClient(configKey="petstore")
+@org.test.Foo
+public interface DefaultApi { /* omitted */ }
+```
+
+> **️⚠️ NOTE:** If you configure the property config-key, it will override the sanitized file name (will not consider the order of the configurations). For example, having the following configuration:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.config-key=custom_config_key
+quarkus.openapi-generator.codegen.spec.custom_config_key.additional-api-type-annotations=@org.test.Foo
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Bar
+```
+
+The generated code will be:
+
+```java
+/* omitted */
+@RegisterRestClient(configKey="custom_config_key")
+@org.test.Foo
+public interface DefaultApi { /* omitted */ }
+```
+
 ## Template Customization
 
 You have the option to swap out the [templates used by this extension](deployment/src/main/resources/templates/libraries/microprofile) with your customized versions. To achieve this, place your custom templates under the `resources/templates` directory. It's crucial that the filename of each custom template matches that of the original template.
