@@ -793,7 +793,7 @@ quarkus.openapi-generator.codegen.spec.petstore_json.config-key=petstore
 quarkus.openapi-generator.codegen.spec.petstore.additional-api-type-annotations=@org.test.Foo
 ```
 
-With it you will have the following result:
+With it, you will have the following result:
 
 ```java
 /* omitted */
