@@ -775,7 +775,7 @@ See the module [type-mapping](integration-tests/type-mapping) for an example of 
 
 ## Config key
 
-By default the `@RegisterRestClient` `configKey` property is the sanitized name of the file containing the OpenAPI spec. For example, if the file name is `petstore.json`, the `configKey` will be `petstore_json`:
+By default, the `@RegisterRestClient` `configKey` property is the sanitized name of the file containing the OpenAPI spec. For example, if the file name is `petstore.json`, the `configKey` will be `petstore_json`:
 
 ```java
 /* omitted */
