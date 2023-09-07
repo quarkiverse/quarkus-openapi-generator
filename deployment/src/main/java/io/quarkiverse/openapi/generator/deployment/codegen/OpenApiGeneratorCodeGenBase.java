@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -294,7 +295,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         String configKey = String.format("quarkus.openapi-generator.codegen.spec.%s.%s", getSanitizedFileName(openApiFilePath),
                 CONFIG_KEY_PROPERTY);
         return config.getOptionalValue(configKey, String.class)
-                        .filter(Predicate.not(String::isBlank));
+                .filter(Predicate.not(String::isBlank));
     }
 
     private <T> Optional<T> getConfigKeyValues(final Config config, final Path openApiFilePath,
