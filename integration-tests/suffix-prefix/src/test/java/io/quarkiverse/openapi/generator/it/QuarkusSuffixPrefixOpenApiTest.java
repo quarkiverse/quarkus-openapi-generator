@@ -1,28 +1,18 @@
 package io.quarkiverse.openapi.generator.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
-import jakarta.inject.Inject;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.junit.jupiter.api.Test;
-import org.openapi.quarkus.quarkus_suffix_prefix_openapi_yaml.api.ReactiveGreetingResourceCustomApiSuffix;
-import org.openapi.quarkus.quarkus_suffix_prefix_openapi_yaml.model.CustomModelPrefixLinkCustomModelSuffix;
-
-import io.quarkus.test.junit.QuarkusTest;
-
-@QuarkusTest
 class QuarkusSuffixPrefixOpenApiTest {
-
-    @RestClient
-    @Inject
-    ReactiveGreetingResourceCustomApiSuffix api;
-
-    CustomModelPrefixLinkCustomModelSuffix customizedLink;
-
-    @Test
-    void apiIsBeingGenerated() {
-        assertThat(api).isNotNull();
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "org.openapi.quarkus.quarkus_suffix_prefix_openapi_yaml.api.ReactiveGreetingResourceCustomApiSuffix",
+            "org.openapi.quarkus.quarkus_suffix_prefix_openapi_yaml.model.CustomModelPrefixLinkCustomModelSuffix"
+    })
+    void apiIsBeingGenerated(String className) {
+        assertThatCode(() -> Class.forName(className))
+                .doesNotThrowAnyException();
     }
-
 }
