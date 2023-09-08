@@ -30,6 +30,7 @@
     <module>skip-validation</module>
     <module>type-mapping</module>
     <module>config-key</module>
+    <module>github</module>
   </modules>
   <dependencyManagement>
     <dependencies>

@@ -49,7 +49,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
      **/
     {/if}
     {#if v.isContainer}
-    private {v.datatypeWithEnum} {v.name}{#if v.required} = {v.defaultValue}{#else} = null{/if};
+    private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{/if};
     {#else}
     private {v.datatypeWithEnum} {v.name}{#if v.defaultValue} = {v.defaultValue}{/if};
     {/if}
