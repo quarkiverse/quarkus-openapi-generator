@@ -45,6 +45,17 @@ import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigPar
 public class OpenApiClientGeneratorWrapperTest {
 
     @Test
+    void verifySuffixPrefix() throws URISyntaxException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("petstore-openapi.json");
+        generatorWrapper.withApiNameSuffix("CustomAPISuffix");
+        generatorWrapper.withModelNameSuffix("CustomModelSuffix");
+        generatorWrapper.withModelNamePrefix("CustomModelPrefix");
+        final List<File> generatedFiles = generatorWrapper.generate("org.petstore.suffixprefix");
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+    }
+
+    @Test
     void verifyCommonGenerated() throws URISyntaxException {
         final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate("org.petstore");
         assertNotNull(generatedFiles);

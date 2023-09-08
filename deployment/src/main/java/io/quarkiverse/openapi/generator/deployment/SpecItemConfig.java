@@ -20,4 +20,22 @@ public class SpecItemConfig extends CommonItemConfig {
      */
     @ConfigItem(name = "base-package")
     public Optional<String> basePackage;
+
+    /**
+     * Suffix name for generated api classes
+     */
+    @ConfigItem(name = "api-name-suffix")
+    public Optional<String> apiNameSuffix;
+
+    /**
+     * Suffix name for generated model classes
+     */
+    @ConfigItem(name = "model-name-suffix")
+    public Optional<String> modelNameSuffix;
+
+    /**
+     * Prefix name for generated model classes
+     */
+    @ConfigItem(name = "model-name-prefix")
+    public Optional<String> modelNamePrefix;
 }
