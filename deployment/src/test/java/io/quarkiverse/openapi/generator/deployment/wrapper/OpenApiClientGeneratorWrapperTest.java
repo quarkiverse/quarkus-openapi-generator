@@ -516,7 +516,7 @@ public class OpenApiClientGeneratorWrapperTest {
     @Test
     void verifyAPINormalization() throws Exception {
         final List<File> generatedFiles = this.createGeneratorWrapper("open-api-normalizer.json")
-                .withOpenApiNormalizer(Map.of("REF_AS_PARENT_IN_ALLOF", "true"))
+                .withOpenApiNormalizer(Map.of("REF_AS_PARENT_IN_ALLOF", "true", "REFACTOR_ALLOF_WITH_PROPERTIES_ONLY", "true"))
                 .generate("org.acme.openapi.animals");
 
         assertNotNull(generatedFiles);

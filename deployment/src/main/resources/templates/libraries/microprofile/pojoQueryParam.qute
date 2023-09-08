@@ -38,7 +38,7 @@
         @javax.ws.rs.QueryParam("{v.name}")
         {/if}
         {#if v.isContainer}
-        private {v.datatypeWithEnum} {v.name}{#if v.required} = {v.defaultValue}{#else} = null{/if};
+        private {v.datatypeWithEnum} {v.name}{#if v.required&&v.defaultValue} = {v.defaultValue}{#else} = null{/if};
         {#else}
         private {v.datatypeWithEnum} {v.name}{#if v.defaultValue} = {v.defaultValue}{/if};
         {/if}
