@@ -781,7 +781,6 @@ By default, the `@RegisterRestClient` `configKey` property is the sanitized name
 /* omitted */
 @RegisterRestClient(configKey="petstore_json")
 public interface DefaultApi { /* omitted */ }
-}
 ```
 
 If you want to use a different configKey than the default one, you can set the `quarkus.openapi-generator.codegen.spec.petstore_json.[config-key]` property.
