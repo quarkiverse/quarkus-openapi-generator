@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -48,6 +49,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     static final String JSON = ".json";
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
+    private static final String CONFIG_KEY_PROPERTY = "config-key";
 
     /**
      * The input base directory from
@@ -180,6 +182,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);
 
+        getConfigKeyValue(config, openApiFilePath)
+                .ifPresentOrElse(generator::withConfigKey,
+                        () -> generator.withConfigKey(getSanitizedFileName(openApiFilePath)));
+
         generator.withReturnResponse(
                 getValues(config, openApiFilePath, CodegenConfig.ConfigName.RETURN_RESPONSE, Boolean.class).orElse(false));
 
@@ -245,16 +251,78 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private <T> Optional<T> getValues(final Config config, final Path openApiFilePath, CodegenConfig.ConfigName configName,
             Class<T> propertyType) {
-        return config
-                .getOptionalValue(CodegenConfig.getSpecConfigName(configName, openApiFilePath), propertyType)
-                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(configName), propertyType));
+
+        return getConfigKeyValues(config, openApiFilePath, configName, propertyType)
+                .or(() -> getValuesBySpecConfigName(config, openApiFilePath, configName, propertyType));
     }
 
     private <K, V> Optional<Map<K, V>> getValues(final SmallRyeConfig config, final Path openApiFilePath,
             CodegenConfig.ConfigName configName,
             Class<K> kClass, Class<V> vClass) {
+
+        return getConfigKeyValues(config, openApiFilePath, configName, kClass, vClass)
+                .or(() -> getValuesBySpecConfigName(config, openApiFilePath, configName, kClass, vClass));
+    }
+
+    private static <T> Optional<T> getValuesBySpecConfigName(Config config, Path openApiFilePath,
+            CodegenConfig.ConfigName configName,
+            Class<T> propertyType) {
+        return config
+                .getOptionalValue(CodegenConfig.getSpecConfigName(configName, openApiFilePath), propertyType)
+                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(configName), propertyType));
+    }
+
+    private static <K, V> Optional<Map<K, V>> getValuesBySpecConfigName(SmallRyeConfig config, Path openApiFilePath,
+            CodegenConfig.ConfigName configName, Class<K> kClass, Class<V> vClass) {
         return config
                 .getOptionalValues(CodegenConfig.getSpecConfigName(configName, openApiFilePath), kClass, vClass)
                 .or(() -> config.getOptionalValues(CodegenConfig.getGlobalConfigName(configName), kClass, vClass));
+    }
+
+    private static <T> Optional<T> getValuesByConfigKey(Config config, String configName, Class<T> propertyType,
+            CodegenConfig.ConfigName codegenConfigName) {
+        return config
+                .getOptionalValue(configName, propertyType)
+                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(codegenConfigName), propertyType));
+    }
+
+    private static <K, V> Optional<Map<K, V>> getValuesByConfigKey(SmallRyeConfig config, CodegenConfig.ConfigName configName,
+            Class<K> kClass, Class<V> vClass, String configKey) {
+        return config
+                .getOptionalValues(CodegenConfig.getSpecConfigNameByConfigKey(configKey, configName), kClass,
+                        vClass)
+                .or(() -> config.getOptionalValues(CodegenConfig.getGlobalConfigName(configName), kClass, vClass));
+    }
+
+    private static Optional<String> getConfigKeyValue(Config config, Path openApiFilePath) {
+        String configKey = String.format("quarkus.openapi-generator.codegen.spec.%s.%s", getSanitizedFileName(openApiFilePath),
+                CONFIG_KEY_PROPERTY);
+        return config.getOptionalValue(configKey, String.class)
+                .filter(Predicate.not(String::isBlank));
+    }
+
+    private <T> Optional<T> getConfigKeyValues(final Config config, final Path openApiFilePath,
+            CodegenConfig.ConfigName configName,
+            Class<T> propertyType) {
+
+        Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
+        if (possibleConfigKey.isPresent()) {
+            return getValuesByConfigKey(config, CodegenConfig.getSpecConfigNameByConfigKey(possibleConfigKey.get(), configName),
+                    propertyType, configName);
+        }
+
+        return Optional.empty();
+    }
+
+    private <K, V> Optional<Map<K, V>> getConfigKeyValues(final SmallRyeConfig config, final Path openApiFilePath,
+            CodegenConfig.ConfigName configName,
+            Class<K> kClass, Class<V> vClass) {
+
+        Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
+        if (possibleConfigKey.isPresent()) {
+            return getValuesByConfigKey(config, configName, kClass, vClass, possibleConfigKey.get());
+        }
+
+        return Optional.empty();
     }
 }
