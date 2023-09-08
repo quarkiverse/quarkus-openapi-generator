@@ -77,7 +77,7 @@ If a base package name is not provided, it will be used the default `org.openapi
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in [OpenApi Generator Doc](https://openapi-generator.tech/docs/generators/java/#config-options)).
 
-You can customize the name of generated classes. To do that, you must define the properties you need
+You can customize the name of generated classes. To do that, you must define the following properties:
 
 ```properties
 quarkus.openapi-generator.codegen.spec.petstore_json.api-name-suffix=CustomApiSuffix
