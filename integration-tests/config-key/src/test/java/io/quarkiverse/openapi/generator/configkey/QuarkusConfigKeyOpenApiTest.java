@@ -2,7 +2,7 @@ package io.quarkiverse.openapi.generator.configkey;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
