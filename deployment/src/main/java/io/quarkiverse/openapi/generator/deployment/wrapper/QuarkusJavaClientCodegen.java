@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.openapitools.codegen.SupportingFile;
@@ -117,5 +118,17 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (verbose) {
             super.postProcess();
         }
+    }
+
+    @Override
+    protected String getSymbolName(String input) {
+        for (Entry<String, String> entry : specialCharReplacements.entrySet()) {
+            if (input.startsWith(entry.getKey())) {
+                return input.length() > entry.getKey().length()
+                        ? entry.getValue() + "_" + input.substring(entry.getKey().length())
+                        : entry.getValue() + "_symbol";
+            }
+        }
+        return null;
     }
 }
