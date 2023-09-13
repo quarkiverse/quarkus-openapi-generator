@@ -196,6 +196,21 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withApiNameSuffix(final String apiNameSuffix) {
+        this.configurator.setApiNameSuffix(apiNameSuffix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withModelNameSuffix(final String modelNameSuffix) {
+        this.configurator.setModelNameSuffix(modelNameSuffix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withModelNamePrefix(final String modelNamePrefix) {
+        this.configurator.setModelNamePrefix(modelNamePrefix);
+        return this;
+    }
+
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();

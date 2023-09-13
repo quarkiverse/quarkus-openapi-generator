@@ -3,11 +3,14 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
 import java.io.IOException;
@@ -170,6 +173,15 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(
                         config));
 
+        getApiNameSuffix(config, openApiFilePath)
+                .ifPresent(generator::withApiNameSuffix);
+
+        getModelNameSuffix(config, openApiFilePath)
+                .ifPresent(generator::withModelNameSuffix);
+
+        getModelNamePrefix(config, openApiFilePath)
+                .ifPresent(generator::withModelNamePrefix);
+
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY, Boolean.class)
                 .ifPresent(generator::withMutiny);
 
@@ -240,6 +252,20 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return config
                 .getOptionalValue(getSpecConfigName(BASE_PACKAGE, openApiFilePath), String.class)
                 .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
+    }
+
+    private Optional<String> getApiNameSuffix(final Config config, final Path openApiFilePath) {
+        return config.getOptionalValue(getSpecConfigName(API_NAME_SUFFIX, openApiFilePath), String.class);
+    }
+
+    private Optional<String> getModelNameSuffix(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(MODEL_NAME_SUFFIX, openApiFilePath), String.class);
+    }
+
+    private Optional<String> getModelNamePrefix(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(MODEL_NAME_PREFIX, openApiFilePath), String.class);
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
