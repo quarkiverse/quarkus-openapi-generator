@@ -38,6 +38,9 @@ public class CodegenConfig extends GlobalCodegenConfig {
 
         //spec configs only
         BASE_PACKAGE("base-package"),
+        API_NAME_SUFFIX("api-name-suffix"),
+        MODEL_NAME_SUFFIX("model-name-suffix"),
+        MODEL_NAME_PREFIX("model-name-prefix"),
 
         //global & spec configs
         SKIP_FORM_MODEL("skip-form-model"),

@@ -78,6 +78,18 @@ If a base package name is not provided, it will be used the default `org.openapi
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in [OpenApi Generator Doc](https://openapi-generator.tech/docs/generators/java/#config-options)).
 
+You can customize the name of generated classes. To do that, you must define the following properties:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.api-name-suffix=CustomApiSuffix
+```
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.model-name-suffix=CustomModelSuffix
+```
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.model-name-prefix=CustomModelPrefix
+```
+
 The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`. Given you want to include Foo and Bar annotations, you must define additional-api-type-annotations as:
 
 ```properties
