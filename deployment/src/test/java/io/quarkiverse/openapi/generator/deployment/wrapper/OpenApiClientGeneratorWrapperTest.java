@@ -57,14 +57,14 @@ public class OpenApiClientGeneratorWrapperTest {
         final List<File> generatedFiles = generatorWrapper.generate("org.petstore.suffixprefix");
         assertNotNull(generatedFiles);
         assertFalse(generatedFiles.isEmpty());
-        for(File f : generatedFiles){
+        for (File f : generatedFiles) {
             String name = f.getName();
             String path = f.getPath();
-            if(path.contains("/api/")){
-                assertTrue(name.endsWith(String.format("%s.java",CUSTOM_API_SUFFIX)));
-            }else if(path.contains("/model/")){
+            if (path.contains("/api/")) {
+                assertTrue(name.endsWith(String.format("%s.java", CUSTOM_API_SUFFIX)));
+            } else if (path.contains("/model/")) {
                 assertTrue(name.startsWith(CUSTOM_MODEL_PREFIX));
-                assertTrue(name.endsWith(String.format("%s.java",CUSTOM_MODEL_SUFFIX)));
+                assertTrue(name.endsWith(String.format("%s.java", CUSTOM_MODEL_SUFFIX)));
             }
         }
     }
