@@ -38,6 +38,9 @@ public class CodegenConfig extends GlobalCodegenConfig {
 
         //spec configs only
         BASE_PACKAGE("base-package"),
+        API_NAME_SUFFIX("api-name-suffix"),
+        MODEL_NAME_SUFFIX("model-name-suffix"),
+        MODEL_NAME_PREFIX("model-name-prefix"),
 
         //global & spec configs
         SKIP_FORM_MODEL("skip-form-model"),
@@ -49,9 +52,10 @@ public class CodegenConfig extends GlobalCodegenConfig {
         NORMALIZER("open-api-normalizer"),
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation"),
+        CONFIG_KEY("config-key"),
         GENERATE_PART_FILENAME("generate-part-filename"),
         PART_FILENAME_VALUE("part-filename-value"),
-        USE_FILED_NAME_IN_PART_FILENAME("use-field-name-in-part-filename");
+        USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename");
 
         private final String name;
 
@@ -87,6 +91,17 @@ public class CodegenConfig extends GlobalCodegenConfig {
      */
     public static String getSpecConfigName(ConfigName configName, final Path openApiFilePath) {
         return String.format("%s.%s", getBuildTimeSpecPropertyPrefix(openApiFilePath), configName.name);
+    }
+
+    /**
+     * Return spec config name by config-key (<b>openapi-generator.codegen.spec.%s.config-key</b>) property.
+     * For example, given a configuration <code>quarkus.openapi.generator.codegen.spec.spec_yaml.config-key=petstore</code>, the
+     * returned value is
+     * <code>openapi.generator.codegen.spec.petstore.mutiny</code>.
+     */
+    public static String getSpecConfigNameByConfigKey(final String configKey, final ConfigName configName) {
+        String buildTimeSpecPropertyPrefix = String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, configKey);
+        return String.format("%s.%s", buildTimeSpecPropertyPrefix, configName.name);
     }
 
     /**

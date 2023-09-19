@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
@@ -18,6 +18,8 @@ This extension is based on the [OpenAPI Generator Tool](https://openapi-generato
 project: https://opencollective.com/openapi_generator/donate
 
 This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
+
+**Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read [this page](CONTRIBUTING.md).
 
 ## Getting Started
 
@@ -74,6 +76,18 @@ quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annot
 If a base package name is not provided, it will be used the default `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in [OpenApi Generator Doc](https://openapi-generator.tech/docs/generators/java/#config-options)).
+
+You can customize the name of generated classes. To do that, you must define the following properties:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.api-name-suffix=CustomApiSuffix
+```
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.model-name-suffix=CustomModelSuffix
+```
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.model-name-prefix=CustomModelPrefix
+```
 
 The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`. Given you want to include Foo and Bar annotations, you must define additional-api-type-annotations as:
 
@@ -649,7 +663,7 @@ By default, the `PartFilename`'s value representing the filename is prefixed by 
 quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.use-field-name-in-part-filename=false
 ```
 
-And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/support specific extensions), the value can be set by using the `part-filename-value` property (gloablly or corresponding to your spec) in the `application.properties`, e.g.:
+And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/supports specific extensions), the value can be set by using the `part-filename-value` property (globally or corresponding to your spec) in the `application.properties`, e.g.:
 
 ```properties
 quarkus.openapi-generator.codegen.spec.my_first_multipart_requests_yml.part-filename-value=".pdf"
@@ -771,6 +785,51 @@ It's also possible to only use a type mapping with a fully qualified name, for i
 
 See the module [type-mapping](integration-tests/type-mapping) for an example of how to use this feature.
 
+## Config key
+
+By default, the `@RegisterRestClient` `configKey` property is the sanitized name of the file containing the OpenAPI spec. For example, if the file name is `petstore.json`, the `configKey` will be `petstore_json`:
+
+```java
+/* omitted */
+@RegisterRestClient(configKey="petstore_json")
+public interface DefaultApi { /* omitted */ }
+```
+
+If you want to use a different configKey than the default one, you can set the `quarkus.openapi-generator.codegen.spec.petstore_json.[config-key]` property.
+
+Using the `config-key` the extension allow you to define all allowed properties with `quarkus.openapi-generator.codegen.spec.[my_custom_config_key].*` prefix. For example:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.config-key=petstore
+quarkus.openapi-generator.codegen.spec.petstore.additional-api-type-annotations=@org.test.Foo
+```
+
+With it, you will have the following result:
+
+```java
+/* omitted */
+@RegisterRestClient(configKey="petstore")
+@org.test.Foo
+public interface DefaultApi { /* omitted */ }
+```
+
+> **️⚠️ NOTE:** If you configure the property config-key, it will override the sanitized file name (will not consider the order of the configurations). For example, having the following configuration:
+
+```properties
+quarkus.openapi-generator.codegen.spec.petstore_json.config-key=custom_config_key
+quarkus.openapi-generator.codegen.spec.custom_config_key.additional-api-type-annotations=@org.test.Foo
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Bar
+```
+
+The generated code will be:
+
+```java
+/* omitted */
+@RegisterRestClient(configKey="custom_config_key")
+@org.test.Foo
+public interface DefaultApi { /* omitted */ }
+```
+
 ## Template Customization
 
 You have the option to swap out the [templates used by this extension](deployment/src/main/resources/templates/libraries/microprofile) with your customized versions. To achieve this, place your custom templates under the `resources/templates` directory. It's crucial that the filename of each custom template matches that of the original template.
@@ -830,6 +889,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/michalsomora"><img src="https://avatars.githubusercontent.com/u/10022003?v=4?s=100" width="100px;" alt="Michal Somora"/><br /><sub><b>Michal Somora</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=michalsomora" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lordvlad"><img src="https://avatars.githubusercontent.com/u/1217769?v=4?s=100" width="100px;" alt="Waldemar Reusch"/><br /><sub><b>Waldemar Reusch</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=lordvlad" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=lordvlad" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/patr1kt0th"><img src="https://avatars.githubusercontent.com/u/20856829?v=4?s=100" width="100px;" alt="Patrik Toth"/><br /><sub><b>Patrik Toth</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=patr1kt0th" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>

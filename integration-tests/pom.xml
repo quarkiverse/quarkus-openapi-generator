@@ -30,7 +30,10 @@
     <module>security</module>
     <module>simple</module>
     <module>skip-validation</module>
+    <module>suffix-prefix</module>
     <module>type-mapping</module>
+    <module>config-key</module>
+    <module>github</module>
   </modules>
   <dependencyManagement>
     <dependencies>
