@@ -17,8 +17,6 @@ This extension is for REST code generation for client side only. If you're looki
 
 **Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read https://github.com/quarkiverse/quarkus-openapi-generator/blob/main/CONTRIBUTING.md[this page].
 
-Describe what the extension does here.
-
 == Getting Started
 
 Add the following dependency to your project's `pom.xml` file:
