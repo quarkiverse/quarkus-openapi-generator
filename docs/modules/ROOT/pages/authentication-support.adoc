@@ -1,0 +1,165 @@
+If your OpenAPI specification file has `securitySchemes` https://spec.openapis.org/oas/v3.1.0#security-scheme-object[definitions], the inner generator
+will https://download.eclipse.org/microprofile/microprofile-rest-client-2.0/microprofile-rest-client-spec-2.0.html#_provider_declaration[register ClientRequestFilter providers] for you to
+implement the given authentication mechanism.
+
+To provide the credentials for your application, you can use the https://quarkus.io/guides/config[Quarkus configuration support]. The configuration key is composed using this
+pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth_property_name]`. Where:
+
+* `filename` is the sanitized name of file containing the OpenAPI spec, for example `petstore_json`.
+* `security_scheme_name` is the sanitized name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
+have `api_key` and `basic_auth` security schemes:
+
+[source,json]
+----
+{
+  "securitySchemes": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    },
+    "basic_auth": {
+      "type": "http",
+      "scheme": "basic"
+    }
+  }
+}
+----
+
+====
+icon:warning[1x,role=red] Note that the securityScheme name used to configure the specific information for each spec is sanitized using the same rules as for the file names.
+====
+
+* `auth_property_name` varies depending on the authentication provider. For example, for Basic Authentication we have `username` and `password`. See the following sections for more details.
+
+> Tip: on production environments you will likely to use https://quarkiverse.github.io/quarkiverse-docs/quarkus-vault/dev/index.html[HashiCorp Vault] or https://kubernetes.io/docs/concepts/configuration/secret/[Kubernetes Secrets] to provide this information for your application.
+
+If the OpenAPI specification file has `securitySchemes` definitions, but no https://spec.openapis.org/oas/v3.1.0#security-requirement-object[Security Requirement Object] definitions, the generator can be configured to create these by default. In this case, for all operations without a security requirement the default one will be created. Note that the property value needs to match the name of a security scheme object definition, eg. `api_key` or `basic_auth` in the `securitySchemes` list above.
+
+
+[%autowidth]
+|===
+|Description |Property Key |Example
+
+|Create security for the referenced security scheme
+|`quarkus.openapi-generator.codegen.default-security-scheme`
+|`quarkus.openapi-generator.codegen.default-security-scheme=api_key`
+|===
+
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/security[security] for an example of how to use this feature.
+
+=== Basic HTTP Authentication
+
+For Basic HTTP Authentication, these are the supported configurations:
+
+[%autowidth]
+|===
+|Description |Property Key |Example
+
+|Username credentials
+|`quarkus.openapi-generator.[filename].auth.[security_scheme_name].username`
+| `quarkus.openapi-generator.petstore_json.auth.basic_auth.username`
+|Password credentials
+|`quarkus.openapi-generator.[filename].auth.[security_scheme_name].password`
+|`quarkus.openapi-generator.petstore_json.auth.basic_auth-password`
+|===
+
+=== Bearer Token Authentication
+
+Authentication, these are the supported configurations:
+
+[%autowidth]
+|===
+|Description |Property Key |Example
+
+|Bearer Token
+|`quarkus.openapi-generator.[filename].auth.[security_scheme_name].bearer-token`
+|`quarkus.openapi-generator.petstore_json.auth.bearer.bearer-token`
+|===
+
+=== API Key Authentication
+
+Similarly to bearer token, the API Key Authentication also has the token entry key property:
+
+[%autowidth]
+|===
+|Description |Property Key |Example
+
+|API Key
+|`quarkus.openapi-generator.[filename].auth.[security_scheme_name].api-key`
+|`quarkus.openapi-generator.petstore_json.auth.api_key.api-key`
+|===
+
+The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
+
+=== OAuth2 Authentication
+
+The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use
+the https://quarkus.io/guides/security-openid-connect-client[Quarkus OIDC Extension] configuration to define your authentication flow.
+
+The generated code creates a named `OidcClient` for each https://spec.openapis.org/oas/v3.1.0#security-scheme-object[Security Scheme] listed in the OpenAPI specification files. For example, given
+the following excerpt:
+
+[source,json]
+----
+{
+  "securitySchemes": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "flows": {
+        "implicit": {
+          "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+          "scopes": {
+            "write:pets": "modify pets in your account",
+            "read:pets": "read your pets"
+          }
+        }
+      }
+    }
+  }
+}
+----
+
+You can configure this `OidcClient` as:
+
+[source,properties]
+----
+quarkus.oidc-client.petstore_auth.auth-server-url=https://petstore3.swagger.io/oauth/authorize
+quarkus.oidc-client.petstore_auth.discovery-enabled=false
+quarkus.oidc-client.petstore_auth.token-path=/tokens
+quarkus.oidc-client.petstore_auth.credentials.secret=secret
+quarkus.oidc-client.petstore_auth.grant.type=password
+quarkus.oidc-client.petstore_auth.grant-options.password.username=alice
+quarkus.oidc-client.petstore_auth.grant-options.password.password=alice
+quarkus.oidc-client.petstore_auth.client-id=petstore-app
+----
+
+The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the `schemaName` is sanitized by applying the rules described above.
+
+For this to work you **must** add https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter[Quarkus OIDC Client Filter Extension] to your project:
+
+RESTEasy Classic:
+
+[source ,xml]
+----
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-oidc-client-filter</artifactId>
+</dependency>
+----
+
+RESTEasy Reactive:
+
+[source ,xml]
+----
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-oidc-client-reactive-filter</artifactId>
+</dependency>
+----
+
+If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
+The option can be set globally with `quarkus.openapi-generator.codegen.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
+Custom authentication provider can be used with `additional-api-type-annotations`
+
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/generation-tests[generation-tests] for an example of how to use this feature.
