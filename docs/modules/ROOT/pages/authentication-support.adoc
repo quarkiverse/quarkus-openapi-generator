@@ -6,7 +6,7 @@ To provide the credentials for your application, you can use the https://quarkus
 pattern: `quarkus.openapi-generator.[filename].auth.[security_scheme_name].[auth_property_name]`. Where:
 
 * `filename` is the sanitized name of file containing the OpenAPI spec, for example `petstore_json`.
-* `security_scheme_name` is the sanitized name of the [security scheme object definition](https://spec.openapis.org/oas/v3.1.0#security-scheme-object) in the OpenAPI file. Given the following excerpt, we
+* `security_scheme_name` is the sanitized name of the https://spec.openapis.org/oas/v3.1.0#security-scheme-object[security scheme object definition] in the OpenAPI file. Given the following excerpt, we
 have `api_key` and `basic_auth` security schemes:
 
 [source,json]
