@@ -1,0 +1,153 @@
+
+The rest client also supports request with mime-type multipart/form-data and, if the schema of the request body is known in advance, we can also automatically generate the models of the request
+bodies.
+
+NOTE: RESTEasy Reactive supports multipart/form-data https://quarkus.io/guides/rest-client-reactive#multipart[out of the box]. Thus, no additional dependency is required.
+
+If you're using RESTEasy Classic, you need to add the following additional dependency to your `pom.xml`:
+
+[source ,xml]
+----
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-resteasy-multipart</artifactId>
+</dependency>
+----
+
+For any multipart/form-data operation a model for the request body will be generated. Each part of the multipart is a field in this model that is annotated with the following annotations:
+
+* `jakarta.ws.rs.FormParam`, where the value parameter denotes the part name,
+* `PartType`, where the parameter is the jax-rs MediaType of the part (see below for details),
+* and, if the part contains a file, `PartFilename`, with a generated default parameter that will be passed as the fileName sub-header in the
+Content-Disposition header of the part.
+
+For example, the model for a request that requires a file, a string and some complex object will look like this:
+
+[source,java]
+----
+public class MultipartBody {
+
+    @FormParam("file")
+    @PartType(MediaType.APPLICATION_OCTET_STREAM)
+    @PartFilename("fileFile")
+    public File file;
+
+    @FormParam("fileName")
+    @PartType(MediaType.TEXT_PLAIN)
+    public String fileName;
+
+    @FormParam("someObject")
+    @PartType(MediaType.APPLICATION_JSON)
+    public MyComplexObject someObject;
+}
+----
+
+Then in the client, when using RESTEasy Classic, the `org.jboss.resteasy.annotations.providers.multipart.MultipartForm` annotation is added in front of the multipart parameter:
+
+[source,java]
+----
+@Path("/echo")
+@RegisterRestClient(baseUri="http://my.endpoint.com/api/v1", configKey="multipart-requests_yml")
+public interface MultipartService {
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    String sendMultipartData(@MultipartForm MultipartBody data);
+
+}
+----
+
+When using RESTEasy Reactive, the `jakarta.ws.rs.BeanParam` annotation is added in front of the multipart parameter:
+
+[source,java]
+----
+@Path("/echo")
+@RegisterRestClient(baseUri="http://my.endpoint.com/api/v1", configKey="multipart-requests_yml")
+public interface MultipartService {
+
+  @POST
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.TEXT_PLAIN)
+  String sendMultipartData(@jakarta.ws.rs.BeanParam MultipartBody data);
+
+}
+----
+
+See https://quarkus.io/guides/rest-client-multipart[Quarkus - Using the REST Client with Multipart] and
+the https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html[RESTEasy JAX-RS specifications] for more details.
+
+WARNING: `MultipartForm`  is deprecated when using RESTEasy Reactive.
+
+`baseURI` value of `RegisterRestClient` annotation is extracted from the `servers` section of the file, if present. If not, it will be left empty and it is expected you set up the uri to be used in your configuration.
+
+Importantly, if some multipart request bodies contain complex objects (i.e. non-primitives) you need to explicitly tell the Open API generator to create models for these objects by setting
+the `skip-form-model` property corresponding to your spec in the `application.properties` to `false`, e.g.:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model=false
+----
+
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/multipart-request[multipart-request] for an example of how to use this feature.
+
+In case the default `PartFilename` annotation is not required, its generation can be disabled by setting the `generate-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.generate-part-filename=false
+----
+
+By default, the `PartFilename`'s value representing the filename is prefixed by the field name. This can be changed by setting the `use-field-name-in-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.use-field-name-in-part-filename=false
+----
+
+And in case the default `PartFilename` value is not suitable (e.g. a conversion service only allows/supports specific extensions), the value can be set by using the `part-filename-value` property (globally or corresponding to your spec) in the `application.properties`, e.g.:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_first_multipart_requests_yml.part-filename-value=".pdf"
+----
+
+So for instance, by setting `part-filename-value` to `some.pdf` and `use-field-name-in-part-filename` to `false` the generated code will look like this:
+
+[source,java]
+----
+public class MultipartBody {
+
+  @FormParam("file")
+  @PartType(MediaType.APPLICATION_OCTET_STREAM)
+  @PartFilename("some.pdf")
+  public File file;
+}
+----
+
+And by setting only `part-filename-value` to `.pdf`, the generated code will look like this:
+
+[source,java]
+----
+public class MultipartBody {
+
+  @FormParam("file")
+  @PartType(MediaType.APPLICATION_OCTET_STREAM)
+  @PartFilename("file.pdf")
+  public File file;
+}
+----
+
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/part-filename[part-filename] for examples of how to use these features.
+
+=== Default content-types according to OpenAPI Specification and limitations
+
+The https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#special-considerations-for-multipart-content[OAS 3.0] specifies the following default content-types for a multipart:
+
+* If the property is a primitive, or an array of primitive values, the default Content-Type is `text/plain`
+* If the property is complex, or an array of complex values, the default Content-Type is `application/json`
+* If the property is a `type: string` with `format: binary` or `format: base64` (aka a file object), the default Content-Type is `application/octet-stream`
+
+A different content-type may be defined in your api spec, but this is not yet supported in the code generation. Also, this "annotation-oriented" approach of RestEasy (i.e. using `@MultipartForm` to
+denote the multipart body parameter) does not seem to properly support the unmarshalling of arrays of the same type (e.g. array of files), in these cases it uses Content-Type equal
+to `application/json`.
