@@ -151,7 +151,7 @@ See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/mai
 [[config-key]]
 == Config key
 
-include::config-key.adoc  [leveloffset=+1, opts=optional]
+include::config-key.adoc[leveloffset=+1, opts=optional]
 
 [[template-customization]]
 == Template Customization

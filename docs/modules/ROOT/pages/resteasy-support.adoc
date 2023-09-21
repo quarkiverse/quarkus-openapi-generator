@@ -11,9 +11,7 @@ You can use the `quarkus-openapi-generator` with REST Client Classic or REST Cli
 </dependency>
 ----
 
-====
-icon:warning[1x,role=red] After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
-====
+WARNING: After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
 
 === RESTEasy Reactive
 

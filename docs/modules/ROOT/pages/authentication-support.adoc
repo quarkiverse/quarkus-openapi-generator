@@ -26,9 +26,7 @@ have `api_key` and `basic_auth` security schemes:
 }
 ----
 
-====
-icon:warning[1x,role=red] Note that the securityScheme name used to configure the specific information for each spec is sanitized using the same rules as for the file names.
-====
+WARNING: Note that the securityScheme name used to configure the specific information for each spec is sanitized using the same rules as for the file names.
 
 * `auth_property_name` varies depending on the authentication provider. For example, for Basic Authentication we have `username` and `password`. See the following sections for more details.
 

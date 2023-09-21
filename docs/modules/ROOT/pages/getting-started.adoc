@@ -1,9 +1,7 @@
 
 Add the following dependency to your project's `pom.xml` file:
 
-====
-icon:warning[1x,role=red] Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2.
-====
+WARNING: Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2.
 
 [source,xml]
 ----
@@ -16,9 +14,7 @@ icon:warning[1x,role=red] Version 2.x.x of this extension supports Quarkus 3, an
 
 You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
 
-====
-icon:warning[1x,role=red] You probably already have this configuration if you created your application with https://code.quarkus.io/[Code Quarkus]. That said, double-check your configuration not to add another `plugin` entry.
-====
+WARNING: You probably already have this configuration if you created your application with https://code.quarkus.io/[Code Quarkus]. That said, double-check your configuration not to add another `plugin` entry.
 
 [source,xml]
 ----
@@ -66,9 +62,7 @@ The same way you can add any additional annotations to the generated api files w
 quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Foo;@org.test.Bar
 ----
 
-====
-icon:warning[1x,role=red] Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules[Environment Variables Mapping Rules] from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
-====
+WARNING: Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules[Environment Variables Mapping Rules] from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
 
 Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
 
