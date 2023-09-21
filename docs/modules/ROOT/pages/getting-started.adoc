@@ -1,0 +1,117 @@
+
+Add the following dependency to your project's `pom.xml` file:
+
+====
+icon:warning[1x,role=red] Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2.
+====
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator</artifactId>
+  <version>3.0.0-SNAPSHOT</version>
+</dependency>
+----
+
+You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
+
+====
+icon:warning[1x,role=red] You probably already have this configuration if you created your application with https://code.quarkus.io/[Code Quarkus]. That said, double-check your configuration not to add another `plugin` entry.
+====
+
+[source,xml]
+----
+<plugin>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-maven-plugin</artifactId>
+  <extensions>true</extensions>
+  <executions>
+    <execution>
+      <goals>
+        <goal>build</goal>
+        <goal>generate-code</goal>
+        <goal>generate-code-tests</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+----
+
+Now, create the directory `openapi` under your `src/main/` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
+
+If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi-generator.codegen.input-base-dir`.
+IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.input-base-dir=openapi-definitions
+----
+
+To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annotations=@org.test.Foo;@org.test.Bar
+----
+
+If a base package name is not provided, it will be used the default `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
+
+Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in https://openapi-generator.tech/docs/generators/java/#config-options[OpenApi Generator Doc]).
+
+The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`. Given you want to include Foo and Bar annotations, you must define additional-api-type-annotations as:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-api-type-annotations=@org.test.Foo;@org.test.Bar
+----
+
+====
+icon:warning[1x,role=red] Note that the file name`petstore_json`is used to configure the specific information for each spec. We follow the https://github.com/eclipse/microprofile-config/blob/master/spec/src/main/asciidoc/configsources.asciidoc#environment-variables-mapping-rules[Environment Variables Mapping Rules] from Microprofile Configuration to sanitize the OpenAPI spec filename. Any non-alphabetic characters are replaced by an underscore `_`.
+====
+
+Run `mvn compile` to generate your classes in `target/generated-sources/open-api-json` path:
+
+[source]
+----
+- org.acme.openapi
+  - api
+    - PetApi.java
+    - StoreApi.java
+    - UserApi.java
+  - model
+    - Address.java
+    - Category.java
+    - Customer.java
+    - ModelApiResponse.java
+    - Order.java
+    - Pet.java
+    - Tag.java
+    - User.java
+----
+
+You can reference the generated code in your project, for example:
+
+[source, java]
+----
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+import org.acme.openapi.api.PetApi;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
+
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/petstore")
+public class PetResource {
+
+    @RestClient
+    @Inject
+    PetApi petApi;
+}
+----
+
+See the https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests[integration-tests] module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.

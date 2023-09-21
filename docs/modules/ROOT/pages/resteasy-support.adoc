@@ -1,0 +1,39 @@
+
+You can use the `quarkus-openapi-generator` with REST Client Classic or REST Client Reactive respectively. To do so add either the classic or reactive jackson dependency to your project's `pom.xml` file:
+
+=== RESTEasy Classic
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-rest-client-jackson</artifactId>
+</dependency>
+----
+
+====
+icon:warning[1x,role=red] After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
+====
+
+=== RESTEasy Reactive
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
+</dependency>
+----
+
+To make truly non-blocking calls, you need to also set the `mutiny` option to `true`. This
+will wrap all API return types in a `io.smallrye.mutiny.Uni`.
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny=true
+----
+
+When using RESTEasy Reactive:
+
+* The client must not declare multiple MIME-TYPES with `@Consumes`
+* You might need to implement a `ParamConverter` for each complex type
