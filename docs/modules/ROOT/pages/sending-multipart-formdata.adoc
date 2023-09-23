@@ -98,7 +98,7 @@ In case the default `PartFilename` annotation is not required, its generation ca
 quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.generate-part-filename=false
 ----
 
-By default, the `PartFilename`'s value representing the filename is prefixed by the field name. This can be changed by setting the `use-field-name-in-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
+By default, the `PartFilename` value representing the filename is prefixed by the field name. This can be changed by setting the `use-field-name-in-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
 
 [source,properties]
 ----
