@@ -45,6 +45,31 @@ import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigPar
 public class OpenApiClientGeneratorWrapperTest {
 
     @Test
+    void verifySuffixPrefix() throws URISyntaxException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("suffix-prefix-openapi.json");
+        String CUSTOM_API_SUFFIX = "CustomAPISuffix";
+        String CUSTOM_MODEL_SUFFIX = "CustomModelSuffix";
+        String CUSTOM_MODEL_PREFIX = "CustomModelPrefix";
+
+        generatorWrapper.withApiNameSuffix(CUSTOM_API_SUFFIX);
+        generatorWrapper.withModelNameSuffix(CUSTOM_MODEL_SUFFIX);
+        generatorWrapper.withModelNamePrefix(CUSTOM_MODEL_PREFIX);
+        final List<File> generatedFiles = generatorWrapper.generate("org.petstore.suffixprefix");
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+        for (File f : generatedFiles) {
+            String name = f.getName();
+            String path = f.getPath();
+            if (path.contains("/api/")) {
+                assertTrue(name.endsWith(String.format("%s.java", CUSTOM_API_SUFFIX)));
+            } else if (path.contains("/model/")) {
+                assertTrue(name.startsWith(CUSTOM_MODEL_PREFIX));
+                assertTrue(name.endsWith(String.format("%s.java", CUSTOM_MODEL_SUFFIX)));
+            }
+        }
+    }
+
+    @Test
     void verifyCommonGenerated() throws URISyntaxException {
         final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate("org.petstore");
         assertNotNull(generatedFiles);

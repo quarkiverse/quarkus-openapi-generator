@@ -7,6 +7,9 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
+
+> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md) if you are looking for instructions.
+
 > **⚠️** Version 2.x.x of this extension (`main` branch) supports Quarkus 3, and version 1.x.x (`quarkus2` branch) supports Quarkus 2.
 
 Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
