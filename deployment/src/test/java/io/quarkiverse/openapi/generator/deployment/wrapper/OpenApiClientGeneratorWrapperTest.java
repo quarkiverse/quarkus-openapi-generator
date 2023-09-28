@@ -514,8 +514,7 @@ public class OpenApiClientGeneratorWrapperTest {
     void verifyAdditionalApiTypeAnnotations() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
                 .withEnabledSecurityGeneration(false)
-                .withAdditionalApiTypeAnnotationsConfig(
-                        "@org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders")
+                .withAdditionalApiTypeAnnotationsConfig("@org.test.Foo;@org.test.Bar")
                 .generate("org.additionalapitypeannotations");
         assertFalse(generatedFiles.isEmpty());
 
@@ -529,9 +528,8 @@ public class OpenApiClientGeneratorWrapperTest {
             CompilationUnit compilationUnit = StaticJavaParser.parse(file);
             compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
                     .forEach(c -> {
-                        assertThat(
-                                c.getAnnotationByName("RegisterClientHeaders"))
-                                .isPresent();
+                        assertThat(c.getAnnotationByName("Foo")).isPresent();
+                        assertThat(c.getAnnotationByName("Bar")).isPresent();
                     });
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage());
