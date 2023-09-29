@@ -172,7 +172,7 @@ public abstract class OpenApiClientGeneratorWrapper {
      */
     public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {
         if (additionalApiTypeAnnotations != null) {
-            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(","));
+            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(";"));
         }
         return this;
     }
