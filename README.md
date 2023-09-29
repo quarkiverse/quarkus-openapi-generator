@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
@@ -890,6 +890,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/michalsomora"><img src="https://avatars.githubusercontent.com/u/10022003?v=4?s=100" width="100px;" alt="Michal Somora"/><br /><sub><b>Michal Somora</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=michalsomora" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lordvlad"><img src="https://avatars.githubusercontent.com/u/1217769?v=4?s=100" width="100px;" alt="Waldemar Reusch"/><br /><sub><b>Waldemar Reusch</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=lordvlad" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=lordvlad" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/patr1kt0th"><img src="https://avatars.githubusercontent.com/u/20856829?v=4?s=100" width="100px;" alt="Patrik Toth"/><br /><sub><b>Patrik Toth</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=patr1kt0th" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/aecc"><img src="https://avatars.githubusercontent.com/u/6069300?v=4?s=100" width="100px;" alt="Alessandro Chacón"/><br /><sub><b>Alessandro Chacón</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=aecc" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
