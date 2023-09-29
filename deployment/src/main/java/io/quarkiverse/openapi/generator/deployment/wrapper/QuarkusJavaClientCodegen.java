@@ -121,7 +121,6 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             super.postProcess();
         }
 
-
     }
 
     @Override
