@@ -138,7 +138,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private static boolean isJacksonReactiveClientPresent(CodeGenContext context) {
-        return isExtensionCapabilityPresent(context, determineRestClienReactiveJacksonCapabilityId());
+        return isExtensionCapabilityPresent(context, determineRestClientReactiveJacksonCapabilityId());
     }
 
     private static boolean isJacksonClassicClientPresent(CodeGenContext context) {
