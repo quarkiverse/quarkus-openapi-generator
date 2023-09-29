@@ -157,7 +157,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .anyMatch(capability::equals);
     }
 
-    private static String determineRestClienReactiveJacksonCapabilityId() {
+    private static String determineRestClientReactiveJacksonCapabilityId() {
         if (TARGET_QUARKUS_VERSION.compareTo(BREAKING_QUARKUS_VERSION) < 0) {
             // in case the target Quarkus version is older than 3.4.1 we need to return the old Capability id for REST_CLIENT_REACTIVE_JACKSON
             return REST_CLIENT_REACTIVE_JACKSON_BEFORE_QUARKUS_3_4_1;
