@@ -242,8 +242,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         }
     }
 
-    public void withAdditionalPropertiesAsAttribute(final Boolean asAttribute) {
-        Boolean value = Optional.ofNullable(asAttribute).orElse(FALSE);
-        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", value);
+    public void withAdditionalPropertiesAsAttribute(final Boolean enable) {
+        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", Optional.ofNullable(enable).orElse(FALSE));
     }
 }

@@ -229,6 +229,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 CodegenConfig.ConfigName.ADDITIONAL_PROPERTIES_AS_ATTRIBUTE, Boolean.class)
                 .orElse(Boolean.FALSE);
 
+        generator.withAdditionalPropertiesAsAttribute(additionalPropertiesAsAttribute);
         GlobalSettings.setProperty(
                 OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE,
                 additionalPropertiesAsAttribute.toString());
