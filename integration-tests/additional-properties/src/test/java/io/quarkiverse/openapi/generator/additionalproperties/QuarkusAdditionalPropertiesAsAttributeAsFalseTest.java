@@ -4,7 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.HashMap;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import jakarta.inject.Inject;
 
 import org.assertj.core.api.Assertions;
@@ -14,6 +13,7 @@ import org.openapi.quarkus.no_additional_properties_as_attr_yaml.model.PriorityV
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import io.quarkus.test.junit.QuarkusTest;
 
