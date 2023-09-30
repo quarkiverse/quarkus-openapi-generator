@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
@@ -33,6 +34,7 @@ import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientG
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiReactiveClientGeneratorWrapper;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
+import io.quarkus.builder.Version;
 import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
@@ -52,6 +54,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
     private static final String CONFIG_KEY_PROPERTY = "config-key";
+
+    private static final DefaultArtifactVersion BREAKING_QUARKUS_VERSION = new DefaultArtifactVersion("3.4.1");
+    private static final DefaultArtifactVersion TARGET_QUARKUS_VERSION = new DefaultArtifactVersion(Version.getVersion());
+    private static final String REST_CLIENT_REACTIVE_JACKSON_BEFORE_QUARKUS_3_4_1 = "io.quarkus.rest.client.reactive.jackson";
 
     /**
      * The input base directory from
@@ -132,7 +138,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private static boolean isJacksonReactiveClientPresent(CodeGenContext context) {
-        return isExtensionCapabilityPresent(context, Capability.REST_CLIENT_REACTIVE_JACKSON);
+        return isExtensionCapabilityPresent(context, determineRestClientReactiveJacksonCapabilityId());
     }
 
     private static boolean isJacksonClassicClientPresent(CodeGenContext context) {
@@ -149,6 +155,14 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return context.applicationModel().getExtensionCapabilities().stream()
                 .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
                 .anyMatch(capability::equals);
+    }
+
+    private static String determineRestClientReactiveJacksonCapabilityId() {
+        if (TARGET_QUARKUS_VERSION.compareTo(BREAKING_QUARKUS_VERSION) < 0) {
+            // in case the target Quarkus version is older than 3.4.1 we need to return the old Capability id for REST_CLIENT_REACTIVE_JACKSON
+            return REST_CLIENT_REACTIVE_JACKSON_BEFORE_QUARKUS_3_4_1;
+        }
+        return Capability.REST_CLIENT_REACTIVE_JACKSON;
     }
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
