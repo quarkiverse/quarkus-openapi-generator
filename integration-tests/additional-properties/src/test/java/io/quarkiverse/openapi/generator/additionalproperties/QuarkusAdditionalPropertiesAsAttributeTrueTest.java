@@ -1,14 +1,17 @@
 package io.quarkiverse.openapi.generator.additionalproperties;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.Priority;
 import org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.PriorityValue;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
@@ -23,13 +26,14 @@ public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
     }
 
     @Test
-    void when_additional_properties_is_true_then_jackson_should_maps_the_additional_properties_correctly() throws JsonProcessingException {
+    void when_additional_properties_is_true_then_jackson_should_maps_the_additional_properties_correctly()
+            throws JsonProcessingException {
         // arrange
         Priority priority = new org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.Priority();
         priority.setName("name");
         PriorityValue priorityValue = new PriorityValue();
         PriorityValue value = priorityValue.code(1).text("text");
-        priority.putAdditionalProperty("value", value);
+        priority.setAdditionalProperty("value", value);
 
         // act
         String json = mapper.writeValueAsString(priority);
@@ -39,13 +43,13 @@ public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
     }
 
     @Test
-    void when_additional_properties_is_true_then_should_create_to_string_with_additional_properties() throws JsonProcessingException {
+    void when_additional_properties_is_true_then_should_create_to_string_with_additional_properties() {
         // arrange
         Priority priority = new org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.Priority();
         priority.setName("name");
         PriorityValue priorityValue = new PriorityValue();
         PriorityValue value = priorityValue.code(1).text("text");
-        priority.putAdditionalProperty("value", value);
+        priority.setAdditionalProperty("value", value);
 
         // act
         String toStringOutput = priority.toString();
@@ -53,6 +57,5 @@ public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
         // assert
         Assertions.assertThat(toStringOutput).contains("additionalProperties: ");
     }
-
 
 }
