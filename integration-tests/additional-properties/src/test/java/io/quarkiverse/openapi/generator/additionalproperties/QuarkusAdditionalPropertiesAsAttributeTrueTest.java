@@ -17,7 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
 
     @Inject
-    ObjectMapper mapper;
+    ObjectMapper objectMapper;
 
     @Test
     void when_additional_properties_is_true_then_should_create_additional_properties_attribute() {
@@ -36,7 +36,7 @@ public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
         priority.setAdditionalProperty("value", value);
 
         // act
-        String json = mapper.writeValueAsString(priority);
+        String json = objectMapper.writeValueAsString(priority);
 
         // assert
         Assertions.assertThat(json).isEqualTo("{\"name\":\"name\",\"value\":{\"code\":1,\"text\":\"text\"}}");
@@ -56,6 +56,17 @@ public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
 
         // assert
         Assertions.assertThat(toStringOutput).contains("additionalProperties: ");
+    }
+
+    @Test
+    void test_jackson_deserialization_solution() throws JsonProcessingException {
+        // assert
+        String json = "{\"name\":\"name\",\"value\":{\"code\":1,\"text\":\"text\"}}";
+
+        Priority priority = objectMapper.readValue(json,
+                org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.Priority.class);
+
+        Assertions.assertThat(priority.getName()).isEqualTo("name");
     }
 
 }
