@@ -8,12 +8,6 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 {#else}
 import java.lang.reflect.Type;
-{#if m.isAdditionalPropertiesTrue && additionalPropertiesAsAttribute}
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-{/if}
 import com.fasterxml.jackson.annotation.JsonProperty;
 {/if}
 

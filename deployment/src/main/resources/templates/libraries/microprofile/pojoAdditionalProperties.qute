@@ -2,15 +2,15 @@
     /**
     *   A property that represents the additionalProperties keyword in the OAS document.
     */
-    private Map<String, {m.additionalPropertiesType}> additionalProperties;
+    private java.util.Map<String, {m.additionalPropertiesType}> additionalProperties;
 
     /**
     * Sets the an additional property with the specified key and value.
     */
-    @JsonAnySetter
+    @com.fasterxml.jackson.annotation.JsonAnySetter
     public {m.classname} setAdditionalProperty(String key, {m.additionalPropertiesType} value) {
         if (this.additionalProperties == null) {
-            this.additionalProperties = new HashMap<String, {m.additionalPropertiesType}>();
+            this.additionalProperties = new java.util.HashMap<String, {m.additionalPropertiesType}>();
         }
         this.additionalProperties.put(key, value);
         return this;
@@ -19,8 +19,8 @@
     /**
     * Gets the additionalProperties map.
     */
-    @JsonAnyGetter
-    public Map<String, {m.additionalPropertiesType}> getAdditionalProperties() {
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    public java.util.Map<String, {m.additionalPropertiesType}> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
