@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.HashMap;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import jakarta.inject.Inject;
 
 import org.assertj.core.api.Assertions;
@@ -56,6 +57,6 @@ class QuarkusAdditionalPropertiesAsAttributeAsFalseTest {
 
         Assertions.assertThatThrownBy(() -> {
             objectMapper.readValue(json, Priority.class);
-        });
+        }).isInstanceOf(MismatchedInputException.class);
     }
 }
