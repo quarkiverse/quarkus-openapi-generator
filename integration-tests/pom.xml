@@ -23,11 +23,15 @@
     <module>multipart-request</module>
     <module>mutiny</module>
     <module>open-api-normalizer</module>
+    <module>part-filename</module>
     <module>return-response</module>
     <module>security</module>
     <module>simple</module>
     <module>skip-validation</module>
+    <module>suffix-prefix</module>
     <module>type-mapping</module>
+    <module>config-key</module>
+    <module>github</module>
   </modules>
   <dependencyManagement>
     <dependencies>
@@ -67,6 +71,14 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <testExcludes>
+                <testExclude>**/*ReactiveTest.java</testExclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
+          <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <excludedGroups>resteasy-reactive</excludedGroups>
@@ -89,6 +101,14 @@
       </dependencies>
       <build>
         <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <testExcludes>
+                <testExclude>**/*ClassicTest.java</testExclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>

@@ -19,6 +19,8 @@ import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
 
+import io.smallrye.config.common.utils.StringUtil;
+
 /**
  * Wrapper for the OpenAPIGen tool.
  * This is the same as calling the Maven plugin or the CLI.
@@ -170,13 +172,43 @@ public abstract class OpenApiClientGeneratorWrapper {
      */
     public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {
         if (additionalApiTypeAnnotations != null) {
-            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(","));
+            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(";"));
         }
         return this;
     }
 
     public void withTemplateDir(Path templateDir) {
         this.configurator.addAdditionalProperty("templateDir", templateDir.toString());
+    }
+
+    public OpenApiClientGeneratorWrapper withGeneratePartFilenameConfig(final Boolean generatePartFilename) {
+        this.configurator.addAdditionalProperty("generate-part-filename", generatePartFilename);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withPartFilenameValueConfig(final String partFilenameValue) {
+        this.configurator.addAdditionalProperty("part-filename-value", partFilenameValue);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withUseFieldNameInPartFilenameConfig(final Boolean useFieldNameInPartFilename) {
+        this.configurator.addAdditionalProperty("use-field-name-in-part-filename", useFieldNameInPartFilename);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withApiNameSuffix(final String apiNameSuffix) {
+        this.configurator.setApiNameSuffix(apiNameSuffix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withModelNameSuffix(final String modelNameSuffix) {
+        this.configurator.setModelNameSuffix(modelNameSuffix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withModelNamePrefix(final String modelNamePrefix) {
+        this.configurator.setModelNamePrefix(modelNamePrefix);
+        return this;
     }
 
     public List<File> generate(final String basePackage) {
@@ -200,5 +232,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.setApiPackage(apiPackage);
         this.configurator.setModelPackage(modelPackage);
         this.configurator.setInvokerPackage(apiPackage);
+    }
+
+    public void withConfigKey(final String config) {
+        if (config != null && !config.isBlank()) {
+            this.configurator.addAdditionalProperty("configKey", StringUtil.replaceNonAlphanumericByUnderscores(config));
+        }
     }
 }
