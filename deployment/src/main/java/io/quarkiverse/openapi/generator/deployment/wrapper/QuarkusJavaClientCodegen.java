@@ -2,8 +2,10 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -119,23 +121,50 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     @Override
+    public String toEnumVarName(String value, String datatype) {
+        String enumValue = value;
+        if (enumValue.isEmpty()) {
+            return "EMPTY";
+        }
+
+        if (getSymbolName(enumValue) != null) {
+            return getSymbolName(enumValue).toUpperCase(Locale.ROOT);
+        }
+
+        if (" ".equals(enumValue)) {
+            return "SPACE";
+        }
+
+        if ("Integer".equals(datatype) || "Long".equals(datatype) ||
+                "Float".equals(datatype) || "Double".equals(datatype) || "BigDecimal".equals(datatype)) {
+            String varName = "NUMBER_" + enumValue;
+            varName = varName.replaceAll("-", "MINUS_");
+            varName = varName.replaceAll("\\+", "PLUS_");
+            varName = varName.replaceAll("\\.", "_DOT_");
+            return varName;
+        }
+
+        for (Map.Entry<String, String> entry : this.specialCharReplacements.entrySet()) {
+            if (enumValue.contains(entry.getKey())) {
+                enumValue = enumValue.replace(entry.getKey(), "_".concat(entry.getValue()).concat("_"));
+            }
+        }
+
+        return enumValue
+                .replaceAll("\\d.*", "NUMBER_".concat(enumValue))
+                .replaceAll("^_+|_+$", "")
+                .replaceAll("_+", "_").toUpperCase(Locale.ROOT);
+    }
+
+    @Override
     protected String getSymbolName(String input) {
-        String underscore = "_";
-        String symbolSuffix = "_symbol";
-        String removeUnderscoreAtEndAndAtFinal = "^_+|_+$";
+        String symbolName = this.specialCharReplacements.get(input);
+        return symbolName != null ? symbolName.concat("_symbol") : null;
+    }
 
-        String symbol = this.specialCharReplacements.get(input);
-        if (symbol != null) {
-            return symbol.concat(symbolSuffix);
-        }
-
-        HashMap<String, String> specialCharsWithoutUnderline = new HashMap<>(this.specialCharReplacements);
-        specialCharsWithoutUnderline.remove(underscore);
-
-        for (Entry<String, String> entry : specialCharsWithoutUnderline.entrySet()) {
-            input = input.replace(entry.getKey(), underscore.concat(entry.getValue().concat(underscore)));
-        }
-
-        return input.replaceAll(removeUnderscoreAtEndAndAtFinal, "");
+    @Override
+    protected void initializeSpecialCharacterMapping() {
+        super.initializeSpecialCharacterMapping();
+        this.specialCharReplacements.put(" ", "Space");
     }
 }

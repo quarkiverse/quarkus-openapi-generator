@@ -1,58 +1,24 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import io.quarkus.test.junit.QuarkusTest;
+import io.quarkiverse.openapi.generator.deployment.assertions.Assertions;
 
-@QuarkusTest
 class QuarkusJavaClientCodegenTest {
 
-    @Test
-    void when_symbol_contains_special_characters_should_replace_correctly() {
-        // arrange
-        QuarkusJavaClientCodegen codegen = new QuarkusJavaClientCodegen();
+    @ParameterizedTest
+    @CsvSource({
+            "/status/addressStatus,SLASH_STATUS_SLASH_ADDRESSSTATUS",
+            "$,DOLLAR_SYMBOL",
+            "/users,SLASH_USERS"
+    })
+    void toEnumVarName(String value, String expectedVarName) {
 
-        // act
-        String symbolName = codegen.getSymbolName("/status/addressStatus");
+        QuarkusJavaClientCodegen quarkusJavaClientCodegen = new QuarkusJavaClientCodegen();
 
-        // assert
-        Assertions.assertThat(symbolName).isEqualToIgnoringCase("SLASH_STATUS_Slash_ADDRESSSTATUS");
-    }
+        String varName = quarkusJavaClientCodegen.toEnumVarName(value, "String");
 
-    @Test
-    void when_contains_special_characters_and_the_input_has_length_equal_1_should() {
-        // arrange
-        QuarkusJavaClientCodegen codegen = new QuarkusJavaClientCodegen();
-
-        // act
-        String symbolName = codegen.getSymbolName("$");
-
-        // assert
-        Assertions.assertThat(symbolName).isEqualToIgnoringCase("DOLLAR_symbol");
-    }
-
-    @Test
-    void when_special_character_is_the_first_should_replace_correctly() {
-        // arrange
-        QuarkusJavaClientCodegen codegen = new QuarkusJavaClientCodegen();
-
-        // act
-        String symbolName = codegen.getSymbolName("/users");
-
-        // assert
-        Assertions.assertThat(symbolName).isEqualToIgnoringCase("SLASH_users");
-    }
-
-    @Test
-    void when_symbol_contains_special_characters_in_the_end_should_replace_correctly() {
-        // arrange
-        QuarkusJavaClientCodegen codegen = new QuarkusJavaClientCodegen();
-
-        // act
-        String symbolName = codegen.getSymbolName("/status/addressStatus/");
-
-        // assert
-        Assertions.assertThat(symbolName).isEqualToIgnoringCase("SLASH_STATUS_Slash_ADDRESSSTATUS_Slash");
+        Assertions.assertThat(varName).isEqualTo(expectedVarName);
     }
 }
