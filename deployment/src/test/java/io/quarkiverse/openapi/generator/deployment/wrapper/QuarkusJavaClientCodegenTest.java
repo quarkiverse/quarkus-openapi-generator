@@ -11,7 +11,8 @@ class QuarkusJavaClientCodegenTest {
     @CsvSource({
             "/status/addressStatus,SLASH_STATUS_SLASH_ADDRESSSTATUS",
             "$,DOLLAR_SYMBOL",
-            "/users,SLASH_USERS"
+            "/users,SLASH_USERS",
+            "'  ',SPACE_SPACE"
     })
     void toEnumVarName(String value, String expectedVarName) {
 
