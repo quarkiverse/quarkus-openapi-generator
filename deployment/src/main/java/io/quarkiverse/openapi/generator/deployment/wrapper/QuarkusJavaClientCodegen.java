@@ -2,10 +2,8 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -122,13 +120,22 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     @Override
     protected String getSymbolName(String input) {
-        for (Entry<String, String> entry : specialCharReplacements.entrySet()) {
-            if (input.startsWith(entry.getKey())) {
-                return input.length() > entry.getKey().length()
-                        ? entry.getValue() + "_" + input.substring(entry.getKey().length())
-                        : entry.getValue() + "_symbol";
-            }
+        String underscore = "_";
+        String symbolSuffix = "_symbol";
+        String removeUnderscoreAtEndAndAtFinal = "^_+|_+$";
+
+        String symbol = this.specialCharReplacements.get(input);
+        if (symbol != null) {
+            return symbol.concat(symbolSuffix);
         }
-        return null;
+
+        HashMap<String, String> specialCharsWithoutUnderline = new HashMap<>(this.specialCharReplacements);
+        specialCharsWithoutUnderline.remove(underscore);
+
+        for (Entry<String, String> entry : specialCharsWithoutUnderline.entrySet()) {
+            input = input.replace(entry.getKey(), underscore.concat(entry.getValue().concat(underscore)));
+        }
+
+        return input.replaceAll(removeUnderscoreAtEndAndAtFinal, "");
     }
 }
