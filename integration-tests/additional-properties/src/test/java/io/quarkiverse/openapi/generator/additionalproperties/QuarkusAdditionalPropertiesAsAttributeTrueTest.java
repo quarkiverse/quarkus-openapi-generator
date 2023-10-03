@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.additionalproperties;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.AssertionsForClassTypes;
