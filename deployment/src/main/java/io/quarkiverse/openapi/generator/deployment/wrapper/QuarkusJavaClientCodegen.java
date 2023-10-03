@@ -110,6 +110,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                 .ifPresent(url -> additionalProperties.put(DEFAULT_SERVER_URL, url));
         additionalProperties.put(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
                 GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME));
+
+        this.configureAdditionalPropertiesAsAttribute();
     }
 
     @Override
@@ -118,6 +120,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (verbose) {
             super.postProcess();
         }
+
     }
 
     @Override
@@ -130,5 +133,12 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             }
         }
         return null;
+    }
+
+    private void configureAdditionalPropertiesAsAttribute() {
+        String property = GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE);
+        if (Boolean.parseBoolean(property)) {
+            this.supportsAdditionalPropertiesWithComposedSchema = true;
+        }
     }
 }
