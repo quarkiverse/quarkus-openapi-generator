@@ -9,16 +9,19 @@ class QuarkusJavaClientCodegenTest {
 
     @ParameterizedTest
     @CsvSource({
-            "/status/addressStatus,SLASH_STATUS_SLASH_ADDRESSSTATUS",
-            "$,DOLLAR_SYMBOL",
-            "/users,SLASH_USERS",
-            "'  ',SPACE_SPACE"
+            "/status/addressStatus,String,SLASH_STATUS_SLASH_ADDRESSSTATUS",
+            "$,String,DOLLAR_SYMBOL",
+            "/users,Strubg,SLASH_USERS",
+            "'  ',String,SPACE_SPACE",
+            "123456,String,NUMBER_123456",
+            "123456,Integer,NUMBER_123456",
+            "123+123,Long,NUMBER_123PLUS_123"
     })
-    void toEnumVarName(String value, String expectedVarName) {
+    void toEnumVarName(String value, String dataType, String expectedVarName) {
 
         QuarkusJavaClientCodegen quarkusJavaClientCodegen = new QuarkusJavaClientCodegen();
 
-        String varName = quarkusJavaClientCodegen.toEnumVarName(value, "String");
+        String varName = quarkusJavaClientCodegen.toEnumVarName(value, dataType);
 
         Assertions.assertThat(varName).isEqualTo(expectedVarName);
     }
