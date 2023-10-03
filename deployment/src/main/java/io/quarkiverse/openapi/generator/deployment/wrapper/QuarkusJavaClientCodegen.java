@@ -2,10 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -122,49 +119,54 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     @Override
     public String toEnumVarName(String value, String datatype) {
-        String enumValue = value;
-        if (enumValue.isEmpty()) {
+
+        if (value.isBlank()) {
             return "EMPTY";
         }
 
-        if (getSymbolName(enumValue) != null) {
-            return getSymbolName(enumValue).toUpperCase(Locale.ROOT);
+        if (this.getSymbolName(value) != null) {
+            return this.getSymbolName(value).toUpperCase(Locale.ROOT);
         }
 
-        if (" ".equals(enumValue)) {
-            return "SPACE";
+        String enumVarName = super.toEnumVarName(value, datatype);
+
+        if (enumVarName.startsWith("NUMBER_")) {
+            return enumVarName;
         }
 
-        if ("Integer".equals(datatype) || "Long".equals(datatype) ||
-                "Float".equals(datatype) || "Double".equals(datatype) || "BigDecimal".equals(datatype)) {
-            String varName = "NUMBER_" + enumValue;
-            varName = varName.replaceAll("-", "MINUS_");
-            varName = varName.replaceAll("\\+", "PLUS_");
-            varName = varName.replaceAll("\\.", "_DOT_");
-            return varName;
-        }
+        Map<Integer, String> indexesOfSpecialChars = new TreeMap<>();
+        for (String key : this.specialCharReplacements.keySet()) {
+            // no consider underscore from super result
+            if (Objects.equals(key, "_"))
+                continue;
 
-        for (Map.Entry<String, String> entry : this.specialCharReplacements.entrySet()) {
-            if (enumValue.contains(entry.getKey())) {
-                enumValue = enumValue.replace(entry.getKey(), "_".concat(entry.getValue()).concat("_"));
+            int index = value.indexOf(key);
+            while (index != -1) {
+                indexesOfSpecialChars.put(index, key);
+                index = value.indexOf(key, index + key.length());
             }
         }
 
-        return enumValue
-                .replaceAll("\\d.*", "NUMBER_".concat(enumValue))
-                .replaceAll("^_+|_+$", "")
-                .replaceAll("_+", "_").toUpperCase(Locale.ROOT);
+        for (String specialChar : indexesOfSpecialChars.values()) {
+            enumVarName = enumVarName.replaceFirst("_", this.specialCharReplacements.get(specialChar));
+        }
+
+        for (String specialChar : this.specialCharReplacements.values()) {
+            if (enumVarName.contains(specialChar)) {
+                enumVarName = enumVarName.replace(specialChar, "_" + specialChar + "_");
+            }
+        }
+
+        // remove _ at start and end
+        enumVarName = enumVarName.replaceAll("^_+|_+$", "");
+        enumVarName = enumVarName.replaceFirst("\\d.*", "_".concat(enumVarName));
+
+        return enumVarName.toUpperCase(Locale.ROOT);
     }
 
     @Override
     protected String getSymbolName(String input) {
         String symbolName = this.specialCharReplacements.get(input);
         return symbolName != null ? symbolName.concat("_symbol") : null;
-    }
-
-    @Override
-    protected void initializeSpecialCharacterMapping() {
-        super.initializeSpecialCharacterMapping();
-        this.specialCharReplacements.put(" ", "Space");
     }
 }

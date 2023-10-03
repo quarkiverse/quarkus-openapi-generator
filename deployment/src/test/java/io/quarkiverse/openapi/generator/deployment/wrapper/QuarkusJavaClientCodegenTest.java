@@ -12,8 +12,9 @@ class QuarkusJavaClientCodegenTest {
             "/status/addressStatus,String,SLASH_STATUS_SLASH_ADDRESSSTATUS",
             "$,String,DOLLAR_SYMBOL",
             "/users,String,SLASH_USERS",
-            "'  ',String,SPACE_SPACE",
-            "123456,String,NUMBER_123456",
+            "'  ',String,EMPTY",
+            "123456,String,_123456",
+            "quarkus_resources,String,QUARKUS_RESOURCES",
             "123456,Integer,NUMBER_123456", // old behavior
             "123+123,Long,NUMBER_123PLUS_123" // old behavior
     })
