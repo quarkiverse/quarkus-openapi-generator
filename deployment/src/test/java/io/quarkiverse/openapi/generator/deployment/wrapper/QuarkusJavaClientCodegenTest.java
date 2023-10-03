@@ -14,8 +14,8 @@ class QuarkusJavaClientCodegenTest {
             "/users,Strubg,SLASH_USERS",
             "'  ',String,SPACE_SPACE",
             "123456,String,NUMBER_123456",
-            "123456,Integer,NUMBER_123456",
-            "123+123,Long,NUMBER_123PLUS_123"
+            "123456,Integer,NUMBER_123456", // old behavior
+            "123+123,Long,NUMBER_123PLUS_123" // old behavior
     })
     void toEnumVarName(String value, String dataType, String expectedVarName) {
 
