@@ -55,7 +55,8 @@ public class CodegenConfig extends GlobalCodegenConfig {
         CONFIG_KEY("config-key"),
         GENERATE_PART_FILENAME("generate-part-filename"),
         PART_FILENAME_VALUE("part-filename-value"),
-        USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename");
+        USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename"),
+        ADDITIONAL_PROPERTIES_AS_ATTRIBUTE("additional-properties-as-attribute");
 
         private final String name;
 

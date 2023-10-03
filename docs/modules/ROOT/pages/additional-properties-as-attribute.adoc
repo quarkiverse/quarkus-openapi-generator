@@ -1,0 +1,15 @@
+In some cases is necessary to use https://swagger.io/docs/specification/data-models/dictionaries/[additionalProperties] inside the OpenAPI specification, by default this extension creates an object that inherits a `java.util.HashMap`
+class. It works well, but there are some issues with Jackson on serialize/deserialize:
+
+- Serialization throws `com.fasterxml.jackson.databind.exc.MismatchedInputException` exception.
+- Deserialization `Jackson` does ignore plain fields.
+
+If you want to use composition instead inheritance and serialize/deserialize with Jackson without those problems, consider to configure the `additional-properties-as-attributes`.
+
+To map `additionalProperties` as attribute, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
+
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-properties-as-attribute=true
+----
+
+This configuration implies that all models using `additionalProperties` will be mapped using a `java.util.Map` as composition.
