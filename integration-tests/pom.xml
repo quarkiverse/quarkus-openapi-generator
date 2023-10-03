@@ -32,6 +32,7 @@
     <module>type-mapping</module>
     <module>config-key</module>
     <module>github</module>
+    <module>additional-properties</module>
   </modules>
   <dependencyManagement>
     <dependencies>

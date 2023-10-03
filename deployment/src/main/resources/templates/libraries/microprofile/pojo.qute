@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 {#else}
 import java.lang.reflect.Type;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 {/if}
 
@@ -119,6 +118,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
 
     {/if}
     {/for}
+    {#include pojoAdditionalProperties.qute m=m.model additionalPropertiesAsAttribute=additionalPropertiesAsAttribute /}
     /**
      * Create a string representation of this pojo.
      **/
@@ -133,6 +133,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
         sb.append("    {v.name}: ").append(toIndentedString({v.name})).append("\n");
         {/if}
         {/for}
+        {#if m.isAdditionalPropertiesTrue && additionalPropertiesAsAttribute}sb.append("    additionalProperties: ").append(toIndentedString(this.additionalProperties)).append("\n");{/if}
         sb.append("}");
         return sb.toString();
     }

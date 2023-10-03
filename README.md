@@ -831,6 +831,10 @@ The generated code will be:
 public interface DefaultApi { /* omitted */ }
 ```
 
+## Additional Properties as Attribute
+
+If you want to map your models using composition instead inheretance for a better experience with Jackson, see the [Additional properties as attribute](./docs/modules/ROOT/pages/additional-properties-as-attribute.adoc) documentation.
+
 ## Template Customization
 
 You have the option to swap out the [templates used by this extension](deployment/src/main/resources/templates/libraries/microprofile) with your customized versions. To achieve this, place your custom templates under the `resources/templates` directory. It's crucial that the filename of each custom template matches that of the original template.
