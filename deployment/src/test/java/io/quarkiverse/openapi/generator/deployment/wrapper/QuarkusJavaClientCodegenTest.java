@@ -11,7 +11,7 @@ class QuarkusJavaClientCodegenTest {
     @CsvSource({
             "/status/addressStatus,String,SLASH_STATUS_SLASH_ADDRESSSTATUS",
             "$,String,DOLLAR_SYMBOL",
-            "/users,Strubg,SLASH_USERS",
+            "/users,String,SLASH_USERS",
             "'  ',String,SPACE_SPACE",
             "123456,String,NUMBER_123456",
             "123456,Integer,NUMBER_123456", // old behavior
