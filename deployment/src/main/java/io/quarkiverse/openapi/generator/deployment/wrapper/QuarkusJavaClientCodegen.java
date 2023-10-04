@@ -137,8 +137,9 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         Map<Integer, String> indexesOfSpecialChars = new TreeMap<>();
         for (String key : this.specialCharReplacements.keySet()) {
             // no consider underscore from super result
-            if (Objects.equals(key, "_"))
+            if (Objects.equals(key, "_")) {
                 continue;
+            }
 
             int index = value.indexOf(key);
             while (index != -1) {
