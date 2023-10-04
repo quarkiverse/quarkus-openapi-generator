@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
@@ -36,6 +37,7 @@ public abstract class OpenApiClientGeneratorWrapper {
      * Security scheme for which to apply security constraints even if the OpenAPI definition has no security definition
      */
     public static final String DEFAULT_SECURITY_SCHEME = "defaultSecurityScheme";
+    public static final String SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE = "supportsAdditionalPropertiesWithComposedSchema";
     private static final Map<String, String> defaultTypeMappings = Map.of(
             "date", "LocalDate",
             "DateTime", "OffsetDateTime");
@@ -238,5 +240,9 @@ public abstract class OpenApiClientGeneratorWrapper {
         if (config != null && !config.isBlank()) {
             this.configurator.addAdditionalProperty("configKey", StringUtil.replaceNonAlphanumericByUnderscores(config));
         }
+    }
+
+    public void withAdditionalPropertiesAsAttribute(final Boolean enable) {
+        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", Optional.ofNullable(enable).orElse(FALSE));
     }
 }
