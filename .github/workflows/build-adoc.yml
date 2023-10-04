@@ -8,14 +8,23 @@ on:
 jobs:
   pre-preview:
     name: ADOC - Workflow
-    runs-on: ${{ matrix.os }}
-    strategy:
-     matrix:
-        os: [ubuntu-latest, windows-latest]
-        java: [
-          { 'version': '11' },
-          { 'version': '17' }
-        ]
+    runs-on: ubuntu-latest
     steps:
-      - name: Pre preview
-        run: echo Pre preview
+      - uses: actions/checkout@v3
+
+      - name: Set up ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Build Jekyll site
+        uses: limjh16/jekyll-action-ts@v2
+        with:
+          enable_cache: true
+
+      - name: Publishing directory for PR preview
+        uses: actions/upload-artifact@v3
+        with:
+          name: site
+          path: ./_site
+          retention-days: 3
