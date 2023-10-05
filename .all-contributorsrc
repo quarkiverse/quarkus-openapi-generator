@@ -235,6 +235,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "ninckblokje",
+      "name": "ninckblokje",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2307375?v=4",
+      "profile": "https://github.com/ninckblokje",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
