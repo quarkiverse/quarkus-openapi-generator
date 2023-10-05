@@ -289,6 +289,8 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 
 The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
 
+If an `Authorization` header is present, then the value of this header is used as API Key. This behaviour can be changed by setting the property `use-authorization-header-value` to `false`.
+
 ### OAuth2 Authentication
 
 The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use
