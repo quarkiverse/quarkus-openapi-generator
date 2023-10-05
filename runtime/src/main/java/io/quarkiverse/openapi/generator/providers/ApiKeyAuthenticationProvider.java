@@ -22,6 +22,7 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiKeyAuthenticationProvider.class);
 
     static final String API_KEY = "api-key";
+    static final String USE_AUTHORIZATION_HEADER_VALUE = "use-authorization-header-value";
 
     private final ApiKeyIn apiKeyIn;
     private final String apiKeyName;
@@ -43,11 +44,12 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
                 requestContext.setUri(UriBuilder.fromUri(requestContext.getUri()).queryParam(apiKeyName, getApiKey()).build());
                 break;
             case cookie:
-                requestContext.getCookies().put(apiKeyName, new Cookie(apiKeyName, getApiKey()));
+                requestContext.getCookies().put(apiKeyName, new Cookie.Builder(apiKeyName).value(getApiKey()).build());
                 break;
             case header:
                 if (requestContext.getHeaderString("Authorization") != null
-                        && !requestContext.getHeaderString("Authorization").isEmpty()) {
+                        && !requestContext.getHeaderString("Authorization").isEmpty()
+                        && isUseAuthorizationHeaderValue()) {
                     requestContext.getHeaders().putSingle(apiKeyName, requestContext.getHeaderString("Authorization"));
                 } else
                     requestContext.getHeaders().putSingle(apiKeyName, getApiKey());
@@ -61,6 +63,11 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
             LOGGER.warn("configured " + API_KEY + " property (see application.properties) is empty. hint: configure it.");
         }
         return key;
+    }
+
+    private boolean isUseAuthorizationHeaderValue() {
+        final String value = getAuthConfigParam(USE_AUTHORIZATION_HEADER_VALUE, "true");
+        return "true".equals(value);
     }
 
     private void validateConfig() {
