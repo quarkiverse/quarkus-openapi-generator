@@ -12,9 +12,9 @@
   <packaging>pom</packaging>
   <name>Quarkus - Openapi Generator - Parent</name>
   <modules>
-    <module>deployment</module>
-    <module>runtime</module>
-    <module>test-utils</module>
+    <module>client/deployment</module>
+    <module>client/runtime</module>
+    <module>client/test-utils</module>
     <module>server</module>
     <module>docs</module>
   </modules>
@@ -127,7 +127,8 @@
         </property>
       </activation>
       <modules>
-        <module>integration-tests</module>
+        <module>client/integration-tests</module>
+        <module>server/integration-tests</module>
       </modules>
     </profile>
   </profiles>
