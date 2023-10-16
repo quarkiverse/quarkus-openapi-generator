@@ -108,7 +108,7 @@ a|icon:lock[title=Fixed at build time] [[quarkus-freemarker_quarkus.freemarker.d
 List of directives to register with format name=classname
 --|`Map<String,String>`
 |
-a| [[quarkus-freemarker_quarkus.freemarker.object-wrapper-expose-fields]]`link:#quarkus-freemarker_quarkus.freemarker.object-wrapper-expose-fields[quarkus.freemarker.object-wrapper-expose-fields]`
+a| [[quarkus-freemarker_quarkus.freemarker.object-wrapper-expose-fields1]]`link:#quarkus-freemarker_quarkus.freemarker.object-wrapper-expose-fields[quarkus.freemarker.object-wrapper-expose-fields]`
 
 [.description]
 --

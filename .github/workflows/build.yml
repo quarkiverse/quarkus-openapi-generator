@@ -18,7 +18,6 @@ on:
       - 'CODEOWNERS'
       - 'LICENSE'
       - '*.md'
-      - '*.adoc'
       - '*.txt'
       - '.all-contributorsrc'
 
@@ -46,8 +45,24 @@ jobs:
           java-version: ${{matrix.java.version}}
           cache: 'maven'
 
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.6
+
       - name: Build with Maven
         run: mvn '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml
+
+      - name: Store PR id
+        run: |
+          echo ${{ github.event.number }} > ./docs/target/generated-docs/pr-id.txt
+
+      - name: Publishing directory for PR preview
+        uses: actions/upload-artifact@v3
+        with:
+          name: site
+          path: ./docs/target/generated-docs
+          retention-days: 3
 
   build_reactive:
     name: Build - RESTEasy Reactive
@@ -72,5 +87,21 @@ jobs:
           java-version: ${{matrix.java.version}}
           cache: 'maven'
 
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.6
+
       - name: Build with Maven
         run: mvn -Presteasy-reactive '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml
+
+      - name: Store PR id
+        run: |
+          echo ${{ github.event.number }} > ./docs/target/generated-docs/pr-id.txt
+
+      - name: Publishing directory for PR preview
+        uses: actions/upload-artifact@v3
+        with:
+          name: site
+          path: ./docs/target/generated-docs
+          retention-days: 3

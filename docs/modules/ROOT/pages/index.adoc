@@ -19,4 +19,4 @@ In your `pom.xml` file, add:
 [[extension-configuration-reference]]
 == Extension Configuration Reference
 
-include::config.adoc[leveloffset=+1, opts=optional]
+include::./includes/config.adoc[]
