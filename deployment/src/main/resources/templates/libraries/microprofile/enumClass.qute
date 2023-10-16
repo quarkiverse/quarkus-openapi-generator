@@ -31,7 +31,7 @@
         }
 
         @com.fasterxml.jackson.annotation.JsonCreator
-        public static {e.enumName} fromValue(String v) {
+        public static {e.enumName} fromString(String v) {
             for ({#if e.enumName}{e.enumName}{#else}{e.classname}{/if} b : values) {
                 if (String.valueOf(b.value).equalsIgnoreCase(v)) {
                     return b;
