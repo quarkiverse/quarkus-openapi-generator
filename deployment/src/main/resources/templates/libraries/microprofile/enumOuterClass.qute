@@ -21,8 +21,12 @@ import java.util.EnumSet;
         this.value = value;
     }
 
+    @com.fasterxml.jackson.annotation.JsonValue
+    public {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value() {
+        return value;
+    }
+
     @Override
-    @JsonValue
     public String toString() {
         return String.valueOf(value);
     }
