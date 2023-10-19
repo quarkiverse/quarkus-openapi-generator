@@ -27,7 +27,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>3.4.3</quarkus.version>
+    <quarkus.version>3.5.0</quarkus.version>
     <version.com.github.javaparser>3.25.5</version.com.github.javaparser>
     <version.org.assertj>3.24.2</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.0.2</version.org.eclipse.microprofile.fault-tolerance>
