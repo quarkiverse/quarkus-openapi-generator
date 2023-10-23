@@ -834,7 +834,7 @@ public interface DefaultApi { /* omitted */ }
 
 ## Additional Properties as Attribute
 
-If you want to map your models using composition instead inheretance for a better experience with Jackson, see the [Additional properties as attribute](./docs/modules/ROOT/pages/additional-properties-as-attribute.adoc) documentation.
+If you want to map your models using composition instead inheretance for a better experience with Jackson, see the [Additional properties as attribute](./docs/modules/ROOT/pages/includes/additional-properties-as-attribute.adoc) documentation.
 
 ## Template Customization
 

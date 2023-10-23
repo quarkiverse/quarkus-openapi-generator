@@ -15,6 +15,7 @@
     <module>deployment</module>
     <module>runtime</module>
     <module>test-utils</module>
+    <module>docs</module>
   </modules>
   <scm>
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
