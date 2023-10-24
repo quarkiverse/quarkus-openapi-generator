@@ -61,7 +61,7 @@ public class PetResource {
 
 Let's see what happens when the PetResource service `customUpdatePet` operation is invoked by a third party.
 
-=== Default flow
+== Default flow
 
 . The `customUpdatePet` operation is invoked.
 . An authorization token is obtained using the corresponding `petstore_auth` OidcClient configuration. (for more information see <<_oauth2_authentication>>)

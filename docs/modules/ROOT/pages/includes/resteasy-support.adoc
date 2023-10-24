@@ -1,7 +1,7 @@
 
 You can use the `quarkus-openapi-generator` with REST Client Classic or REST Client Reactive respectively. To do so add either the classic or reactive jackson dependency to your project's `pom.xml` file:
 
-=== RESTEasy Classic
+== RESTEasy Classic
 
 [source,xml]
 ----
@@ -13,7 +13,7 @@ You can use the `quarkus-openapi-generator` with REST Client Classic or REST Cli
 
 WARNING: After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
 
-=== RESTEasy Reactive
+== RESTEasy Reactive
 
 [source,xml]
 ----

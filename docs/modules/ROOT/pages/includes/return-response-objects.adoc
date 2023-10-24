@@ -2,7 +2,7 @@ By default, this extension generates the methods according to their returning mo
 
 If you want to return `jakarta.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `true`.
 
-=== Example
+== Example
 
 Given you want to return `jakarta.ws.rs.core.Response` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
 

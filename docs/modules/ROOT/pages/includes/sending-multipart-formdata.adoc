@@ -140,7 +140,7 @@ public class MultipartBody {
 
 See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/part-filename[part-filename] for examples of how to use these features.
 
-=== Default content-types according to OpenAPI Specification and limitations
+== Default content-types according to OpenAPI Specification and limitations
 
 The https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#special-considerations-for-multipart-content[OAS 3.0] specifies the following default content-types for a multipart:
 

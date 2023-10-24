@@ -46,7 +46,7 @@ If the OpenAPI specification file has `securitySchemes` definitions, but no http
 
 See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/security[security] for an example of how to use this feature.
 
-=== Basic HTTP Authentication
+== Basic HTTP Authentication
 
 For Basic HTTP Authentication, these are the supported configurations:
 
@@ -62,7 +62,7 @@ For Basic HTTP Authentication, these are the supported configurations:
 |`quarkus.openapi-generator.petstore_json.auth.basic_auth-password`
 |===
 
-=== Bearer Token Authentication
+== Bearer Token Authentication
 
 Authentication, these are the supported configurations:
 
@@ -75,7 +75,7 @@ Authentication, these are the supported configurations:
 |`quarkus.openapi-generator.petstore_json.auth.bearer.bearer-token`
 |===
 
-=== API Key Authentication
+== API Key Authentication
 
 Similarly to bearer token, the API Key Authentication also has the token entry key property:
 
@@ -90,7 +90,7 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 
 The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
 
-=== OAuth2 Authentication
+== OAuth2 Authentication
 
 The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use
 the https://quarkus.io/guides/security-openid-connect-client[Quarkus OIDC Extension] configuration to define your authentication flow.

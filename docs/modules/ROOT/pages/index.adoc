@@ -18,47 +18,47 @@ This extension is for REST code generation for client side only. If you're looki
 [[getting-started]]
 == Getting Started
 
-include::getting-started.adoc[leveloffset=+1, opts=optional]
+include::./includes/getting-started.adoc[leveloffset=+1, opts=optional]
 
 [[resteasy-support]]
 == RESTEasy Reactive and Classic support
 
-include::resteasy-support.adoc[leveloffset=+1, opts=optional]
+include::./includes/resteasy-support.adoc[leveloffset=+1, opts=optional]
 
 [[returning-response-objects]]
 == Returning `Response` objects
 
-include::return-response-objects.adoc[leveloffset=+1, opts=optional]
+include::./includes/return-response-objects.adoc[leveloffset=+1, opts=optional]
 
 [[logging]]
 == Logging
 
-include::logging.adoc[leveloffset=+1, opts=optional]
+include::./includes/logging.adoc[leveloffset=+1, opts=optional]
 
 [[filter-openapi-spec-files]]
 == Filtering OpenAPI Specification Files
 
-include::filter-openapi-spec-files.adoc[leveloffset=+1, opts=optional]
+include::./includes/filter-openapi-spec-files.adoc[leveloffset=+1, opts=optional]
 
 [[authentication-support]]
 == Authentication Support
 
-include::authentication-support.adoc[leveloffset=+1, opts=optional]
+include::./includes/authentication-support.adoc[leveloffset=+1, opts=optional]
 
 [[autorization-token-prop]]
 == Authorization Token Propagation
 
-include::authorization-token-propagation.adoc[leveloffset=+1, opts=optional]
+include::./includes/authorization-token-propagation.adoc[leveloffset=+1, opts=optional]
 
 [[circuit-breaker]]
 == Circuit Breaker
 
-include::circuit-breaker.adoc[leveloffset=+1, opts=optional]
+include::./includes/circuit-breaker.adoc[leveloffset=+1, opts=optional]
 
 [[sending-multipart-formdata]]
 == Sending multipart/form-data
 
-include::sending-multipart-formdata.adoc[leveloffset=+1, opts=optional]
+include::./includes/sending-multipart-formdata.adoc[leveloffset=+1, opts=optional]
 
 == Generating files via InputStream
 
@@ -151,12 +151,17 @@ See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/mai
 [[config-key]]
 == Config key
 
-include::config-key.adoc[leveloffset=+1, opts=optional]
+include::./includes/config-key.adoc[leveloffset=+1, opts=optional]
 
 [[template-customization]]
 == Template Customization
 
-include::template-customization.adoc[leveloffset=+1, opts=optional]
+include::./includes/template-customization.adoc[leveloffset=+1, opts=optional]
+
+[[additional-properties]]
+== Additional Properties as Attribute
+
+include::./includes/additional-properties-as-attribute.adoc[leveloffset=+1, opts=optional]
 
 == Known Limitations
 

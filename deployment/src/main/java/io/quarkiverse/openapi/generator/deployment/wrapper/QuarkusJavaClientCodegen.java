@@ -3,9 +3,11 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -110,6 +112,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                 .ifPresent(url -> additionalProperties.put(DEFAULT_SERVER_URL, url));
         additionalProperties.put(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
                 GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME));
+
+        this.configureAdditionalPropertiesAsAttribute();
     }
 
     @Override
@@ -118,17 +122,67 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (verbose) {
             super.postProcess();
         }
+
+    }
+
+    @Override
+    public String toEnumVarName(String value, String datatype) {
+
+        if (value.isBlank()) {
+            return "EMPTY";
+        }
+
+        if (this.getSymbolName(value) != null) {
+            return this.getSymbolName(value).toUpperCase(Locale.ROOT);
+        }
+
+        String enumVarName = super.toEnumVarName(value, datatype);
+
+        if (enumVarName.startsWith("NUMBER_")) {
+            return enumVarName;
+        }
+
+        Map<Integer, String> indexesOfSpecialChars = new TreeMap<>();
+        for (String key : this.specialCharReplacements.keySet()) {
+            // no consider underscore from super result
+            if (Objects.equals(key, "_")) {
+                continue;
+            }
+
+            int index = value.indexOf(key);
+            while (index != -1) {
+                indexesOfSpecialChars.put(index, key);
+                index = value.indexOf(key, index + key.length());
+            }
+        }
+
+        for (String specialChar : indexesOfSpecialChars.values()) {
+            enumVarName = enumVarName.replaceFirst("_", this.specialCharReplacements.get(specialChar));
+        }
+
+        for (String specialChar : this.specialCharReplacements.values()) {
+            if (enumVarName.contains(specialChar)) {
+                enumVarName = enumVarName.replace(specialChar, "_" + specialChar + "_");
+            }
+        }
+
+        // remove _ at start and end
+        enumVarName = enumVarName.replaceAll("^_+|_+$", "");
+        enumVarName = enumVarName.replaceFirst("\\d.*", "_".concat(enumVarName));
+
+        return enumVarName.toUpperCase(Locale.ROOT);
     }
 
     @Override
     protected String getSymbolName(String input) {
-        for (Entry<String, String> entry : specialCharReplacements.entrySet()) {
-            if (input.startsWith(entry.getKey())) {
-                return input.length() > entry.getKey().length()
-                        ? entry.getValue() + "_" + input.substring(entry.getKey().length())
-                        : entry.getValue() + "_symbol";
-            }
+        String symbolName = this.specialCharReplacements.get(input);
+        return symbolName != null ? symbolName.concat("_symbol") : null;
+    }
+
+    private void configureAdditionalPropertiesAsAttribute() {
+        String property = GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE);
+        if (Boolean.parseBoolean(property)) {
+            this.supportsAdditionalPropertiesWithComposedSchema = true;
         }
-        return null;
     }
 }
