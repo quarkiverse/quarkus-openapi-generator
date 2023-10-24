@@ -30,11 +30,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            🎊 PR Preview ${{ github.sha }} has been successfully built and deployed to https://quarkus-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
-            <img width="300" src="https://user-images.githubusercontent.com/507615/90250366-88233900-de6e-11ea-95a5-84f0762ffd39.png">
+            🎊 PR Preview ${{ github.sha }} has been successfully built and deployed. [See the documentation preview here](https://quarkus-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh). 
             <!-- Sticky Pull Request Comment -->
           body-include: '<!-- Sticky Pull Request Comment -->'
           number: ${{ steps.pr.outputs.id }}
+          emojis: 'heart'
       - name: Update PR status comment on failure
         if: ${{ failure() }}
         uses: actions-cool/maintain-one-comment@v3.1.1
@@ -46,3 +46,4 @@ jobs:
             <!-- Sticky Pull Request Comment -->
           body-include: '<!-- Sticky Pull Request Comment -->'
           number: ${{ steps.pr.outputs.id }}
+          emojis: 'confused'
