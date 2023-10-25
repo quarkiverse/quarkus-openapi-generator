@@ -1,0 +1,8 @@
+Since the most part of this extension work is in the `generate-code` execution phase of the Quarkus Maven's plugin, the log configuration must be set in the Maven context. When building your project, add `-Dorg.slf4j.simpleLogger.log.org.openapitools=off` to the `mvn` command to reduce the internal generator noise. For example:
+
+[source,shell]
+----
+mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
+----
+
+For more information, see the https://maven.apache.org/maven-logging.html[Maven Logging Configuration] guide.
