@@ -23,6 +23,7 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     private static final String API_KEY_NAME = "API_KEY_NAME";
     private static final String API_KEY_VALUE = "API_KEY_VALUE";
+    private static final String API_KEY_AUTH_HEADER_VALUE = "API_KEY_AUTH_HEADER_VALUE";
 
     private static final URI INVOKED_URI = URI.create("https://example.com/my-service");
 
@@ -40,6 +41,31 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
             OpenApiGeneratorConfig openApiGeneratorConfig) {
         return new ApiKeyAuthenticationProvider(openApiSpecId, authSchemeName, ApiKeyIn.header, API_KEY_NAME,
                 openApiGeneratorConfig);
+    }
+
+    @Test
+    void filterHeaderFromAuthorizationHeaderDefaultCase() throws IOException {
+        doReturn(API_KEY_AUTH_HEADER_VALUE).when(requestContext).getHeaderString("Authorization");
+        provider.filter(requestContext);
+        assertHeader(headers, API_KEY_NAME, API_KEY_AUTH_HEADER_VALUE);
+    }
+
+    @Test
+    void filterHeaderFromAuthorizationHeaderCase() throws IOException {
+        authConfig.authConfigParams.put(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE, "true");
+        doReturn(API_KEY_AUTH_HEADER_VALUE).when(requestContext).getHeaderString("Authorization");
+        provider.filter(requestContext);
+        assertHeader(headers, API_KEY_NAME, API_KEY_AUTH_HEADER_VALUE);
+        authConfig.authConfigParams.remove(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE);
+    }
+
+    @Test
+    void filterHeaderNotFromAuthorizationHeaderCase() throws IOException {
+        authConfig.authConfigParams.put(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE, "false");
+        doReturn(API_KEY_AUTH_HEADER_VALUE).when(requestContext).getHeaderString("Authorization");
+        provider.filter(requestContext);
+        assertHeader(headers, API_KEY_NAME, API_KEY_VALUE);
+        authConfig.authConfigParams.remove(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE);
     }
 
     @Test
