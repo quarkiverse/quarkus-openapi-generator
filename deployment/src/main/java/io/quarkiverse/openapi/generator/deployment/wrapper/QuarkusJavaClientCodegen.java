@@ -168,7 +168,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
         // remove _ at start and end
         enumVarName = enumVarName.replaceAll("^_+|_+$", "");
-        enumVarName = enumVarName.replaceFirst("\\d.*", "_".concat(enumVarName));
+        enumVarName = enumVarName.replaceFirst("^(\\d).*", "_".concat(enumVarName));
 
         return enumVarName.toUpperCase(Locale.ROOT);
     }
