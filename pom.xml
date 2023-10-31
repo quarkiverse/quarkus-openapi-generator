@@ -12,11 +12,8 @@
   <packaging>pom</packaging>
   <name>Quarkus - Openapi Generator - Parent</name>
   <modules>
-    <module>client/deployment</module>
-    <module>client/runtime</module>
-    <module>client/test-utils</module>
+    <module>client</module>
     <module>server</module>
-    <module>docs</module>
   </modules>
   <scm>
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>

@@ -1,12 +1,6 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
-import io.apicurio.hub.api.codegen.JaxRsProjectSettings;
-import io.apicurio.hub.api.codegen.OpenApi2JaxRs;
-import io.quarkus.bootstrap.prebuild.CodeGenException;
-import org.apache.commons.io.IOUtils;
-import org.eclipse.microprofile.config.Config;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +13,14 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
+import org.apache.commons.io.IOUtils;
+import org.eclipse.microprofile.config.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.apicurio.hub.api.codegen.JaxRsProjectSettings;
+import io.apicurio.hub.api.codegen.OpenApi2JaxRs;
+import io.quarkus.bootstrap.prebuild.CodeGenException;
 
 public class ApicurioCodegenWrapper {
 

@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>io.quarkiverse.openapi.generator</groupId>
-    <artifactId>quarkus-openapi-generator-parent</artifactId>
+    <artifactId>quarkus-openapi-generator-client-parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
@@ -33,7 +33,7 @@
               </goals>
               <configuration>
                 <files>
-                  <file>${project.basedir}/../.github/project.yml</file>
+                  <file>${project.basedir}/../../.github/project.yml</file>
                 </files>
               </configuration>
             </execution>
