@@ -14,12 +14,12 @@
 
 > **⚠️** Check versions 1.x.x if you're still using Quarkus 2. But be aware that we no longer support Quarkus 2. That means there are no updates planned for those versions.
 
-Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
+Quarkus' extensions for generation of [Rest Clients](https://quarkus.io/guides/rest-client) and server stubs generation based on the [Apicurio Codegen](https://github.com/Apicurio/apicurio-codegen) capabilities based on OpenAPI specification files.
 
-This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
+This clien-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
 project: https://opencollective.com/openapi_generator/donate
 
-This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
+This repository holds two Quarkus extensions. The one located on the client folder is for REST code generation for client side only. The extension located in the server folder can be used for server stubs generation.
 
 **Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read [this page](CONTRIBUTING.md).
 
