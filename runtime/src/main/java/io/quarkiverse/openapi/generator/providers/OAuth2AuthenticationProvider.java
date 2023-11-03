@@ -57,7 +57,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
         }
     }
 
-    public interface OidcClientRequestFilterDelegate<T extends ClientRequestContext> {
-        void filter(T requestContext) throws IOException;
+    public interface OidcClientRequestFilterDelegate {
+        void filter(ClientRequestContext requestContext) throws IOException;
     }
 }
