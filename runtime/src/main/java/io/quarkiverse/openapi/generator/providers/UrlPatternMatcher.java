@@ -64,7 +64,7 @@ import java.util.regex.Pattern;
  */
 public class UrlPatternMatcher {
     // Finds parameters in the URL pattern string.
-    private static final String URL_PARAM_REGEX = "\\{(\\w*?)\\}";
+    private static final String URL_PARAM_REGEX = "\\{(\\S*?)\\}";
 
     // Replaces parameter names in the URL pattern string to match parameters in URLs.
     private static final String URL_PARAM_MATCH_REGEX = "\\([%\\\\w-.\\\\~!\\$&'\\\\(\\\\)\\\\*\\\\+,;=:\\\\[\\\\]@]+?\\)";
