@@ -263,6 +263,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "gabriel-farache",
+      "name": "gabriel-farache",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3036508?v=4",
+      "profile": "https://github.com/gabriel-farache",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
