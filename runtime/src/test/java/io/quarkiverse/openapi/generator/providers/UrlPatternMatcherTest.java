@@ -31,7 +31,8 @@ class UrlPatternMatcherTest {
                 Arguments.of("/{id}/pets/{id2}", "/1/pets/2?q=1&q2=2"),
                 Arguments.of("/{id}/{foo}/{id2}", "/1/2/3?q=1&q2=2"),
                 Arguments.of("/{id}/{foo}/{id2}", "/1/2/3"),
-                Arguments.of("/v2/pets/{id}", "/v2/pets/1"));
+                Arguments.of("/v2/pets/{id}", "/v2/pets/1"),
+                Arguments.of("/pets/{pet-id}/types/{type-id}", "/pets/1/types/2"));
     }
 
 }
