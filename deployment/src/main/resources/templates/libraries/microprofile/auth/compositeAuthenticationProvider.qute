@@ -208,7 +208,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         }
 
         @Override
-        public void filter(jakarta.ws.rs.client.ClientRequestContext requestContext) throws java.io.IOException {
+        public void filter(javax.ws.rs.client.ClientRequestContext requestContext) throws java.io.IOException {
             filter((org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext)requestContext);
         }
     }
