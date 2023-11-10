@@ -199,10 +199,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
     {#for auth in oauthMethods.orEmpty}
     @jakarta.enterprise.context.Dependent
     {#if is-resteasy-reactive}
-    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.reactive.filter.OidcClientRequestReactiveFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate<org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext> {
-    {#else}
-    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.filter.OidcClientRequestFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate<jakarta.ws.rs.client.ClientRequestContext> {
-    {/if}
+    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.reactive.filter.OidcClientRequestReactiveFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
 
         private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
 
@@ -210,6 +207,21 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         protected Optional<String> clientId() {
             return Optional.of(clientId);
         }
+
+        @Override
+        public void filter(jakarta.ws.rs.client.ClientRequestContext requestContext) throws java.io.IOException {
+            filter((org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext)requestContext);
+        }
     }
+    {#else}
+    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.filter.OidcClientRequestFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
+        private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
+
+        @Override
+        protected Optional<String> clientId() {
+            return Optional.of(clientId);
+        }
+    }
+    {/if}
     {/for}
 }
