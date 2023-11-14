@@ -10,7 +10,7 @@
   <name>Quarkus - Openapi Generator - Deployment</name>
 
   <properties>
-    <version.org.openapitools>7.0.1</version.org.openapitools>
+    <version.org.openapitools>7.1.0</version.org.openapitools>
     <version.org.slf4j>2.0.9</version.org.slf4j>
     <version.com.github.jknack>4.3.1</version.com.github.jknack>
     <version.io.swagger.parser>2.1.18</version.io.swagger.parser>
