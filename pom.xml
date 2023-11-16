@@ -8,7 +8,7 @@
   </parent>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator-parent</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>1.3.14</version>
   <packaging>pom</packaging>
   <name>Quarkus - Openapi Generator - Parent</name>
   <modules>
@@ -20,7 +20,7 @@
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
     <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</developerConnection>
     <url>https://github.com/quarkiverse/quarkus-openapi-generator</url>
-    <tag>HEAD</tag>
+    <tag>1.3.14</tag>
   </scm>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
