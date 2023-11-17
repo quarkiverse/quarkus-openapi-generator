@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.UriBuilder;
 
 import org.slf4j.Logger;
@@ -44,7 +45,8 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
                 requestContext.setUri(UriBuilder.fromUri(requestContext.getUri()).queryParam(apiKeyName, getApiKey()).build());
                 break;
             case cookie:
-                requestContext.getCookies().put(apiKeyName, new Cookie.Builder(apiKeyName).value(getApiKey()).build());
+                final Cookie cookie = new Cookie.Builder(apiKeyName).value(getApiKey()).build();
+                requestContext.getHeaders().add(HttpHeaders.COOKIE, cookie);
                 break;
             case header:
                 if (requestContext.getHeaderString("Authorization") != null
