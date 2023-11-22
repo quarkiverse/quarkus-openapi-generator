@@ -1,4 +1,4 @@
-= Quarkus - Openapi Generator
+= Quarkus - Openapi Generator - Client
 :extension-status: preview
 
 

@@ -9,7 +9,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>quarkus-openapi-generator-docs</artifactId>
-  <name>Quarkus - Openapi Generator - Documentation</name>
+  <name>Quarkus - Openapi Generator - Client - Documentation</name>
 
   <dependencies>
     <!-- Make sure the doc is built after the other artifacts -->
