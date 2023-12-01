@@ -45,8 +45,7 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
                 requestContext.setUri(UriBuilder.fromUri(requestContext.getUri()).queryParam(apiKeyName, getApiKey()).build());
                 break;
             case cookie:
-                final Cookie cookie = new Cookie.Builder(apiKeyName).value(getApiKey()).build();
-                requestContext.getHeaders().add(HttpHeaders.COOKIE, cookie);
+                requestContext.getHeaders().add(HttpHeaders.COOKIE, new Cookie.Builder(apiKeyName).value(getApiKey()).build());
                 break;
             case header:
                 if (requestContext.getHeaderString("Authorization") != null
