@@ -16,7 +16,7 @@
 
 Quarkus' extensions for generation of [Rest Clients](https://quarkus.io/guides/rest-client) and server stubs generation based on the [Apicurio Codegen](https://github.com/Apicurio/apicurio-codegen) capabilities based on OpenAPI specification files.
 
-This clien-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
+This client-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
 project: https://opencollective.com/openapi_generator/donate
 
 This repository holds two Quarkus extensions. The one located on the client folder is for REST code generation for client side only. The extension located in the server folder can be used for server stubs generation.
