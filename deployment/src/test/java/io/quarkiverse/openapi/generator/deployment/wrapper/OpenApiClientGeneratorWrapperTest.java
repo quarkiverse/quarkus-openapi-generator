@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.openapitools.codegen.config.GlobalSettings;
 
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.Node;
@@ -128,6 +129,33 @@ public class OpenApiClientGeneratorWrapperTest {
                 .hasSize(3)
                 .extracting(EnumConstantDeclaration::getNameAsString)
                 .containsExactlyInAnyOrder("DISCONNECTED", "READY", "DELETING");
+    }
+
+    @Test
+    void verifyAtSignPathAnnotationGeneration() throws URISyntaxException, FileNotFoundException {
+        final List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate("org.petstore");
+        final Optional<File> apiFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("PetApi.java")).findFirst();
+        assertThat(apiFile).isPresent();
+
+        final CompilationUnit cu = StaticJavaParser.parse(apiFile.orElseThrow());
+        final List<MethodDeclaration> methodDeclarations = cu.findAll(MethodDeclaration.class);
+
+        final List<String> methodNamesForChecking = List.of("addPet", "updatePet");
+
+        assertThat(methodDeclarations)
+                .hasSize(8)
+                .filteredOn(m -> methodNamesForChecking.contains(m.getNameAsString()))
+                .map(m -> m.getAnnotationByName("Path"))
+                .filteredOn(Optional::isPresent)
+                .map(Optional::get)
+                .map(Node::getTokenRange)
+                .filteredOn(Optional::isPresent)
+                .map(Optional::get)
+                .map(TokenRange::toString)
+                .hasSize(methodNamesForChecking.size())
+                .allMatch(value -> value.equals("@Path(\"/\")"));
+
     }
 
     @Test

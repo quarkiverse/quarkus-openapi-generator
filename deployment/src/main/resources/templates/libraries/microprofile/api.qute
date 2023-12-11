@@ -58,6 +58,8 @@ public interface {classname} {
     @{op.httpMethod}
     {#if op.subresourceOperation}
     @Path("{op.path}")
+    {#else}
+    @Path("/")
     {/if}
     {#if op.hasConsumes}
     @Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
