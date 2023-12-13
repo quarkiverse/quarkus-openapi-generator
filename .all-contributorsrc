@@ -273,6 +273,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "martinoneutrino",
+      "name": "Martin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8833492?v=4",
+      "profile": "https://github.com/martinoneutrino",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
