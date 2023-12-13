@@ -34,8 +34,10 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
         } else {
             bearerToken = getBearerToken();
         }
-        requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
+        if (!bearerToken.isBlank()) {
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
+                    AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
+        }
     }
 
     private String getBearerToken() {
