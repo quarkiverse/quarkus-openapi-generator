@@ -55,7 +55,7 @@ jobs:
 
       - name: Publishing directory for PR preview
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: site
           path: ./docs/target/generated-docs
@@ -94,7 +94,7 @@ jobs:
 
       - name: Publishing directory for PR preview
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: site
           path: ./docs/target/generated-docs
