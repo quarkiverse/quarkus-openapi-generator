@@ -16,7 +16,7 @@ jobs:
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           workflow_conclusion: success
-          name: site
+          name: site-17-ubuntu-latest
       - name: Store PR id as variable
         id: pr
         run: |

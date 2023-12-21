@@ -26,7 +26,7 @@ jobs:
     name: Build - RESTEasy Classic
     runs-on: ${{ matrix.os }}
     strategy:
-     matrix:
+      matrix:
         os: [ubuntu-latest, windows-latest]
         java: [
           { 'version': '11' },
@@ -57,7 +57,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: site
+          name: site-{{ matrix.java.version }}-{{ matrix.os }}
           path: ./docs/target/generated-docs
           retention-days: 3
 
@@ -96,6 +96,6 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: site
+          name: site-{{ matrix.java.version }}-{{ matrix.os }}
           path: ./docs/target/generated-docs
           retention-days: 3
