@@ -33,6 +33,7 @@
     <module>config-key</module>
     <module>github</module>
     <module>additional-properties</module>
+    <module>codestarts</module>
   </modules>
   <dependencyManagement>
     <dependencies>
