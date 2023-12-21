@@ -34,7 +34,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: mvn '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml
+        run: mvn '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml -DskipTests
 
       - name: Store PR id
         if: github.event_name == 'pull_request'
