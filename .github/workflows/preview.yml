@@ -2,7 +2,7 @@ name: Surge.sh Preview
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: ["Build Website"]
     types:
       - completed
 
@@ -16,7 +16,7 @@ jobs:
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           workflow_conclusion: success
-          name: site-17-ubuntu-latest
+          name: site
       - name: Store PR id as variable
         id: pr
         run: |
