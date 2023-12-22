@@ -9,3 +9,8 @@ metadata:
   categories:
     - "web"
   status: "preview"
+  codestart:
+    name: "openapi-generator"
+    languages:
+    - "java"
+    artifact: "io.quarkiverse.openapi.generator:quarkus-openapi-generator:codestarts:jar:${project.version}"

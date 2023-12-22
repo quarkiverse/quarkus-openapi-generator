@@ -1,0 +1,42 @@
+openapi: 3.0.3
+info:
+  title: Generated API
+  version: "1.0"
+paths:
+  /fruits:
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fruit'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+    delete:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fruit'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: { }
+components:
+  schemas:
+    Fruit:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
