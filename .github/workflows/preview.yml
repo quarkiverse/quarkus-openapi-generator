@@ -24,13 +24,13 @@ jobs:
           rm -f pr-id.txt
       - name: Publishing to surge for preview
         id: deploy
-        run: npx surge ./ --domain https://quarkus-openapi-generator-preview-pr-${{  steps.pr.outputs.id }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+        run: npx surge ./ --domain https://quarkus-openapi-generator-preview-pr-${{  steps.pr.outputs.id }}.surge.sh --token ${{ secrets.SURGE_LOCAL_TOKEN }}
       - name: Update PR status comment on success
         uses: actions-cool/maintain-one-comment@v3.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            🎊 PR Preview ${{ github.sha }} has been successfully built and deployed. [See the documentation preview here](https://quarkus-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh). 
+            🎊 PR Preview ${{ github.sha }} has been successfully built and deployed. See the documentation preview: https://quarkus-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
             <!-- Sticky Pull Request Comment -->
           body-include: '<!-- Sticky Pull Request Comment -->'
           number: ${{ steps.pr.outputs.id }}
