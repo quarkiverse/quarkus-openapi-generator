@@ -39,7 +39,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
     @PostConstruct
     public void init() {
         {#for auth in oauthMethods.orEmpty}
-        oAuth2Provider{auth_index}.init(sanitizeAuthName("{auth.name}"), "{quarkus-generator.openApiSpecId}", oidcClientRequestFilterDelegate{auth_index});
+        oAuth2Provider{auth_index}.init(sanitizeAuthName("{auth.name}"), "{configKey}", oidcClientRequestFilterDelegate{auth_index});
         {/for}
 
         {#for auth in httpBasicMethods.orEmpty}
