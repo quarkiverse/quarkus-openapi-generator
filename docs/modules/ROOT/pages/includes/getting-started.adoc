@@ -51,7 +51,15 @@ To fine tune the configuration for each spec file, add the following entry to yo
 quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annotations=@org.test.Foo;@org.test.Bar
 ----
 
-If a base package name is not provided, it will be used the default `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
+If you want to change the base package in which the classes are generated, use the `quarkus.openapi-generator.codegen.spec.<filename>.base-package` property.
+If a base package is not provided, it will default to `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme
+----
+
+
 
 Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in https://openapi-generator.tech/docs/generators/java/#config-options[OpenApi Generator Doc]).
 
