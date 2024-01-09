@@ -5,4 +5,4 @@ Since the most part of this extension work is in the `generate-code` execution p
 mvn clean install -Dorg.slf4j.simpleLogger.log.org.openapitools=off
 ----
 
-For more information, see the https://maven.apache.org/maven-logging.html[Maven Logging Configuration] guide.
+For more information, see the https://maven.apache.org/maven-logging.html[Maven Logging Configuration] and https://maven.apache.org/configure.html[Maven Configuration] guides.
