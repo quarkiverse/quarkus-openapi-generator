@@ -7,12 +7,16 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedMap;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.jboss.resteasy.specimpl.MultivaluedTreeMap;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -87,16 +91,36 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     }
 
     @Test
-    void filterCookieCase() throws IOException {
-        Map<String, Cookie> cookies = new HashMap<>();
-        doReturn(cookies).when(requestContext).getCookies();
+    void filterCookieCaseEmpty() throws IOException {
+        final MultivaluedMap<String, Object> headers = new MultivaluedTreeMap<>();
+        doReturn(headers).when(requestContext).getHeaders();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
                 generatorConfig);
         provider.filter(requestContext);
-        Cookie cookie = cookies.get(API_KEY_NAME);
-        assertThat(cookie).isNotNull();
-        assertThat(cookie.getName()).isEqualTo(API_KEY_NAME);
-        assertThat(cookie.getValue()).isEqualTo(API_KEY_VALUE);
+        final List<Object> cookies = headers.get(HttpHeaders.COOKIE);
+        assertThat(cookies)
+                .singleElement()
+                .satisfies(cookie -> assertCookie(cookie, API_KEY_NAME, API_KEY_VALUE));
+    }
+
+    @Test
+    void filterCookieCaseExisting() throws IOException {
+        final MultivaluedMap<String, Object> headers = new MultivaluedTreeMap<>();
+        final String existingCookieName = "quarkus";
+        final String existingCookieValue = "rocks";
+        final Cookie existingCookie = new Cookie.Builder(existingCookieName)
+                .value(existingCookieValue)
+                .build();
+        headers.add(HttpHeaders.COOKIE, existingCookie);
+        doReturn(headers).when(requestContext).getHeaders();
+        provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
+                generatorConfig);
+        provider.filter(requestContext);
+        final List<Object> cookies = headers.get(HttpHeaders.COOKIE);
+        assertThat(cookies)
+                .satisfiesExactlyInAnyOrder(
+                        cookie -> assertCookie(cookie, existingCookieName, existingCookieValue),
+                        cookie -> assertCookie(cookie, API_KEY_NAME, API_KEY_VALUE));
     }
 
     @Test
@@ -106,5 +130,12 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
                 API_KEY_NAME, generatorConfig))
                 .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
                         AUTH_SCHEME_NAME);
+    }
+
+    private void assertCookie(final Object cookie, final String name, final String value) {
+        assertThat(cookie)
+                .asInstanceOf(InstanceOfAssertFactories.type(Cookie.class))
+                .matches(c -> Objects.equals(c.getName(), name))
+                .matches(c -> Objects.equals(c.getValue(), value));
     }
 }
