@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
@@ -77,6 +77,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/gabriel-farache"><img src="https://avatars.githubusercontent.com/u/3036508?v=4?s=100" width="100px;" alt="gabriel-farache"/><br /><sub><b>gabriel-farache</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=gabriel-farache" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=gabriel-farache" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/martinoneutrino"><img src="https://avatars.githubusercontent.com/u/8833492?v=4?s=100" width="100px;" alt="Martin"/><br /><sub><b>Martin</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=martinoneutrino" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/matthias-ngeo/"><img src="https://avatars.githubusercontent.com/u/9427324?v=4?s=100" width="100px;" alt="Matthias Ngeo"/><br /><sub><b>Matthias Ngeo</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=Pante" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nmirasch"><img src="https://avatars.githubusercontent.com/u/2443754?v=4?s=100" width="100px;" alt="nmirasch"/><br /><sub><b>nmirasch</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=nmirasch" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
