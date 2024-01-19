@@ -28,7 +28,7 @@ public class WiremockCookieAuthentication implements QuarkusTestResourceLifecycl
     }
 
     @Override
-    public void inject(final TestInjector testInjector) {
+    public void inject(TestInjector testInjector) {
         testInjector.injectIntoFields(wireMockServer, f -> f.getName().equals("wireMockServer"));
     }
 
