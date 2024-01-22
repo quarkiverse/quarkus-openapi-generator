@@ -1,7 +1,7 @@
 
 Add the following dependency to your project's `pom.xml` file:
 
-WARNING: Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2.
+WARNING: Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x supports Quarkus 2. We strongly recommend you to use version 2.x.x. No updates are planned for version 1.x.x.
 
 [source,xml]
 ----
