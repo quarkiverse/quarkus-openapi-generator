@@ -24,10 +24,9 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 
 public class ApicurioCodegenWrapper {
 
-    private static final Logger log = LoggerFactory.getLogger(ApicurioOpenApiServerCodegen.class);
+    private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
     private static final String DEFAULT_PACKAGE = "io.apicurio.api";
 
-    private final Config config;
     private final File outdir;
     private final JaxRsProjectSettings projectSettings;
 
@@ -36,7 +35,6 @@ public class ApicurioCodegenWrapper {
     }
 
     public ApicurioCodegenWrapper(Config config, File outdir, JaxRsProjectSettings projectSettings) {
-        this.config = config;
         this.outdir = outdir;
         this.projectSettings = projectSettings;
         this.projectSettings.setJavaPackage(getBasePackage(config));
@@ -45,7 +43,7 @@ public class ApicurioCodegenWrapper {
     public void generate(Path openApiResource) throws CodeGenException {
         final File openApiFile = openApiResource.toFile();
 
-        log.info("Generating JAX-RS interfaces and beans from: " + openApiResource);
+        log.info("Generating JAX-RS interfaces and beans from: {}", openApiResource);
 
         if (outdir.isFile()) {
             throw new CodeGenException(
@@ -70,8 +68,6 @@ public class ApicurioCodegenWrapper {
         } catch (Exception e) {
             log.error("Error generating code from openapi spec", e);
             throw new CodeGenException(e);
-        } finally {
-
         }
 
         // Unpack the temporary ZIP file

@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import org.eclipse.microprofile.config.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
@@ -13,6 +15,8 @@ import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 
 public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
+
+    private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
 
     @Override
     public String providerId() {
@@ -54,7 +58,8 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
                                 try {
                                     apicurioCodegenWrapper.generate(openApiResource);
                                 } catch (CodeGenException e) {
-                                    e.printStackTrace();
+                                    log.warn("Exception found processing specification with name: {}",
+                                            openApiResource.getFileName());
                                 }
                             }
                         });
