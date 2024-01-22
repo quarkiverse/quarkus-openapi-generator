@@ -43,7 +43,7 @@ Maven automatically formats code and organizes imports when you run `mvn verify`
 
 ## Quarkus 3 and Quarkus 2 support
 
-This extension supports versions 3 and 2 of Quarkus and the code base is different for each Quarkus version. Therefore, we have the `main` branch supporting Quarkus 3, and the `quarkus2` branch supporting Quarkus 2. Preferably send your PRs to the `main` branch and [we will backport them to the `quarkus2` branch](#backporting-between-branches).
+We no longer offer support for Quarkus 2. This extension used to support versions 3 and 2 of Quarkus and the code base was different for each Quarkus version. Therefore, we have the `main` branch supporting Quarkus 3, and the `quarkus2` archived branch supporting Quarkus 2. Note that no updates are planned for Quarkus 2 and features and bug fixes are not backported to the `quarkus2` branch.
 
 ## For the maintainers
 
