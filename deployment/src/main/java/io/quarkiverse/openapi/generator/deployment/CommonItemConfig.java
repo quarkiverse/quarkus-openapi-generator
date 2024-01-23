@@ -49,7 +49,7 @@ public class CommonItemConfig {
     public Optional<String> additionalApiTypeAnnotations;
 
     /**
-     * Add custom/additional HTTP Header to the generated client
+     * Add custom/additional HTTP Headers or other args to every request
      */
     @ConfigItem(name = "additional-request-args")
     public Optional<String> additionalRequestArgs;
