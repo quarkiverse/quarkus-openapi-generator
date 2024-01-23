@@ -92,6 +92,11 @@ public interface {classname} {
                 {/if}
             {/if}
         {/if}
+        {#if additionalHTTPHeaders}
+            {#for httpHeader in additionalHTTPHeaders}{!
+                !}{httpHeader}{#if httpHeader_hasNext}, {/if}{/for}{!
+            !}{#if op.hasFormParams || op.allParams},{/if}
+        {/if}
         {#if op.hasFormParams}
         {#if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!

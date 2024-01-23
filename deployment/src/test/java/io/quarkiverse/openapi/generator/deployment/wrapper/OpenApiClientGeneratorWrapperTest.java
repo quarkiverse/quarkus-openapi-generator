@@ -537,6 +537,33 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyAdditionalHTTPHeaders() throws URISyntaxException {
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
+                .withEnabledSecurityGeneration(false)
+                .withAdditionalHTTPHeaders(
+                        "@HeaderParam(\"jaxrs-style-header\") String headerValue, @HeaderParam(\"x-correlation-id\") String correlationId")
+                .generate("org.additionalHTTPHeaders");
+        assertFalse(generatedFiles.isEmpty());
+
+        generatedFiles.stream()
+                .filter(file -> file.getPath().matches(".*api.*Api.java"))
+                .forEach(this::verifyApiAdditionalHTTPHeaders);
+    }
+
+    private void verifyApiAdditionalHTTPHeaders(File file) {
+        try {
+            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+                    .forEach(c -> {
+                        assertThat(c.getAnnotationByName("Foo")).isPresent();
+                        assertThat(c.getAnnotationByName("Bar")).isPresent();
+                    });
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Test
     void verifyAPINormalization() throws Exception {
         final List<File> generatedFiles = this.createGeneratorWrapper("open-api-normalizer.json")
                 .withOpenApiNormalizer(Map.of("REF_AS_PARENT_IN_ALLOF", "true", "REFACTOR_ALLOF_WITH_PROPERTIES_ONLY", "true"))
