@@ -92,9 +92,9 @@ public interface {classname} {
                 {/if}
             {/if}
         {/if}
-        {#if additionalHTTPHeaders}
-            {#for httpHeader in additionalHTTPHeaders}{!
-                !}{httpHeader}{#if httpHeader_hasNext}, {/if}{/for}{!
+        {#if additionalRequestArgs}
+            {#for arg in additionalRequestArgs}{!
+                !}{arg}{#if arg_hasNext}, {/if}{/for}{!
             !}{#if op.hasFormParams || op.allParams},{/if}
         {/if}
         {#if op.hasFormParams}

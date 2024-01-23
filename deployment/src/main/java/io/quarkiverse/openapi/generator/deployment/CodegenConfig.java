@@ -57,7 +57,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         PART_FILENAME_VALUE("part-filename-value"),
         USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename"),
         ADDITIONAL_PROPERTIES_AS_ATTRIBUTE("additional-properties-as-attribute"),
-        ADDITIONAL_HTTP_HEADERS("additional-http-headers");
+        ADDITIONAL_REQUEST_ARGS("additional-request-args");
 
         private final String name;
 

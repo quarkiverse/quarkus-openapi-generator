@@ -537,30 +537,57 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void verifyAdditionalHTTPHeaders() throws URISyntaxException {
+    void verifyAdditionalRequestArgs() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
                 .withEnabledSecurityGeneration(false)
-                .withAdditionalHTTPHeaders(
-                        "@HeaderParam(\"jaxrs-style-header\") String headerValue, @HeaderParam(\"x-correlation-id\") String correlationId")
+                .withAdditionalRequestArgs(
+                        "@HeaderParam(\"jaxrs-style-header\") String headerValue;@HeaderParam(\"x-correlation-id\") String correlationId;@PathParam(\"stream\") String stream")
                 .generate("org.additionalHTTPHeaders");
         assertFalse(generatedFiles.isEmpty());
 
         generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*api.*Api.java"))
+                .filter(file -> file.getPath()
+                        .matches(".*api.*Api.java"))
                 .forEach(this::verifyApiAdditionalHTTPHeaders);
     }
 
     private void verifyApiAdditionalHTTPHeaders(File file) {
         try {
             CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
+            compilationUnit.findAll(MethodDeclaration.class)
                     .forEach(c -> {
-                        assertThat(c.getAnnotationByName("Foo")).isPresent();
-                        assertThat(c.getAnnotationByName("Bar")).isPresent();
+                        assertParameter(c.getParameterByName("correlationId"),
+                                "String",
+                                Map.of("HeaderParam",
+                                        "\"x-correlation-id\""));
+                        assertParameter(c.getParameterByName("headerValue"),
+                                "String",
+                                Map.of("HeaderParam",
+                                        "\"jaxrs-style-header\""));
+                        assertParameter(c.getParameterByName("stream"),
+                                "String",
+                                Map.of("PathParam",
+                                        "\"stream\""));
                     });
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    private void assertParameter(Optional<Parameter> optionalParameter,
+            String type,
+            Map<String, String> annotations) {
+        assertThat(optionalParameter).isPresent();
+        var parameter = optionalParameter.orElseThrow();
+        assertThat(parameter.getTypeAsString()).isEqualTo(type);
+        annotations.forEach((annotationName, annotationValue) -> {
+            var parameterAnnotation = parameter.getAnnotationByName(annotationName);
+            assertThat(parameterAnnotation).isPresent();
+            assertThat(parameterAnnotation.get()
+                    .asSingleMemberAnnotationExpr()
+                    .getMemberValue()
+                    .toString()).hasToString(annotationValue);
+        });
     }
 
     @Test
