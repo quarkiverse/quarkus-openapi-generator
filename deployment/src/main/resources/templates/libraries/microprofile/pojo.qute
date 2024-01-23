@@ -73,6 +73,9 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     **/
     {#if !withXml}
     @JsonProperty("{v.baseName}")
+       {#if !v.required} 
+          @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+       {/if}
     {/if}
     {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
     {ext}
