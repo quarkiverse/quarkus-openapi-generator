@@ -1,4 +1,3 @@
-    /**
      {#if op.summary}
      * {op.summary}
      *

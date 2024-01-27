@@ -45,6 +45,7 @@ public interface {classname} {
 
     {#for op in operations.operation}
     {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
+     /**
     {#include operationJavaDoc.qute op=op/}
      */
     @{op.httpMethod}
