@@ -163,6 +163,12 @@ include::./includes/template-customization.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/additional-properties-as-attribute.adoc[leveloffset=+1, opts=optional]
 
+[[additional-request-args]]
+== Add Additional Request Arguments to each API Method
+
+include::./includes/additional-request-args.adoc[leveloffset=+1, opts=optional]
+
+
 == Known Limitations
 
 These are the known limitations of this pre-release version:
