@@ -179,6 +179,13 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withAdditionalRequestArgs(final String additionalRequestArgs) {
+        if (additionalRequestArgs != null) {
+            this.configurator.addAdditionalProperty("additionalRequestArgs", additionalRequestArgs.split(";"));
+        }
+        return this;
+    }
+
     public void withTemplateDir(Path templateDir) {
         this.configurator.addAdditionalProperty("templateDir", templateDir.toString());
     }

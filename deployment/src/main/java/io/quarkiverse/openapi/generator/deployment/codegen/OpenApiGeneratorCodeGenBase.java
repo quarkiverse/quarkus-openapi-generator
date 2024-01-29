@@ -205,6 +205,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);
 
+        getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_REQUEST_ARGS, String.class)
+                .ifPresent(generator::withAdditionalRequestArgs);
+
         getConfigKeyValue(config, openApiFilePath)
                 .ifPresentOrElse(generator::withConfigKey,
                         () -> generator.withConfigKey(getSanitizedFileName(openApiFilePath)));
