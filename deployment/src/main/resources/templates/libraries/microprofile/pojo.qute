@@ -107,12 +107,18 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     }
     {#if v.isArray}
     public {m.classname} add{v.nameInCamelCase}Item({v.items.datatypeWithEnum} {v.name}Item) {
+        if (this.{v.name} == null){
+            {v.name} = {#if v.defaultValue}{v.defaultValue}{#else}new {#if v.uniqueItems}LinkedHashSet{/if}{#if !v.uniqueItems}ArrayList{/if}<>(){/if};
+        }
         this.{v.name}.add({v.name}Item);
         return this;
     }
     {/if}
     {#if v.isMap}
     public {m.classname} put{v.nameInCamelCase}Item(String key, {v.items.datatypeWithEnum} {v.name}Item) {
+           if (this.{v.name} == null){
+                {v.name} = {#if v.defaultValue}{v.defaultValue}{#else}new HashMap<>(){/if};
+            }
         this.{v.name}.put(key, {v.name}Item);
         return this;
     }
