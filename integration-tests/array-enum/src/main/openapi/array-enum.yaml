@@ -30,6 +30,7 @@ paths:
 components:
   schemas:
     webhook_create_update_payload:
+      required: [url, subscriptions]
       type: object
       properties:
         url:
@@ -47,3 +48,12 @@ components:
               - message_updated
               - webwidget_triggered
           description: The events you want to subscribe to.
+        message:
+          type: array
+          items:
+            type: string
+          description: Non required Field to safe messages
+        messageMap:
+          type: object
+          additionalProperties: true
+          description: Non required Map Field to safe messages
