@@ -24,7 +24,7 @@ class ArrayEnumTest {
     }
 
     @Test
-    void modelNonRequieredFieldTest() {
+    void modelNonRequiredFieldTest() {
         WebhookCreateUpdatePayload webhookCreateUpdatePayload = new WebhookCreateUpdatePayload();
 
         assertThat(webhookCreateUpdatePayload.getMessage()).isNull();
