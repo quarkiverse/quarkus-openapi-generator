@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 
-> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md) if you are looking for instructions.
+> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html) if you are looking for instructions.
 
 > **⚠️** This extension, [like Quarkus 3.7](https://quarkus.io/blog/java-17/), requires Java 17. The last version of this extension that supports earlier versions of Java is [2.2.16](https://github.com/quarkiverse/quarkus-openapi-generator/releases/tag/2.2.16).
 
