@@ -322,6 +322,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "carlesarnal",
+      "name": "Carles Arnal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12640103?v=4",
+      "profile": "https://github.com/carlesarnal",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
