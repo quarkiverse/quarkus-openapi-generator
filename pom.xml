@@ -12,10 +12,8 @@
   <packaging>pom</packaging>
   <name>Quarkus - Openapi Generator - Parent</name>
   <modules>
-    <module>deployment</module>
-    <module>runtime</module>
-    <module>test-utils</module>
-    <module>docs</module>
+    <module>client</module>
+    <module>server</module>
   </modules>
   <scm>
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
@@ -29,6 +27,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>3.7.3</quarkus.version>
+    <apicurio.version>1.1.0.Final</apicurio.version>
     <version.com.github.javaparser>3.25.8</version.com.github.javaparser>
     <version.org.assertj>3.25.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.0.2</version.org.eclipse.microprofile.fault-tolerance>
@@ -52,6 +51,16 @@
         <groupId>io.quarkiverse.openapi.generator</groupId>
         <artifactId>quarkus-openapi-generator</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.quarkiverse.openapi.generator</groupId>
+        <artifactId>quarkus-openapi-generator-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.apicurio</groupId>
+        <artifactId>apicurio-codegen</artifactId>
+        <version>${apicurio.version}</version>
       </dependency>
       <dependency>
         <groupId>com.github.tomakehurst</groupId>
@@ -115,7 +124,8 @@
         </property>
       </activation>
       <modules>
-        <module>integration-tests</module>
+        <module>client/integration-tests</module>
+        <module>server/integration-tests</module>
       </modules>
     </profile>
   </profiles>

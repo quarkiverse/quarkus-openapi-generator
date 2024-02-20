@@ -1,0 +1,178 @@
+= Quarkus - Openapi Generator - Client
+:extension-status: preview
+
+
+WARNING: This is the instructions for the latest SNAPSHOT version (main branch). Please, see the https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md[latest **released** documentation] if you are looking for instructions.
+
+WARNING: Check versions 1.x.x if you're still using Quarkus 2. But be aware that we no longer support Quarkus 2. That means there are no updates planned for those versions.
+
+Quarkus' extension for generation of https://quarkus.io/guides/rest-client[Rest Clients] based on OpenAPI specification files.
+
+This extension is based on the https://openapi-generator.tech/[OpenAPI Generator Tool]. Please consider donation to help them maintain the
+project: https://opencollective.com/openapi_generator/donate
+
+This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension[Quarkus Apicurio Extension].
+
+**Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read https://github.com/quarkiverse/quarkus-openapi-generator/blob/main/CONTRIBUTING.md[this page].
+
+[[getting-started]]
+== Getting Started
+
+include::./includes/getting-started.adoc[leveloffset=+1, opts=optional]
+
+[[resteasy-support]]
+== RESTEasy Reactive and Classic support
+
+include::./includes/resteasy-support.adoc[leveloffset=+1, opts=optional]
+
+[[returning-response-objects]]
+== Returning `Response` objects
+
+include::./includes/return-response-objects.adoc[leveloffset=+1, opts=optional]
+
+[[logging]]
+== Logging
+
+include::./includes/logging.adoc[leveloffset=+1, opts=optional]
+
+[[filter-openapi-spec-files]]
+== Filtering OpenAPI Specification Files
+
+include::./includes/filter-openapi-spec-files.adoc[leveloffset=+1, opts=optional]
+
+[[authentication-support]]
+== Authentication Support
+
+include::./includes/authentication-support.adoc[leveloffset=+1, opts=optional]
+
+[[autorization-token-prop]]
+== Authorization Token Propagation
+
+include::./includes/authorization-token-propagation.adoc[leveloffset=+1, opts=optional]
+
+[[circuit-breaker]]
+== Circuit Breaker
+
+include::./includes/circuit-breaker.adoc[leveloffset=+1, opts=optional]
+
+[[sending-multipart-formdata]]
+== Sending multipart/form-data
+
+include::./includes/sending-multipart-formdata.adoc[leveloffset=+1, opts=optional]
+
+== Generating files via InputStream
+
+Having the files in the `src/main/openapi` directory will generate the REST stubs by default. Alternatively, you can implement
+the `io.quarkiverse.openapi.generator.deployment.codegen.OpenApiSpecInputProvider`
+interface to provide a list of `InputStream`s of OpenAPI specification files. This is useful in scenarios where you want to dynamically generate the client code without having the target spec file
+saved locally in your project.
+
+See the example implementation https://github.com/quarkiverse/quarkus-openapi-generator/blob/main/integration-tests/generation-input/src/main/java/io/quarkiverse/openapi/generator/codegen/ClassPathPetstoreOpenApiSpecInputProvider.java[here]
+
+== Skip Deprecated Attributes in Model classes
+
+The domain objects are classes generated in the `model` package. These classes might have https://spec.openapis.org/oas/v3.1.0#fixed-fields-9[deprecated attributes] in the Open API specification
+file. By default, these attributes are generated. You can fine tune this behavior if the deprecated attributes should not be generated.
+
+Use the property key `<base_package>.model.MyClass.generateDeprecated=false` to disable the deprecated attributes in the given model. For example `org.acme.weather.Country.generatedDeprecated=false`.
+
+== Skip Deprecated Operations in API classes
+
+The client objects are classes generated in the `api` package. These classes might have https://spec.openapis.org/oas/v3.1.0#operation-object[deprecated operations] in the Open API specification
+file. By default, these operations are generated. You can fine tune this behavior if the deprecated operations should not be generated.
+
+Use the property key `<base_package>.api.MyClass.generateDeprecated=false` to disable the deprecated operations in the given API. For example `org.acme.openapi.simple.api.DefaultApi.generatedDeprecated=false`.
+
+[source,java]
+----
+package org.acme.openapi.simple.api;
+
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
+
+@Path("")
+@RegisterRestClient(configKey="simple-openapi_json")
+@RegisterProvider(org.test.Foo.class)
+@RegisterProvider(org.test.Bar.class)
+public interface DefaultApi {
+
+    @GET
+    @Path("/bye")
+    @Produces({ "text/plain" })
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
+    public String byeGet();
+}
+----
+
+See the module `integration-tests/register-provider` for an example of how to use this feature.
+
+== Skip OpenAPI schema validation
+
+Use the property key `quarkus.openapi-generator.codegen.validateSpec=false` to disable validating the input specification file before code generation. By default, invalid specifications will result in an error.
+
+== Type and import mappings
+
+It's possible to remap types in the generated files. For example, instead of a `File` you can configure the code generator to use `InputStream` for all file upload parts of multipart request, or you could change all `UUID` types to `String`. You can configure this in your `application.properties` using the following configuration keys:
+
+[%autowidth]
+|===
+|Description |Property Key |Example
+
+|Type Mapping
+|`quarkus.openapi-generator.codegen.spec.[filename].type-mappings.[oas_type]`
+|`quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=InputStream` will use `InputStream` as type for all objects of the OAS File type.
+|Import Mapping
+|`quarkus.openapi-generator.codegen.spec.[filename].import-mappings.[type]`
+|`quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.File=java.io.InputStream` will replace the default `import java.io.File` with `import java.io.InputStream`
+|===
+
+Note that these configuration properties are maps. For the type-mapping the keys are OAS data types and the values are Java types.
+
+Another common example is needing `java.time.Instant` as type for date-time fields in your POJO classes. You can achieve with these settings:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.DateTime=Instant
+quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.Instant=java.time.Instant
+----
+
+It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings[Type Mappings and Import Mappings].
+
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/type-mapping[type-mapping] for an example of how to use this feature.
+
+[[config-key]]
+== Config key
+
+include::./includes/config-key.adoc[leveloffset=+1, opts=optional]
+
+[[template-customization]]
+== Template Customization
+
+include::./includes/template-customization.adoc[leveloffset=+1, opts=optional]
+
+[[additional-properties]]
+== Additional Properties as Attribute
+
+include::./includes/additional-properties-as-attribute.adoc[leveloffset=+1, opts=optional]
+
+[[additional-request-args]]
+== Add Additional Request Arguments to each API Method
+
+include::./includes/additional-request-args.adoc[leveloffset=+1, opts=optional]
+
+
+== Known Limitations
+
+These are the known limitations of this pre-release version:
+
+* Only Jackson support
+
+We will work in the next few releases to address these use cases, until there please provide feedback for the current state of this extension. We also love contributions icon:heart[1x,role=red].
