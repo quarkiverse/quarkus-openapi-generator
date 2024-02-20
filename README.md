@@ -1,7 +1,7 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-34-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-35-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
@@ -82,6 +82,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nmirasch"><img src="https://avatars.githubusercontent.com/u/2443754?v=4?s=100" width="100px;" alt="nmirasch"/><br /><sub><b>nmirasch</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=nmirasch" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://ru4ert.com/"><img src="https://avatars.githubusercontent.com/u/47078678?v=4?s=100" width="100px;" alt="Rupert Bogensperger"/><br /><sub><b>Rupert Bogensperger</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=ru4ert" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=ru4ert" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/boyi01"><img src="https://avatars.githubusercontent.com/u/14997968?v=4?s=100" width="100px;" alt="boyi01"/><br /><sub><b>boyi01</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=boyi01" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=boyi01" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/carlesarnal"><img src="https://avatars.githubusercontent.com/u/12640103?v=4?s=100" width="100px;" alt="Carles Arnal"/><br /><sub><b>Carles Arnal</b></sub></a><br /><a href="#maintenance-carlesarnal" title="Maintenance">🚧</a></td>
     </tr>
   </tbody>
 </table>
