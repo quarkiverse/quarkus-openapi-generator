@@ -31,7 +31,7 @@
     <version.com.github.javaparser>3.25.8</version.com.github.javaparser>
     <version.org.assertj>3.25.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.0.2</version.org.eclipse.microprofile.fault-tolerance>
-    <version.com.github.tomakehurst>2.35.1</version.com.github.tomakehurst>
+    <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
   </properties>
   <dependencyManagement>
     <dependencies>
