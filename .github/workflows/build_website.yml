@@ -39,7 +39,7 @@ jobs:
       - name: Store PR id
         if: github.event_name == 'pull_request'
         run: |
-          echo ${{ github.event.number }} > ./client/docs/target/generated-docs/pr-id.txt
+          echo ${{ github.event.number }} > ./docs/target/generated-docs/pr-id.txt
 
       - name: Publishing directory for PR preview
         if: github.event_name == 'pull_request'
