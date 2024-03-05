@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>docs</module>
         <module>deployment</module>
         <module>runtime</module>
     </modules>
