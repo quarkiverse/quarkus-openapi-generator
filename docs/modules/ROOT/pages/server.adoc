@@ -1,0 +1,15 @@
+= Quarkus - OpenAPI Generator - Server
+:extension-status: preview
+
+Quarkus' extension for generation of server Stubs based on OpenAPI specification files.
+
+This extension is based on the https://github.com/Apicurio/apicurio-codegen[Apicurio Codegen tool].
+
+This extension is for REST code generation for server side only.
+
+include::includes/want-to-contribute.adoc[]
+
+[[getting-started]]
+== Getting Started
+
+include::./includes/getting-started.adoc[leveloffset=+1, opts=optional]

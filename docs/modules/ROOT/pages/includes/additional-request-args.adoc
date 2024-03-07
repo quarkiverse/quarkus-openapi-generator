@@ -1,0 +1,17 @@
+To add custom request specific parameters you can use the `additional-request-args` property.
+
+Should work with:
+
+* @PathParam
+* @QueryParam
+* @CookieParam
+* @FormParam
+* @MatrixParam
+
+To use `additional-request-args` as attribute, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
+
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.additional-request-args=@CookieParam("cookie") String cookie;@HeaderParam("x-correlation-id") String correlationId
+----
+
+This configuration is applied to every generated method.

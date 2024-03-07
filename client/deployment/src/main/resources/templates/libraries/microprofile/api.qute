@@ -1,0 +1,120 @@
+package {package};
+
+{#for imp in imports}
+import {imp.import};
+{/for}
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+{#if enable-security-generation && hasAuthMethods}
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
+import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
+import {package}.auth.CompositeAuthenticationProvider;
+import {package}.auth.AuthenticationPropagationHeadersFactory;
+{/if}
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+
+import jakarta.enterprise.context.ApplicationScoped;
+
+import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
+import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
+import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
+
+{#if appName}
+/**
+  * {appName}
+  * {#if appDescription}<p>{appDescription}</p>{/if}
+  */
+{/if}
+@Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
+@RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
+@GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
+{#if enable-security-generation && hasAuthMethods}
+@RegisterProvider(CompositeAuthenticationProvider.class)
+@RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
+{/if}
+@ApplicationScoped
+{#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
+{apiAnnotation}
+{/for}
+public interface {classname} {
+
+    {#for op in operations.operation}
+    {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
+     /**
+    {#include operationJavaDoc.qute op=op/}
+     */
+    @{op.httpMethod}
+    {#if op.subresourceOperation}
+    @Path("{op.path}")
+    {/if}
+    {#if op.hasConsumes}
+    @Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
+    {/if}
+    {#if op.hasProduces}
+    @Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
+    {/if}
+    @GeneratedMethod ("{op.operationIdOriginal}")
+    {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == package + classname}
+    {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
+    {/if}{/for}
+    {/if}{/for}
+        {#if mutiny}
+            {#if return-response}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+            {#else}
+                {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+                {#else}
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+                {/if}
+            {/if}
+        {#else}
+            {#if return-response}
+    public jakarta.ws.rs.core.Response {op.nickname}(
+            {#else}
+                {#if op.returnType == "void"}
+    public jakarta.ws.rs.core.Response {op.nickname}(
+                {#else}
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
+                {/if}
+            {/if}
+        {/if}
+        {#if additionalRequestArgs}
+            {#for arg in additionalRequestArgs}{!
+                !}{arg}{#if arg_hasNext}, {/if}{/for}{!
+            !}{#if op.hasFormParams || op.allParams},{/if}
+        {/if}
+        {#if op.hasFormParams}
+        {#if is-resteasy-reactive}
+        @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
+        !}{#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
+        !}{#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
+        !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
+        !}{#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
+        {#else}
+        @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
+        !}{#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
+        !}{#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
+        !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
+        !}{#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
+        {/if}
+        {#else}
+        {#for p in op.allParams}
+        {#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}
+        {/for}
+        {/if}
+    );
+    {#if op.hasFormParams}
+
+    {#include multipartFormdataPojo.qute param=op/}
+    {/if}
+
+    {/if} {! check deprecated !}
+    {/for}
+}

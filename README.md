@@ -1,23 +1,25 @@
 # Quarkus - OpenAPI Generator
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-35-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 
-> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://github.com/quarkiverse/quarkus-openapi-generator/blob/1.0.1/README.md) if you are looking for instructions.
+> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html) if you are looking for instructions.
+
+> **⚠️** This extension, [like Quarkus 3.7](https://quarkus.io/blog/java-17/), requires Java 17. The last version of this extension that supports earlier versions of Java is [2.2.16](https://github.com/quarkiverse/quarkus-openapi-generator/releases/tag/2.2.16).
 
 > **⚠️** Check versions 1.x.x if you're still using Quarkus 2. But be aware that we no longer support Quarkus 2. That means there are no updates planned for those versions.
 
-Quarkus' extension for generation of [Rest Clients](https://quarkus.io/guides/rest-client) based on OpenAPI specification files.
+Quarkus' extensions for generation of [Rest Clients](https://quarkus.io/guides/rest-client) and server stubs generation based on the [Apicurio Codegen](https://github.com/Apicurio/apicurio-codegen) capabilities based on OpenAPI specification files.
 
-This extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
+This client-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
 project: https://opencollective.com/openapi_generator/donate
 
-This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the [Quarkus Apicurio Extension](https://github.com/Apicurio/apicurio-codegen/tree/main/quarkus-extension).
+This repository holds two Quarkus extensions. The one located on the client folder is for REST code generation for client side only. The extension located in the server folder can be used for server stubs generation.
 
 **Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read [this page](CONTRIBUTING.md).
 
@@ -78,6 +80,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/martinoneutrino"><img src="https://avatars.githubusercontent.com/u/8833492?v=4?s=100" width="100px;" alt="Martin"/><br /><sub><b>Martin</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=martinoneutrino" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/matthias-ngeo/"><img src="https://avatars.githubusercontent.com/u/9427324?v=4?s=100" width="100px;" alt="Matthias Ngeo"/><br /><sub><b>Matthias Ngeo</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=Pante" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nmirasch"><img src="https://avatars.githubusercontent.com/u/2443754?v=4?s=100" width="100px;" alt="nmirasch"/><br /><sub><b>nmirasch</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=nmirasch" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://ru4ert.com/"><img src="https://avatars.githubusercontent.com/u/47078678?v=4?s=100" width="100px;" alt="Rupert Bogensperger"/><br /><sub><b>Rupert Bogensperger</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=ru4ert" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=ru4ert" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/boyi01"><img src="https://avatars.githubusercontent.com/u/14997968?v=4?s=100" width="100px;" alt="boyi01"/><br /><sub><b>boyi01</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=boyi01" title="Code">💻</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=boyi01" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/carlesarnal"><img src="https://avatars.githubusercontent.com/u/12640103?v=4?s=100" width="100px;" alt="Carles Arnal"/><br /><sub><b>Carles Arnal</b></sub></a><br /><a href="#maintenance-carlesarnal" title="Maintenance">🚧</a></td>
     </tr>
   </tbody>
 </table>

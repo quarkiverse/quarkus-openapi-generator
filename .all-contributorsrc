@@ -302,6 +302,35 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ru4ert",
+      "name": "Rupert Bogensperger",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47078678?v=4",
+      "profile": "https://ru4ert.com/",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "boyi01",
+      "name": "boyi01",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14997968?v=4",
+      "profile": "https://github.com/boyi01",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "carlesarnal",
+      "name": "Carles Arnal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12640103?v=4",
+      "profile": "https://github.com/carlesarnal",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,

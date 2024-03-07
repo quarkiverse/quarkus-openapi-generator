@@ -1,1 +1,2 @@
-* xref:index.adoc[Quarkus - Openapi Generator]
+* xref:client.adoc[Client Generator]
+* xref:server.adoc[Server Generator]

@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.quarkiverse</groupId>
     <artifactId>quarkiverse-parent</artifactId>
-    <version>15</version>
+    <version>16</version>
   </parent>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator-parent</artifactId>
@@ -12,9 +12,8 @@
   <packaging>pom</packaging>
   <name>Quarkus - Openapi Generator - Parent</name>
   <modules>
-    <module>deployment</module>
-    <module>runtime</module>
-    <module>test-utils</module>
+    <module>client</module>
+    <module>server</module>
     <module>docs</module>
   </modules>
   <scm>
@@ -25,14 +24,15 @@
   </scm>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>3.6.6</quarkus.version>
-    <version.com.github.javaparser>3.25.8</version.com.github.javaparser>
-    <version.org.assertj>3.25.1</version.org.assertj>
+    <quarkus.version>3.8.1</quarkus.version>
+    <apicurio.version>1.1.1.Final</apicurio.version>
+    <version.com.github.javaparser>3.25.9</version.com.github.javaparser>
+    <version.org.assertj>3.25.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.0.2</version.org.eclipse.microprofile.fault-tolerance>
-    <version.com.github.tomakehurst>2.35.1</version.com.github.tomakehurst>
+    <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -52,6 +52,16 @@
         <groupId>io.quarkiverse.openapi.generator</groupId>
         <artifactId>quarkus-openapi-generator</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.quarkiverse.openapi.generator</groupId>
+        <artifactId>quarkus-openapi-generator-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.apicurio</groupId>
+        <artifactId>apicurio-codegen</artifactId>
+        <version>${apicurio.version}</version>
       </dependency>
       <dependency>
         <groupId>com.github.tomakehurst</groupId>
@@ -115,7 +125,8 @@
         </property>
       </activation>
       <modules>
-        <module>integration-tests</module>
+        <module>client/integration-tests</module>
+        <module>server/integration-tests</module>
       </modules>
     </profile>
   </profiles>
