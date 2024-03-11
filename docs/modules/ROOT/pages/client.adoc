@@ -161,6 +161,26 @@ include::./includes/additional-request-args.adoc[leveloffset=+1, opts=optional]
 
 == Known Limitations
 
+=== Supported Arguments
+
+Currently not all arguments are supported by this extension
+
+*supported:*
+
+* Body
+* https://javadoc.io/doc/jakarta.ws.rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs/jakarta/ws/rs/Path.html[@PathParams]
+* https://javadoc.io/doc/jakarta.ws.rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs/jakarta/ws/rs/RestQuery.html[@QueryParams]
+* https://javadoc.io/doc/jakarta.ws.rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs/jakarta/ws/rs/FormParam.html[@FormParams]
+* https://javadoc.io/doc/jakarta.ws.rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs/jakarta/ws/rs/CookieParam.html[@CookieParam]
+* https://javadoc.io/doc/jakarta.ws.rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs/jakarta/ws/rs/HeaderParam.html[@HeaderParam]
+
+*unsupported:*
+
+* https://javadoc.io/doc/jakarta.ws.rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs/jakarta/ws/rs/MatrixParam.html[@MatrixParam]
+
+
+(You can extend all endpoints with `additional-request-args`)
+
 These are the known limitations of this pre-release version:
 
 * Only Jackson support
