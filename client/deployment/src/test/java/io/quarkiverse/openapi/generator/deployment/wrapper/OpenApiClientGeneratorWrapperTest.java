@@ -593,33 +593,32 @@ public class OpenApiClientGeneratorWrapperTest {
     @Test
     void verifyCookieParams() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
-            .generate("org.cookieParams");
+                .generate("org.cookieParams");
 
         generatedFiles.stream()
-            .filter(file -> file.getPath()
-                .matches("PetApi.java"))
-            .forEach(file -> {
-                try {
-                    CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-                    var positiveFounds = compilationUnit.findAll(MethodDeclaration.class)
-                        .stream()
-                        .filter(c -> c.getNameAsString()
-                            .equals("findPetsByStatus"))
-                        .filter(c -> {
-                            assertParameter(c.getParameterByName("exampleCookie"),
-                                "String",
-                                Map.of("CookieParam",
-                                    "\"example-cookie\""));
-                            return true;
-                        })
-                        .count();
-                    assertThat(positiveFounds).isEqualTo(1);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e.getMessage());
-                }
-            });
+                .filter(file -> file.getPath()
+                        .matches("PetApi.java"))
+                .forEach(file -> {
+                    try {
+                        CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+                        var positiveFounds = compilationUnit.findAll(MethodDeclaration.class)
+                                .stream()
+                                .filter(c -> c.getNameAsString()
+                                        .equals("findPetsByStatus"))
+                                .filter(c -> {
+                                    assertParameter(c.getParameterByName("exampleCookie"),
+                                            "String",
+                                            Map.of("CookieParam",
+                                                    "\"example-cookie\""));
+                                    return true;
+                                })
+                                .count();
+                        assertThat(positiveFounds).isEqualTo(1);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                });
     }
-
 
     @Test
     void verifyAPINormalization() throws Exception {
