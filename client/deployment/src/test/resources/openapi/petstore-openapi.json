@@ -191,6 +191,14 @@
                 "sold"
               ]
             }
+          },
+          {
+            "name": "example-cookie",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
