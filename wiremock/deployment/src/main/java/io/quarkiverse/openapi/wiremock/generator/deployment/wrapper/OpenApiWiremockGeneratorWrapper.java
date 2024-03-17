@@ -26,7 +26,7 @@ public class OpenApiWiremockGeneratorWrapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiWiremockGeneratorWrapper.class);
     public static final String MAPPINGS_DIR = "mappings";
     private static final String MAPPINGS = "mappings";
-    private static final String WIREMOCK_OUTPUT_FILE = "wiremock-stubbings.json";
+    private static final String WIREMOCK_OUTPUT_FILE = "wiremock-stubs.json";
     private static final OpenAPIV3Parser OPENAPI_PARSER_INSTANCE = new OpenAPIV3Parser();
     public static final ObjectMapper OBJECT_MAPPER_INSTANCE = new ObjectMapper();
     private final Path outputDir;
@@ -62,16 +62,16 @@ public class OpenApiWiremockGeneratorWrapper {
         return file -> {
             OpenAPI openAPI = OPENAPI_PARSER_INSTANCE.read(file.toString());
             OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
-            List<Stubbing> stubbings = openApi2WiremockMapper.generateWiremockStubs();
+            List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
 
             try {
 
-                byte[] json = OBJECT_MAPPER_INSTANCE.writeValueAsBytes(Map.of(MAPPINGS, stubbings));
+                byte[] json = OBJECT_MAPPER_INSTANCE.writeValueAsBytes(Map.of(MAPPINGS, stubs));
 
-                Path wiremockStubbings = Files
+                Path wiremockStubs = Files
                         .createFile(mappingsDir.resolve(generateFinalFilename(file)));
 
-                Files.write(wiremockStubbings, json);
+                Files.write(wiremockStubs, json);
 
             } catch (IOException e) {
                 LOGGER.warn("Failed to generate Wiremock stubs for file " + file.toAbsolutePath(), e);
