@@ -1,0 +1,11 @@
+name: "OpenAPI Generator - Wiremock Generator"
+artifact: ${project.groupId}:${project.artifactId}:${project.version}
+metadata:
+  keywords:
+    - "openapi"
+    - "openapi-generator"
+    - "wiremock"
+  categories:
+    - "web"
+  status: "experimental"
+  guide: "https://docs.quarkiverse.io/quarkus-openapi-generator/dev"

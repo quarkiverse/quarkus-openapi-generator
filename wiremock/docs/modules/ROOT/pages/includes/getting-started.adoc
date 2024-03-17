@@ -1,0 +1,36 @@
+The OpenAPI Generator Wiremock extensions maps OpenAPI specification and transform it into a https://wiremock.org/docs/stubbing/#bulk-importing-stubs[Bulk Importing Stubs] JSON file.
+
+Add the following dependency to your project's `pom.xml` file:
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator-wiremock</artifactId>
+  <version>3.0.0-SNAPSHOT</version>
+</dependency>
+----
+
+You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
+
+WARNING: You probably already have this configuration if you created your application with https://code.quarkus.io/[Code Quarkus]. That said, double-check your configuration not to add another `plugin` entry.
+
+[source,xml]
+----
+<plugin>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-maven-plugin</artifactId>
+  <extensions>true</extensions>
+  <executions>
+    <execution>
+      <goals>
+        <goal>build</goal>
+        <goal>generate-code</goal>
+        <goal>generate-code-tests</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+----
+
+Now, create the directory `openapi` under your `src/main` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.

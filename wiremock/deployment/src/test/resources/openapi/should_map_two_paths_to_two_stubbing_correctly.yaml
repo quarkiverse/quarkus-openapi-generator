@@ -1,0 +1,22 @@
+openapi: 3.0.2
+info:
+  title: OpenAPI Generator Wiremock
+  version: 3.0.0-SNAPSHOT
+paths:
+  /users/1:
+    delete:
+      responses:
+        "204":
+          description: No Content
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: John Doe

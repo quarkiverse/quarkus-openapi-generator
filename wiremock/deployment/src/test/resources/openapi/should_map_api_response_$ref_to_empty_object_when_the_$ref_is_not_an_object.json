@@ -1,0 +1,33 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Components Schemas Name As String",
+    "version": "3.0.0-SNAPSHOT"
+  },
+  "components": {
+    "schemas": {
+      "Name": {
+        "type": "string",
+        "example": "John Doe"
+      }
+    }
+  },
+  "paths": {
+    "/names": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Get John Doe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Name"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
