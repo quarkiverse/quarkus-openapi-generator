@@ -23,35 +23,35 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // when
-        List<Stubbing> stubbings = openApi2WiremockMapper.generateWiremockStubs();
+        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
 
         // then
-        Stubbing stubbing = stubbings.stream().findFirst().orElseThrow();
+        Stubbing stubbing = stubs.stream().findFirst().orElseThrow();
 
-        Assertions.assertEquals(1, stubbings.size());
+        Assertions.assertEquals(1, stubs.size());
         Assertions.assertEquals("/ping", stubbing.urlPath());
         Assertions.assertEquals("GET", stubbing.method());
     }
 
     @Test
-    @DisplayName("Should map two paths to two stubbings correctly")
-    public void should_map_two_paths_to_two_stubbing_correctly() throws URISyntaxException {
+    @DisplayName("Should map two paths to two stubs correctly")
+    public void should_map_two_paths_to_two_stubs_correctly() throws URISyntaxException {
         // given
         OpenAPI openAPI = readOpenAPI("openapi/should_map_two_paths_to_two_stubbing_correctly.yaml");
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // when
-        List<Stubbing> stubbings = openApi2WiremockMapper.generateWiremockStubs();
+        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
 
         // then
-        Assertions.assertEquals(2, stubbings.size());
+        Assertions.assertEquals(2, stubs.size());
 
         Assertions.assertTrue(
-                stubbings.stream().anyMatch(stub -> stub.urlPath().equalsIgnoreCase("/users/1")
+                stubs.stream().anyMatch(stub -> stub.urlPath().equalsIgnoreCase("/users/1")
                         && stub.method().equalsIgnoreCase("GET")));
 
         Assertions.assertTrue(
-                stubbings.stream().anyMatch(stub -> stub.urlPath().equalsIgnoreCase("/users/1")
+                stubs.stream().anyMatch(stub -> stub.urlPath().equalsIgnoreCase("/users/1")
                         && stub.method().equalsIgnoreCase("DELETE")));
     }
 
@@ -64,8 +64,8 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // arrange
-        List<Stubbing> stubbings = openApi2WiremockMapper.generateWiremockStubs();
-        Stubbing stubbing = stubbings.stream().findFirst().orElse(null);
+        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        Stubbing stubbing = stubs.stream().findFirst().orElse(null);
 
         // assert
         Assertions.assertNotNull(stubbing);
@@ -81,8 +81,8 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // arrange
-        List<Stubbing> stubbings = openApi2WiremockMapper.generateWiremockStubs();
-        Stubbing stubbing = stubbings.stream().findFirst().orElse(null);
+        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        Stubbing stubbing = stubs.stream().findFirst().orElse(null);
 
         // assert
         Assertions.assertNotNull(stubbing);
@@ -97,8 +97,8 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // arrange
-        List<Stubbing> stubbings = openApi2WiremockMapper.generateWiremockStubs();
-        Stubbing stubbing = stubbings.stream().findFirst().orElse(null);
+        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        Stubbing stubbing = stubs.stream().findFirst().orElse(null);
 
         // assert
         Assertions.assertNotNull(stubbing);
