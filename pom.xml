@@ -15,6 +15,7 @@
     <module>client</module>
     <module>server</module>
     <module>wiremock</module>
+    <module>docs</module>
   </modules>
   <scm>
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
