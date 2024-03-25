@@ -12,7 +12,7 @@ import java.util.Set;
 
 import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Request;
 import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Response;
-import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Stubbing;
+import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Stub;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -31,9 +31,9 @@ public class OpenApi2WiremockMapper {
         this.openAPI = openAPI;
     }
 
-    public List<Stubbing> generateWiremockStubs() {
+    public List<Stub> generateWiremockStubs() {
 
-        List<Stubbing> stubs = new ArrayList<>();
+        List<Stub> stubs = new ArrayList<>();
 
         Paths paths = openAPI.getPaths();
 
@@ -46,8 +46,8 @@ public class OpenApi2WiremockMapper {
         return stubs;
     }
 
-    private List<Stubbing> generateStubs(Map.Entry<String, PathItem> entry) {
-        Set<Stubbing> stubs = new HashSet<>();
+    private List<Stub> generateStubs(Map.Entry<String, PathItem> entry) {
+        Set<Stub> stubs = new HashSet<>();
 
         String pathName = entry.getKey();
 
@@ -57,7 +57,6 @@ public class OpenApi2WiremockMapper {
 
         operationsMap.forEach(
                 (httpMethod, operation) -> {
-                    Stubbing.StubbingBuilder builder = new Stubbing.StubbingBuilder();
 
                     Request request = Request.create(pathName, httpMethod.name());
 
@@ -67,18 +66,15 @@ public class OpenApi2WiremockMapper {
                             statusCode,
                             getResponseBody(String.valueOf(statusCode), operation));
 
-                    Stubbing stubbing = builder
-                            .request(request)
-                            .response(response)
-                            .build();
+                    Stub stub = new Stub(request, response);
 
-                    stubs.add(stubbing);
+                    stubs.add(stub);
                 });
 
         return stubs.stream().toList();
     }
 
-    private String getResponseBodyFrom$Ref(String component) {
+    private String getResponseBodyFromRef(String component) {
         Schema<?> schema = this.openAPI.getComponents()
                 .getSchemas()
                 .get(getComponentName(component));
@@ -108,7 +104,7 @@ public class OpenApi2WiremockMapper {
                 .getValue();
 
         if (!Objects.isNull(applicationJson.getSchema().get$ref())) {
-            return getResponseBodyFrom$Ref(applicationJson.getSchema().get$ref());
+            return getResponseBodyFromRef(applicationJson.getSchema().get$ref());
         }
 
         return generateResponseBody(applicationJson.getSchema());
@@ -156,8 +152,8 @@ public class OpenApi2WiremockMapper {
         }
     }
 
-    public String getComponentName(final String $ref) {
-        String[] split = $ref.split("/");
+    public String getComponentName(final String ref) {
+        String[] split = ref.split("/");
         return split[split.length - 1];
     }
 

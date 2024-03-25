@@ -11,11 +11,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkiverse.openapi.wiremock.generator.deployment.wrapper.OpenApiWiremockGeneratorWrapper;
 import io.swagger.v3.oas.models.media.Schema;
 
-public class SchemaReader {
+public interface SchemaReader {
 
-    public static final String EMPTY_JSON_OBJECT = "{}";
+    String EMPTY_JSON_OBJECT = "{}";
 
-    public static String readObjectExample(Schema<?> schema) {
+    static String readObjectExample(Schema<?> schema) {
         try {
             HashMap<String, Object> map = new HashMap<>();
             mapObjectExample(map, schema);
