@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Stubbing;
+import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Stub;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
@@ -23,14 +23,14 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // when
-        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        List<Stub> stubs = openApi2WiremockMapper.generateWiremockStubs();
 
         // then
-        Stubbing stubbing = stubs.stream().findFirst().orElseThrow();
+        Stub stub = stubs.stream().findFirst().orElseThrow();
 
         Assertions.assertEquals(1, stubs.size());
-        Assertions.assertEquals("/ping", stubbing.urlPath());
-        Assertions.assertEquals("GET", stubbing.method());
+        Assertions.assertEquals("/ping", stub.urlPath());
+        Assertions.assertEquals("GET", stub.method());
     }
 
     @Test
@@ -41,7 +41,7 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // when
-        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        List<Stub> stubs = openApi2WiremockMapper.generateWiremockStubs();
 
         // then
         Assertions.assertEquals(2, stubs.size());
@@ -64,13 +64,13 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // arrange
-        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
-        Stubbing stubbing = stubs.stream().findFirst().orElse(null);
+        List<Stub> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        Stub stub = stubs.stream().findFirst().orElse(null);
 
         // assert
-        Assertions.assertNotNull(stubbing);
+        Assertions.assertNotNull(stub);
 
-        Assertions.assertEquals("{}", stubbing.response().getBody());
+        Assertions.assertEquals("{}", stub.response().getBody());
     }
 
     @Test
@@ -81,12 +81,12 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // arrange
-        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
-        Stubbing stubbing = stubs.stream().findFirst().orElse(null);
+        List<Stub> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        Stub stub = stubs.stream().findFirst().orElse(null);
 
         // assert
-        Assertions.assertNotNull(stubbing);
-        Assertions.assertEquals("{\"user\":\"John Doe\"}", stubbing.response().getBody());
+        Assertions.assertNotNull(stub);
+        Assertions.assertEquals("{\"user\":\"John Doe\"}", stub.response().getBody());
     }
 
     @Test
@@ -97,12 +97,12 @@ class OpenApi2WiremockMapperTest {
         OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
 
         // arrange
-        List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
-        Stubbing stubbing = stubs.stream().findFirst().orElse(null);
+        List<Stub> stubs = openApi2WiremockMapper.generateWiremockStubs();
+        Stub stub = stubs.stream().findFirst().orElse(null);
 
         // assert
-        Assertions.assertNotNull(stubbing);
-        Assertions.assertEquals(200, stubbing.response().getStatus());
+        Assertions.assertNotNull(stub);
+        Assertions.assertEquals(200, stub.response().getStatus());
     }
 
     OpenAPI readOpenAPI(final String file) throws URISyntaxException {

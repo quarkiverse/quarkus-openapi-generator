@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.file.PathUtils;
@@ -15,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.OpenApi2WiremockMapper;
-import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Stubbing;
+import io.quarkiverse.openapi.wiremock.generator.deployment.wiremock.model.Stub;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.smallrye.config.common.utils.StringUtil;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -41,8 +40,12 @@ public class OpenApiWiremockGeneratorWrapper {
         if (Files.isDirectory(inputDir) && !PathUtils.isEmpty(this.inputDir)) {
             try (Stream<Path> stream = Files.walk(this.inputDir)) {
                 Path mappingsDir = createOutputMappingsDir(this.outputDir);
-                stream.filter(Files::isRegularFile)
-                        .forEach(generateWiremockStubbingFile(mappingsDir));
+                List<Path> list = stream.filter(Files::isRegularFile).toList();
+
+                for (Path file : list) {
+                    generateWiremockStubbingFile(file, mappingsDir);
+                }
+
             } catch (IOException e) {
                 throw new CodeGenException(
                         "Failed to generate Wiremock stubbing from OpenApi files in " + this.inputDir.toAbsolutePath(), e);
@@ -58,25 +61,24 @@ public class OpenApiWiremockGeneratorWrapper {
         return mappingsDir;
     }
 
-    private Consumer<Path> generateWiremockStubbingFile(Path mappingsDir) {
-        return file -> {
-            OpenAPI openAPI = OPENAPI_PARSER_INSTANCE.read(file.toString());
-            OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
-            List<Stubbing> stubs = openApi2WiremockMapper.generateWiremockStubs();
+    private void generateWiremockStubbingFile(Path file, Path mappingsDir) throws IOException {
 
-            try {
+        OpenAPI openAPI = OPENAPI_PARSER_INSTANCE.read(file.toString());
+        OpenApi2WiremockMapper openApi2WiremockMapper = new OpenApi2WiremockMapper(openAPI);
+        List<Stub> stubs = openApi2WiremockMapper.generateWiremockStubs();
 
-                byte[] json = OBJECT_MAPPER_INSTANCE.writeValueAsBytes(Map.of(MAPPINGS, stubs));
+        try {
+            byte[] json = OBJECT_MAPPER_INSTANCE.writeValueAsBytes(Map.of(MAPPINGS, stubs));
 
-                Path wiremockStubs = Files
-                        .createFile(mappingsDir.resolve(generateFinalFilename(file)));
+            Path wiremockStubs = Files
+                    .createFile(mappingsDir.resolve(generateFinalFilename(file)));
 
-                Files.write(wiremockStubs, json);
+            Files.write(wiremockStubs, json);
 
-            } catch (IOException e) {
-                LOGGER.warn("Failed to generate Wiremock stubs for file " + file.toAbsolutePath(), e);
-            }
-        };
+        } catch (IOException e) {
+            LOGGER.error("Failed to generate Wiremock stubs for file " + file.toAbsolutePath(), e);
+            throw e;
+        }
     }
 
     private String generateFinalFilename(Path path) {
