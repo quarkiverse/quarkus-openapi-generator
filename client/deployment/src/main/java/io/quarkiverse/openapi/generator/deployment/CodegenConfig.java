@@ -46,6 +46,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         SKIP_FORM_MODEL("skip-form-model"),
         MUTINY("mutiny"),
         ADDITIONAL_MODEL_TYPE_ANNOTATIONS("additional-model-type-annotations"),
+        ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER("additional-enum-type-unexpected-member"),
         ADDITIONAL_API_TYPE_ANNOTATIONS("additional-api-type-annotations"),
         TYPE_MAPPINGS("type-mappings"),
         IMPORT_MAPPINGS("import-mappings"),

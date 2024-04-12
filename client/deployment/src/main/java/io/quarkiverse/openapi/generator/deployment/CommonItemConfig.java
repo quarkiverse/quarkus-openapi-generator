@@ -43,6 +43,13 @@ public class CommonItemConfig {
     public Optional<String> additionalModelTypeAnnotations;
 
     /**
+     * Defines if the enums should have an `UNEXPECTED` member to convey values that cannot be parsed. Default is
+     * <code>false</code>.
+     */
+    @ConfigItem(name = "additional-enum-type-unexpected-member")
+    public Optional<Boolean> additionalEnumTypeUnexpectedMemberAnnotations;
+
+    /**
      * The specified annotations will be added to the generated api files
      */
     @ConfigItem(name = "additional-api-type-annotations")

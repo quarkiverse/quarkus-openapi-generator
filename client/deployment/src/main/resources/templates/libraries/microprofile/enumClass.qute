@@ -4,6 +4,7 @@
 {/if}
     {#include additionalEnumTypeAnnotations.qute e=e /}public enum {e.enumName} {
         {#if e.allowableValues}
+        {#if additionalEnumTypeUnexpectedMember}{#include additionalEnumTypeUnexpectedMember.qute e=e/}{/if}
         {#if e.withXml}
         {#for v in e.allowableValues.enumVars}@XmlEnumValue({#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}{v.value}{#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}) {v.name}({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value})){#if v_hasNext}, {#else}; {/if}{/for}
         {#else}
@@ -37,6 +38,6 @@
                     return b;
                 }
             }
-            {#if e.useNullForUnknownEnumValue}return null;{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
+            {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return UNEXPECTED;{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
         }
     }

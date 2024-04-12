@@ -202,6 +202,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_MODEL_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
 
+        generator.withAdditionalEnumTypeUnexpectedMemberConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER,
+                        Boolean.class)
+                        .orElse(false));
+
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);
 
