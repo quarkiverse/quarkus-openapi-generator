@@ -34,6 +34,14 @@ WARNING: You probably already have this configuration if you created your applic
 
 Now, create the directory `openapi` under your `src/main/resources` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
 
+If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi.input-base-dir`.
+IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property:
+
+[source,properties]
+----
+quarkus.openapi.input-base-dir=openapi-definitions
+----
+
 To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
 
 If a base package name is not provided, it will be used the default `io.apicurio.api`.
