@@ -12,4 +12,4 @@ include::includes/want-to-contribute.adoc[]
 [[getting-started]]
 == Getting Started
 
-include::./includes/getting-started.adoc[leveloffset=+1, opts=optional]
+include::./includes/server-getting-started.adoc[leveloffset=+1, opts=optional]

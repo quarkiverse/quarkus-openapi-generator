@@ -34,8 +34,6 @@ WARNING: You probably already have this configuration if you created your applic
 
 Now, create the directory `openapi` under your `src/main/resources` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
 
-To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
-
 If a base package name is not provided, it will be used the default `io.apicurio.api`.
 
 You can customize the specification used for code generation with the following property:
