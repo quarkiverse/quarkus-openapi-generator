@@ -39,6 +39,7 @@ Now, create the directory `openapi` under your `src/main/resources` path and add
 quarkus.openapi.generator.spec=petstore-openapi.json
 ----
 
+
 If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi.input-base-dir`.
 IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property:
 
