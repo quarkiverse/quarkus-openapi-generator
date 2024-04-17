@@ -17,23 +17,23 @@ public interface SchemaReader {
 
     static String readObjectExample(Schema<?> schema) {
         try {
-            HashMap<String, Object> map = new HashMap<>();
-            mapObjectExample(map, schema);
+            Map<String, Object> map = mapObjectExample(schema);
             return OpenApiWiremockGeneratorWrapper.OBJECT_MAPPER_INSTANCE.writeValueAsString(map);
         } catch (JsonProcessingException e) {
             return EMPTY_JSON_OBJECT;
         }
     }
 
-    private static Map<String, Object> mapObjectExample(Map<String, Object> root, Schema<?> example) {
+    private static Map<String, Object> mapObjectExample(Schema<?> example) {
+        HashMap<String, Object> currentRoot = new HashMap<>();
         Optional.ofNullable(example.getProperties()).orElse(Map.of())
                 .forEach((key, schema) -> {
                     if (schema.getType().equals(OBJECT_TYPE)) {
-                        root.put(key, mapObjectExample(new HashMap<>(), schema));
+                        currentRoot.put(key, mapObjectExample(schema));
                     } else {
-                        root.put(key, schema.getExample());
+                        currentRoot.put(key, schema.getExample());
                     }
                 });
-        return root;
+        return currentRoot;
     }
 }

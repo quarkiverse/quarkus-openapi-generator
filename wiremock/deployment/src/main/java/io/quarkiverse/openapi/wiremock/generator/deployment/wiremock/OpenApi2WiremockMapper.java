@@ -1,6 +1,8 @@
 package io.quarkiverse.openapi.wiremock.generator.deployment.wiremock;
 
-import static io.swagger.v3.parser.util.SchemaTypeUtil.*;
+import static io.swagger.v3.parser.util.SchemaTypeUtil.INTEGER_TYPE;
+import static io.swagger.v3.parser.util.SchemaTypeUtil.OBJECT_TYPE;
+import static io.swagger.v3.parser.util.SchemaTypeUtil.STRING_TYPE;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -58,7 +60,7 @@ public class OpenApi2WiremockMapper {
         operationsMap.forEach(
                 (httpMethod, operation) -> {
 
-                    Request request = Request.create(pathName, httpMethod.name());
+                    Request request = new Request(pathName, httpMethod.name());
 
                     int statusCode = getStatusCode(operation);
 
