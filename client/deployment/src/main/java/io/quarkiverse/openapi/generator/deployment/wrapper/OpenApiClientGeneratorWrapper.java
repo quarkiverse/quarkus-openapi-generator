@@ -149,7 +149,7 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
-        configurator.setOpenAPINormalizer(openApiNormalizer);
+        configurator.setOpenapiNormalizer(openApiNormalizer);
         return this;
     }
 

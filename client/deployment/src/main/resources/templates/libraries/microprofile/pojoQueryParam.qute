@@ -93,13 +93,13 @@
             return this;
         }
         {#if v.isArray}
-        public {m.classname}QueryParam add{v.nameInCamelCase}Item({v.items.datatypeWithEnum} {v.name}Item) {
+        public {m.classname}QueryParam add{v.nameInPascalCase}Item({v.items.datatypeWithEnum} {v.name}Item) {
             this.{v.name}.add({v.name}Item);
             return this;
         }
         {/if}
         {#if v.isMap}
-        public {m.classname}QueryParam put{v.nameInCamelCase}Item(String key, {v.items.datatypeWithEnum} {v.name}Item) {
+        public {m.classname}QueryParam put{v.nameInPascalCase}Item(String key, {v.items.datatypeWithEnum} {v.name}Item) {
             this.{v.name}.put(key, {v.name}Item);
             return this;
         }

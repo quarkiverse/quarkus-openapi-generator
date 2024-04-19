@@ -106,7 +106,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
         return this;
     }
     {#if v.isArray}
-    public {m.classname} add{v.nameInCamelCase}Item({v.items.datatypeWithEnum} {v.name}Item) {
+    public {m.classname} add{v.nameInPascalCase}Item({v.items.datatypeWithEnum} {v.name}Item) {
         if (this.{v.name} == null){
             {v.name} = {#if v.defaultValue}{v.defaultValue}{#else}new {#if v.uniqueItems}LinkedHashSet{/if}{#if !v.uniqueItems}ArrayList{/if}<>(){/if};
         }
@@ -115,7 +115,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     }
     {/if}
     {#if v.isMap}
-    public {m.classname} put{v.nameInCamelCase}Item(String key, {v.items.datatypeWithEnum} {v.name}Item) {
+    public {m.classname} put{v.nameInPascalCase}Item(String key, {v.items.datatypeWithEnum} {v.name}Item) {
            if (this.{v.name} == null){
                 {v.name} = {#if v.defaultValue}{v.defaultValue}{#else}new HashMap<>(){/if};
             }
