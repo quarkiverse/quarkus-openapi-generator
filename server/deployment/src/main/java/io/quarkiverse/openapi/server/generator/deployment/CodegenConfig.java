@@ -9,6 +9,7 @@ public class CodegenConfig {
     static final String CODEGEN_TIME_CONFIG_PREFIX = "quarkus.openapi.generator";
     private static final String CODEGEN_BASE_PACKAGE = CODEGEN_TIME_CONFIG_PREFIX + ".base-package";
     private static final String CODEGEN_SPEC = CODEGEN_TIME_CONFIG_PREFIX + ".spec";
+    private static final String INPUT_BASE_DIR = CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
 
     public static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
@@ -16,5 +17,9 @@ public class CodegenConfig {
 
     public static String getSpecPropertyName() {
         return CODEGEN_SPEC;
+    }
+
+    public static String getInputBaseDirPropertyName() {
+        return INPUT_BASE_DIR;
     }
 }
