@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-simple</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Simple</name>
+  <name>Quarkus - Openapi Generator - Integration Tests - Client - Simple</name>
   <description>Example project for general usage</description>
 
   <dependencies>

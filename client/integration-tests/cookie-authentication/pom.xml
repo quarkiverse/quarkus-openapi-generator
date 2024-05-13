@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-it-cookie-authentication</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Cookie Authentication</name>
+    <name>Quarkus - Openapi Generator - Integration Tests - Client - Cookie Authentication</name>
     <description>Use cookie authentication</description>
 
     <dependencies>

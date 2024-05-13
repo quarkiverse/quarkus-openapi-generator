@@ -8,7 +8,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests</name>
+  <name>Quarkus - Openapi Generator - Client - Integration Tests</name>
   <packaging>pom</packaging>
   <modules>
     <module>additional-properties</module>

@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-type-mapping</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Type Mapping</name>
+  <name>Quarkus - Openapi Generator - Integration Tests - Client - Type Mapping</name>
 
   <dependencies>
     <dependency>

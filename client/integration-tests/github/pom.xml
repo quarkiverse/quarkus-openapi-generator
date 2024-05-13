@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-ghub</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - GitHub spec</name>
+  <name>Quarkus - Openapi Generator - Integration Tests - Client - GitHub spec</name>
   <description>Example project for general usage</description>
 
   <dependencies>

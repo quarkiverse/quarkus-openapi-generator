@@ -8,7 +8,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>quarkus-openapi-generator-deployment</artifactId>
-  <name>Quarkus - Openapi Generator - Deployment</name>
+  <name>Quarkus - Openapi Generator - Client - Deployment</name>
 
   <properties>
     <version.org.openapitools>7.5.0</version.org.openapitools>
