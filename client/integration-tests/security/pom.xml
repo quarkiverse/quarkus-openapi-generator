@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-security</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Security</name>
+  <name>Quarkus - Openapi Generator - Integration Tests - Client - Security</name>
   <description>A few use cases that relies on security use cases with the OpenAPI Generator</description>
 
   <dependencies>

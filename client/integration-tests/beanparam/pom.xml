@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-it-beanparam</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - BeanParam</name>
+    <name>Quarkus - Openapi Generator - Integration Tests - Client - BeanParam</name>
     <description>Example project for @BeanParam usage</description>
 
     <dependencies>

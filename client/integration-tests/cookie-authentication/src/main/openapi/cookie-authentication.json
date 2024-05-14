@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Quarkus - Openapi Generator - Integration Tests - Cookie Authentication",
+    "title": "Quarkus - Openapi Generator - Integration Tests - Client - Cookie Authentication",
     "version": "v1"
   },
   "servers": [

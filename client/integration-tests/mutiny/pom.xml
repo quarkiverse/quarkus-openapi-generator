@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>quarkus-openapi-generator-it-mutiny</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Mutiny</name>
+    <name>Quarkus - Openapi Generator - Integration Tests - Client - Mutiny</name>
     <description>Example project for general usage with Mutiny</description>
 
     <dependencies>
