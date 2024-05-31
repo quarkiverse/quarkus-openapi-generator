@@ -13,7 +13,7 @@ Please, provide the output of `java --version`.
 Please, specify the version of Quarkus used.
 
 ## Description
-Please provide a detailed description of the issue or the feature request.
+Please, provide a detailed description of the issue or the feature request.
 
 ## Steps to Reproduce (if applicable)
-Please provide detailed steps to reproduce the bug, including any relevant code snippets or links to files.
+Please, provide detailed steps to reproduce the bug, including any relevant code snippets or links to files.
