@@ -1,6 +1,5 @@
 ---
 name: "[Issue number - problem description]"
-assignees: gmalheiro
 ---
 
 ## Extension
