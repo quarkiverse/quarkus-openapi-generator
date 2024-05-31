@@ -1,11 +1,6 @@
 ---
 name: "[Issue number - problem description]"
-about: This template standardizes issue reporting within the project.
-title: "[Issue]"
-labels: bug, documentation, duplicate, enhancement, good first issue, help wanted,
-  invalid, question, wontfix
 assignees: gmalheiro
-
 ---
 
 ## Extension
