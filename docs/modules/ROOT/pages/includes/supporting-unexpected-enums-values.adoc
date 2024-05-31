@@ -1,0 +1,13 @@
+If you are generating a client to an unreliable service, Enums could evolve on the service within a same version without new endpoints. In this case, the client could receive enum values that are unexpected.
+
+To circumvent this, you can generate an `UNEXPECTED` value with option `additional-enum-type-unexpected-member`. You can customise the name of this enum with `additional-enum-type-unexpected-member-name`.
+
+The value can be customised with `additional-enum-type-unexpected-member-string-value`.
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.additional-enum-type-unexpected-member=true
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.additional-enum-type-unexpected-member.name=UNEXPECTED
+additional-enum-type-unexpected-member-string-value=unexpected
+----
+
