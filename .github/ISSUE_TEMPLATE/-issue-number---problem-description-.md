@@ -11,7 +11,7 @@ assignees: gmalheiro
 Please provide the output of `java --version`.
 
 ## Quarkus Version
-Please specify the version of Quarkus used.
+Please, specify the version of Quarkus used.
 
 ## Description
 Please provide a detailed description of the issue or the feature request.
