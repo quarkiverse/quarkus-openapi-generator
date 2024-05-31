@@ -172,6 +172,18 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withAdditionalEnumTypeUnexpectedMemberNameConfig(
+            final String additionalEnumTypeUnexpectedMemberName) {
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberName", additionalEnumTypeUnexpectedMemberName);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withAdditionalEnumTypeUnexpectedMemberStringValueConfig(
+            final String additionalEnumTypeUnexpectedMemberStringValue) {
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberStringValue", additionalEnumTypeUnexpectedMemberStringValue);
+        return this;
+    }
+
     /**
      * Sets the global 'additionalApiTypeAnnotations' setting. If not set this setting will default to empty.
      *

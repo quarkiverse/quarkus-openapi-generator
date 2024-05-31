@@ -1,8 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
@@ -206,6 +204,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER,
                         Boolean.class)
                         .orElse(false));
+
+        generator.withAdditionalEnumTypeUnexpectedMemberNameConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME,
+                        String.class)
+                        .orElse(ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT));
+
+        generator.withAdditionalEnumTypeUnexpectedMemberStringValueConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE,
+                        String.class)
+                        .orElse(ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT));
 
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);

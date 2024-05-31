@@ -38,6 +38,6 @@
                     return b;
                 }
             }
-            {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return UNEXPECTED;{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
+            {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
         }
     }

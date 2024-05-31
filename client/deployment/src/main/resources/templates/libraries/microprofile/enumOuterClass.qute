@@ -39,6 +39,6 @@ import java.util.EnumSet;
                 return b;
             }
         }
-        {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return UNEXPECTED;{#else}throw new IllegalArgumentException("Unexpected value '" + text + "'");{/if}
+        {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + text + "'");{/if}
     }
 }
