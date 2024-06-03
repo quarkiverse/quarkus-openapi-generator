@@ -174,13 +174,15 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withAdditionalEnumTypeUnexpectedMemberNameConfig(
             final String additionalEnumTypeUnexpectedMemberName) {
-        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberName", additionalEnumTypeUnexpectedMemberName);
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberName",
+                additionalEnumTypeUnexpectedMemberName);
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withAdditionalEnumTypeUnexpectedMemberStringValueConfig(
             final String additionalEnumTypeUnexpectedMemberStringValue) {
-        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberStringValue", additionalEnumTypeUnexpectedMemberStringValue);
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberStringValue",
+                additionalEnumTypeUnexpectedMemberStringValue);
         return this;
     }
 
