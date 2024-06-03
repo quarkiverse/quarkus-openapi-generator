@@ -7,7 +7,7 @@ name: "[Issue number - problem description]"
 - [ ] Client
 
 ## Java Version
-Please, provide the output of `java --version`.
+<!-- Please, provide the output of `java --version`. -->
 
 ## Quarkus Version
 Please, specify the version of Quarkus used.
