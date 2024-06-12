@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
+import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getCodegenReactive;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +39,7 @@ public class ApicurioCodegenWrapper {
         this.outdir = outdir;
         this.projectSettings = projectSettings;
         this.projectSettings.setJavaPackage(getBasePackage(config));
+        this.projectSettings.setReactive(getReactiveValue(config));
     }
 
     public void generate(Path openApiResource) throws CodeGenException {
@@ -108,6 +110,12 @@ public class ApicurioCodegenWrapper {
         return config
                 .getOptionalValue(getBasePackagePropertyName(), String.class)
                 .orElse(DEFAULT_PACKAGE);
+    }
+
+    private Boolean getReactiveValue(final Config config) {
+        return config
+                .getOptionalValue(getCodegenReactive(), Boolean.class)
+                .orElse(Boolean.FALSE);
     }
 
     private static JaxRsProjectSettings defaultProjectSettings() {
