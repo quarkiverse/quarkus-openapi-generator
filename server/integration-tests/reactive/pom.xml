@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>quarkus-openapi-generator-server-integration-tests-resteasy-reactive</artifactId>
+    <artifactId>quarkus-openapi-generator-server-integration-tests-quarkus-rest</artifactId>
     <name>Quarkus - Openapi Generator - Server - Integration Tests - Quarkus REST (formerly RESTEasy Reactive)</name>
 
     <dependencies>
