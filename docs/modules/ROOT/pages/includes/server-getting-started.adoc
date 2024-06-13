@@ -10,6 +10,8 @@ Add the following dependency to your project's `pom.xml` file:
 </dependency>
 ----
 
+Note that since this extension has not been yet released, you'll need a local build of the dependency.
+
 You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
 
 WARNING: You probably already have this configuration if you created your application with https://code.quarkus.io/[Code Quarkus]. That said, double-check your configuration not to add another `plugin` entry.
@@ -53,6 +55,13 @@ If a base package name is not provided, it will be used the default `io.apicurio
 [source,properties]
 ----
 quarkus.openapi.generator.base-package=io.petstore
+----
+
+By default, the extension generates non-reactive code. If you would like to change it, you can do it as follows:
+
+[source,properties]
+----
+quarkus.openapi.generator.reactive=true
 ----
 
 Run `mvn compile` to generate your classes in `target/generated-sources/jaxrs` path:
