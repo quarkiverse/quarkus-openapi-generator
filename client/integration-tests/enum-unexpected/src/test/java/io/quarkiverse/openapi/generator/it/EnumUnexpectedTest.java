@@ -70,8 +70,7 @@ class EnumUnexpectedTest {
     }
 
     @Test
-    void when_additional_enum_type_unexpected_member_is_false_should_fail_parsing_unknown_values()
-            throws JsonProcessingException {
+    void when_additional_enum_type_unexpected_member_is_false_should_fail_parsing_unknown_values() {
         assertThatThrownBy(() -> {
             objectMapper.readValue("{ \"msgType\": \"NOPE\"}",
                     org.openapi.quarkus.without_enum_unexpected_yaml.model.Echo.class);
