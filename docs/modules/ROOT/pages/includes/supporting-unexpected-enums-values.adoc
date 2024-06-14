@@ -8,6 +8,5 @@ The value can be customised with `additional-enum-type-unexpected-member-string-
 ----
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.additional-enum-type-unexpected-member=true
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.additional-enum-type-unexpected-member.name=UNEXPECTED
-additional-enum-type-unexpected-member-string-value=unexpected
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.additional-enum-type-unexpected-member-string-value=unexpected
 ----
-
