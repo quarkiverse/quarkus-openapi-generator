@@ -22,7 +22,6 @@ public class CodegenConfig extends GlobalCodegenConfig {
     public static final String MODEL_PKG_SUFFIX = ".model";
 
     public static final String ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT = "UNEXPECTED";
-    public static final int ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_INT_VALUE_DEFAULT = -1;
     public static final String ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT = "unexpected";
     // package visibility for unit tests
     static final String BUILD_TIME_GLOBAL_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".%s";
