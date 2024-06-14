@@ -15,6 +15,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
     public static final String IDENTIFIER = "qute";
     public static final String[] INCLUDE_TEMPLATES = {
             "additionalEnumTypeAnnotations.qute",
+            "additionalEnumTypeUnexpectedMember.qute",
             "additionalModelTypeAnnotations.qute",
             "beanValidation.qute",
             "beanValidationCore.qute",

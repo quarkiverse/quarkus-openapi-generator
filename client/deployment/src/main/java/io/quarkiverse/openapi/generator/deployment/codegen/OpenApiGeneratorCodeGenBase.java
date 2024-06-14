@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
@@ -201,6 +203,21 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_MODEL_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
+
+        generator.withAdditionalEnumTypeUnexpectedMemberConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER,
+                        Boolean.class)
+                        .orElse(false));
+
+        generator.withAdditionalEnumTypeUnexpectedMemberNameConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME,
+                        String.class)
+                        .orElse(ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT));
+
+        generator.withAdditionalEnumTypeUnexpectedMemberStringValueConfig(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE,
+                        String.class)
+                        .orElse(ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT));
 
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);

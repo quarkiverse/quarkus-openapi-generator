@@ -9,6 +9,7 @@ import java.util.EnumSet;
 @JsonIgnoreProperties(ignoreUnknown = true)
 {#include additionalEnumTypeAnnotations.qute e=e/}public enum {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} {
     {#if e.allowableValues}
+    {#if additionalEnumTypeUnexpectedMember}{#include additionalEnumTypeUnexpectedMember.qute e=e/}{/if}
     {#for v in e.allowableValues.enumVars}{v.name}({e.dataType}.valueOf({v.value})){#if v_hasNext}, {#else};{/if}{/for}
     {/if}
 
@@ -38,6 +39,6 @@ import java.util.EnumSet;
                 return b;
             }
         }
-        {#if e.useNullForUnknownEnumValue}return null;{#else}throw new IllegalArgumentException("Unexpected value '" + text + "'");{/if}
+        {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + text + "'");{/if}
     }
 }
