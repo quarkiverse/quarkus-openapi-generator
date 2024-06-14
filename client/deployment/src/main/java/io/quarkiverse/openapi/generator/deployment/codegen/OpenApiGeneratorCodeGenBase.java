@@ -1,6 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
