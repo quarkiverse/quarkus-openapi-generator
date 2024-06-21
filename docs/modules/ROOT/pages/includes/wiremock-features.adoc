@@ -1,0 +1,63 @@
+The OpenAPI Generator Wiremock extensions maps OpenAPI specification and transform it into a https://wiremock.org/docs/stubbing/#bulk-importing-stubs[Bulk Importing Stubs] JSON file.
+
+== Request Matching
+
+To build the Wiremock https://wiremock.org/docs/request-matching/[Request Matching], this extension looks just to https://swagger.io/docs/specification/paths-and-operations/[Paths and Operations] OpenAPI fields.
+
+The OpenAPI path is converted to https://swagger.io/docs/specification/paths-and-operations/[path template] following the https://www.rfc-editor.org/rfc/rfc6570[RFC 6570] standard:
+[source,yaml]
+----
+paths:
+  /users/{userId}/cars/{carId}:
+----
+
+Will be converted to:
+
+[source,json]
+----
+{
+    "mappings": [
+        {
+            "request": {
+                "urlPathTemplate": "/users/{userId}/cars/{cardId}"
+            }
+        }
+    ]
+}
+----
+
+== Responses
+
+This extension will get the first Response status code Operation. For example, if you have the following OpenAPI Response:
+
+[source,yaml]
+----
+responses:
+    "500":
+        description: "Internal Server Error"
+    "200":
+        description: "Ok"
+----
+
+The extension will generate the following Wiremock Response templating:
+
+[source,json]
+----
+{
+    "response": {
+        "status": 200
+    }
+}
+----
+
+NOTE: If your Response entry does not contain `content` the Wiremock Stub `$.response.body` will be ignored.
+
+== Media type
+
+IMPORTANT: This extension only supports `"application/json"` media type.
+
+== Schema Type
+
+For the first release, we chose to looks for the https://swagger.io/docs/specification/data-models/[Schema] `type` and supports only https://swagger.io/docs/specification/data-models/data-types/[Data Types] `object`, `string` and `integer` types.
+
+IMPORTANT: The root schema must have the type `object`.
