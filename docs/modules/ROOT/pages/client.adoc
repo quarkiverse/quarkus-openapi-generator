@@ -163,6 +163,10 @@ include::./includes/additional-properties-as-attribute.adoc[leveloffset=+1, opts
 
 include::./includes/additional-request-args.adoc[leveloffset=+1, opts=optional]
 
+[[use-bean-validation]]
+== Add Bean Validation support to every API method and validation annotations to all models
+
+include::./includes/bean-validation.adoc[leveloffset=+1, opts=optional]
 
 == Known Limitations
 

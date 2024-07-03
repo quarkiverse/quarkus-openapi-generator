@@ -110,4 +110,10 @@ public class CommonItemConfig {
      */
     @ConfigItem(name = "use-field-name-in-part-filename")
     public Optional<Boolean> useFieldNameInPartFilename;
+
+    /**
+     * Enable bean validation. If you set this to `true`, validation annotations are added to generated sources E.g. @Size.
+     */
+    @ConfigItem(name = "use-bean-validation")
+    public Optional<Boolean> useBeanValidation;
 }

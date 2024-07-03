@@ -2,12 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -52,6 +47,10 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         this.sourceFolder = "";
         this.testFolder = "";
         this.embeddedTemplateDir = "templates";
+
+        Boolean beanValidation = (Boolean) this.additionalProperties.get("use-bean-validation");
+        this.setUseBeanValidation(beanValidation != null && beanValidation);
+        this.setPerformBeanValidation(beanValidation != null && beanValidation);
 
         this.replaceWithQuarkusTemplateFiles();
     }
