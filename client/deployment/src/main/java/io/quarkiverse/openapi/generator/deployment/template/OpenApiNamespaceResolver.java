@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.template;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
@@ -49,7 +50,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
     }
 
     public String parseUri(String uri) {
-        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString();
+        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString().replace(File.separatorChar, '/');
     }
 
     @Override
