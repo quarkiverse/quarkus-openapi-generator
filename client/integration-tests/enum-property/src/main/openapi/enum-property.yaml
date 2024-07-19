@@ -36,6 +36,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Echo'
+  /echo/int:
+    post:
+      summary: Echo Integer
+      operationId: echo_int
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInt"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Echo'
 components:
   schemas:
     Echo:
@@ -59,6 +75,16 @@ components:
       properties:
         msgType:
           type: number
+          enum:
+            - 1.1
+            - 2.3
+    MessageInt:
+      type: object
+      required:
+        - msgType
+      properties:
+        msgType:
+          type: integer
           enum:
             - 1
             - 2

@@ -7,7 +7,7 @@
         {#if e.withXml}
         {#for v in e.allowableValues.enumVars}@XmlEnumValue({#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}{v.value}{#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}) {v.name}({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value})){#if v_hasNext}, {#else}; {/if}{/for}
         {#else}
-        {#for v in e.allowableValues.enumVars}{v.name}({#if eq e.dataType "BigDecimal"}{v.value}{#else}{#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value}){/if}){#if v_hasNext}, {#else};{/if}{/for}
+        {#for v in e.allowableValues.enumVars}{v.name}({#if eq e.isNumeric}{v.value}{#else}{#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value}){/if}){#if v_hasNext}, {#else};{/if}{/for}
         {/if}
         {/if}
 
