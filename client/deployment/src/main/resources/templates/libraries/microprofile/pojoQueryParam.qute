@@ -37,7 +37,9 @@
         {#if !v.isEnum}
         @jakarta.ws.rs.QueryParam("{v.name}")
         {/if}
-        {#if v.hasValidation}{#include beanValidation.qute p=v/}{/if}
+        {#if v.hasValidation}
+        {#include beanValidation.qute p=v/}
+        {/if}
         {#if v.isContainer}
         private {v.datatypeWithEnum} {v.name}{#if v.required&&v.defaultValue} = {v.defaultValue}{#else} = null{/if};
         {#else}
@@ -68,7 +70,9 @@
         {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
         {ext}
         {/for}
-        {#if v.hasValidation}{#include beanValidation.qute p=v/}{/if}
+        {#if v.hasValidation}
+        {#include beanValidation.qute p=v/}
+        {/if}
         {#if v.isEnum && v.isContainer}public {v.datatypeWithEnum} {v.getter}(){
             return {v.name};
         }{#else if v.isEnum && !v.isArray && !v.isMap}public {v.datatypeWithEnum} {v.getter}() {

@@ -28,12 +28,6 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
 import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
 
-{#if useBeanValidation}
-
-import jakarta.validation.constraints.*;
-import jakarta.validation.Valid;
-{/if}
-
 {#if appName}
 /**
   * {appName}
@@ -124,7 +118,7 @@ public interface {classname} {
         {/if}
         {#else}
         {#for p in op.allParams}
-        {#if p.hasValidation}@Valid {/if}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}
+        {#if p.hasValidation}@jakarta.validation.Valid {/if}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}
         {/for}
         {/if}
     );
