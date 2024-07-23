@@ -44,7 +44,7 @@ public class CommonItemConfig {
 
     /**
      * Defines if the enums should have an `UNEXPECTED` member to convey values that cannot be parsed. Default is
-     * <code>false</code>.
+     * {@code false}.
      */
     @ConfigItem(name = "additional-enum-type-unexpected-member")
     public Optional<Boolean> additionalEnumTypeUnexpectedMemberAnnotations;
@@ -62,7 +62,7 @@ public class CommonItemConfig {
     public Optional<String> additionalRequestArgs;
 
     /**
-     * Defines if the methods should return {@link jakarta.ws.rs.core.Response} or a model. Default is <code>false</code>.
+     * Defines if the methods should return {@link jakarta.ws.rs.core.Response} or a model. Default is {@code false}.
      */
     @ConfigItem(name = "return-response")
     public Optional<Boolean> returnResponse;
@@ -80,7 +80,8 @@ public class CommonItemConfig {
     public Map<String, String> normalizer;
 
     /**
-     * Enable SmallRye Mutiny support. If you set this to `true`, all return types will be wrapped in `io.smallrye.mutiny.Uni`.
+     * Enable SmallRye Mutiny support. If you set this to {@code true}, all return types will be wrapped in
+     * {@link io.smallrye.mutiny.Uni}.
      */
     @ConfigItem(name = "mutiny")
     public Optional<Boolean> supportMutiny;
@@ -88,7 +89,7 @@ public class CommonItemConfig {
     /**
      * Defines, whether the `PartFilename` ({@link org.jboss.resteasy.reactive.PartFilename} or
      * {@link org.jboss.resteasy.annotations.providers.multipart.PartFilename}) annotation should be generated for
-     * MultipartForm POJOs. By setting to `false`, the annotation will not be generated.
+     * MultipartForm POJOs. By setting to {@code false}, the annotation will not be generated.
      */
     @ConfigItem(name = "generate-part-filename")
     public Optional<Boolean> generatePartFilename;
@@ -112,7 +113,8 @@ public class CommonItemConfig {
     public Optional<Boolean> useFieldNameInPartFilename;
 
     /**
-     * Enable bean validation. If you set this to `true`, validation annotations are added to generated sources E.g. @Size.
+     * Enable bean validation. If you set this to {@code true}, validation annotations are added to generated sources E.g.
+     * {@code @Size}.
      */
     @ConfigItem(name = "use-bean-validation")
     public Optional<Boolean> useBeanValidation;
