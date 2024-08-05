@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.openapi.quarkus.enum_property_yaml.api.DefaultApi;
 import org.openapi.quarkus.enum_property_yaml.model.Echo;
 import org.openapi.quarkus.enum_property_yaml.model.Message;
+import org.openapi.quarkus.enum_property_yaml.model.MessageInt;
+import org.openapi.quarkus.enum_property_yaml.model.MessageNum;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -36,11 +38,21 @@ class EnumPropertyTest {
     void apiIsBeingGenerated() {
         var message = new Message();
         message.setMsgType(Message.MsgTypeEnum.TEXT);
+        var messageNum = new MessageNum();
+        messageNum.setMsgType(MessageNum.MsgTypeEnum.NUMBER_1_DOT_1);
+        var messageInt = new MessageInt();
+        messageInt.setMsgType(MessageInt.MsgTypeEnum.NUMBER_2);
 
         Echo echo = api.echo(message);
+        Echo echoNum = api.echoNum(messageNum);
+        Echo echoInt = api.echoInt(messageInt);
 
         assertThat(echo.getEchoedMsgType())
                 .isEqualTo("text");
+        assertThat(echoNum.getEchoedMsgType())
+                .isEqualTo("1.1");
+        assertThat(echoInt.getEchoedMsgType())
+                .isEqualTo("2");
     }
 
     public static class EchoMockServer implements QuarkusTestResourceLifecycleManager {
@@ -61,6 +73,20 @@ class EnumPropertyTest {
             wireMockServer.start();
 
             wireMockServer.stubFor(post(urlEqualTo("/echo"))
+                    .willReturn(aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/json")
+                            .withBody("{ \"echoedMsgType\": \"{{jsonPath request.body '$.msgType'}}\"}")
+                            .withTransformers("response-template")));
+
+            wireMockServer.stubFor(post(urlEqualTo("/echo/num"))
+                    .willReturn(aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/json")
+                            .withBody("{ \"echoedMsgType\": \"{{jsonPath request.body '$.msgType'}}\"}")
+                            .withTransformers("response-template")));
+
+            wireMockServer.stubFor(post(urlEqualTo("/echo/int"))
                     .willReturn(aResponse()
                             .withStatus(200)
                             .withHeader("Content-Type", "application/json")
