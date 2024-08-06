@@ -1,4 +1,6 @@
 = Quarkus - OpenAPI Generator
+
+include::./includes/attributes.adoc[]
 :extension-status: preview
 
 This a multipurpose Quarkus' extension for generation of https://quarkus.io/guides/rest-client[Rest Clients] and xref:server.adoc[Server stubs] based on OpenAPI specification files.
