@@ -52,7 +52,7 @@ endif::add-copy-button-to-env-var[]
 |
 
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-auth-config-params]]`link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-auth-config-params[quarkus.openapi-generator."item-configs".auth."auth-configs"]`
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-auth-config-params]]`link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-auth-config-params[quarkus.openapi-generator."item-configs".auth."auth-configs"."auth-config-params"]`
 
 
 [.description]
@@ -64,12 +64,13 @@ For example, given a file named petstore.json with a securityScheme named "petst
 quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.username=MyUserName quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS_+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS___AUTH_CONFIG_PARAMS_+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS_+++`
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS___AUTH_CONFIG_PARAMS_+++`
 endif::add-copy-button-to-env-var[]
---|`Map<String,String>` 
+--|link:https://docs.oracle.com/javase/8/docs/api/java/lang/String.html[String]
+ 
 |
 
 |===
