@@ -1,4 +1,6 @@
 = Quarkus - OpenAPI Generator - Client
+
+include::./includes/attributes.adoc[]
 :extension-status: preview
 
 This extension is for REST code generation for client side only. If you're looking for code generation for the server side, please take a look at the xref:server.adoc[Quarkus OpenAPI Generator Server Extension].

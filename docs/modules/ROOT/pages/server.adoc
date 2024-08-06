@@ -1,4 +1,7 @@
 = Quarkus - OpenAPI Generator - Server
+
+include::./includes/attributes.adoc[]
+
 :extension-status: preview
 
 Quarkus' extension for generation of server Stubs based on OpenAPI specification files.
