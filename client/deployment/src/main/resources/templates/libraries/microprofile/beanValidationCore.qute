@@ -1,5 +1,5 @@
     {#if p.required}
-    jakarta.validation.constraints.NotNull
+    @jakarta.validation.constraints.NotNull
     {/if}
     {#if p.pattern}
     @jakarta.validation.constraints.Pattern(regexp = "{p.pattern}")
@@ -28,9 +28,9 @@
     {/if}
     {#if !p.isInteger && !p.isLong}
     {#if p.minimum}
-    @jakarta.validation.constraints.DecimalMin("{minimum}")
+    @jakarta.validation.constraints.DecimalMin("{p.minimum}")
     {/if}
     {#if p.maximum}
-    @jakarta.validation.constraints.DecimalMax("{maximum}")
+    @jakarta.validation.constraints.DecimalMax("{p.maximum}")
     {/if}
     {/if}
