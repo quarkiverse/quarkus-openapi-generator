@@ -341,6 +341,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "gmalheiro",
+      "name": "Gabriel Malheiro",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92603922?v=4",
+      "profile": "https://github.com/gmalheiro",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
