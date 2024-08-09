@@ -1,2 +1,2 @@
-{#if p.required} @NotNull{/if}
+{#if p.required} @jakarta.validation.constraints.NotNull{/if}
 {#include beanValidationCore.qute p=p/}

@@ -1,33 +1,10 @@
 package {apiPackage}.auth;
 
-import jakarta.inject.Inject;
-import jakarta.annotation.PostConstruct;
-import jakarta.ws.rs.Priorities;
-
-import jakarta.annotation.Priority;
-
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-
-{#if hasHttpBasicMethods}
-import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
-{/if}
-{#if hasApiKeyMethods}
-import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
-{/if}
-{#if hasHttpBearerMethods}
-import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
-{/if}
-import io.quarkiverse.openapi.generator.providers.AbstractCompositeAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
-
-import java.util.Optional;
-
-@Priority(Priorities.AUTHENTICATION)
-public class CompositeAuthenticationProvider extends AbstractCompositeAuthenticationProvider {
+@jakarta.annotation.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
+public class CompositeAuthenticationProvider extends io.quarkiverse.openapi.generator.providers.AbstractCompositeAuthenticationProvider {
 
     @jakarta.inject.Inject
-    OpenApiGeneratorConfig generatorConfig;
+    io.quarkiverse.openapi.generator.OpenApiGeneratorConfig generatorConfig;
 
     {#for auth in oauthMethods.orEmpty}
     @jakarta.inject.Inject
@@ -37,21 +14,21 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
     OidcClientRequestFilterDelegateImpl{auth_index} oidcClientRequestFilterDelegate{auth_index};
     {/for}
 
-    @PostConstruct
+    @jakarta.annotation.PostConstruct
     public void init() {
         {#for auth in oauthMethods.orEmpty}
         oAuth2Provider{auth_index}.init(sanitizeAuthName("{auth.name}"), "{configKey}", oidcClientRequestFilterDelegate{auth_index});
         {/for}
 
         {#for auth in httpBasicMethods.orEmpty}
-        BasicAuthenticationProvider basicAuthProvider{auth_index} = new BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
+        io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider basicAuthProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
         this.addAuthenticationProvider(basicAuthProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        basicAuthProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        basicAuthProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -59,7 +36,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        basicAuthProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        basicAuthProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -75,7 +52,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        oAuth2Provider{auth_index}.addOperation(OperationAuthInfo.builder()
+        oAuth2Provider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -83,7 +60,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        oAuth2Provider{auth_index}.addOperation(OperationAuthInfo.builder()
+        oAuth2Provider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -93,14 +70,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/for}
         {#for auth in httpBearerMethods.orEmpty}
-        BearerAuthenticationProvider bearerProvider{auth_index} = new BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig);
+        io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider bearerProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig);
         this.addAuthenticationProvider(bearerProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        bearerProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        bearerProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -108,7 +85,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        bearerProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        bearerProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -119,14 +96,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {#for auth in apiKeyMethods.orEmpty}
         {#if auth.isKeyInQuery}
-        ApiKeyAuthenticationProvider apiKeyQueryProvider{auth_index} = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.query, "{auth.keyParamName}", generatorConfig);
+        io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider apiKeyQueryProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), io.quarkiverse.openapi.generator.providers.ApiKeyIn.query, "{auth.keyParamName}", generatorConfig);
         this.addAuthenticationProvider(apiKeyQueryProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        apiKeyQueryProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        apiKeyQueryProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -134,7 +111,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        apiKeyQueryProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        apiKeyQueryProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -144,14 +121,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/if}
         {#if auth.isKeyInHeader}
-        ApiKeyAuthenticationProvider apiKeyHeaderProvider{auth_index} = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.header, "{auth.keyParamName}", generatorConfig);
+        io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider apiKeyHeaderProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), io.quarkiverse.openapi.generator.providers.ApiKeyIn.header, "{auth.keyParamName}", generatorConfig);
         this.addAuthenticationProvider(apiKeyHeaderProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        apiKeyHeaderProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        apiKeyHeaderProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -159,7 +136,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        apiKeyHeaderProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        apiKeyHeaderProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -169,14 +146,14 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/for}
         {/if}
         {#if auth.isKeyInCookie}
-        ApiKeyAuthenticationProvider apiKeyCookieProvider{auth_index} = new ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig);
+        io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider apiKeyCookieProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), io.quarkiverse.openapi.generator.providers.ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig);
         this.addAuthenticationProvider(apiKeyCookieProvider{auth_index});
         {#for api in apiInfo.apis}
         {#for op in api.operations.operation}
         {#if op.hasAuthMethods}
         {#for authM in op.authMethods}
         {#if authM.name == auth.name}
-        apiKeyCookieProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        apiKeyCookieProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -184,7 +161,7 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         {/if}
         {/for}
         {#else if defaultSecurityScheme == auth.name}
-        apiKeyCookieProvider{auth_index}.addOperation(OperationAuthInfo.builder()
+        apiKeyCookieProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
             .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
             .withId("{op.operationId}")
             .withMethod("{op.httpMethod}")
@@ -204,8 +181,8 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
 
         @Override
-        protected Optional<String> clientId() {
-            return Optional.of(clientId);
+        protected java.util.Optional<String> clientId() {
+            return java.util.Optional.of(clientId);
         }
 
         @Override
@@ -218,8 +195,8 @@ public class CompositeAuthenticationProvider extends AbstractCompositeAuthentica
         private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
 
         @Override
-        protected Optional<String> clientId() {
-            return Optional.of(clientId);
+        protected java.util.Optional<String> clientId() {
+            return java.util.Optional.of(clientId);
         }
     }
     {/if}
