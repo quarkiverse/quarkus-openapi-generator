@@ -48,12 +48,24 @@ class BeanValidationTest {
         assertThat(Arrays.stream(ValidatedObject.class.getFields())
                 .allMatch(f -> f.isAnnotationPresent(NotNull.class)))
                 .isTrue();
+        
         assertThat(id.isAnnotationPresent(Min.class)).isTrue();
+        assertThat(id.getAnnotation(Min.class).value()).isEqualTo(1);
+        
         assertThat(id.isAnnotationPresent(Max.class)).isTrue();
+        assertThat(id.getAnnotation(Max.class).value()).isEqualTo(100);
+        
         assertThat(name.isAnnotationPresent(Pattern.class)).isTrue();
+        assertThat(name.getAnnotation(Pattern.class).regexp()).isEqualTo("[a-zA-Z]*");
         assertThat(name.isAnnotationPresent(Size.List.class)).isTrue();
+        assertThat(name.getAnnotationsByType(Size.class)).hasSize(2);
+        assertThat(name.getAnnotationsByType(Size.class)[0].min()).isEqualTo(1);
+        assertThat(name.getAnnotationsByType(Size.class)[1].max()).isEqualTo(10);
+        
         assertThat(size.isAnnotationPresent(DecimalMin.class)).isTrue();
+        assertThat(size.getAnnotation(DecimalMin.class).value()).isEqualTo("1.0");
         assertThat(size.isAnnotationPresent(DecimalMax.class)).isTrue();
+        assertThat(size.getAnnotation(DecimalMax.class).value()).isEqualTo("10.0");
     }
 
     @Test
