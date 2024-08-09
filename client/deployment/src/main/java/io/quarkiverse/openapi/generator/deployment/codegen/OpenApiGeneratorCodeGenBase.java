@@ -248,6 +248,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         Boolean.class)
                         .orElse(true));
 
+        getValues(config, openApiFilePath, CodegenConfig.ConfigName.BEAN_VALIDATION, Boolean.class)
+                .ifPresent(generator::withUseBeanValidation);
+
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.TYPE_MAPPINGS, String.class, String.class)

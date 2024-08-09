@@ -13,6 +13,7 @@
   <modules>
     <module>additional-properties</module>
     <module>array-enum</module>
+    <module>bean-validation</module>
     <module>beanparam</module>
     <module>change-directory</module>
     <module>circuit-breaker</module>

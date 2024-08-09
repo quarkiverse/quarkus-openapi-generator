@@ -92,30 +92,28 @@ public interface {classname} {
         {/if}
         {#if op.hasFormParams}
         {#if is-resteasy-reactive}
-        @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
-        !}{#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
-        !}{#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
-        !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}{!
-        !}{#for p in op.cookieParams}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
-        !}{#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
+        @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#else}
-        @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
-        !}{#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
-        !}{#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
-        !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}{!
-        !}{#for p in op.cookieParams}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
-        !}{#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
+        @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
+        {/if}
+        {#if use-bean-validation}
+        {#for p in op.pathParams}@jakarta.validation.Valid {#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
+        {#for p in op.queryParams}@jakarta.validation.Valid {#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
+        {#for p in op.cookieParams}@jakarta.validation.Valid {#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
+        {#for p in op.headerParams}@jakarta.validation.Valid {#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},
+        {#for p in op.bodyParams}@jakarta.validation.Valid {#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{/if}
+        {#else}
+        {#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
+        {#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
+        {#for p in op.cookieParams}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
+        {#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}
+        {#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
         {/if}
         {#else}
-        {#for p in op.allParams}{!
-            !}{#include pathParams.qute param=p/}{!
-            !}{#include queryParams.qute param=p/}{!
-            !}{#include bodyParams.qute param=p/}{!
-            !}{#include cookieParams.qute param=p/}{!
-            !}{#include headerParams.qute param=p/}{!
-            !}{#if p_hasNext}, {/if}{!
-        !}{/for}
-        {/if}
+{#for p in op.allParams}
+        {#if use-bean-validation}@jakarta.validation.Valid {/if}{!
+    !}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}
+{/for}{/if}
     );
     {#if op.hasFormParams}
 

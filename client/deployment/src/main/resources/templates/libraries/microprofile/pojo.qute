@@ -11,6 +11,11 @@ import java.lang.reflect.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 {/if}
 
+{#if m.description}
+/**
+  * {m.description}
+ **/
+{/if}
 {#if withXml}
 @XmlAccessorType(XmlAccessType.FIELD)
 {#if m.hasVars}@XmlType(name = "{m.classname}", propOrder =
@@ -21,11 +26,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 {#if !m.parent || m.parent.isEmpty}@XmlRootElement(name = "{m.classname}"){/if}
 {#else}
 @JsonIgnoreProperties(ignoreUnknown = true)
-{/if}
-{#if m.description}
-/**
-  * {m.description}
- **/
 {/if}
 {#include additionalModelTypeAnnotations.qute m=m/}
 public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements Serializable{/if} {
@@ -42,11 +42,12 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {#if withXml}
     @XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
     {/if}
-    {#if m.description}
+    {#if v.description}
     /**
-      * {m.description}
+      * {v.description}
      **/
     {/if}
+    {#if v.hasValidation}{#include beanValidation.qute p=v/}{/if}
     {#if v.isContainer}
     private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{/if};
     {#else}
@@ -73,14 +74,13 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     **/
     {#if !withXml}
     @JsonProperty("{v.baseName}")
-       {#if !v.required} 
-          @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
-       {/if}
+    {#if !v.required}
+    @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+    {/if}
     {/if}
     {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
     {ext}
     {/for}
-    {#if v.useBeanValidation}{#include beanValidation.qute p=v/}{/if}
     {#if v.isEnum && v.isContainer}public {v.datatypeWithEnum} {v.getter}(){
         return {v.name};
     }{#else if v.isEnum && !v.isArray && !v.isMap}public {v.datatypeWithEnum} {v.getter}() {
@@ -159,5 +159,4 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     }
 
     {#include pojoQueryParam.qute m=m.model withXml=withXml codegen=classes-codegen package=modelPackage/}
-
 }
