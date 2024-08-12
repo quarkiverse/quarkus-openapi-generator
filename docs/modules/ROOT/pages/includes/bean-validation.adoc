@@ -1,0 +1,16 @@
+To enable bean validation support for validation properties specified in OpenApi.
+
+- @Valid
+- @Size
+- @Min
+- @Pattern
+- etc.
+
+== Example
+
+Given you want to validate parameters of components from `my-openapi.yaml` file, you must add the following to your `application.properties` file:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.use-bean-validation=true
+----

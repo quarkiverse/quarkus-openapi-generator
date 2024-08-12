@@ -1,1 +1,1 @@
-{#if param.required} @NotNull{/if}{#include beanValidationCore.qute p=param/}
+{#include beanValidationCore.qute p=param/}

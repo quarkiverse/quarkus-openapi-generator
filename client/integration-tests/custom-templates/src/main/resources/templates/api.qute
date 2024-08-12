@@ -118,7 +118,7 @@ public interface {classname} {
         {/if}
         {#else}
         {#for p in op.allParams}
-        {#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}
+        {#if p.hasValidation}@jakarta.validation.Valid {/if}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}
         {/for}
         {/if}
     );

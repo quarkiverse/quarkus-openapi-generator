@@ -53,6 +53,10 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         this.testFolder = "";
         this.embeddedTemplateDir = "templates";
 
+        Boolean beanValidation = (Boolean) this.additionalProperties.getOrDefault("use-bean-validation", true);
+        this.setUseBeanValidation(beanValidation);
+        this.setPerformBeanValidation(beanValidation);
+
         this.replaceWithQuarkusTemplateFiles();
     }
 

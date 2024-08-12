@@ -1,2 +1,3 @@
-{#if p.required} @NotNull{/if}
+{#if use-bean-validation}
 {#include beanValidationCore.qute p=p/}
+{/if}

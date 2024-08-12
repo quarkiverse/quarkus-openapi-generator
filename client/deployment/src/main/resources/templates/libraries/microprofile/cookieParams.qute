@@ -1,6 +1,1 @@
-{#if param.isCookieParam}{!
-    !}@GeneratedParam("{param.baseName}") @CookieParam("{param.baseName}") {!
-    !}{#if param.useBeanValidation}{#include beanValidationCore.qute p=param/}{/if}{!
-    !}{#if param.defaultValue}@DefaultValue("\{{param.defaultValue}\}") {/if}{!
-    !}{param.dataType} {param.paramName}{!
-!}{/if}
+{#if param.isCookieParam}@GeneratedParam("{param.baseName}") @CookieParam("{param.baseName}") {#if param.defaultValue}@DefaultValue("\{{param.defaultValue}\}") {/if}{param.dataType} {param.paramName}{/if}

@@ -225,6 +225,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withUseBeanValidation(Boolean config) {
+        configurator.addAdditionalProperty("use-bean-validation", config);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withApiNameSuffix(final String apiNameSuffix) {
         this.configurator.setApiNameSuffix(apiNameSuffix);
         return this;
