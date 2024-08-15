@@ -1,1 +1,1 @@
-{#if param.isPathParam}@GeneratedParam("{param.baseName}") @PathParam("{param.baseName}"){param.dataType} {param.paramName}{/if}
+{#if param.isPathParam}@io.quarkiverse.openapi.generator.annotations.GeneratedParam("{param.baseName}") @jakarta.ws.rs.PathParam("{param.baseName}"){param.dataType} {param.paramName}{/if}

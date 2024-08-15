@@ -1,12 +1,8 @@
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import java.util.EnumSet;
 
 /**
  * {#insert e.description}Gets or Sets {e.name}{/}{#if e.description}{description}{/}
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 {#include additionalEnumTypeAnnotations.qute e=e/}public enum {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} {
     {#if e.allowableValues}
     {#if additionalEnumTypeUnexpectedMember}{#include additionalEnumTypeUnexpectedMember.qute e=e/}{/if}
@@ -14,7 +10,7 @@ import java.util.EnumSet;
     {/if}
 
     // caching enum access
-    private static final EnumSet<{#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}> values = EnumSet.allOf({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}.class);
+    private static final java.util.EnumSet<{#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}> values = java.util.EnumSet.allOf({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}.class);
 
     private {e.dataType} value;
 
@@ -32,7 +28,7 @@ import java.util.EnumSet;
         return String.valueOf(value);
     }
 
-    @JsonCreator
+    @com.fasterxml.jackson.annotation.JsonCreator
     public static {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} fromString(String text) {
         for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
             if (String.valueOf(b.value).equalsIgnoreCase(text)) {
