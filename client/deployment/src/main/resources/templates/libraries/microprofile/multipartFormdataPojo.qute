@@ -1,6 +1,6 @@
     public static class {op.operationIdCamelCase}MultipartForm {
     {#for p in op.formParams}
-        @FormParam("{p.baseName}")
+        @jakarta.ws.rs.FormParam("{p.baseName}")
     {#if p.isFile || (p.isString && p.dataFormat == 'base64')}
         {#if is-resteasy-reactive}
             {#if generate-part-filename}
@@ -18,7 +18,7 @@
                     {/if}
                 {/if}
             {/if}
-        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        @org.jboss.resteasy.reactive.PartType(jakarta.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM)
         {#else}
             {#if generate-part-filename}
                 {#if part-filename-value}
@@ -35,19 +35,19 @@
                     {/if}
                 {/if}
             {/if}
-        @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM)
         {/if}
     {#else if p.isPrimitiveType or (p.isArray && p.items.isPrimitiveType)}
         {#if is-resteasy-reactive}
-        @org.jboss.resteasy.reactive.PartType(MediaType.TEXT_PLAIN)
+        @org.jboss.resteasy.reactive.PartType(jakarta.ws.rs.core.MediaType.TEXT_PLAIN)
         {#else}
-        @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.TEXT_PLAIN)
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.TEXT_PLAIN)
         {/if}
     {#else}
         {#if is-resteasy-reactive}
-        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_JSON)
+        @org.jboss.resteasy.reactive.PartType(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
         {#else}
-        @org.jboss.resteasy.annotations.providers.multipart.PartType(MediaType.APPLICATION_JSON)
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
         {/if}
     {/if}
         public {p.dataType} {p.paramName};

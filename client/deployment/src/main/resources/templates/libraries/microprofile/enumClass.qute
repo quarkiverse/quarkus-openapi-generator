@@ -1,6 +1,6 @@
 {#if e.withXml}
-    @XmlType(name={#if e.isEnum}"{e.items.enumName}"{#else}"{e.enumName}"{/if})
-    @XmlEnum({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.class)
+    @jakarta.xml.bind.annotation.XmlType(name={#if e.isEnum}"{e.items.enumName}"{#else}"{e.enumName}"{/if})
+    @akarta.xml.bind.annotation.XmlEnum({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.class)
 {/if}
     {#include additionalEnumTypeAnnotations.qute e=e /}public enum {e.enumName} {
         {#if e.allowableValues}

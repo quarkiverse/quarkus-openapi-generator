@@ -1,16 +1,9 @@
 package {apiPackage}.auth;
 
-import jakarta.inject.Inject;
-import jakarta.enterprise.context.ApplicationScoped;
+public class AuthenticationPropagationHeadersFactory extends io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory {
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-import io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory;
-import io.quarkiverse.openapi.generator.providers.HeadersProvider;
-
-public class AuthenticationPropagationHeadersFactory extends AbstractAuthenticationPropagationHeadersFactory {
-
-    @Inject
-    public AuthenticationPropagationHeadersFactory(CompositeAuthenticationProvider compositeProvider, OpenApiGeneratorConfig generatorConfig, HeadersProvider headersProvider) {
+    @jakarta.inject.Inject
+    public AuthenticationPropagationHeadersFactory(CompositeAuthenticationProvider compositeProvider, io.quarkiverse.openapi.generator.OpenApiGeneratorConfig generatorConfig, io.quarkiverse.openapi.generator.providers.HeadersProvider headersProvider) {
         super(compositeProvider, generatorConfig, headersProvider);
     }
 

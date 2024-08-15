@@ -1,1 +1,1 @@
-{#if param.isHeaderParam}@GeneratedParam("{param.baseName}") @HeaderParam("{param.baseName}"){param.dataType} {param.paramName}{/if}
+{#if param.isHeaderParam}@io.quarkiverse.openapi.generator.annotations.GeneratedParam("{param.baseName}") @jakarta.ws.rs.HeaderParam("{param.baseName}"){param.dataType} {param.paramName}{/if}
