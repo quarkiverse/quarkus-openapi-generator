@@ -3,6 +3,8 @@ package {package};
 import java.util.List;
 import java.util.Map;
 
+import jakarta.validation.Valid;
+
 {#for imp in imports}
 import {imp.import};
 {/for}
