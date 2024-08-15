@@ -8,7 +8,7 @@ import {imp.import};
 import java.io.Serializable;
 {/if}
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import jakarta.validation.Valid;
 {#for m in models}
 {#if m.model.isEnum}{#include enumOuterClass.qute e=m.model/}
 {#else}{#include pojo.qute m=m.model withXml=withXml codegen=classes-codegen package=modelPackage/}{/if}

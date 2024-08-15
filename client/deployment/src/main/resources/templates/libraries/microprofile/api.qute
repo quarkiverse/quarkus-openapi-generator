@@ -18,6 +18,7 @@ import java.util.Map;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import jakarta.validation.Valid;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
