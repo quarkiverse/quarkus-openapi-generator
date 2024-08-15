@@ -1,43 +1,25 @@
 package {package};
 
+import java.util.List;
+import java.util.Map;
+
 {#for imp in imports}
 import {imp.import};
 {/for}
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-{#if enable-security-generation && hasAuthMethods}
-import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
-import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
-import {package}.auth.CompositeAuthenticationProvider;
-import {package}.auth.AuthenticationPropagationHeadersFactory;
-{/if}
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.Map;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-
-import jakarta.enterprise.context.ApplicationScoped;
-
-import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
-import io.quarkiverse.openapi.generator.annotations.GeneratedMethod;
-import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
-
 {#if appName}
 /**
   * {appName}
   * {#if appDescription}<p>{appDescription}</p>{/if}
   */
 {/if}
-@Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
-@RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
-@GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
+@jakarta.ws.rs.Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
+@org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
+@io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if enable-security-generation && hasAuthMethods}
-@RegisterProvider(CompositeAuthenticationProvider.class)
-@RegisterClientHeaders(AuthenticationPropagationHeadersFactory.class)
+@org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
+@org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
 {/if}
-@ApplicationScoped
+@jakarta.enterprise.context.ApplicationScoped
 {#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
 {apiAnnotation}
 {/for}
@@ -48,17 +30,17 @@ public interface {classname} {
      /**
     {#include operationJavaDoc.qute op=op/}
      */
-    @{op.httpMethod}
+    @jakarta.ws.rs.{op.httpMethod}
     {#if op.subresourceOperation}
-    @Path("{op.path}")
+    @jakarta.ws.rs.Path("{op.path}")
     {/if}
     {#if op.hasConsumes}
-    @Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
+    @jakarta.ws.rs.Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
     {/if}
     {#if op.hasProduces}
-    @Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
+    @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
-    @GeneratedMethod ("{op.operationIdOriginal}")
+    @io.quarkiverse.openapi.generator.annotations.GeneratedMethod("{op.operationIdOriginal}")
     {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == package + classname}
     {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker

@@ -1,11 +1,4 @@
 {#if withXml}
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlType;
-import jakarta.xml.bind.annotation.XmlEnum;
-import jakarta.xml.bind.annotation.XmlEnumValue;
 {#else}
 import java.lang.reflect.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,18 +10,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  **/
 {/if}
 {#if withXml}
-@XmlAccessorType(XmlAccessType.FIELD)
-{#if m.hasVars}@XmlType(name = "{m.classname}", propOrder =
+@jakarta.xml.bind.annotation.XmlAccessorType(jakarta.xml.bind.annotation.XmlAccessType.FIELD)
+{#if m.hasVars}@jakarta.xml.bind.annotation.XmlType(name = "{m.classname}", propOrder =
     { {#for var in m.vars}"{var.name}"{#if var_hasNext}, {/if}{/for}
 }){#else}
-@XmlType(name = "{m.classname}")
+@jakarta.xml.bind.annotation.XmlType(name = "{m.classname}")
 {/if}
-{#if !m.parent || m.parent.isEmpty}@XmlRootElement(name = "{m.classname}"){/if}
+{#if !m.parent || m.parent.isEmpty}@jakarta.xml.bind.annotation.XmlRootElement(name = "{m.classname}"){/if}
 {#else}
-@JsonIgnoreProperties(ignoreUnknown = true)
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 {/if}
 {#include additionalModelTypeAnnotations.qute m=m/}
-public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements Serializable{/if} {
+public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements java.io.Serializable{/if} {
 
     {#for v in m.vars}
     {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
@@ -40,7 +33,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {#include enumClass.qute e=v/}{/if}
     {/if}
     {#if withXml}
-    @XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
+    @jakarta.xml.bind.annotation.XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
     {/if}
     {#if v.description}
     /**

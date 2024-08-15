@@ -15,7 +15,7 @@
     @JsonIgnoreProperties(ignoreUnknown = true)
     {/if}
     {#include additionalModelTypeAnnotations.qute m=m/}
-    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements Serializable{/if} {
+    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements java.io.Serializable{/if} {
 
         {#for v in m.vars}
         {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}

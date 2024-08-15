@@ -1,1 +1,1 @@
-{#if param.isCookieParam}@GeneratedParam("{param.baseName}") @CookieParam("{param.baseName}") {#if param.defaultValue}@DefaultValue("\{{param.defaultValue}\}") {/if}{param.dataType} {param.paramName}{/if}
+{#if param.isCookieParam}@io.quarkiverse.openapi.generator.annotations.GeneratedParam("{param.baseName}") @jakarta.ws.rs.CookieParam("{param.baseName}") {#if param.defaultValue}@jakarta.ws.rs.DefaultValue("\{{param.defaultValue}\}") {/if}{param.dataType} {param.paramName}{/if}
