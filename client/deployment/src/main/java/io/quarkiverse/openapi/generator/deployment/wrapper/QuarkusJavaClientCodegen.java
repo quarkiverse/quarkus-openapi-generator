@@ -140,7 +140,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             return this.getSymbolName(value).toUpperCase(Locale.ROOT);
         }
 
-        String enumVarName = super.toEnumVarName(value, datatype);
+        String enumVarName = super.toEnumVarName(value.toUpperCase(Locale.ROOT), datatype);
 
         if (enumVarName.startsWith("NUMBER_")) {
             return enumVarName;
