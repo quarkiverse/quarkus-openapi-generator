@@ -1,7 +1,5 @@
 package {package};
 
-import jakarta.validation.Valid;
-
 {#for imp in imports}
 import {imp.import};
 {/for}

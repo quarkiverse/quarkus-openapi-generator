@@ -4,15 +4,15 @@
      **/
     {/if}
     {#if withXml}
-    @XmlAccessorType(XmlAccessType.FIELD)
-    {#if m.hasVars}@XmlType(name = "{m.classname}", propOrder =
+    @jakarta.xml.bind.annotation.XmlAccessorType(jakarta.xml.bind.annotation.XmlType.XmlAccessType.FIELD)
+    {#if m.hasVars}@jakarta.xml.bind.annotation.XmlType(name = "{m.classname}", propOrder =
         { {#for var in m.vars}"{var.name}"{#if var_hasNext}, {/if}{/for}
     }){#else}
-    @XmlType(name = "{m.classname}")
+    @jakarta.xml.bind.annotation.XmlType(name = "{m.classname}")
     {/if}
-    {#if !m.parent || m.parent.isEmpty}@XmlRootElement(name = "{m.classname}"){/if}
+    {#if !m.parent || m.parent.isEmpty}@jakarta.xml.bind.annotation.XmlRootElement(name = "{m.classname}"){/if}
     {#else}
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
     {/if}
     {#include additionalModelTypeAnnotations.qute m=m/}
     public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements java.io.Serializable{/if} {
@@ -27,7 +27,7 @@
         {#include enumClass.qute e=v/}{/if}
         {/if}
         {#if withXml}
-        @XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
+        @jakarta.xml.bind.annotation.XmlType.XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
         {/if}
         {#if m.description}
         /**
@@ -65,7 +65,7 @@
         * @return {v.name}
         **/
         {#if !withXml}
-        @JsonProperty("{v.baseName}")
+        @com.fasterxml.jackson.annotation.JsonProperty("{v.baseName}")
         {/if}
         {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
         {ext}

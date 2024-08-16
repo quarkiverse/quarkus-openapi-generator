@@ -3,8 +3,6 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
 {/if}
 
-import jakarta.validation.Valid;
-
 {#if m.description}
 /**
   * {m.description}
