@@ -39,6 +39,14 @@ paths:
           description: OK
 components:
   schemas:
+    Type:
+      type: object
+      properties:
+        tags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
     CloudEvent:
       type: object
       properties:

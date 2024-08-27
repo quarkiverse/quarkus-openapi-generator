@@ -1,6 +1,5 @@
 {#if withXml}
 {#else}
-import java.lang.reflect.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 {/if}
 
