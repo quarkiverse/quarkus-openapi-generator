@@ -6,6 +6,7 @@ import {imp.import};
 {#if serializableModel}
 
 import java.io.Serializable;
+import java.util.Set;
 {/if}
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
