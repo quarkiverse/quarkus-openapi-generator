@@ -12,6 +12,7 @@ import static org.openapitools.codegen.languages.AbstractJavaCodegen.ADDITIONAL_
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -113,6 +114,14 @@ public abstract class OpenApiClientGeneratorWrapper {
     public OpenApiClientGeneratorWrapper withMutiny(final Boolean config) {
         if (config != null) {
             configurator.addAdditionalProperty("mutiny", config);
+        }
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withMutinyReturnTypes(final Map<String, String> returnTypeMappings) {
+        if (returnTypeMappings != null && !returnTypeMappings.isEmpty()) {
+            Map<String, Object> mutinyOperationIdsMap = new HashMap<>(returnTypeMappings);
+            configurator.addAdditionalProperty("mutiny-operation-ids", mutinyOperationIdsMap);
         }
         return this;
     }

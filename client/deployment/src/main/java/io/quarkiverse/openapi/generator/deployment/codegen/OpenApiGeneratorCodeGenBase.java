@@ -266,6 +266,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 CodegenConfig.ConfigName.ADDITIONAL_PROPERTIES_AS_ATTRIBUTE, Boolean.class)
                 .orElse(Boolean.FALSE);
 
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.MUTINY_OPERATION_IDS, String.class, String.class)
+                .ifPresent(generator::withMutinyReturnTypes);
+
         generator.withAdditionalPropertiesAsAttribute(additionalPropertiesAsAttribute);
         GlobalSettings.setProperty(
                 OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE,

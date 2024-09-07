@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: Test API
+  version: "1.0"
+paths:
+  /testEndpoint1:
+    get:
+      tags:
+        - Test Endpoint
+      summary: Simple test endpoint that returns a plain message.
+      operationId: testEndpoint1
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 1 success!"
+  /testEndpoint2:
+    post:
+      tags:
+        - Test Endpoint
+      summary: Test endpoint to validate POST requests.
+      operationId: testEndpoint2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  type: string
+                  example: "Test input"
+      responses:
+        "200":
+          description: Successfully received input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 2 received the input."
+  /testEndpoint3:
+    put:
+      tags:
+        - Test Endpoint
+      summary: Test PUT request with a JSON body.
+      operationId: testEndpoint3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Test Name"
+                value:
+                  type: integer
+                  example: 123
+      responses:
+        "200":
+          description: PUT request successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 3 processed the data successfully."
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        status:
+          format: int32
+          type: integer
+        entity:
+          type: object

@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Test API
+  version: "1.0"
+paths:
+  /testEndpoint1:
+    get:
+      tags:
+        - Test Endpoint Wrong Configuration
+      summary: Simple test endpoint that returns a plain message.
+      operationId: testEndpoint1
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 1 success!"
+  /testEndpoint2:
+    post:
+      tags:
+        - Test Endpoint Wrong Configuration
+      summary: Test endpoint to validate POST requests.
+      operationId: testEndpoint2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  type: string
+                  example: "Test input"
+      responses:
+        "200":
+          description: Successfully received input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 2 received the input."
+  /testEndpoint3:
+    put:
+      tags:
+        - Test Endpoint Wrong Configuration
+      summary: Test PUT request with a JSON body.
+      operationId: testEndpoint3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Test Name"
+                value:
+                  type: integer
+                  example: 123
+      responses:
+        "200":
+          description: PUT request successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 3 processed the data successfully."
+
+
+  /testEndpoint4:
+    delete:
+      tags:
+        - Test Endpoint Wrong Configuration
+      summary: Test DELETE request to remove an entity.
+      operationId: testEndpoint4
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID of the entity to delete
+          schema:
+            type: integer
+            example: 456
+      responses:
+        "200":
+          description: DELETE request successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Test Endpoint 4 successfully deleted the entity."
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        status:
+          format: int32
+          type: integer
+        entity:
+          type: object
