@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.LoaderOptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -94,7 +95,12 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
     private File convertToJSON(Path yamlPath) throws CodeGenException {
         try {
-            ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+            LoaderOptions loaderOptions = new LoaderOptions();
+            loaderOptions.setCodePointLimit(12 * 1024 * 1024); // 12 MB
+            YAMLFactory yamlFactory = YAMLFactory.builder()
+                    .loaderOptions(loaderOptions)
+                    .build();
+            ObjectMapper yamlReader = new ObjectMapper(yamlFactory);
             Object obj = yamlReader.readValue(yamlPath.toFile(), Object.class);
             ObjectMapper jsonWriter = new ObjectMapper();
             File jsonFile = File.createTempFile(yamlPath.toFile().getName(), ".json");

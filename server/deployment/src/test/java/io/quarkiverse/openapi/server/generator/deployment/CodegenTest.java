@@ -50,6 +50,17 @@ public class CodegenTest {
     }
 
     @Test
+    public void testYamlHuge() throws CodeGenException {
+        Config config = MockConfigUtils.getTestConfig("yaml-huge.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "yaml"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+        assertTrue(
+                Files.exists(Path.of("target/generated-test-sources/yaml/io/petstore/PetResource.java")));
+    }
+
+    @Test
     public void testInputDir() throws CodeGenException {
         Config config = MockConfigUtils.getTestConfig("inputDir.application.properties");
         CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "inputDir"), WORK_DIR,
