@@ -1,5 +1,8 @@
 package {package};
 
+{! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
+import jakarta.validation.Valid;
+
 {#for imp in imports}
 import {imp.import};
 {/for}
