@@ -14,7 +14,6 @@
   <modules>
     <module>client</module>
     <module>server</module>
-    <module>docs</module>
   </modules>
   <scm>
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
@@ -124,6 +123,18 @@
   </build>
   <profiles>
     <profile>
+      <id>docs</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <modules>
+        <module>docs</module>
+      </modules>
+    </profile>
+    <profile>
       <id>it</id>
       <activation>
         <property>
@@ -138,4 +149,3 @@
     </profile>
   </profiles>
 </project>
-
