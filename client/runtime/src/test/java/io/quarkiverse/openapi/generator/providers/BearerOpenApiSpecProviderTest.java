@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.providers;
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -13,9 +14,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
 
-class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTest<BearerAuthenticationProvider> {
+class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<BearerAuthenticationProvider> {
 
     private static final String TOKEN = "TOKEN";
     private static final String INCOMING_TOKEN = "INCOMING_TOKEN";
@@ -26,8 +27,9 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Override
     protected BearerAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            OpenApiGeneratorConfig openApiGeneratorConfig) {
-        return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null, openApiGeneratorConfig);
+            AuthConfig authConfig) {
+        return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null, authConfig,
+                List.of());
     }
 
     @Test
@@ -46,7 +48,8 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     }
 
     private void filter(String bearerScheme, String currentToken, String expectedAuthorizationHeader) throws IOException {
-        provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme, generatorConfig);
+        provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme, authConfig,
+                List.of());
         authConfig.authConfigParams.put(BearerAuthenticationProvider.BEARER_TOKEN, currentToken);
         provider.filter(requestContext);
         assertHeader(headers, HttpHeaders.AUTHORIZATION, expectedAuthorizationHeader);

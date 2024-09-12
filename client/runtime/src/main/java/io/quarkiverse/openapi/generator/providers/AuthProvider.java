@@ -19,6 +19,4 @@ public interface AuthProvider extends ClientRequestFilter {
 
     List<OperationAuthInfo> operationsToFilter();
 
-    AuthProvider addOperation(OperationAuthInfo operationAuthInfo);
-
 }

@@ -33,6 +33,13 @@ public interface {classname} {
      /**
     {#include operationJavaDoc.qute op=op/}
      */
+    {#if op.hasAuthMethods}
+    {#for auth in op.authMethods}
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    {/for}
+    {#else}
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    {/if}
     @jakarta.ws.rs.{op.httpMethod}
     {#if op.subresourceOperation}
     @jakarta.ws.rs.Path("{op.path}")

@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
 
-class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTest<ApiKeyAuthenticationProvider> {
+class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiKeyAuthenticationProvider> {
 
     private static final String API_KEY_NAME = "API_KEY_NAME";
     private static final String API_KEY_VALUE = "API_KEY_VALUE";
@@ -42,9 +42,9 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Override
     protected ApiKeyAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            OpenApiGeneratorConfig openApiGeneratorConfig) {
+            AuthConfig authConfig) {
         return new ApiKeyAuthenticationProvider(openApiSpecId, authSchemeName, ApiKeyIn.header, API_KEY_NAME,
-                openApiGeneratorConfig);
+                authConfig, List.of());
     }
 
     @Test
@@ -82,7 +82,7 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     void filterQueryCase() throws IOException {
         doReturn(INVOKED_URI).when(requestContext).getUri();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.query, API_KEY_NAME,
-                generatorConfig);
+                authConfig, List.of());
         provider.filter(requestContext);
         verify(requestContext).setUri(uriCaptor.capture());
         assertThat(uriCaptor.getValue())
@@ -95,7 +95,7 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
         final MultivaluedMap<String, Object> headers = new MultivaluedTreeMap<>();
         doReturn(headers).when(requestContext).getHeaders();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
-                generatorConfig);
+                authConfig, List.of());
         provider.filter(requestContext);
         final List<Object> cookies = headers.get(HttpHeaders.COOKIE);
         assertThat(cookies)
@@ -114,7 +114,7 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
         headers.add(HttpHeaders.COOKIE, existingCookie);
         doReturn(headers).when(requestContext).getHeaders();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
-                generatorConfig);
+                authConfig, List.of());
         provider.filter(requestContext);
         final List<Object> cookies = headers.get(HttpHeaders.COOKIE);
         assertThat(cookies)
@@ -127,7 +127,7 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     void tokenPropagationNotSupported() {
         authConfig.tokenPropagation = Optional.of(true);
         assertThatThrownBy(() -> new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.header,
-                API_KEY_NAME, generatorConfig))
+                API_KEY_NAME, authConfig, List.of()))
                 .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
                         AUTH_SCHEME_NAME);
     }

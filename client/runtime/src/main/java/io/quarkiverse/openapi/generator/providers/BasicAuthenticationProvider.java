@@ -3,11 +3,12 @@ package io.quarkiverse.openapi.generator.providers;
 import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
@@ -20,9 +21,9 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     static final String USER_NAME = "username";
     static final String PASSWORD = "password";
 
-    public BasicAuthenticationProvider(final String openApiSpecId, String name, final OpenApiGeneratorConfig generatorConfig) {
-        super(generatorConfig);
-        init(name, openApiSpecId);
+    public BasicAuthenticationProvider(final String openApiSpecId, String name, final AuthConfig authConfig,
+            List<OperationAuthInfo> operations) {
+        super(authConfig, name, openApiSpecId, operations);
         validateConfig();
     }
 

@@ -1,204 +1,32 @@
 package {apiPackage}.auth;
 
 @jakarta.annotation.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
-public class CompositeAuthenticationProvider extends io.quarkiverse.openapi.generator.providers.AbstractCompositeAuthenticationProvider {
+{#for auth in oauthMethods.orEmpty}
+@io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker(name="{auth.name}", openApiSpecId="{configKey}")
+{/for}
+{#for auth in httpBasicMethods.orEmpty}
+@io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
+{/for}
+{#for auth in httpBearerMethods.orEmpty}
+@io.quarkiverse.openapi.generator.markers.BearerAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", scheme="{auth.scheme}")
+{/for}
+{#for auth in apiKeyMethods.orEmpty}
+{#if auth.isKeyInQuery}
+@io.quarkiverse.openapi.generator.markers.ApiKeyAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", apiKeyIn=io.quarkiverse.openapi.generator.providers.ApiKeyIn.query, apiKeyName="{auth.keyParamName}")
+{#else if auth.isKeyInHeader}
+@io.quarkiverse.openapi.generator.markers.ApiKeyAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", apiKeyIn=io.quarkiverse.openapi.generator.providers.ApiKeyIn.header, apiKeyName="{auth.keyParamName}")
+{#else if auth.isKeyInCookie}
+@io.quarkiverse.openapi.generator.markers.ApiKeyAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", apiKeyIn=io.quarkiverse.openapi.generator.providers.ApiKeyIn.cookie, apiKeyName="{auth.keyParamName}")
+{/if}
+{/for}
+public class CompositeAuthenticationProvider implements jakarta.ws.rs.client.ClientRequestFilter {
 
     @jakarta.inject.Inject
-    io.quarkiverse.openapi.generator.OpenApiGeneratorConfig generatorConfig;
+    @io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{configKey}")
+    io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider compositeProvider;
 
-    {#for auth in oauthMethods.orEmpty}
-    @jakarta.inject.Inject
-    io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider oAuth2Provider{auth_index};
-
-    @jakarta.inject.Inject
-    OidcClientRequestFilterDelegateImpl{auth_index} oidcClientRequestFilterDelegate{auth_index};
-    {/for}
-
-    @jakarta.annotation.PostConstruct
-    public void init() {
-        {#for auth in oauthMethods.orEmpty}
-        oAuth2Provider{auth_index}.init(sanitizeAuthName("{auth.name}"), "{configKey}", oidcClientRequestFilterDelegate{auth_index});
-        {/for}
-
-        {#for auth in httpBasicMethods.orEmpty}
-        io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider basicAuthProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), generatorConfig);
-        this.addAuthenticationProvider(basicAuthProvider{auth_index});
-        {#for api in apiInfo.apis}
-        {#for op in api.operations.operation}
-        {#if op.hasAuthMethods}
-        {#for authM in op.authMethods}
-        {#if authM.name == auth.name}
-        basicAuthProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {#else if defaultSecurityScheme == auth.name}
-        basicAuthProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {/for}
-        {/for}
-        {#for auth in oauthMethods.orEmpty}
-        this.addAuthenticationProvider(oAuth2Provider{auth_index});
-        {#for api in apiInfo.apis}
-        {#for op in api.operations.operation}
-        {#if op.hasAuthMethods}
-        {#for authM in op.authMethods}
-        {#if authM.name == auth.name}
-        oAuth2Provider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {#else if defaultSecurityScheme == auth.name}
-        oAuth2Provider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {/for}
-        {/for}
-        {#for auth in httpBearerMethods.orEmpty}
-        io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider bearerProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), "{auth.scheme}", generatorConfig);
-        this.addAuthenticationProvider(bearerProvider{auth_index});
-        {#for api in apiInfo.apis}
-        {#for op in api.operations.operation}
-        {#if op.hasAuthMethods}
-        {#for authM in op.authMethods}
-        {#if authM.name == auth.name}
-        bearerProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {#else if defaultSecurityScheme == auth.name}
-        bearerProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {/for}
-        {/for}
-        {#for auth in apiKeyMethods.orEmpty}
-        {#if auth.isKeyInQuery}
-        io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider apiKeyQueryProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), io.quarkiverse.openapi.generator.providers.ApiKeyIn.query, "{auth.keyParamName}", generatorConfig);
-        this.addAuthenticationProvider(apiKeyQueryProvider{auth_index});
-        {#for api in apiInfo.apis}
-        {#for op in api.operations.operation}
-        {#if op.hasAuthMethods}
-        {#for authM in op.authMethods}
-        {#if authM.name == auth.name}
-        apiKeyQueryProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {#else if defaultSecurityScheme == auth.name}
-        apiKeyQueryProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {/for}
-        {/if}
-        {#if auth.isKeyInHeader}
-        io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider apiKeyHeaderProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), io.quarkiverse.openapi.generator.providers.ApiKeyIn.header, "{auth.keyParamName}", generatorConfig);
-        this.addAuthenticationProvider(apiKeyHeaderProvider{auth_index});
-        {#for api in apiInfo.apis}
-        {#for op in api.operations.operation}
-        {#if op.hasAuthMethods}
-        {#for authM in op.authMethods}
-        {#if authM.name == auth.name}
-        apiKeyHeaderProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {#else if defaultSecurityScheme == auth.name}
-        apiKeyHeaderProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {/for}
-        {/if}
-        {#if auth.isKeyInCookie}
-        io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider apiKeyCookieProvider{auth_index} = new io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider("{quarkus-generator.openApiSpecId}", sanitizeAuthName("{auth.name}"), io.quarkiverse.openapi.generator.providers.ApiKeyIn.cookie, "{auth.keyParamName}", generatorConfig);
-        this.addAuthenticationProvider(apiKeyCookieProvider{auth_index});
-        {#for api in apiInfo.apis}
-        {#for op in api.operations.operation}
-        {#if op.hasAuthMethods}
-        {#for authM in op.authMethods}
-        {#if authM.name == auth.name}
-        apiKeyCookieProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {#else if defaultSecurityScheme == auth.name}
-        apiKeyCookieProvider{auth_index}.addOperation(io.quarkiverse.openapi.generator.providers.OperationAuthInfo.builder()
-            .withPath("{api.contextPath}{api.commonPath}{op.path.orEmpty}")
-            .withId("{op.operationId}")
-            .withMethod("{op.httpMethod}")
-            .build());
-        {/if}
-        {/for}
-        {/for}
-        {/if}
-        {/for}
-    }
-
-    {#for auth in oauthMethods.orEmpty}
-    @jakarta.enterprise.context.Dependent
-    {#if is-resteasy-reactive}
-    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.reactive.filter.OidcClientRequestReactiveFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
-
-        private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
-
-        @Override
-        protected java.util.Optional<String> clientId() {
-            return java.util.Optional.of(clientId);
-        }
-
-        @Override
-        public void filter(jakarta.ws.rs.client.ClientRequestContext requestContext) throws java.io.IOException {
-            filter((org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext)requestContext);
-        }
-    }
-    {#else}
-    static class OidcClientRequestFilterDelegateImpl{auth_index} extends io.quarkus.oidc.client.filter.OidcClientRequestFilter implements io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
-        private final String clientId = io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.getSanitizedSecuritySchemeName("{auth.name}");
-
-        @Override
-        protected java.util.Optional<String> clientId() {
-            return java.util.Optional.of(clientId);
-        }
-    }
-    {/if}
-    {/for}
+    @java.lang.Override
+    public void filter(jakarta.ws.rs.client.ClientRequestContext context) throws java.io.IOException {
+        compositeProvider.filter(context);
+    };
 }

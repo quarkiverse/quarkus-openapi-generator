@@ -12,6 +12,19 @@ public final class OperationAuthInfo {
     public OperationAuthInfo() {
     }
 
+    public void setOperationId(final String operationId) {
+        this.operationId = operationId;
+    }
+
+    public void setPath(final String path) {
+        this.pathMatcher = new UrlPatternMatcher(path);
+        this.path = path;
+    }
+
+    public void setHttpMethod(final String method) {
+        this.httpMethod = method;
+    }
+
     public String getHttpMethod() {
         return httpMethod;
     }

@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.providers;
 import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -10,31 +11,19 @@ import jakarta.ws.rs.core.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
 import io.quarkus.oidc.common.runtime.OidcConstants;
 
-@jakarta.annotation.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
-@jakarta.enterprise.context.Dependent
 public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2AuthenticationProvider.class);
 
-    private OidcClientRequestFilterDelegate delegate;
+    private final OidcClientRequestFilterDelegate delegate;
 
-    @SuppressWarnings("unused")
-    OAuth2AuthenticationProvider() {
-        // Required by CDI. Not supposed to be used.
-        delegate = null;
-    }
-
-    @jakarta.inject.Inject
-    public OAuth2AuthenticationProvider(final OpenApiGeneratorConfig generatorConfig) {
-        super(generatorConfig);
-    }
-
-    public void init(String name, String openApiSpecId, OidcClientRequestFilterDelegate delegate) {
+    public OAuth2AuthenticationProvider(final AuthConfig authConfig, String name,
+            String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations) {
+        super(authConfig, name, openApiSpecId, operations);
         this.delegate = delegate;
-        super.init(name, openApiSpecId);
         validateConfig();
     }
 

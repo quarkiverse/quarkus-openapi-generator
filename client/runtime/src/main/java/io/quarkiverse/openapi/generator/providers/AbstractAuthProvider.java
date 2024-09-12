@@ -6,15 +6,11 @@ import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationP
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MultivaluedMap;
 
 import io.quarkiverse.openapi.generator.AuthConfig;
-import io.quarkiverse.openapi.generator.AuthsConfig;
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
-import io.quarkiverse.openapi.generator.SpecItemConfig;
 
 public abstract class AbstractAuthProvider implements AuthProvider {
 
@@ -22,36 +18,17 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private static final String CANONICAL_AUTH_CONFIG_PROPERTY_NAME = "quarkus." +
             RUNTIME_TIME_CONFIG_PREFIX + ".%s.auth.%s.%s";
 
-    private String openApiSpecId;
-    private String name;
-    private final OpenApiGeneratorConfig generatorConfig;
-    private AuthConfig authConfig;
+    private final String openApiSpecId;
+    private final String name;
+    private final AuthConfig authConfig;
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
-    protected AbstractAuthProvider() {
-        // Required by CDI. Not supposed to be used.
-        name = null;
-        generatorConfig = null;
-    }
-
-    protected AbstractAuthProvider(OpenApiGeneratorConfig generatorConfig) {
-        this.generatorConfig = generatorConfig;
-    }
-
-    protected void init(String name, String openApiSpecId) {
+    protected AbstractAuthProvider(AuthConfig authConfig, String name, String openApiSpecId,
+            List<OperationAuthInfo> operations) {
         this.name = name;
-        setOpenApiSpecId(openApiSpecId);
-    }
-
-    private void setOpenApiSpecId(String openApiSpecId) {
         this.openApiSpecId = openApiSpecId;
-        Optional<SpecItemConfig> specItemConfig = Objects.requireNonNull(generatorConfig, "generatorConfig can't be null.")
-                .getItemConfig(openApiSpecId);
-        if (specItemConfig.isPresent()) {
-            Optional<AuthsConfig> authsConfig = specItemConfig.get().getAuth();
-            authsConfig.ifPresent(
-                    specItemAuthsConfig -> authConfig = specItemAuthsConfig.getItemConfig(name).orElse(null));
-        }
+        this.authConfig = authConfig;
+        this.applyToOperations.addAll(operations);
     }
 
     public String getOpenApiSpecId() {
@@ -61,10 +38,6 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     @Override
     public String getName() {
         return name;
-    }
-
-    public OpenApiGeneratorConfig getGeneratorConfig() {
-        return generatorConfig;
     }
 
     public boolean isTokenPropagation() {
@@ -87,12 +60,6 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     @Override
     public List<OperationAuthInfo> operationsToFilter() {
         return applyToOperations;
-    }
-
-    @Override
-    public AuthProvider addOperation(OperationAuthInfo operationAuthInfo) {
-        this.applyToOperations.add(operationAuthInfo);
-        return this;
     }
 
     public String getAuthConfigParam(String paramName, String defaultValue) {

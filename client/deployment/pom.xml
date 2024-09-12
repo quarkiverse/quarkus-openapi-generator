@@ -118,7 +118,21 @@
       <artifactId>quarkus-openapi-generator-test-utils</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client-oidc-filter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.microprofile.rest.client</groupId>
+      <artifactId>microprofile-rest-client-api</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5-internal</artifactId>
