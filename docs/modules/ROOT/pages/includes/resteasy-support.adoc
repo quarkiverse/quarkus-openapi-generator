@@ -31,6 +31,33 @@ will wrap all API return types in a `io.smallrye.mutiny.Uni`.
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny=true
 ----
 
+=== Configuring Return Types for Specific Operations
+
+In cases where you need more granular control over the return types of specific OpenAPI operations, you can configure individual operations to return either a `Uni` or a `Multi`. By default, when `mutiny=true` is enabled, all API methods will return a `Uni`. However, if you have operations that should return multiple items reactively, you can specify either `Multi` or `Uni` for those operations.
+
+To achieve this, use the `mutiny.operation-ids` configuration to set the return type for each operation by its `operationId` as defined in the OpenAPI specification.
+
+For example:
+
+[source,properties]
+----
+# Enable Mutiny support for all operations
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny=true
+
+# Configure return type for specific operation IDs
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny.operation-ids.addPet=Uni
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny.operation-ids.updatePet=Multi
+----
+
+In this example:
+
+* The `addPet` operation will return a `Uni`.
+* The `updatePet` operation will return a `Multi`.
+
+This allows fine-grained control over which operations are expected to return a single result (`Uni`) and which should handle streams of results (`Multi`).
+
+WARNING: If an incorrect or unsupported return type is specified for an `mutiny.operation-ids`, the generator will fallback to returning a `Uni` by default. Ensure that the return type for each operation is either `Uni` or `Multi` to avoid unintended behavior.
+
 When using RESTEasy Reactive:
 
 * The client must not declare multiple MIME-TYPES with `@Consumes`

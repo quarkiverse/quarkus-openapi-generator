@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import static io.quarkiverse.openapi.generator.deployment.assertions.Assertions.assertThat;
 import static java.util.Objects.requireNonNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -435,6 +436,75 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void shouldBeAbleToApplyMutinyOnSpecificEndpoints() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json")
+                .withMutiny(true)
+                .withMutinyReturnTypes(Map.of("helloMethod", "Uni", "Bye method_get", "Multi"))
+                .generate("org.mutiny.enabled");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> helloMethodDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "helloMethod");
+        Optional<MethodDeclaration> byeMethodGetDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "byeMethodGet");
+        Optional<MethodDeclaration> getUserDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "getUser");
+        Optional<MethodDeclaration> getNumbersDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "getNumbers");
+
+        assertThat(helloMethodDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("io.smallrye.mutiny.Uni<String>", methodDeclaration.getType().toString()));
+        assertThat(byeMethodGetDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("io.smallrye.mutiny.Multi<String>", methodDeclaration.getType().toString()));
+        assertThat(getUserDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("GetUser200Response", methodDeclaration.getType().toString()));
+        assertThat(getNumbersDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("List<Integer>", methodDeclaration.getType().toString()));
+    }
+
+    @Test
+    void shouldBeAbleToApplyMutinyOnSpecificEndpointsWhenUserDefineWrongConfiguration()
+            throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json")
+                .withMutiny(true)
+                .withMutinyReturnTypes(Map.of("helloMethod", "Uni", "Bye method_get", "BadConfig"))
+                .generate("org.mutiny.enabled");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> helloMethodDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "helloMethod");
+        Optional<MethodDeclaration> byeMethodGetDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "byeMethodGet");
+        Optional<MethodDeclaration> getUserDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "getUser");
+        Optional<MethodDeclaration> getNumbersDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
+                "getNumbers");
+
+        assertThat(helloMethodDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("io.smallrye.mutiny.Uni<String>", methodDeclaration.getType().toString()));
+        assertThat(byeMethodGetDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("io.smallrye.mutiny.Uni<String>", methodDeclaration.getType().toString()));
+        assertThat(getUserDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("GetUser200Response", methodDeclaration.getType().toString()));
+        assertThat(getNumbersDeclaration).hasValueSatisfying(
+                methodDeclaration -> assertEquals("List<Integer>", methodDeclaration.getType().toString()));
+    }
+
+    @Test
     void shouldBeAbleToAddCustomDateAndTimeMappings() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
                 .withTypeMappings(Map.of(
@@ -676,5 +746,10 @@ public class OpenApiClientGeneratorWrapperTest {
         return fields.stream().map(field -> field.getVariable(0))
                 .filter((VariableDeclarator variable) -> name.equals(variable.getName().asString()))
                 .findFirst();
+    }
+
+    private static Optional<MethodDeclaration> getMethodDeclarationByIdentifier(List<MethodDeclaration> methodDeclarations,
+            String methodName) {
+        return methodDeclarations.stream().filter(md -> md.getName().getIdentifier().equals(methodName)).findAny();
     }
 }
