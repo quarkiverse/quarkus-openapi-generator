@@ -41,7 +41,7 @@ class QuarkusConfigKeyOpenApiTest {
     @Test
     void config_key_customAnnotation() {
         assertThat(ReactiveGreetingResourceApi.class.getAnnotation(CustomAnnotation.class)).isNotNull();
-        assertThat(ReactiveGreetingResourceApi.class.getPackageName()).isEqualTo("com.oapi.pkg");
+        assertThat(ReactiveGreetingResourceApi.class.getPackageName()).isEqualTo("com.oapi.pkg.api");
     }
 
     @Test
