@@ -8,8 +8,9 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openapi.quarkus.config_key_openapi_yaml.api.ReactiveGreetingResourceApi;
 import org.openapi.quarkus.empty_config_key_yaml.api.DefaultApi;
+
+import com.oapi.pkg.api.ReactiveGreetingResourceApi;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.mutiny.Uni;
@@ -40,6 +41,7 @@ class QuarkusConfigKeyOpenApiTest {
     @Test
     void config_key_customAnnotation() {
         assertThat(ReactiveGreetingResourceApi.class.getAnnotation(CustomAnnotation.class)).isNotNull();
+        assertThat(ReactiveGreetingResourceApi.class.getPackageName()).isEqualTo("com.oapi.pkg");
     }
 
     @Test
