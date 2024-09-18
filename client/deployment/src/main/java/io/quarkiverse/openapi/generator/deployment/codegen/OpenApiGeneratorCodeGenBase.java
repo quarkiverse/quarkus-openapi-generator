@@ -2,7 +2,6 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
@@ -14,6 +13,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
 import java.io.IOException;
@@ -121,7 +121,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
                 Optional<String> templateBaseDir = getTemplateBaseDirRelativeToModule(context.inputDir(), context.config());
-                Path templateDir = templateBaseDir.map(Path::of).orElseGet(() -> context.workDir().resolve("classes").resolve("templates"));
+                Path templateDir = templateBaseDir.map(Path::of)
+                        .orElseGet(() -> context.workDir().resolve("classes").resolve("templates"));
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
                         .filter(path -> {
@@ -319,11 +320,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
         return getBaseDirRelativeToModule(config, getGlobalConfigName(INPUT_BASE_DIR), sourceDir);
     }
-    
+
     private Optional<String> getTemplateBaseDirRelativeToModule(final Path sourceDir, final Config config) {
         return getBaseDirRelativeToModule(config, getGlobalConfigName(TEMPLATE_BASE_DIR), sourceDir);
     }
-    
+
     private static Optional<String> getBaseDirRelativeToModule(Config config, String baseDirConfig, Path sourceDir) {
         return config.getOptionalValue(baseDirConfig, String.class).map(baseDir -> {
             int srcIndex = sourceDir.toString().lastIndexOf("src");
