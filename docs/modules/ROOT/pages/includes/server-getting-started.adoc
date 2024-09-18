@@ -50,6 +50,13 @@ IMPORTANT: it is relative to the project base directory. For example, if you hav
 quarkus.openapi.input-base-dir=openapi-definitions
 ----
 
+If you want to change the directory where template files must be found, use the property `quarkus.openapi-generator.codegen.template-base-dir`. If not set the templates will be expected in the build directory under `classes/templates`
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.template-base-dir=custom-templates
+----
+
 If a base package name is not provided, it will be used the default `io.apicurio.api`. You can customize it with the following property:
 
 [source,properties]
