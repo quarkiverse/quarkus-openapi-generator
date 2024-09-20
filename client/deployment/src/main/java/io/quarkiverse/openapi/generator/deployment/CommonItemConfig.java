@@ -87,26 +87,33 @@ public class CommonItemConfig {
     public Optional<Boolean> supportMutiny;
 
     /**
+     * Defines with SmallRye Mutiny enabled if methods should return {@link jakarta.ws.rs.core.Response} or a model. Default is
+     * {@code false}.
+     */
+    @ConfigItem(name = "mutiny.return-response")
+    public Optional<Boolean> mutinyReturnResponse;
+
+    /**
      * Handles the return type for each operation, depending on the configuration.
      * The following cases are supported:
      * <p>
      * 1. If {@code mutiny} is enabled and the operation ID is specified to return {@code Multi}:
      * - The return type will be wrapped in {@link io.smallrye.mutiny.Multi}.
-     * - If {@code return-response} is enabled, the return type will be
+     * - If {@code mutiny.return-response} is enabled, the return type will be
      * {@link io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>}.
      * - If the operation has a void return type, it will return {@link io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>}.
      * - Otherwise, it will return {@link io.smallrye.mutiny.Multi<returnType>}.
      * <p>
      * 2. If {@code mutiny} is enabled and the operation ID is specified to return {@code Uni}:
      * - The return type will be wrapped in {@link io.smallrye.mutiny.Uni}.
-     * - If {@code return-response} is enabled, the return type will be
+     * - If {@code mutiny.return-response} is enabled, the return type will be
      * {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
      * - If the operation has a void return type, it will return {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
      * - Otherwise, it will return {@link io.smallrye.mutiny.Uni<returnType>}.
      * <p>
      * 3. If {@code mutiny} is enabled but no specific operation ID is configured for {@code Multi} or {@code Uni}:
      * - The return type defaults to {@code Uni}.
-     * - If {@code return-response} is enabled, the return type will be
+     * - If {@code mutiny.return-response} is enabled, the return type will be
      * {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
      * - If the operation has a void return type, it will return {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
      * - Otherwise, it will return {@link io.smallrye.mutiny.Uni<returnType>}`.
