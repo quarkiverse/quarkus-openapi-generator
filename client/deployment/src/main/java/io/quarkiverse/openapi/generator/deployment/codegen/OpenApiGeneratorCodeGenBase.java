@@ -295,8 +295,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private String getBasePackage(final Config config, final Path openApiFilePath) {
-        return config
-                .getOptionalValue(getSpecConfigName(BASE_PACKAGE, openApiFilePath), String.class)
+        return getValues(config, openApiFilePath, BASE_PACKAGE, String.class)
                 .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
     }
 
