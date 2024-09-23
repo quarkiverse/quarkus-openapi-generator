@@ -51,7 +51,7 @@ public interface {classname} {
     {/if}{/for}
         {#if mutiny}
             {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
-                {#if return-response}
+                {#if mutiny-return-response}
     public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}(
                 {#else}
                     {#if op.returnType == "void"}
@@ -62,7 +62,7 @@ public interface {classname} {
                 {/if}
             {#else}
                 {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Uni"}
-                    {#if return-response}
+                    {#if mutiny-return-response}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
                     {#else}
                         {#if op.returnType == "void"}
@@ -73,7 +73,7 @@ public interface {classname} {
                     {/if}
                 {#else}
                    {#if !mutiny-operation-ids}
-                        {#if return-response}
+                        {#if mutiny-return-response}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
                         {#else}
                             {#if op.returnType == "void"}

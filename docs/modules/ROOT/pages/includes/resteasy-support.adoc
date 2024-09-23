@@ -31,6 +31,15 @@ will wrap all API return types in a `io.smallrye.mutiny.Uni`.
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny=true
 ----
 
+=== Configuring Return `jakarta.ws.rs.core.Response`
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.mutiny.return-response=true
+----
+
+This will configure all API calls to return `Uni<jakarta.ws.rs.core.Response>`.
+
 === Configuring Return Types for Specific Operations
 
 In cases where you need more granular control over the return types of specific OpenAPI operations, you can configure individual operations to return either a `Uni` or a `Multi`. By default, when `mutiny=true` is enabled, all API methods will return a `Uni`. However, if you have operations that should return multiple items reactively, you can specify either `Multi` or `Uni` for those operations.

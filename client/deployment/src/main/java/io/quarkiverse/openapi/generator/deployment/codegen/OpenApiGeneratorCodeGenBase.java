@@ -232,6 +232,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         generator.withReturnResponse(
                 getValues(config, openApiFilePath, CodegenConfig.ConfigName.RETURN_RESPONSE, Boolean.class).orElse(false));
 
+        generator.withMutinyReturnResponse(
+                getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY_RETURN_RESPONSE, Boolean.class)
+                        .orElse(false));
+
         generator.withEnabledSecurityGeneration(
                 getValues(config, openApiFilePath, CodegenConfig.ConfigName.ENABLE_SECURITY_GENERATION, Boolean.class)
                         .orElse(true));

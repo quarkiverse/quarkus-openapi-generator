@@ -48,6 +48,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         //global & spec configs
         SKIP_FORM_MODEL("skip-form-model"),
         MUTINY("mutiny"),
+        MUTINY_RETURN_RESPONSE("mutiny.return-response"),
         MUTINY_OPERATION_IDS("mutiny.operation-ids"),
         ADDITIONAL_MODEL_TYPE_ANNOTATIONS("additional-model-type-annotations"),
         ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER("additional-enum-type-unexpected-member"),

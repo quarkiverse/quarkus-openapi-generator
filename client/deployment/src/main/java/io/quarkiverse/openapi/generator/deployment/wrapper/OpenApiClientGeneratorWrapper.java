@@ -118,6 +118,13 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withMutinyReturnResponse(final Boolean config) {
+        if (config != null) {
+            configurator.addAdditionalProperty("mutiny-return-response", config);
+        }
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withMutinyReturnTypes(final Map<String, String> returnTypeMappings) {
         if (returnTypeMappings != null && !returnTypeMappings.isEmpty()) {
             Map<String, Object> mutinyOperationIdsMap = new HashMap<>(returnTypeMappings);
