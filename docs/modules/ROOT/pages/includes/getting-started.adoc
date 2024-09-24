@@ -45,10 +45,11 @@ quarkus.openapi-generator.codegen.input-base-dir=openapi-definitions
 ----
 
 If you want to change the directory where template files must be found, use the property `quarkus.openapi-generator.codegen.template-base-dir`. If not set the templates will be expected in the build directory under `classes/templates`
+IMPORTANT: it is relative to `src/main`. For example, if you want your custom templates in `src/main/resources/custom-templates`, use the following property:
 
 [source,properties]
 ----
-quarkus.openapi-generator.codegen.template-base-dir=custom-templates
+quarkus.openapi-generator.codegen.template-base-dir=resources/custom-templates
 ----
 
 To fine tune the configuration for each spec file, add the following entry to your properties file. In this example, our spec file is in `src/main/openapi/petstore.json`:
