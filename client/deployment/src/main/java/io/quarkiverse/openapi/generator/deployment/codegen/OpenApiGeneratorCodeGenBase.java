@@ -120,7 +120,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             }
 
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
-                Optional<String> templateBaseDir = getTemplateBaseDirRelativeToModule(context.inputDir(), context.config());
+                Optional<String> templateBaseDir = getTemplateBaseDirRelativeToSourceRoot(context.inputDir(), context.config());
                 Path templateDir = templateBaseDir.map(Path::of)
                         .orElseGet(() -> context.workDir().resolve("classes").resolve("templates"));
                 openApiFilesPaths
@@ -318,16 +318,15 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        return getBaseDirRelativeToModule(config, getGlobalConfigName(INPUT_BASE_DIR), sourceDir);
-    }
-
-    private Optional<String> getTemplateBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        return getBaseDirRelativeToModule(config, getGlobalConfigName(TEMPLATE_BASE_DIR), sourceDir);
-    }
-
-    private static Optional<String> getBaseDirRelativeToModule(Config config, String baseDirConfig, Path sourceDir) {
-        return config.getOptionalValue(baseDirConfig, String.class).map(baseDir -> {
+        return config.getOptionalValue(getGlobalConfigName(INPUT_BASE_DIR), String.class).map(baseDir -> {
             int srcIndex = sourceDir.toString().lastIndexOf("src");
+            return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + baseDir;
+        });
+    }
+
+    private Optional<String> getTemplateBaseDirRelativeToSourceRoot(final Path sourceDir, final Config config) {
+        return config.getOptionalValue(getGlobalConfigName(TEMPLATE_BASE_DIR), String.class).map(baseDir -> {
+            int srcIndex = sourceDir.toString().lastIndexOf(inputDirectory());
             return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + baseDir;
         });
     }
