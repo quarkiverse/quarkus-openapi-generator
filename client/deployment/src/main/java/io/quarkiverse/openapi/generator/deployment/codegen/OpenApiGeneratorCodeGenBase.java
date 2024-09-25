@@ -1,19 +1,19 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.getGlobalConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.getSpecConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.API_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.BASE_PACKAGE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.DEFAULT_SECURITY_SCHEME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.EXCLUDE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.INCLUDE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.INPUT_BASE_DIR;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.MODEL_NAME_PREFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.VALIDATE_SPEC;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +30,8 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
-import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods;
+import io.quarkiverse.openapi.generator.deployment.CodegenConfigName;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
@@ -169,9 +170,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
     protected void generate(final Config config, final Path openApiFilePath, final Path outDir,
-            Path templateDir, boolean isRestEasyReactive) {
+                            Path templateDir, boolean isRestEasyReactive) {
         final String basePackage = getBasePackage(config, openApiFilePath);
-        final Boolean verbose = config.getOptionalValue(getGlobalConfigName(CodegenConfig.ConfigName.VERBOSE), Boolean.class)
+        final Boolean verbose = config.getOptionalValue(getGlobalConfigName(CodegenConfigName.VERBOSE), Boolean.class)
                 .orElse(false);
         final Boolean validateSpec = config.getOptionalValue(getGlobalConfigName(VALIDATE_SPEC), Boolean.class).orElse(true);
         GlobalSettings.setProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME,
@@ -195,34 +196,34 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getModelNamePrefix(config, openApiFilePath)
                 .ifPresent(generator::withModelNamePrefix);
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY, Boolean.class)
+        getValues(config, openApiFilePath, CodegenConfigName.MUTINY, Boolean.class)
                 .ifPresent(generator::withMutiny);
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.SKIP_FORM_MODEL, String.class)
+        getValues(config, openApiFilePath, CodegenConfigName.SKIP_FORM_MODEL, String.class)
                 .ifPresent(generator::withSkipFormModelConfig);
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_MODEL_TYPE_ANNOTATIONS, String.class)
+        getValues(config, openApiFilePath, CodegenConfigName.ADDITIONAL_MODEL_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalModelTypeAnnotationsConfig);
 
         generator.withAdditionalEnumTypeUnexpectedMemberConfig(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER,
+                getValues(config, openApiFilePath, CodegenConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER,
                         Boolean.class)
                         .orElse(false));
 
         generator.withAdditionalEnumTypeUnexpectedMemberNameConfig(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME,
+                getValues(config, openApiFilePath, CodegenConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME,
                         String.class)
                         .orElse(ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT));
 
         generator.withAdditionalEnumTypeUnexpectedMemberStringValueConfig(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE,
+                getValues(config, openApiFilePath, CodegenConfigName.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE,
                         String.class)
                         .orElse(ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT));
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
+        getValues(config, openApiFilePath, CodegenConfigName.ADDITIONAL_API_TYPE_ANNOTATIONS, String.class)
                 .ifPresent(generator::withAdditionalApiTypeAnnotationsConfig);
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.ADDITIONAL_REQUEST_ARGS, String.class)
+        getValues(config, openApiFilePath, CodegenConfigName.ADDITIONAL_REQUEST_ARGS, String.class)
                 .ifPresent(generator::withAdditionalRequestArgs);
 
         getConfigKeyValue(config, openApiFilePath)
@@ -230,47 +231,43 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         () -> generator.withConfigKey(getSanitizedFileName(openApiFilePath)));
 
         generator.withReturnResponse(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.RETURN_RESPONSE, Boolean.class).orElse(false));
-
-        generator.withMutinyReturnResponse(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY_RETURN_RESPONSE, Boolean.class)
-                        .orElse(false));
+                getValues(config, openApiFilePath, CodegenConfigName.RETURN_RESPONSE, Boolean.class).orElse(false));
 
         generator.withEnabledSecurityGeneration(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.ENABLE_SECURITY_GENERATION, Boolean.class)
+                getValues(config, openApiFilePath, CodegenConfigName.ENABLE_SECURITY_GENERATION, Boolean.class)
                         .orElse(true));
 
         generator.withGeneratePartFilenameConfig(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.GENERATE_PART_FILENAME, Boolean.class)
+                getValues(config, openApiFilePath, CodegenConfigName.GENERATE_PART_FILENAME, Boolean.class)
                         .orElse(true));
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.PART_FILENAME_VALUE, String.class)
+        getValues(config, openApiFilePath, CodegenConfigName.PART_FILENAME_VALUE, String.class)
                 .ifPresent(generator::withPartFilenameValueConfig);
 
         generator.withUseFieldNameInPartFilenameConfig(
-                getValues(config, openApiFilePath, CodegenConfig.ConfigName.USE_FIELD_NAME_IN_PART_FILENAME,
+                getValues(config, openApiFilePath, CodegenConfigName.USE_FIELD_NAME_IN_PART_FILENAME,
                         Boolean.class)
                         .orElse(true));
 
-        getValues(config, openApiFilePath, CodegenConfig.ConfigName.BEAN_VALIDATION, Boolean.class)
+        getValues(config, openApiFilePath, CodegenConfigName.BEAN_VALIDATION, Boolean.class)
                 .ifPresent(generator::withUseBeanValidation);
 
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
 
-        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.TYPE_MAPPINGS, String.class, String.class)
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfigName.TYPE_MAPPINGS, String.class, String.class)
                 .ifPresent(generator::withTypeMappings);
 
-        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.IMPORT_MAPPINGS, String.class, String.class)
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfigName.IMPORT_MAPPINGS, String.class, String.class)
                 .ifPresent(generator::withImportMappings);
 
-        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.NORMALIZER, String.class, String.class)
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfigName.NORMALIZER, String.class, String.class)
                 .ifPresent(generator::withOpenApiNormalizer);
 
         Boolean additionalPropertiesAsAttribute = getValues(smallRyeConfig, openApiFilePath,
-                CodegenConfig.ConfigName.ADDITIONAL_PROPERTIES_AS_ATTRIBUTE, Boolean.class)
+                CodegenConfigName.ADDITIONAL_PROPERTIES_AS_ATTRIBUTE, Boolean.class)
                 .orElse(Boolean.FALSE);
 
-        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.MUTINY_OPERATION_IDS, String.class, String.class)
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfigName.MUTINY_OPERATION_IDS, String.class, String.class)
                 .ifPresent(generator::withMutinyReturnTypes);
 
         generator.withAdditionalPropertiesAsAttribute(additionalPropertiesAsAttribute);
@@ -282,7 +279,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private static OpenApiClientGeneratorWrapper createGeneratorWrapper(Path openApiFilePath, Path outDir,
-            boolean isRestEasyReactive, Boolean verbose, Boolean validateSpec) {
+                                                                        boolean isRestEasyReactive, Boolean verbose, Boolean validateSpec) {
         if (isRestEasyReactive) {
             return new OpenApiReactiveClientGeneratorWrapper(
                     openApiFilePath.normalize(),
@@ -299,7 +296,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private String getBasePackage(final Config config, final Path openApiFilePath) {
-        return getValues(config, openApiFilePath, BASE_PACKAGE, String.class)
+        return config
+                .getOptionalValue(getSpecConfigName(BASE_PACKAGE, openApiFilePath), String.class)
                 .orElse(String.format("%s.%s", DEFAULT_PACKAGE, getSanitizedFileName(openApiFilePath)));
     }
 
@@ -324,49 +322,49 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         });
     }
 
-    private <T> Optional<T> getValues(final Config config, final Path openApiFilePath, CodegenConfig.ConfigName configName,
-            Class<T> propertyType) {
+    private <T> Optional<T> getValues(final Config config, final Path openApiFilePath, CodegenConfigName configName,
+                                      Class<T> propertyType) {
 
         return getConfigKeyValues(config, openApiFilePath, configName, propertyType)
                 .or(() -> getValuesBySpecConfigName(config, openApiFilePath, configName, propertyType));
     }
 
     private <K, V> Optional<Map<K, V>> getValues(final SmallRyeConfig config, final Path openApiFilePath,
-            CodegenConfig.ConfigName configName,
-            Class<K> kClass, Class<V> vClass) {
+                                                 CodegenConfigName configName,
+                                                 Class<K> kClass, Class<V> vClass) {
 
         return getConfigKeyValues(config, openApiFilePath, configName, kClass, vClass)
                 .or(() -> getValuesBySpecConfigName(config, openApiFilePath, configName, kClass, vClass));
     }
 
     private static <T> Optional<T> getValuesBySpecConfigName(Config config, Path openApiFilePath,
-            CodegenConfig.ConfigName configName,
-            Class<T> propertyType) {
+                                                             CodegenConfigName configName,
+                                                             Class<T> propertyType) {
         return config
-                .getOptionalValue(CodegenConfig.getSpecConfigName(configName, openApiFilePath), propertyType)
-                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(configName), propertyType));
+                .getOptionalValue(CodegenConfigMethods.getSpecConfigName(configName, openApiFilePath), propertyType)
+                .or(() -> config.getOptionalValue(CodegenConfigMethods.getGlobalConfigName(configName), propertyType));
     }
 
     private static <K, V> Optional<Map<K, V>> getValuesBySpecConfigName(SmallRyeConfig config, Path openApiFilePath,
-            CodegenConfig.ConfigName configName, Class<K> kClass, Class<V> vClass) {
+                                                                        CodegenConfigName configName, Class<K> kClass, Class<V> vClass) {
         return config
-                .getOptionalValues(CodegenConfig.getSpecConfigName(configName, openApiFilePath), kClass, vClass)
-                .or(() -> config.getOptionalValues(CodegenConfig.getGlobalConfigName(configName), kClass, vClass));
+                .getOptionalValues(CodegenConfigMethods.getSpecConfigName(configName, openApiFilePath), kClass, vClass)
+                .or(() -> config.getOptionalValues(CodegenConfigMethods.getGlobalConfigName(configName), kClass, vClass));
     }
 
     private static <T> Optional<T> getValuesByConfigKey(Config config, String configName, Class<T> propertyType,
-            CodegenConfig.ConfigName codegenConfigName) {
+                                                        CodegenConfigName codegenConfigName) {
         return config
                 .getOptionalValue(configName, propertyType)
-                .or(() -> config.getOptionalValue(CodegenConfig.getGlobalConfigName(codegenConfigName), propertyType));
+                .or(() -> config.getOptionalValue(CodegenConfigMethods.getGlobalConfigName(codegenConfigName), propertyType));
     }
 
-    private static <K, V> Optional<Map<K, V>> getValuesByConfigKey(SmallRyeConfig config, CodegenConfig.ConfigName configName,
-            Class<K> kClass, Class<V> vClass, String configKey) {
+    private static <K, V> Optional<Map<K, V>> getValuesByConfigKey(SmallRyeConfig config, CodegenConfigName configName,
+                                                                   Class<K> kClass, Class<V> vClass, String configKey) {
         return config
-                .getOptionalValues(CodegenConfig.getSpecConfigNameByConfigKey(configKey, configName), kClass,
+                .getOptionalValues(CodegenConfigMethods.getSpecConfigNameByConfigKey(configKey, configName), kClass,
                         vClass)
-                .or(() -> config.getOptionalValues(CodegenConfig.getGlobalConfigName(configName), kClass, vClass));
+                .or(() -> config.getOptionalValues(CodegenConfigMethods.getGlobalConfigName(configName), kClass, vClass));
     }
 
     private static Optional<String> getConfigKeyValue(Config config, Path openApiFilePath) {
@@ -377,12 +375,13 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private <T> Optional<T> getConfigKeyValues(final Config config, final Path openApiFilePath,
-            CodegenConfig.ConfigName configName,
-            Class<T> propertyType) {
+                                               CodegenConfigName configName,
+                                               Class<T> propertyType) {
 
         Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
         if (possibleConfigKey.isPresent()) {
-            return getValuesByConfigKey(config, CodegenConfig.getSpecConfigNameByConfigKey(possibleConfigKey.get(), configName),
+            return getValuesByConfigKey(config,
+                    CodegenConfigMethods.getSpecConfigNameByConfigKey(possibleConfigKey.get(), configName),
                     propertyType, configName);
         }
 
@@ -390,8 +389,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private <K, V> Optional<Map<K, V>> getConfigKeyValues(final SmallRyeConfig config, final Path openApiFilePath,
-            CodegenConfig.ConfigName configName,
-            Class<K> kClass, Class<V> vClass) {
+                                                          CodegenConfigName configName,
+                                                          Class<K> kClass, Class<V> vClass) {
 
         Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
         if (possibleConfigKey.isPresent()) {

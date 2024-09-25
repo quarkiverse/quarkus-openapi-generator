@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.SUPPORTED_CONFIGURATIONS;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.SUPPORTED_CONFIGURATIONS;
 
 import java.util.HashSet;
 import java.util.List;

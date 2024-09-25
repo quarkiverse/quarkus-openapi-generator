@@ -6,19 +6,15 @@ import java.util.Optional;
 import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
-import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigItem;
+import io.smallrye.config.WithDefault;
+import io.smallrye.config.WithName;
 
 /**
  * This class represents the runtime authentication related configuration for an individual securityScheme present
  * on an OpenApi spec definition, i.e. the provided files.
  */
-@ConfigGroup
-public class AuthConfig {
-
-    public static final String TOKEN_PROPAGATION = "token-propagation";
-    public static final String HEADER_NAME = "header-name";
-
+public interface AuthConfig {
     /**
      * Enables the authentication token propagation for this particular securityScheme.
      * <p>
@@ -31,8 +27,8 @@ public class AuthConfig {
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig
      */
-    @ConfigItem(defaultValue = "false")
-    public Optional<Boolean> tokenPropagation;
+    @WithDefault("false")
+    Optional<Boolean> tokenPropagation();
 
     /**
      * Configures a particular http header attribute from were to take the security token from when the token propagation
@@ -47,8 +43,7 @@ public class AuthConfig {
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig
      */
-    @ConfigItem
-    public Optional<String> headerName;
+    Optional<String> headerName();
 
     /**
      * Configures a particular parameter value to be used by any of the different internal authentication filters
@@ -68,27 +63,6 @@ public class AuthConfig {
      * @see BearerAuthenticationProvider
      * @see ApiKeyAuthenticationProvider
      */
-    @ConfigItem(name = ConfigItem.PARENT)
-    public Map<String, String> authConfigParams;
-
-    public Optional<Boolean> getTokenPropagation() {
-        return tokenPropagation;
-    }
-
-    public Optional<String> getHeaderName() {
-        return headerName;
-    }
-
-    public Optional<String> getConfigParam(String paramName) {
-        return Optional.ofNullable(authConfigParams.get(paramName));
-    }
-
-    @Override
-    public String toString() {
-        return "AuthConfig{" +
-                "tokenPropagation=" + tokenPropagation +
-                ", headerName=" + headerName +
-                ", authConfigParams=" + authConfigParams +
-                '}';
-    }
+    @WithName(ConfigItem.PARENT)
+    Map<String, Optional<String>> authConfigParams();
 }

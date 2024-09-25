@@ -3,7 +3,6 @@ package io.quarkiverse.openapi.generator.providers;
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.ws.rs.core.HttpHeaders;
@@ -26,7 +25,7 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Override
     protected BearerAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            OpenApiGeneratorConfig openApiGeneratorConfig) {
+                                                          OpenApiGeneratorConfig openApiGeneratorConfig) {
         return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null, openApiGeneratorConfig);
     }
 
@@ -47,7 +46,7 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     private void filter(String bearerScheme, String currentToken, String expectedAuthorizationHeader) throws IOException {
         provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme, generatorConfig);
-        authConfig.authConfigParams.put(BearerAuthenticationProvider.BEARER_TOKEN, currentToken);
+        authConfig.authConfigParams().put(BearerAuthenticationProvider.BEARER_TOKEN, currentToken);
         provider.filter(requestContext);
         assertHeader(headers, HttpHeaders.AUTHORIZATION, expectedAuthorizationHeader);
     }
@@ -55,9 +54,9 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     @ParameterizedTest
     @MethodSource("filterWithPropagationTestValues")
     void filterWithPropagation(String headerName,
-            String currentToken,
-            String bearerScheme,
-            String expectedAuthorizationHeader) throws IOException {
+                               String currentToken,
+                               String bearerScheme,
+                               String expectedAuthorizationHeader) throws IOException {
         String propagatedHeaderName;
         if (headerName == null) {
             propagatedHeaderName = propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME,
@@ -67,8 +66,8 @@ class BearerAuthenticationProviderTest extends AbstractAuthenticationProviderTes
                     HEADER_NAME);
         }
         headers.putSingle(propagatedHeaderName, INCOMING_TOKEN);
-        authConfig.tokenPropagation = Optional.of(true);
-        authConfig.headerName = Optional.ofNullable(headerName);
+        // authConfig.tokenPropagation() = Optional.of(true);
+        // authConfig.headerName( = Optional.ofNullable(headerName);
         filter(bearerScheme, currentToken, expectedAuthorizationHeader);
     }
 

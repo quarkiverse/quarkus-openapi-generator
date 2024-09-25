@@ -2,8 +2,7 @@ package io.quarkiverse.openapi.generator.deployment;
 
 import java.util.Optional;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
+import io.smallrye.config.WithName;
 
 /*
  * Model for the configuration of this extension.
@@ -12,30 +11,34 @@ import io.quarkus.runtime.annotations.ConfigItem;
  * Not meant to be used outside this scope.
  * Config items can be applied only on spec
  */
-@ConfigGroup
-public class SpecItemConfig extends CommonItemConfig {
+public interface SpecItemConfig {
+    /**
+     * Common item test.
+     */
+    @WithName("common-item-config")
+    CommonItemConfig commonItemConfig();
 
     /**
      * Base package for where the generated code for the given OpenAPI specification will be added.
      */
-    @ConfigItem(name = "base-package")
-    public Optional<String> basePackage;
+    @WithName("base-package")
+    Optional<String> basePackage();
 
     /**
      * Suffix name for generated api classes
      */
-    @ConfigItem(name = "api-name-suffix")
-    public Optional<String> apiNameSuffix;
+    @WithName("api-name-suffix")
+    Optional<String> apiNameSuffix();
 
     /**
      * Suffix name for generated model classes
      */
-    @ConfigItem(name = "model-name-suffix")
-    public Optional<String> modelNameSuffix;
+    @WithName("model-name-suffix")
+    Optional<String> modelNameSuffix();
 
     /**
      * Prefix name for generated model classes
      */
-    @ConfigItem(name = "model-name-prefix")
-    public Optional<String> modelNamePrefix;
+    @WithName("model-name-prefix")
+    Optional<String> modelNamePrefix();
 }

@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
+import static io.quarkiverse.openapi.generator.AuthConfigConsts.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 
@@ -52,7 +52,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
     private void validateConfig() {
         if (isTokenPropagation()) {
             LOGGER.warn("Token propagation was enabled for a the oauth2: {} securityScheme in the specification file: {}. " +
-                    "This configuration can be done by using the property: {} and is not necessary a problem if the configuration is intentional.",
+                            "This configuration can be done by using the property: {} and is not necessary a problem if the configuration is intentional.",
                     getName(), getOpenApiSpecId(), getCanonicalAuthConfigPropertyName(TOKEN_PROPAGATION));
         }
     }
