@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
@@ -43,9 +44,10 @@ class BeanValidationTest {
     void testValidationAnnotationsAreInPlaceModel() throws Exception {
         Field id = ValidatedObject.class.getDeclaredField("id");
         Field name = ValidatedObject.class.getDeclaredField("name");
+        Field secondName = ValidatedObject.class.getDeclaredField("secondName");
         Field size = ValidatedObject.class.getDeclaredField("size");
 
-        assertThat(Arrays.stream(ValidatedObject.class.getFields())
+        assertThat(Stream.of(id, name, secondName, size)
                 .allMatch(f -> f.isAnnotationPresent(NotNull.class)))
                 .isTrue();
 
