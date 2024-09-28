@@ -88,7 +88,7 @@ class BeanValidationTest {
         Field name = UnvalidatedObject.class.getDeclaredField("name");
         Field size = UnvalidatedObject.class.getDeclaredField("size");
 
-        assertThat(Arrays.stream(UnvalidatedObject.class.getFields())
+        assertThat(Stream.of(id, name, size)
                 .noneMatch(f -> f.isAnnotationPresent(NotNull.class))).isTrue();
         assertThat(id.isAnnotationPresent(Min.class)).isFalse();
         assertThat(id.isAnnotationPresent(Max.class)).isFalse();
