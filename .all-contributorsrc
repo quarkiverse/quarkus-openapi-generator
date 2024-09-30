@@ -360,6 +360,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "michalkolenda",
+      "name": "Michał Kolenda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29705783?v=4",
+      "profile": "https://github.com/michalkolenda",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
