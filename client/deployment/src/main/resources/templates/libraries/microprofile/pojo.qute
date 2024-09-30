@@ -39,7 +39,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
       * {v.description}
      **/
     {/if}
-    {#if v.hasValidation}{#include beanValidation.qute p=v/}{/if}
+    {#if v.hasValidation || v.required}{#include beanValidation.qute p=v/}{/if}
     {#if v.isContainer}
     private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{/if};
     {#else}
