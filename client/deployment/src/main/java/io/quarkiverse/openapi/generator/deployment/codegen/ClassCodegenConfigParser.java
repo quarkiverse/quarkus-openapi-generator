@@ -1,7 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.resolveApiPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.resolveModelPackage;
 
 import java.util.HashMap;
 import java.util.List;

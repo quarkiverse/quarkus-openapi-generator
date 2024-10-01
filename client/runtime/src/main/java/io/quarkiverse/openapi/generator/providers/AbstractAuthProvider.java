@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TIME_CONFIG_PREFIX;
+import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfigMethods.RUNTIME_TIME_CONFIG_PREFIX;
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
@@ -46,11 +46,11 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private void setOpenApiSpecId(String openApiSpecId) {
         this.openApiSpecId = openApiSpecId;
         Optional<SpecItemConfig> specItemConfig = Objects.requireNonNull(generatorConfig, "generatorConfig can't be null.")
-                .getItemConfig(openApiSpecId);
+                .itemConfigs().get(openApiSpecId);
         if (specItemConfig.isPresent()) {
-            Optional<AuthsConfig> authsConfig = specItemConfig.get().getAuth();
+            Optional<AuthsConfig> authsConfig = specItemConfig.get().auth();
             authsConfig.ifPresent(
-                    specItemAuthsConfig -> authConfig = specItemAuthsConfig.getItemConfig(name).orElse(null));
+                    specItemAuthsConfig -> authConfig = specItemAuthsConfig.authConfigs().get(name).orElse(null));
         }
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public boolean isTokenPropagation() {
-        return authConfig != null && authConfig.getTokenPropagation().orElse(false);
+        return authConfig != null && authConfig.tokenPropagation().orElse(false);
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
@@ -79,7 +79,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public String getHeaderName() {
         if (authConfig != null) {
-            return authConfig.getHeaderName().orElse(null);
+            return authConfig.headerName().orElse(null);
         }
         return null;
     }
@@ -97,7 +97,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public String getAuthConfigParam(String paramName, String defaultValue) {
         if (authConfig != null) {
-            return authConfig.getConfigParam(paramName).orElse(defaultValue);
+            return authConfig.authConfigParams().get(paramName).orElse(defaultValue);
         }
         return defaultValue;
     }

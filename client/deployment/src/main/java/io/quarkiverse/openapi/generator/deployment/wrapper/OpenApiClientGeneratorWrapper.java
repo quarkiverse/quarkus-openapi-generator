@@ -1,8 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.resolveApiPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.resolveModelPackage;
 import static io.quarkiverse.openapi.generator.deployment.wrapper.QuarkusJavaClientCodegen.QUARKUS_GENERATOR_NAME;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -53,8 +53,8 @@ public abstract class OpenApiClientGeneratorWrapper {
     private String modelPackage = "";
 
     OpenApiClientGeneratorWrapper(final QuarkusCodegenConfigurator configurator, final Path specFilePath, final Path outputDir,
-            final boolean verbose,
-            final boolean validateSpec) {
+                                  final boolean verbose,
+                                  final boolean validateSpec) {
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -114,13 +114,6 @@ public abstract class OpenApiClientGeneratorWrapper {
     public OpenApiClientGeneratorWrapper withMutiny(final Boolean config) {
         if (config != null) {
             configurator.addAdditionalProperty("mutiny", config);
-        }
-        return this;
-    }
-
-    public OpenApiClientGeneratorWrapper withMutinyReturnResponse(final Boolean config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("mutiny-return-response", config);
         }
         return this;
     }

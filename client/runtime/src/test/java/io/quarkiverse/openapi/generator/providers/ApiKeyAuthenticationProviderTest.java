@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -37,12 +36,12 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
     @Override
     protected void createConfiguration() {
         super.createConfiguration();
-        authConfig.authConfigParams.put(ApiKeyAuthenticationProvider.API_KEY, API_KEY_VALUE);
+        authConfig.authConfigParams().put(ApiKeyAuthenticationProvider.API_KEY, API_KEY_VALUE);
     }
 
     @Override
     protected ApiKeyAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            OpenApiGeneratorConfig openApiGeneratorConfig) {
+                                                          OpenApiGeneratorConfig openApiGeneratorConfig) {
         return new ApiKeyAuthenticationProvider(openApiSpecId, authSchemeName, ApiKeyIn.header, API_KEY_NAME,
                 openApiGeneratorConfig);
     }
@@ -56,20 +55,20 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Test
     void filterHeaderFromAuthorizationHeaderCase() throws IOException {
-        authConfig.authConfigParams.put(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE, "true");
+        authConfig.authConfigParams().put(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE, "true");
         doReturn(API_KEY_AUTH_HEADER_VALUE).when(requestContext).getHeaderString("Authorization");
         provider.filter(requestContext);
         assertHeader(headers, API_KEY_NAME, API_KEY_AUTH_HEADER_VALUE);
-        authConfig.authConfigParams.remove(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE);
+        authConfig.authConfigParams().remove(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE);
     }
 
     @Test
     void filterHeaderNotFromAuthorizationHeaderCase() throws IOException {
-        authConfig.authConfigParams.put(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE, "false");
+        authConfig.authConfigParams().put(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE, "false");
         doReturn(API_KEY_AUTH_HEADER_VALUE).when(requestContext).getHeaderString("Authorization");
         provider.filter(requestContext);
         assertHeader(headers, API_KEY_NAME, API_KEY_VALUE);
-        authConfig.authConfigParams.remove(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE);
+        authConfig.authConfigParams().remove(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE);
     }
 
     @Test
@@ -125,7 +124,6 @@ class ApiKeyAuthenticationProviderTest extends AbstractAuthenticationProviderTes
 
     @Test
     void tokenPropagationNotSupported() {
-        authConfig.tokenPropagation = Optional.of(true);
         assertThatThrownBy(() -> new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.header,
                 API_KEY_NAME, generatorConfig))
                 .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,

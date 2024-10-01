@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
+import static io.quarkiverse.openapi.generator.AuthConfigConsts.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 
@@ -29,8 +29,8 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     private final String apiKeyName;
 
     public ApiKeyAuthenticationProvider(final String openApiSpecId, final String name, final ApiKeyIn apiKeyIn,
-            final String apiKeyName,
-            final OpenApiGeneratorConfig generatorConfig) {
+                                        final String apiKeyName,
+                                        final OpenApiGeneratorConfig generatorConfig) {
         super(generatorConfig);
         init(name, openApiSpecId);
         this.apiKeyIn = apiKeyIn;

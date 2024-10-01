@@ -1,10 +1,10 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigMethods.getSpecConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.API_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.BASE_PACKAGE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.MODEL_NAME_PREFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfigName.MODEL_NAME_SUFFIX;
 import static java.util.Objects.requireNonNull;
 
 import java.io.InputStream;
@@ -49,7 +49,7 @@ public class SpecInputModel {
      * @param modelNamePrefix the prefix name for generated model classes
      */
     public SpecInputModel(final String filename, final InputStream inputStream, final String basePackageName,
-            final String apiNameSuffix, final String modelNameSuffix, final String modelNamePrefix) {
+                          final String apiNameSuffix, final String modelNameSuffix, final String modelNamePrefix) {
         this(filename, inputStream, basePackageName);
         Path openApiFilePath = Path.of(filename);
         this.codegenProperties.put(getSpecConfigName(API_NAME_SUFFIX, openApiFilePath), apiNameSuffix);

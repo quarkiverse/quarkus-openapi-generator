@@ -1,6 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
+import static io.quarkiverse.openapi.generator.AuthConfigConsts.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 
