@@ -47,6 +47,7 @@ components:
       required:
         - id
         - name
+        - secondName
         - size
       properties:
         id:
@@ -58,6 +59,8 @@ components:
           pattern: "[a-zA-Z]*"
           minLength: 1
           maxLength: 10
+        secondName:
+          type: string
         size:
           type: number
           minimum: 1.0

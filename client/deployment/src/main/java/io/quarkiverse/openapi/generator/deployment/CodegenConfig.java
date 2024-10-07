@@ -34,6 +34,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         //global configs
         VERBOSE("verbose"),
         INPUT_BASE_DIR("input-base-dir"),
+        TEMPLATE_BASE_DIR("template-base-dir"),
         INCLUDE("include"),
         EXCLUDE("exclude"),
         VALIDATE_SPEC("validateSpec"),

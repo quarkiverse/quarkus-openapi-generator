@@ -28,6 +28,12 @@ public class GlobalCodegenConfig extends CommonItemConfig {
     public Optional<String> inputBaseDir;
 
     /**
+     * Option to change the directory where template files must be found.
+     */
+    @ConfigItem(name = "template-base-dir")
+    public Optional<String> templateBaseDir;
+
+    /**
      * Whether or not to skip validating the input spec prior to generation. By default, invalid specifications will result in
      * an error.
      */

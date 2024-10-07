@@ -13,6 +13,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
 import java.io.IOException;
@@ -119,7 +120,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             }
 
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
-                Path templateDir = context.workDir().resolve("classes").resolve("templates");
+                Optional<String> templateBaseDir = getTemplateBaseDirRelativeToSourceRoot(context.inputDir(), context.config());
+                Path templateDir = templateBaseDir.map(Path::of)
+                        .orElseGet(() -> context.workDir().resolve("classes").resolve("templates"));
                 openApiFilesPaths
                         .filter(Files::isRegularFile)
                         .filter(path -> {
@@ -318,9 +321,16 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        return config.getOptionalValue(getGlobalConfigName(INPUT_BASE_DIR), String.class).map(inputBaseDir -> {
+        return config.getOptionalValue(getGlobalConfigName(INPUT_BASE_DIR), String.class).map(baseDir -> {
             int srcIndex = sourceDir.toString().lastIndexOf("src");
-            return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + inputBaseDir;
+            return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + baseDir;
+        });
+    }
+
+    private Optional<String> getTemplateBaseDirRelativeToSourceRoot(final Path sourceDir, final Config config) {
+        return config.getOptionalValue(getGlobalConfigName(TEMPLATE_BASE_DIR), String.class).map(baseDir -> {
+            int srcIndex = sourceDir.toString().lastIndexOf(inputDirectory());
+            return srcIndex < 0 ? null : sourceDir.toString().substring(0, srcIndex) + baseDir;
         });
     }
 
