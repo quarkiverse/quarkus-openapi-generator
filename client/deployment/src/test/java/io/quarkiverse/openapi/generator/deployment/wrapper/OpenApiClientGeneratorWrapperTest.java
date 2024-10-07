@@ -98,15 +98,13 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(methodDeclarations).isNotEmpty();
 
         Optional<MethodDeclaration> initMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals("init"))
+                .filter(m -> m.getNameAsString().equals("filter"))
                 .findAny();
         assertThat(initMethod).isPresent();
 
         String fileContent = compilationUnit.toString();
-        assertTrue(fileContent.contains("addAuthenticationProvider"));
-        if (!defaultSecurityScheme.equals("undefined")) {
-            assertTrue(fileContent.contains("addOperation"));
-        }
+        assertTrue(fileContent.contains(
+                "@io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker(name = \"basic\", openApiSpecId = \"petstore_openapi_httpbasic_json\")"));
     }
 
     @Test

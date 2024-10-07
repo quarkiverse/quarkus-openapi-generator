@@ -4,15 +4,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.ws.rs.core.HttpHeaders;
 
 import org.junit.jupiter.api.Test;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
 
-class BasicAuthenticationProviderTest extends AbstractAuthenticationProviderTest<BasicAuthenticationProvider> {
+class BasicOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<BasicAuthenticationProvider> {
 
     private static final String USER = "USER";
     private static final String PASSWORD = "PASSWORD";
@@ -22,8 +23,8 @@ class BasicAuthenticationProviderTest extends AbstractAuthenticationProviderTest
 
     @Override
     protected BasicAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            OpenApiGeneratorConfig openApiGeneratorConfig) {
-        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, openApiGeneratorConfig);
+            AuthConfig authConfig) {
+        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, authConfig, List.of());
     }
 
     @Test
@@ -37,7 +38,8 @@ class BasicAuthenticationProviderTest extends AbstractAuthenticationProviderTest
     @Test
     void tokenPropagationNotSupported() {
         authConfig.tokenPropagation = Optional.of(true);
-        assertThatThrownBy(() -> new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, generatorConfig))
+        assertThatThrownBy(
+                () -> new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, authConfig, List.of()))
                 .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
                         AUTH_SCHEME_NAME);
     }

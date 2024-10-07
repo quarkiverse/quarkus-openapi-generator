@@ -11,7 +11,7 @@ import io.smallrye.config.common.utils.StringUtil;
 /**
  * This class represents the runtime configurations for the openapi-generator extension.
  */
-@ConfigRoot(name = OpenApiGeneratorConfig.RUNTIME_TIME_CONFIG_PREFIX, phase = ConfigPhase.RUN_TIME)
+@ConfigRoot(name = OpenApiGeneratorConfig.RUNTIME_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_AND_RUN_TIME_FIXED)
 public class OpenApiGeneratorConfig {
 
     public static final String RUNTIME_TIME_CONFIG_PREFIX = "openapi-generator";

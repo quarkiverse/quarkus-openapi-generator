@@ -21,7 +21,7 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkiverse.openapi.generator.SpecItemConfig;
 
 @ExtendWith(MockitoExtension.class)
-abstract class AbstractAuthenticationProviderTest<T extends AbstractAuthProvider> {
+abstract class AbstractOpenApiSpecProviderTest<T extends AbstractAuthProvider> {
 
     protected static final String OPEN_API_FILE_SPEC_ID = "open_api_file_spec_id_json";
     protected static final String AUTH_SCHEME_NAME = "auth_scheme_name";
@@ -40,11 +40,11 @@ abstract class AbstractAuthenticationProviderTest<T extends AbstractAuthProvider
     @BeforeEach
     void setUp() {
         createConfiguration();
-        provider = createProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, generatorConfig);
+        provider = createProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, authConfig);
     }
 
     protected abstract T createProvider(String openApiSpecId, String authSchemeName,
-            OpenApiGeneratorConfig openApiGeneratorConfig);
+            AuthConfig authConfig);
 
     protected void createConfiguration() {
         generatorConfig = new OpenApiGeneratorConfig();

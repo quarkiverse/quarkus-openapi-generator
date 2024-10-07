@@ -3,7 +3,6 @@ package io.quarkiverse.openapi.generator.providers;
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderNamePrefix;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,12 +16,12 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
  * Composition of supported {@link ClientRequestFilter} defined by a given OpenAPI interface.
  * This class is used as the base class of generated code.
  */
-public abstract class AbstractCompositeAuthenticationProvider implements ClientRequestFilter {
+public class CompositeAuthenticationProvider implements ClientRequestFilter {
 
-    private final List<AuthProvider> authProviders = new ArrayList<>();
+    private final List<AuthProvider> authProviders;
 
-    public final void addAuthenticationProvider(final AuthProvider authProvider) {
-        this.authProviders.add(authProvider);
+    public CompositeAuthenticationProvider(List<AuthProvider> authProviders) {
+        this.authProviders = List.copyOf(authProviders);
     }
 
     public final List<AuthProvider> getAuthenticationProviders() {
@@ -30,7 +29,7 @@ public abstract class AbstractCompositeAuthenticationProvider implements ClientR
     }
 
     @Override
-    public final void filter(ClientRequestContext requestContext) throws IOException {
+    public void filter(ClientRequestContext requestContext) throws IOException {
         Set<String> removableHeaderPrefix = new HashSet<>();
         for (AuthProvider authProvider : authProviders) {
             if (authProvider instanceof AbstractAuthProvider) {

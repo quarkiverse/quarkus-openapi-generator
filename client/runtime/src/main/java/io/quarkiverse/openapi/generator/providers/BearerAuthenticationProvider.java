@@ -1,11 +1,12 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.AuthConfig;
 
 /**
  * Provides bearer token authentication or any other valid scheme.
@@ -19,9 +20,8 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
     private final String scheme;
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
-            final OpenApiGeneratorConfig generatorConfig) {
-        super(generatorConfig);
-        init(name, openApiSpecId);
+            final AuthConfig authConfig, List<OperationAuthInfo> operations) {
+        super(authConfig, name, openApiSpecId, operations);
         this.scheme = scheme;
     }
 
