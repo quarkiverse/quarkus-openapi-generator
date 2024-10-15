@@ -60,7 +60,6 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
         boolean generated = false;
 
         boolean isRestEasyReactive = isRestEasyReactive(context);
-        boolean isHibernateValidatorPresent = isHibernateValidatorPresent(context);
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
             for (SpecInputModel inputModel : provider.read(context)) {
