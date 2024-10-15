@@ -32,6 +32,7 @@ import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
@@ -109,6 +110,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         if (Files.isDirectory(openApiDir)) {
             final boolean isRestEasyReactive = isRestEasyReactive(context);
+            boolean isHibernateValidatorPresent = isHibernateValidatorPresent(context);
 
             if (isRestEasyReactive) {
                 if (!isJacksonReactiveClientPresent(context)) {
@@ -123,16 +125,36 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 Optional<String> templateBaseDir = getTemplateBaseDirRelativeToSourceRoot(context.inputDir(), context.config());
                 Path templateDir = templateBaseDir.map(Path::of)
                         .orElseGet(() -> context.workDir().resolve("classes").resolve("templates"));
-                openApiFilesPaths
+                List<Path> openApiPaths = openApiFilesPaths
                         .filter(Files::isRegularFile)
                         .filter(path -> {
                             String fileName = path.getFileName().toString();
                             return fileName.endsWith(inputExtension())
                                     && !filesToExclude.contains(fileName)
                                     && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
-                        })
-                        .forEach(openApiFilePath -> generate(context.config(), openApiFilePath, outDir, templateDir,
-                                isRestEasyReactive));
+                        }).toList();
+
+                for (Path openApiPath : openApiPaths) {
+
+                    Boolean usingBeanValidation = getValues(context.config(), openApiPath,
+                            CodegenConfig.ConfigName.BEAN_VALIDATION, Boolean.class)
+                            .orElse(false);
+
+                    if (usingBeanValidation && !isHibernateValidatorPresent) {
+                        throw new CodeGenException(
+                                "You need to add io.quarkus:quarkus-hibernate-validator to your dependencies.");
+                    }
+
+                    OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                            context.config(),
+                            openApiPath,
+                            outDir,
+                            templateDir,
+                            isRestEasyReactive);
+
+                    generate(options);
+                }
+
             } catch (IOException e) {
                 throw new CodeGenException("Failed to generate java files from OpenApi files in " + openApiDir.toAbsolutePath(),
                         e);
@@ -148,6 +170,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private static boolean isJacksonClassicClientPresent(CodeGenContext context) {
         return isExtensionCapabilityPresent(context, Capability.RESTEASY_JSON_JACKSON_CLIENT);
+    }
+
+    protected static boolean isHibernateValidatorPresent(CodeGenContext context) {
+        return isExtensionCapabilityPresent(context, Capability.HIBERNATE_VALIDATOR);
     }
 
     private void validateUserConfiguration(CodeGenContext context) throws CodeGenException {
@@ -171,8 +197,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     }
 
     // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
-    protected void generate(final Config config, final Path openApiFilePath, final Path outDir,
-            Path templateDir, boolean isRestEasyReactive) {
+    protected void generate(OpenApiGeneratorOptions options) {
+        Config config = options.config();
+        Path openApiFilePath = options.openApiFilePath();
+        Path outDir = options.outDir();
+        boolean isRestEasyReactive = options.isRestEasyReactive();
+
         final String basePackage = getBasePackage(config, openApiFilePath);
         final Boolean verbose = config.getOptionalValue(getGlobalConfigName(CodegenConfig.ConfigName.VERBOSE), Boolean.class)
                 .orElse(false);
@@ -183,7 +213,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         final OpenApiClientGeneratorWrapper generator = createGeneratorWrapper(openApiFilePath, outDir, isRestEasyReactive,
                 verbose, validateSpec);
 
-        generator.withTemplateDir(templateDir);
+        generator.withTemplateDir(options.templateDir());
 
         generator.withClassesCodeGenConfig(ClassCodegenConfigParser.parse(config, basePackage))
                 .withCircuitBreakerConfig(CircuitBreakerConfigurationParser.parse(

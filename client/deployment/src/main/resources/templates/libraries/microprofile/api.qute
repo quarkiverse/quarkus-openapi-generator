@@ -3,8 +3,10 @@ package {package};
 import java.util.List;
 import java.util.Map;
 
+{#if use-bean-validation}
 {! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
 import jakarta.validation.Valid;
+{/if}
 
 {#for imp in imports}
 import {imp.import};
