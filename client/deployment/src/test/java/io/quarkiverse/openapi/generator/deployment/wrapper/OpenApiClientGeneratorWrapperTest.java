@@ -46,6 +46,26 @@ import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigPar
 public class OpenApiClientGeneratorWrapperTest {
 
     @Test
+    void verifyFlink() throws URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-flink.yaml");
+        final List<File> generatedFiles = generatorWrapper.generate("org.acme.flink");
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> duplicatedVars = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("AsynchronousOperationResultOperation.java")).findFirst();
+        assertThat(duplicatedVars).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(duplicatedVars.orElseThrow());
+        List<VariableDeclarator> vars = compilationUnit.findAll(VariableDeclarator.class);
+        assertThat(vars).isNotEmpty();
+
+        // This openApi file has a duplicated field
+        assertThat(vars.stream()
+                .filter(v -> "failureCause".equals(v.getNameAsString())).count()).isEqualTo(4);
+    }
+
+    @Test
     void verifySuffixPrefix() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("suffix-prefix-openapi.json");
         String CUSTOM_API_SUFFIX = "CustomAPISuffix";
