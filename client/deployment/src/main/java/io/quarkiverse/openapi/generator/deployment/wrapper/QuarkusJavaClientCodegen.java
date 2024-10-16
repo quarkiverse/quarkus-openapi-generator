@@ -134,6 +134,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     }
 
+    @Override
     public CodegenModel fromModel(String name, Schema model) {
         CodegenModel codegenModel = super.fromModel(name, model);
         warnIfDuplicated(codegenModel);
