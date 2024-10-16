@@ -19,6 +19,7 @@ import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.smallrye.config.SmallRyeConfigBuilder;
@@ -74,8 +75,15 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                                     StandardOpenOption.CREATE)) {
                         outChannel.transferFrom(inChannel, 0, Integer.MAX_VALUE);
                         LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
-                        this.generate(this.mergeConfig(context, inputModel), openApiFilePath, outDir,
-                                context.workDir().resolve("classes").resolve("templates"), isRestEasyReactive);
+
+                        OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                                this.mergeConfig(context, inputModel),
+                                openApiFilePath,
+                                outDir,
+                                context.workDir().resolve("classes").resolve("templates"),
+                                isRestEasyReactive);
+
+                        this.generate(options);
                         generated = true;
                     }
                 } catch (IOException e) {
