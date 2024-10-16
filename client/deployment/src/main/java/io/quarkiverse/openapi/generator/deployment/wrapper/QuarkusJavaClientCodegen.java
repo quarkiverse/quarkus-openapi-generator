@@ -2,7 +2,14 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.openapitools.codegen.CodegenModel;
 import org.openapitools.codegen.CodegenProperty;
