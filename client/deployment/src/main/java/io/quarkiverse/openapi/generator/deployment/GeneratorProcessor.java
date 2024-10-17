@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment;
 
+import static io.quarkus.bootstrap.classloading.QuarkusClassLoader.isClassPresentAtRuntime;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +50,9 @@ public class GeneratorProcessor {
     private static final DotName BASIC_AUTHENTICATION_MARKER = DotName.createSimple(BasicAuthenticationMarker.class);
     private static final DotName BEARER_AUTHENTICATION_MARKER = DotName.createSimple(BearerAuthenticationMarker.class);
     private static final DotName API_KEY_AUTHENTICATION_MARKER = DotName.createSimple(ApiKeyAuthenticationMarker.class);
-
     private static final DotName OPERATION_MARKER = DotName.createSimple(OperationMarker.class);
+
+    private static final String ABSTRACT_TOKEN_PRODUCER = "io.quarkus.oidc.client.runtime.AbstractTokensProducer";
 
     @BuildStep
     FeatureBuildItem feature() {
@@ -60,6 +63,10 @@ public class GeneratorProcessor {
     void additionalBean(
             Capabilities capabilities,
             BuildProducer<AdditionalBeanBuildItem> producer) {
+
+        if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
+            return;
+        }
 
         if (capabilities.isPresent(Capability.REST_CLIENT_REACTIVE)) {
             producer.produce(
@@ -103,10 +110,15 @@ public class GeneratorProcessor {
 
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
-    void produceOauthAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
+    void produceOauthAuthentication(
+            CombinedIndexBuildItem beanArchiveBuildItem,
             BuildProducer<AuthProviderBuildItem> authenticationProviders,
             BuildProducer<SyntheticBeanBuildItem> beanProducer,
             AuthenticationRecorder recorder) {
+
+        if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
+            return;
+        }
         Collection<AnnotationInstance> authenticationMarkers = beanArchiveBuildItem.getIndex()
                 .getAnnotationsWithRepeatable(OAUTH_AUTHENTICATION_MARKER, beanArchiveBuildItem.getIndex());
 

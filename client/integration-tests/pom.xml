@@ -39,6 +39,7 @@
     <module>type-mapping</module>
     <module>config-key</module>
     <module>github</module>
+    <module>without-oidc</module>
   </modules>
   <dependencyManagement>
     <dependencies>
