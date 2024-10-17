@@ -7,8 +7,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
+import org.openapitools.codegen.CodegenModel;
+import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
@@ -18,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
@@ -128,6 +133,31 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             super.postProcess();
         }
 
+    }
+
+    @Override
+    public CodegenModel fromModel(String name, Schema model) {
+        CodegenModel codegenModel = super.fromModel(name, model);
+        warnIfDuplicated(codegenModel);
+        return codegenModel;
+    }
+
+    private void warnIfDuplicated(CodegenModel m) {
+        Set<String> propertyNames = new TreeSet<>();
+        for (CodegenProperty element : m.allVars) {
+            if (element.deprecated) {
+                continue;
+            }
+
+            // We can have baseName as `my-type` and `myType`, that are duplicates
+            if (propertyNames.contains(element.name)) {
+                LOGGER.warn(
+                        "Variable {} is duplicated in the OpenAPI spec file. Consider adding the 'deprecated' attribute to it or remove it from the file. Java class {} will fail to compile.",
+                        element.baseName, m.classFilename);
+            } else {
+                propertyNames.add(element.name);
+            }
+        }
     }
 
     @Override
