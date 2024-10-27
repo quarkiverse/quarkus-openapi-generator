@@ -47,7 +47,7 @@ IMPORTANT: it is relative to the project base directory. For example, if you hav
 
 [source,properties]
 ----
-quarkus.openapi.input-base-dir=openapi-definitions
+quarkus.openapi.generator.input-base-dir=openapi-definitions
 ----
 
 If a base package name is not provided, it will be used the default `io.apicurio.api`. You can customize it with the following property:
