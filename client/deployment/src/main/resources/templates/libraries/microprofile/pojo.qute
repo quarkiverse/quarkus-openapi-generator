@@ -1,3 +1,4 @@
+{@org.openapitools.codegen.CodegenModel m}
 {#if withXml}
 {#else}
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,6 +21,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 {/if}
 {#include additionalModelTypeAnnotations.qute m=m/}
+{#if m.discriminator && m.discriminator.mappedModels && !m.discriminator.mappedModels.empty}
+@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include = com.fasterxml.jackson.annotation.JsonTypeInfo.As.EXISTING_PROPERTY, property = "{m.discriminator.propertyBaseName}")
+@com.fasterxml.jackson.annotation.JsonSubTypes({
+{#for child in m.discriminator.mappedModels}
+    @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = {child.model.classname}.class, name = "{child.mappingName}"),
+{/for}
+})
+{/if}
 public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements java.io.Serializable{/if} {
 
     {#for v in m.vars}

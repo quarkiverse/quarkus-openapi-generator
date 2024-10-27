@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "tuto API",
+    "version": "1.0.0-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Auto generated value"
+    },
+    {
+      "url": "http://0.0.0.0:8080",
+      "description": "Auto generated value"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Default"
+        ],
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Data"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Data": {
+        "required": [
+          "things"
+        ],
+        "type": "object",
+        "properties": {
+          "things": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Thing"
+            },
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SomeThing"
+              },
+              {
+                "$ref": "#/components/schemas/OtherThing"
+              }
+            ]
+          }
+        }
+      },
+      "OtherThing": {
+        "description": "Other thing",
+        "required": [
+          "other"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Thing"
+          }
+        ],
+        "properties": {
+          "other": {
+            "type": "string"
+          }
+        }
+      },
+      "SomeThing": {
+        "description": "Some thing",
+        "required": [
+          "some"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Thing"
+          }
+        ],
+        "properties": {
+          "some": {
+            "type": "string"
+          }
+        }
+      },
+      "Thing": {
+        "description": "Thing",
+        "required": [
+          "thing"
+        ],
+        "type": "object",
+        "properties": {
+          "thing": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "@type",
+          "mapping": {
+            "SomeThing": "#/components/schemas/SomeThing",
+            "OtherThing": "#/components/schemas/OtherThing"
+          }
+        }
+      }
+    }
+  }
+}
