@@ -369,6 +369,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "rednalyn",
+      "name": "rednalyn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31593992?v=4",
+      "profile": "https://github.com/rednalyn",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
