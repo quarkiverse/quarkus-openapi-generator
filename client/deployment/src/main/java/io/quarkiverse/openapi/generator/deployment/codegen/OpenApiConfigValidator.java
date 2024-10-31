@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ public final class OpenApiConfigValidator {
                 .filter(pn -> pn.startsWith("quarkus.openapi-generator.codegen"))
                 .map(CONFIG_PATTERN::matcher)
                 .filter(Matcher::find)
-                .collect(Collectors.toList());
+                .toList();
 
         if (!userOpenApiConfigurations.isEmpty()) {
             Set<String> unsupportedConfigNames = new HashSet<>();
