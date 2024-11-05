@@ -27,7 +27,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [
+          ubuntu-latest,
+#          windows-latest - Disabled due to https://github.com/quarkiverse/quarkus-openapi-generator/pull/836#issuecomment-2457329495
+        ]
         java: [
           { 'version': '17' },
           { 'version': '21' }
@@ -53,7 +56,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [
+          ubuntu-latest,
+#          windows-latest - Disabled due to https://github.com/quarkiverse/quarkus-openapi-generator/pull/836#issuecomment-2457329495
+        ]
         java: [
           { 'version': '17' },
           { 'version': '21' }
