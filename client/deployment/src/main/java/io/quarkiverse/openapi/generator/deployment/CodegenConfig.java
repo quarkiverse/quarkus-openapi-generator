@@ -58,6 +58,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         ADDITIONAL_API_TYPE_ANNOTATIONS("additional-api-type-annotations"),
         TYPE_MAPPINGS("type-mappings"),
         IMPORT_MAPPINGS("import-mappings"),
+        SCHEMA_MAPPINGS("schema-mappings"),
         NORMALIZER("open-api-normalizer"),
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation"),

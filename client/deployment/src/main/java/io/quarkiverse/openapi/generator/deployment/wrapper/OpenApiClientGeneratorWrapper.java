@@ -164,6 +164,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withSchemaMappings(final Map<String, String> typeMappings) {
+        typeMappings.forEach(configurator::addSchemaMapping);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
         return this;

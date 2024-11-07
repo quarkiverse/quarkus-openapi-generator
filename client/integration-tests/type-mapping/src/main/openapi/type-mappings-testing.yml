@@ -36,6 +36,10 @@ components:
     UserId:
       type: string
       format: uuid
+    YearMonth:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50
 
     MultipartRequestBody:
       type: object
@@ -46,5 +50,7 @@ components:
           $ref: '#/components/schemas/SomeDateTime'
         binaryStringFile:
           $ref: '#/components/schemas/BinaryStringFile'
+        yearMonth:
+          $ref: '#/components/schemas/YearMonth'
 
 
