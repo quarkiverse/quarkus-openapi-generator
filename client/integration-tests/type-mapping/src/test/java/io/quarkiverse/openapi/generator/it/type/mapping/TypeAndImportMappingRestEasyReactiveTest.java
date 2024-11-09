@@ -58,8 +58,8 @@ public class TypeAndImportMappingRestEasyReactiveTest {
         typeMappingServer.verify(postRequestedFor(urlEqualTo("/type-mapping"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("yearMonth")
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_JSON + "; charset=UTF-8"))
-                        .withBody(equalTo(testYearMonth.toString())).build()));
+                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_JSON))
+                        .withBody(equalTo("\"2024-06\"")).build()));
 
         typeMappingServer.verify(postRequestedFor(urlEqualTo("/type-mapping"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
