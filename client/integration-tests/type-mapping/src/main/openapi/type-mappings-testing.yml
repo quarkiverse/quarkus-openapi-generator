@@ -37,9 +37,22 @@ components:
       type: string
       format: uuid
     YearMonth:
-      format: date-time
-      type: string
-      example: 2022-03-10T12:15:50
+      type: object
+      properties:
+        year:
+          format: int32
+          type: integer
+        month:
+          format: int32
+          type: integer
+        prolepticMonth:
+          format: int64
+          type: integer
+        monthValue:
+          format: int32
+          type: integer
+        leapYear:
+          type: boolean
 
     MultipartRequestBody:
       type: object
