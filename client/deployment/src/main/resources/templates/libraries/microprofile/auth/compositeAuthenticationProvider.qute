@@ -22,7 +22,7 @@ package {apiPackage}.auth;
 public class CompositeAuthenticationProvider implements jakarta.ws.rs.client.ClientRequestFilter {
 
     @jakarta.inject.Inject
-    @io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{configKey}")
+    @io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{quarkus-generator.openApiSpecId}")
     io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider compositeProvider;
 
     @java.lang.Override
