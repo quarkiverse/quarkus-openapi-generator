@@ -144,16 +144,7 @@ quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.DateTime=Instan
 quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.Instant=java.time.Instant
 ----
 
-If you have an object you want to map to an datatype, you can use the schema mappings. For instance, if your schema is based
-on `java.Time.YearMonth`, it will be mapped to an string when generating. If you want to convert the object `YearMonth`then
-you can use the following settings:
-
-[source,properties]
-----
-quarkus.openapi-generator.codegen.spec.my_spec_yml.schema-mappings.YearMonth=java.time.YearMonth
-----
-
-It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings[Type Mappings and Import Mappings].
+It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings[Type Mappings and Import Mappings] and https://openapi-generator.tech/docs/customization#schema-mapping[Schema mapping].
 
 See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/type-mapping[type-mapping] for an example of how to use this feature.
 
