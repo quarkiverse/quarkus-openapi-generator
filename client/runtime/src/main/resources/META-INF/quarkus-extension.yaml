@@ -8,6 +8,7 @@ metadata:
     - "rest-client"
   categories:
     - "web"
+  icon-url: "https://raw.githubusercontent.com/quarkiverse/quarkus-openapi-generator/main/docs/modules/ROOT/assets/images/openapi.svg"
   status: "preview"
   codestart:
     name: "openapi-generator"
