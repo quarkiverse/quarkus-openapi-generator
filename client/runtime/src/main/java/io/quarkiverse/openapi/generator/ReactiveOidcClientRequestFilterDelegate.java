@@ -9,11 +9,11 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestFilter;
 
 import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider;
+import io.quarkus.logging.Log;
 import io.quarkus.oidc.client.Tokens;
 import io.quarkus.oidc.client.runtime.AbstractTokensProducer;
 import io.quarkus.oidc.client.runtime.DisabledOidcClientException;
@@ -24,8 +24,6 @@ import io.quarkus.oidc.common.runtime.OidcConstants;
 public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProducer
         implements ResteasyReactiveClientRequestFilter, OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
 
-    private static final Logger LOG = Logger
-            .getLogger(ReactiveOidcClientRequestFilterDelegate.class);
     private static final String BEARER_SCHEME_WITH_SPACE = OidcConstants.BEARER_SCHEME + " ";
 
     final String clientId;
@@ -45,7 +43,7 @@ public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProdu
     @Override
     protected void initTokens() {
         if (earlyTokenAcquisition) {
-            LOG.debug("Token acquisition will be delayed until this filter is executed to avoid blocking an IO thread");
+            Log.debug("Token acquisition will be delayed until this filter is executed to avoid blocking an IO thread");
         }
     }
 
@@ -69,10 +67,10 @@ public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProdu
             @Override
             public void accept(Throwable t) {
                 if (t instanceof DisabledOidcClientException) {
-                    LOG.debug("Client is disabled, acquiring and propagating the token is not necessary");
+                    Log.debug("Client is disabled, acquiring and propagating the token is not necessary");
                     requestContext.resume();
                 } else {
-                    LOG.debugf("Access token is not available, cause: %s, aborting the request", t.getMessage());
+                    Log.debugf("Access token is not available, cause: %s, aborting the request", t.getMessage());
                     requestContext.resume((t instanceof RuntimeException) ? t : new RuntimeException(t));
                 }
             }
