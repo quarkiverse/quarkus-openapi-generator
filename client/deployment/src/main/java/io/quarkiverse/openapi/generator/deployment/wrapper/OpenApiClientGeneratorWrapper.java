@@ -285,6 +285,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefix(final Boolean modelNamePrefix) {
+        this.configurator.setRemoveOperationIdPrefix(modelNamePrefix);
+        return this;
+    }
+
     /**
      * Main entrypoint, or where to generate the files based on the given base package.
      *
