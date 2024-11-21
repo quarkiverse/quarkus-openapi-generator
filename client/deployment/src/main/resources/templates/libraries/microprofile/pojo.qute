@@ -1,25 +1,12 @@
 {@org.openapitools.codegen.CodegenModel m}
-{#if withXml}
-{#else}
 import com.fasterxml.jackson.annotation.JsonProperty;
-{/if}
 
 {#if m.description}
 /**
   * {m.description}
  **/
 {/if}
-{#if withXml}
-@jakarta.xml.bind.annotation.XmlAccessorType(jakarta.xml.bind.annotation.XmlAccessType.FIELD)
-{#if m.hasVars}@jakarta.xml.bind.annotation.XmlType(name = "{m.classname}", propOrder =
-    { {#for var in m.vars}"{var.name}"{#if var_hasNext}, {/if}{/for}
-}){#else}
-@jakarta.xml.bind.annotation.XmlType(name = "{m.classname}")
-{/if}
-{#if !m.parent || m.parent.isEmpty}@jakarta.xml.bind.annotation.XmlRootElement(name = "{m.classname}"){/if}
-{#else}
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
-{/if}
 {#include additionalModelTypeAnnotations.qute m=m/}
 {#if m.discriminator && m.discriminator.mappedModels && !m.discriminator.mappedModels.empty}
 @com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include = com.fasterxml.jackson.annotation.JsonTypeInfo.As.EXISTING_PROPERTY, property = "{m.discriminator.propertyBaseName}")
@@ -29,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 {/for}
 })
 {/if}
-public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements java.io.Serializable{/if} {
+public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializableModel} implements java.io.Serializable{/if} {
 
     {#for v in m.vars}
     {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
@@ -39,9 +26,6 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {#else if !v.isContainer}
 
     {#include enumClass.qute e=v/}{/if}
-    {/if}
-    {#if withXml}
-    @jakarta.xml.bind.annotation.XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
     {/if}
     {#if v.description}
     /**
@@ -73,11 +57,9 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
     {/if}
     * @return {v.name}
     **/
-    {#if !withXml}
     @JsonProperty("{v.baseName}")
     {#if !v.required}
     @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
-    {/if}
     {/if}
     {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
     {ext}
@@ -128,7 +110,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
 
     {/if}
     {/for}
-    {#include pojoAdditionalProperties.qute m=m.model additionalPropertiesAsAttribute=additionalPropertiesAsAttribute /}
+    {#include pojoAdditionalProperties.qute m=m additionalPropertiesAsAttribute=additionalPropertiesAsAttribute /}
     /**
      * Create a string representation of this pojo.
      **/
@@ -159,5 +141,5 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if m.serializa
         return o.toString().replace("\n", "\n    ");
     }
 
-    {#include pojoQueryParam.qute m=m.model withXml=withXml codegen=classes-codegen package=modelPackage/}
+    {#include pojoQueryParam.qute m=m codegen=classes-codegen package=modelPackage/}
 }

@@ -33,17 +33,14 @@ import io.smallrye.config.common.utils.StringUtil;
 public abstract class OpenApiClientGeneratorWrapper {
 
     public static final String VERBOSE = "verbose";
-    private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
     /**
      * Security scheme for which to apply security constraints even if the OpenAPI definition has no security definition
      */
     public static final String DEFAULT_SECURITY_SCHEME = "defaultSecurityScheme";
     public static final String SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE = "supportsAdditionalPropertiesWithComposedSchema";
-    private static final Map<String, String> defaultTypeMappings = Map.of(
-            "date", "LocalDate",
-            "DateTime", "OffsetDateTime");
-    private static final Map<String, String> defaultImportMappings = Map.of(
-            "LocalDate", "java.time.LocalDate",
+    private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
+    private static final Map<String, String> defaultTypeMappings = Map.of("date", "LocalDate", "DateTime", "OffsetDateTime");
+    private static final Map<String, String> defaultImportMappings = Map.of("LocalDate", "java.time.LocalDate",
             "OffsetDateTime", "java.time.OffsetDateTime");
     private final QuarkusCodegenConfigurator configurator;
     private final DefaultGenerator generator;
@@ -53,8 +50,8 @@ public abstract class OpenApiClientGeneratorWrapper {
     private String modelPackage = "";
 
     OpenApiClientGeneratorWrapper(final QuarkusCodegenConfigurator configurator, final Path specFilePath, final Path outputDir,
-            final boolean verbose,
-            final boolean validateSpec) {
+            final boolean verbose, final boolean validateSpec) {
+
         // do not generate docs nor tests
         GlobalSettings.setProperty(CodegenConstants.API_DOCS, FALSE.toString());
         GlobalSettings.setProperty(CodegenConstants.API_TESTS, FALSE.toString());
@@ -78,7 +75,44 @@ public abstract class OpenApiClientGeneratorWrapper {
         defaultTypeMappings.forEach(this.configurator::addTypeMapping);
         defaultImportMappings.forEach(this.configurator::addImportMapping);
 
+        this.setDefaults();
+
         this.generator = new DefaultGenerator();
+    }
+
+    /**
+     * A few properties from the "with*" methods must be injected in the Qute context by default since we turned strict model
+     * rendering.
+     * This way we avoid side effects in the model such as "NOT_FOUND" strings printed everywhere.
+     *
+     * @see <a href="https://quarkus.io/guides/qute-reference#configuration-reference">Qute - Configuration Reference</a>
+     */
+    private void setDefaults() {
+        // Set default values directly here
+        this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", new String[0]);
+        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", FALSE);
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMember", FALSE);
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberName", "");
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberStringValue", "");
+        this.configurator.addAdditionalProperty("additionalRequestArgs", new String[0]);
+        this.configurator.addAdditionalProperty("classes-codegen", new HashMap<>());
+        this.configurator.addAdditionalProperty("circuit-breaker", new HashMap<>());
+        this.configurator.addAdditionalProperty("configKey", "");
+        this.configurator.addAdditionalProperty("datatypeWithEnum", "");
+        this.configurator.addAdditionalProperty("enable-security-generation", TRUE);
+        this.configurator.addAdditionalProperty("generate-part-filename", FALSE);
+        this.configurator.addAdditionalProperty("mutiny", FALSE);
+        this.configurator.addAdditionalProperty("mutiny-operation-ids", new HashMap<>());
+        this.configurator.addAdditionalProperty("mutiny-return-response", FALSE);
+        this.configurator.addAdditionalProperty("part-filename-value", "");
+        this.configurator.addAdditionalProperty("return-response", FALSE);
+        this.configurator.addAdditionalProperty("skipFormModel", TRUE);
+        this.configurator.addAdditionalProperty("templateDir", "");
+        this.configurator.addAdditionalProperty("use-bean-validation", FALSE);
+        this.configurator.addAdditionalProperty("use-field-name-in-part-filename", FALSE);
+        this.configurator.addAdditionalProperty("verbose", FALSE);
+        // TODO: expose as properties
+        this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
     }
 
     public OpenApiClientGeneratorWrapper withApiPackage(final String pkg) {
@@ -98,30 +132,30 @@ public abstract class OpenApiClientGeneratorWrapper {
      * @return this wrapper
      */
     public OpenApiClientGeneratorWrapper withCircuitBreakerConfig(final Map<String, List<String>> config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("circuit-breaker", config);
-        }
+        Optional.ofNullable(config).ifPresent(cfg -> {
+            this.configurator.addAdditionalProperty("circuit-breaker", config);
+        });
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withClassesCodeGenConfig(final Map<String, Object> config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("classes-codegen", config);
-        }
+        Optional.ofNullable(config).ifPresent(cfg -> {
+            this.configurator.addAdditionalProperty("classes-codegen", cfg);
+        });
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withMutiny(final Boolean config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("mutiny", config);
-        }
+        Optional.ofNullable(config).ifPresent(cfg -> {
+            this.configurator.addAdditionalProperty("mutiny", cfg);
+        });
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withMutinyReturnResponse(final Boolean config) {
-        if (config != null) {
-            configurator.addAdditionalProperty("mutiny-return-response", config);
-        }
+        Optional.ofNullable(config).ifPresent(cfg -> {
+            this.configurator.addAdditionalProperty("mutiny-return-response", cfg);
+        });
         return this;
     }
 
@@ -209,16 +243,16 @@ public abstract class OpenApiClientGeneratorWrapper {
      * @return this wrapper
      */
     public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {
-        if (additionalApiTypeAnnotations != null) {
+        Optional.ofNullable(additionalApiTypeAnnotations).ifPresent(cfg -> {
             this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(";"));
-        }
+        });
         return this;
     }
 
     public OpenApiClientGeneratorWrapper withAdditionalRequestArgs(final String additionalRequestArgs) {
-        if (additionalRequestArgs != null) {
+        Optional.ofNullable(additionalRequestArgs).ifPresent(cfg -> {
             this.configurator.addAdditionalProperty("additionalRequestArgs", additionalRequestArgs.split(";"));
-        }
+        });
         return this;
     }
 
@@ -261,6 +295,12 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    /**
+     * Main entrypoint, or where to generate the files based on the given base package.
+     *
+     * @param basePackage Java package name, e.g. org.acme
+     * @return a list of generated files
+     */
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();

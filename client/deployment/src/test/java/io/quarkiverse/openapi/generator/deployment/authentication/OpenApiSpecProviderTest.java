@@ -35,6 +35,7 @@ public class OpenApiSpecProviderTest {
                                     quarkus.oidc-client.oauth_auth.auth-server-url=localhost
                                     quarkus.oidc-client.oauth_auth1.auth-server-url=localhost
                                     quarkus.oidc-client.oauth_auth2.auth-server-url=localhost
+                                    quarkus.keycloak.devservices.enabled=false
                                     """),
                             "application.properties"));
 

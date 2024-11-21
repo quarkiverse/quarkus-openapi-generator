@@ -1,0 +1,5507 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "OnBase Foundation 22.1",
+    "title": "OnBase Administration API",
+    "description": "This API will surface endpoints for the purpose of configuring OnBase.",
+    "x-public": true,
+    "contact": {
+      "name": "Hyland Community",
+      "url": "https://community.hyland.com/technical/rest-apis"
+    }
+  },
+  "servers": [
+    {
+      "url": "{protocol}://{server}/{product}",
+      "variables": {
+        "protocol": {
+          "enum": [
+            "http",
+            "https"
+          ],
+          "default": "https"
+        },
+        "server": {
+          "default": "api.hyland.com/apiserver",
+          "description": "This is the server being used to host the API in the current environment."
+        },
+        "product": {
+          "default": "onbase/administration",
+          "description": "This is the portion of the url to add to each base-url before each path defined below."
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Keyword Types",
+      "description": "Configuration items related to keyword types."
+    },
+    {
+      "name": "File Types",
+      "description": "Configuration items related to file types."
+    },
+    {
+      "name": "Document Types",
+      "description": "Configuration items related to document types."
+    },
+    {
+      "name": "Document Type Groups",
+      "description": "Configuration items related to document type groups."
+    },
+    {
+      "name": "Users",
+      "description": "Configuration items related to users."
+    },
+    {
+      "name": "User Groups",
+      "description": "Configuration items related to user groups."
+    },
+    {
+      "name": "Utility",
+      "description": "REST requests that don't fit in any other tag"
+    },
+    {
+      "name": "Security Keywords",
+      "description": "Configuration items related to security keywords"
+    }
+  ],
+  "paths": {
+    "/api/keyword-types": {
+      "get": {
+        "summary": "Gets a list of keyword types.",
+        "description": "Gets the identifier information for all keyword types.",
+        "tags": [
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new keyword type.",
+        "description": "Creates a new keyword type based on the model that is sent in the request.",
+        "tags": [
+          "Keyword Types"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/KeywordType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/keyword-types/{keywordTypeId}": {
+      "get": {
+        "summary": "Gets a specific keyword type.",
+        "description": "Gets the keyword type information for a specific keyword type.",
+        "tags": [
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordType"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing keyword type.",
+        "description": "Replace the keyword type with the provided keyword type.",
+        "tags": [
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeywordType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates an existing keyword type.",
+        "description": "Updates the keyword type information for a specific keyword type.",
+        "tags": [
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/file-types": {
+      "post": {
+        "summary": "Creates a new file type.",
+        "description": "Creates a new file type based on the model that is sent in the request.",
+        "tags": [
+          "File Types"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/FileType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get file type identifiers for all file types.",
+        "description": "Get the file type identifiers for all file types in\nthe system.",
+        "tags": [
+          "File Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileTypeIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/file-types/{fileTypeId}": {
+      "get": {
+        "summary": "Get file type metadata.",
+        "description": "Get file type metadata for the specified file type id.",
+        "tags": [
+          "File Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fileTypeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileType"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Sets all file type values for an existing file type.",
+        "description": "Sets all file type values for an existing file type. Existing values will be replaced with the supplied list of file type values.",
+        "tags": [
+          "File Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fileTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update an existing file type.",
+        "description": "Updates the file type information for a specific keyword type.",
+        "tags": [
+          "File Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fileTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete an existing filetype.",
+        "description": "Delete a filetype object from a valid id number",
+        "tags": [
+          "File Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fileTypeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/file-types/display-types": {
+      "get": {
+        "summary": "Get display type identifiers and values for all display types.",
+        "description": "Get the display type identifiers and values for all display types in\nthe system.",
+        "tags": [
+          "File Types"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisplayTypeWithValuesCollection"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/document-types": {
+      "get": {
+        "summary": "Gets a list of document types.",
+        "description": "Gets the identifier information for all document types.",
+        "tags": [
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new document type.",
+        "description": "Creates a new document type based on the model that is sent in the request.",
+        "tags": [
+          "Document Types"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/DocumentTypePOST"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/document-types/{documentTypeId}": {
+      "get": {
+        "summary": "Gets a specific document type.",
+        "description": "Gets the document type information for a specific document type.",
+        "tags": [
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentType"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates a specific document type.",
+        "description": "Updates the document type information for a specific document type.",
+        "tags": [
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing document type.",
+        "description": "Replace the document type with the provided document type.",
+        "tags": [
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/document-types/{documentTypeId}/keyword-types": {
+      "get": {
+        "deprecated": true,
+        "summary": "Gets the list of keyword types and keyword type groups on a specific document type.",
+        "description": "__This endpoint has been deprecated, Please use /document-types/keyword-types instead__\n\nGets the keyword type assignment information for a specific document type.",
+        "tags": [
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeKeywordTypeAssignmentCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace the keyword types and keyword type groups on an existing document type.",
+        "description": "Replace the keyword types on the document type with the provided keyword types.",
+        "tags": [
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DocumentTypeKeywordTypeAssignment"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeKeywordTypeAssignmentCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          },
+          "422": {
+            "$ref": "#/components/responses/MODEL-INVALID"
+          }
+        }
+      }
+    },
+    "/api/document-types/keyword-types": {
+      "get": {
+        "summary": "Gets the list of keyword type document type assignments.",
+        "description": "Gets the keyword type assignment information for the given document type or keyword type.",
+        "tags": [
+          "Document Types",
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/documentTypeIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeKeywordTypeAssignmentCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/document-type-groups": {
+      "get": {
+        "summary": "Gets a list of document type groups.",
+        "description": "Gets the identifier information for all document type groups.",
+        "tags": [
+          "Document Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeGroupIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new document type group.",
+        "description": "Creates a new document type group based on the model that is sent in the request.",
+        "tags": [
+          "Document Type Groups"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/DocumentTypeGroupPOST"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/keyword-type-groups/{keywordTypeGroupId}/keyword-types": {
+      "put": {
+        "summary": "Add or resequence keyword types on an existing keyword type group.",
+        "description": "Add or resequence keyword types on an existing keyword type group.",
+        "tags": [
+          "Keyword Type Groups",
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/KeywordTypeKeywordTypeGroupAssignment"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application:/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeKeywordTypeGroupCollectionAssignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          },
+          "422": {
+            "$ref": "#/components/responses/MODEL-INVALID"
+          }
+        }
+      }
+    },
+    "/api/keyword-types/{keywordTypeId}/dataset": {
+      "get": {
+        "summary": "Gets the list of keyword dataset.",
+        "description": "Gets the list of keyword dataset.",
+        "tags": [
+          "Keyword Dataset"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordDatasetCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing keyword datasets.",
+        "description": "Replace an existing keyword datasets.",
+        "tags": [
+          "Keyword Dataset"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/KeywordDatasetValue"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordDatasetCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/keyword-type-groups": {
+      "get": {
+        "summary": "Gets a list of keyword type group.",
+        "description": "Gets a list of keyword type group.",
+        "tags": [
+          "Keyword Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeGroupIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new keyword type group.",
+        "description": "Creates a new keyword type group based on the model that is sent in the request.",
+        "tags": [
+          "Keyword Type Groups"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/KeywordTypeGroupPOST"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/keyword-type-groups/{keywordTypeGroupId}": {
+      "get": {
+        "summary": "Gets a specific keyword type group.",
+        "description": "Gets the keyword type group information for a specific keyword type group.",
+        "tags": [
+          "Keyword Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeGroup"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace keyword type group values for an existing keyword type group.",
+        "description": "Replace keyword type group values for an existing keyword type group.",
+        "tags": [
+          "Keyword Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeywordTypeGroup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/keyword-types/keyword-type-groups": {
+      "get": {
+        "summary": "Gets the list of keyword types on a specific keyword type group.",
+        "description": "Gets the keyword type assignment information for a specific keyword type group.",
+        "tags": [
+          "Keyword Type Groups",
+          "Keyword Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/keywordTypeGroupIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/keywordTypeIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordTypeKeywordTypeGroupsCollectionRetrieval"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/password-policies": {
+      "get": {
+        "summary": "Gets a password policy.",
+        "description": "Gets a password policy.",
+        "tags": [
+          "Password Policy"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordPolicyIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a password policy.",
+        "description": "Creates a password policy.",
+        "tags": [
+          "Password Policy"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/PasswordPolicy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordPolicy"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/password-policy/{passwordPolicyId}": {
+      "get": {
+        "summary": "Gets a specific password policy.",
+        "description": "Gets a specific password policy.",
+        "tags": [
+          "Password Policy"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/passwordPolicyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordPolicy"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing password policy.",
+        "description": "Replace an existing password policy.",
+        "tags": [
+          "Password Policy"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/passwordPolicyId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordPolicy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordPolicy"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/document-type-groups/{documentTypeGroupId}": {
+      "get": {
+        "summary": "Gets a specific document type group.",
+        "description": "Gets the document type group information for a specific document type group.",
+        "tags": [
+          "Document Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeGroup"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates a specific document type group.",
+        "description": "Updates the document type group information for a specific document type group.",
+        "tags": [
+          "Document Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing document type group.",
+        "description": "Replace the document type group with the provided document type group.",
+        "tags": [
+          "Document Type Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/documentTypeGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentTypeGroup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTypeGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/user-groups": {
+      "get": {
+        "summary": "Gets a list of user groups.",
+        "description": "Gets the identifier information for all user groups available to the user.",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new user group.",
+        "description": "Creates a new user group based on the model that is sent in the request.",
+        "tags": [
+          "User Groups"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/UserGroupPOST"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "422": {
+            "$ref": "#/components/responses/MODEL-INVALID"
+          }
+        }
+      }
+    },
+    "/api/user-groups/{userGroupId}": {
+      "get": {
+        "summary": "Gets a specific user group.",
+        "description": "Gets the user group information for a specific user group.",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroup"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing user group.",
+        "description": "Replace the user group with the provided user group.",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGroup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/user-groups/{userGroupId}/permissions/privileges": {
+      "get": {
+        "summary": "Gets general privileges for a user group.",
+        "description": "Gets general privileges for a user group.",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupPrivileges"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update privileges for a user group",
+        "description": "Update privileges for a user group",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGroupPrivileges"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupPrivileges"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/user-groups/{userGroupId}/permissions/configuration-rights": {
+      "get": {
+        "summary": "Gets configuration rights for a user group.",
+        "description": "Gets configuration rights for a user group.",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupConfigurationRights"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update configuration rights for a user group",
+        "description": "Update configuration rights for a user group",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGroupConfigurationRights"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupConfigurationRights"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/user-groups/{userGroupId}/permissions/product-rights": {
+      "get": {
+        "summary": "Gets product rights for a user group.",
+        "description": "Gets product rights for a user group.",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupProductRights"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update product rights for a user group",
+        "description": "Update product rights for a user group",
+        "tags": [
+          "User Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserGroupProductRights"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupProductRights"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/users/user-groups": {
+      "get": {
+        "summary": "Gets the list of users, user groups assignment information from provided parameter.",
+        "description": "Gets the list of users, user groups assignment information from provided parameter.",
+        "tags": [
+          "User Groups",
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/userIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupUserAssignmentCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace the users, user groups assignments on specified object.",
+        "description": "Replace the users, user groups assignments on specified object.",
+        "tags": [
+          "User Groups",
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/userIdQuery"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserGroupUserAssignment"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupUserAssignmentCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          },
+          "422": {
+            "$ref": "#/components/responses/MODEL-INVALID"
+          }
+        }
+      }
+    },
+    "/api/document-types/user-groups": {
+      "get": {
+        "summary": "Gets the list of document types, user groups assignment information from provided parameter.",
+        "description": "Gets the list of document types, user groups assignment information from provided parameter.",
+        "tags": [
+          "User Groups",
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/documentTypeIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupDocumentTypeAssignmentCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace the document types, user groups assignments on specified object.",
+        "description": "Replace the document types, user groups assignments on specified object.",
+        "tags": [
+          "User Groups",
+          "Document Types"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/documentTypeIdQuery"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserGroupDocumentTypeAssignment"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupDocumentTypeAssignmentCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          },
+          "422": {
+            "$ref": "#/components/responses/MODEL-INVALID"
+          }
+        }
+      }
+    },
+    "/api/disk-groups": {
+      "get": {
+        "summary": "Gets the list of disk groups.",
+        "description": "Gets the list of disk groups.",
+        "tags": [
+          "Disk Groups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/diskGroupTypes"
+          },
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiskGroupsIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Gets a list of users.",
+        "description": "Gets the identifier information for all users available to the user.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/idsQuery"
+          },
+          {
+            "$ref": "#/components/parameters/userServiceAccount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserIdentifiersCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new user.",
+        "description": "Creates a new user based on the model that is sent in the request.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/UserPOSTModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "422": {
+            "$ref": "#/components/responses/MODEL-INVALID"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "summary": "Gets a specific user.",
+        "description": "Gets the user information for a specific user.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace an existing user.",
+        "description": "Replace the user with the provided user.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/change-password": {
+      "put": {
+        "summary": "Replace an existing users password.",
+        "description": "Replace the users password with the provided password.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/security-keywords": {
+      "get": {
+        "summary": "Gets security keywords for a user",
+        "description": "Gets the security keywords for a specific user",
+        "tags": [
+          "Users",
+          "Security Keywords"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSecurityKeywordCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/api/user-groups/{userGroupId}/security-keywords": {
+      "get": {
+        "summary": "Gets security keywords for a user group",
+        "description": "Gets the security keywords for specific user group",
+        "tags": [
+          "User Groups",
+          "Security Keywords"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userGroupId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGroupSecurityKeywordCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    },
+    "/healthcheck": {
+      "get": {
+        "summary": "Performs a healthcheck for the REST APIs",
+        "tags": [
+          "Utility"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/system-settings": {
+      "get": {
+        "summary": "Gets a list of system settings.",
+        "description": "Gets the identifier information for all system settings.",
+        "tags": [
+          "Utility"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemSettingCollection"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates an existing system setting.",
+        "description": "Updates the system setting value for a specific system setting.",
+        "tags": [
+          "Utility"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemSetting"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-GENERIC-RESPONSE"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-GENERIC-RESPONSE"
+          },
+          "403": {
+            "$ref": "#/components/responses/403-GENERIC-RESPONSE"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-GENERIC-RESPONSE"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "KeywordTypeIdentifiersCollection": {
+        "description": "An array of keyword type identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of keyword type identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordTypeIdentifiers"
+            },
+            "example": [
+              {
+                "id": "0",
+                "name": "Null Keytype"
+              },
+              {
+                "id": "1",
+                "name": "Description"
+              }
+            ]
+          }
+        }
+      },
+      "KeywordTypeIdentifiers": {
+        "description": "Keyword Type metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the keyword type.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the keyword type.  This value is not localized.",
+            "type": "string"
+          }
+        }
+      },
+      "KeywordType": {
+        "description": "Keyword Type data.",
+        "required": [
+          "name",
+          "dataType"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the keyword type.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the keyword type.",
+            "type": "string",
+            "example": "Employee Name"
+          },
+          "casing": {
+            "description": "Determines the casing of the keyword.  Options are 'Upper' to indicate uppercase and 'Mixed' to indicate mixed-case",
+            "type": "string",
+            "enum": [
+              "Upper",
+              "Mixed"
+            ],
+            "default": "Mixed"
+          },
+          "dataType": {
+            "description": "Indicates the data type of the keyword, without the repeated values for alphanumeric.",
+            "type": "string",
+            "enum": [
+              "Numeric9",
+              "Numeric20",
+              "Alphanumeric",
+              "Currency",
+              "SpecificCurrency",
+              "Date",
+              "DateTime",
+              "FloatingPoint"
+            ],
+            "default": "Numeric9"
+          },
+          "maxLength": {
+            "description": "For Keyword Types that are Alphanumeric, this value indicates the maximum length of the string data that can be stored. When setting this value, it must be greater than 0. This value must be 0 for non-Alphanumeric data types.",
+            "type": "integer",
+            "default": 0,
+            "example": 50
+          },
+          "storage": {
+            "description": "Indicates how the keyword is stored. Note - The DualTable option is only valid for alphanumeric keywords.",
+            "type": "string",
+            "enum": [
+              "SingleTable",
+              "DualTable"
+            ],
+            "default": "SingleTable",
+            "example": "DualTable"
+          },
+          "datasetEnabled": {
+            "description": "Dataset enabled for keyword",
+            "type": "boolean",
+            "default": false
+          },
+          "datasetDropDownList": {
+            "description": "Dropdown list indication for keyword",
+            "type": "boolean",
+            "default": false
+          },
+          "displayDistinctValue": {
+            "description": "Only display distinct value for keyword",
+            "type": "boolean",
+            "default": false
+          },
+          "usageRestrictions": {
+            "description": "Restrictions on how the keywords of this type can be set.",
+            "type": "string",
+            "enum": [
+              "None",
+              "Unique",
+              "Exist"
+            ],
+            "default": "None"
+          },
+          "autofillKeywordSetId": {
+            "description": "The Autofill Keyword Set associated with this Keyword Type",
+            "type": "string",
+            "default": "0",
+            "example": "101"
+          },
+          "datasetSorting": {
+            "description": "The sorting method for dataset values, if enabled",
+            "type": "string",
+            "enum": [
+              "Ascending",
+              "Descending",
+              "Custom"
+            ],
+            "default": "Ascending",
+            "example": "Ascending"
+          },
+          "advanced": {
+            "description": "Advanced Keyword Type Options",
+            "type": "object",
+            "properties": {
+              "externalValidation": {
+                "description": "Legacy Setting. Indicates if this keyword type is externally validated.",
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "classification": {
+            "description": "Keyword Type Classification Options",
+            "type": "object",
+            "properties": {
+              "autoFillKeyword": {
+                "description": "Legacy setting. Indicates if this keyword type is an autofill keyword for an autofill keyword set.",
+                "type": "boolean",
+                "default": false
+              },
+              "informationOnly": {
+                "description": "Indicates if this keyword type is informative only (no index).",
+                "type": "boolean",
+                "default": false
+              },
+              "notForRetrieval": {
+                "description": "Indicates if this keyword type is not for retrieval.",
+                "type": "boolean",
+                "default": false
+              },
+              "processingFileNameKeyword": {
+                "description": "Indicates if this keyword type processes the document's file name when imported.",
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "display": {
+            "description": "Keyword Type Display Options",
+            "type": "object",
+            "properties": {
+              "autoDisplay": {
+                "description": "Indicates if this keyword type automatically displays.",
+                "type": "boolean",
+                "default": false
+              },
+              "forceLeftToRightReadingOrder": {
+                "description": "Indicates if this keyword type forces a left-to-right reading order.",
+                "type": "boolean",
+                "default": false
+              },
+              "invisible": {
+                "description": "Indicates if this keyword type is invisible.",
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        }
+      },
+      "FileTypeIdentifiersCollection": {
+        "description": "An array of file type identifiers",
+        "properties": {
+          "items": {
+            "description": "An array of file type identifiers",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileTypeIdentifiers"
+            },
+            "example": [
+              {
+                "id": "101",
+                "name": "Adobe XDP"
+              },
+              {
+                "id": "102",
+                "name": "AFP Document"
+              }
+            ]
+          }
+        }
+      },
+      "FileTypeIdentifiers": {
+        "description": "File type metadata.",
+        "properties": {
+          "Id": {
+            "description": "The unique identifier of the file type.",
+            "type": "string"
+          },
+          "Name": {
+            "description": "The name of the file type. This value is not localized.",
+            "type": "string"
+          }
+        }
+      },
+      "DisplayTypeWithValuesCollection": {
+        "description": "An array of display types.",
+        "properties": {
+          "item": {
+            "description": "An array of display type,display Type Values.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DisplayType"
+            }
+          }
+        }
+      },
+      "DisplayType": {
+        "description": "Display type metadata.",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier of the display type",
+            "type": "string",
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the display type. This value is not localized.",
+            "type": "string"
+          }
+        }
+      },
+      "FileType": {
+        "description": "File type metadata.",
+        "required": [
+          "name",
+          "displayType"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier of the file type.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the file type. This value is not localized.",
+            "type": "string",
+            "example": "AFP Document"
+          },
+          "extension": {
+            "description": "The extension of the file type. '???' represents no associated\nextension.",
+            "type": "string",
+            "default": "???",
+            "example": "???"
+          },
+          "commandLine": {
+            "description": "This represents the type of viewer for the file type.",
+            "type": "string",
+            "default": "",
+            "example": ""
+          },
+          "displayType": {
+            "description": "This represents the display type for the file type.",
+            "type": "string",
+            "example": "Pdf"
+          },
+          "mediaType": {
+            "description": "The media type for the file type, if one exists.",
+            "type": "string",
+            "default": ""
+          },
+          "disableSecurity": {
+            "description": "Indicates if security is disabled for this File Type.",
+            "type": "boolean",
+            "default": false
+          },
+          "disableVerity": {
+            "description": "Indicates if verity is disabled for this File Type.",
+            "type": "boolean",
+            "default": false
+          },
+          "externalEngineering": {
+            "description": "Indicates if is ExternalEngineering is enabled for this File Type.",
+            "type": "boolean",
+            "default": false
+          },
+          "pclBestFit": {
+            "description": "Indicates if is PCLBestFit is enabled for this File Type.",
+            "type": "boolean",
+            "default": false
+          },
+          "printType": {
+            "description": "This represents the print type for the file type.",
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          }
+        }
+      },
+      "DocumentTypeIdentifiersCollection": {
+        "description": "An array of document type identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of document type identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentTypeIdentifiers"
+            },
+            "example": [
+              {
+                "id": "0",
+                "name": "Null Keytype"
+              },
+              {
+                "id": "1",
+                "name": "Description"
+              }
+            ]
+          }
+        }
+      },
+      "DocumentTypeIdentifiers": {
+        "description": "Document Type metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the document type.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the document type.  This value is not localized.",
+            "type": "string"
+          }
+        }
+      },
+      "DocumentType": {
+        "description": "Document Type data.",
+        "required": [
+          "name",
+          "documentTypeGroupId",
+          "defaultDiskGroupId",
+          "defaultFileFormatId"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the document type.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the document type.",
+            "type": "string",
+            "example": "Employee Profile"
+          },
+          "autoDisplayKeywordLocation": {
+            "description": "Determines where autodisplay keywords are shown on the document.",
+            "type": "string",
+            "enum": [
+              "UpperRight",
+              "UpperLeft",
+              "BottomRight",
+              "BottomLeft"
+            ],
+            "default": "UpperRight"
+          },
+          "autonameString": {
+            "description": "The autoname string for this document type.",
+            "type": "string",
+            "default": "%N - %D2",
+            "example": "Background Check for %K00291.1"
+          },
+          "allowMarkUp": {
+            "description": "Allow markups.  Only usable for image documents.",
+            "type": "boolean",
+            "default": false
+          },
+          "cachingAllowed": {
+            "description": "Allow caching for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "columnIndexEnabled": {
+            "description": "Use column index for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "customFileTypeAllowed": {
+            "description": "Respect custom file types for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "diskGroupMigrationEnabled": {
+            "description": "Migrate this document type while when is indexed.",
+            "type": "boolean",
+            "default": false
+          },
+          "documentTypeGroupId": {
+            "description": "Id of the document type group this document type is in.",
+            "type": "string"
+          },
+          "formFeedsUsedForPageBreaks": {
+            "description": "Use form feed to determine page breaks for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "greenBarEnabled": {
+            "description": "Show text with greenBar when displaying this file type.",
+            "type": "boolean",
+            "default": true
+          },
+          "keywordBasedXMLEnabled": {
+            "description": "Use keyword-based XML for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "MIKGAutoExpandEnabled": {
+            "description": "Auto-expand MIKG for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "MIKGKeywordsRequired": {
+            "description": "Check all required keywords in MIKG for this document type.",
+            "type": "boolean",
+            "default": true
+          },
+          "overlay": {
+            "description": "Overlay this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "overlayFirstPageOnly": {
+            "description": "Overlay only the first page of this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "propertyBasedIndexing": {
+            "description": "Use property-based indexing for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "redactBitmapsAllowed": {
+            "description": "Allow redact bitmaps for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "retrievalListSortOrder": {
+            "description": "Determines what order documents are listed in when retrieved.",
+            "type": "string",
+            "enum": [
+              "None",
+              "DateDescending",
+              "DateAscending",
+              "HandleDescending",
+              "HandleAscending"
+            ],
+            "default": "DateDescending"
+          },
+          "scriptsAllowed": {
+            "description": "Enable scripts on this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "storePageReferences": {
+            "description": "Store page references for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "thumbnailCaching": {
+            "description": "Force thumbnail chaching for this document type.",
+            "type": "boolean",
+            "default": false
+          },
+          "thumbnailsEnabled": {
+            "description": "Show thumbnails for this document type.",
+            "type": "boolean",
+            "default": true
+          },
+          "defaultDiskGroupId": {
+            "description": "The default Disk Group utilized by this Document Type.",
+            "type": "string"
+          },
+          "defaultFileFormatId": {
+            "description": "Determines if an unrestricted query warning is shown, and if so, if it cancels the query.",
+            "type": "string"
+          },
+          "queryRestrictions": {
+            "description": "Query Restriction Options.",
+            "type": "object",
+            "properties": {
+              "requireDate": {
+                "description": "Show the query warning if no date is selected.",
+                "type": "boolean",
+                "default": false
+              },
+              "requireKeyword": {
+                "description": "Show the query warning if no keyword is selected.",
+                "type": "boolean",
+                "default": false
+              },
+              "warningType": {
+                "description": "Determines if an unrestricted query warning is shown, and if so, if it cancels the query.",
+                "type": "string",
+                "enum": [
+                  "NoWarning",
+                  "WarnAndRun",
+                  "WarnAndCancel"
+                ],
+                "default": "NoWarning"
+              }
+            }
+          }
+        }
+      },
+      "DocumentTypePOST": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DocumentType"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "userGroupIds": {
+                "description": "Indicates initial user groups for this Document Type to be added to",
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "default": [],
+                "example": [
+                  101,
+                  102
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "DocumentTypeKeywordTypeAssignmentCollection": {
+        "description": "An array of document type keyword type assignments.",
+        "properties": {
+          "items": {
+            "description": "An array of document type keyword type assignments.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentTypeKeywordTypeAssignment"
+            },
+            "example": [
+              {
+                "keywordTypeId": "101",
+                "documentTypeId": "111",
+                "keywordTypeGroupId": "0",
+                "required": false,
+                "sequenceNum": 0,
+                "defaultKeywordValue": "",
+                "makesDocUnique": false,
+                "externalKeywordTypeNum": 0,
+                "hidden": false,
+                "readOnly": false,
+                "excludeFromDoubleBlind": false,
+                "requiredForRetrieval": false,
+                "ignoreAutoIndex": false
+              },
+              {
+                "keywordTypeId": "103",
+                "documentTypeId": "111",
+                "keywordTypeGroupId": "0",
+                "required": false,
+                "keywordSetNum": 0,
+                "sequenceNum": 1,
+                "defaultKeywordValue": "",
+                "makesDocUnique": false,
+                "externalKeywordTypeNum": 0,
+                "hidden": false,
+                "readOnly": false,
+                "excludeFromDoubleBlind": false,
+                "requiredForRetrieval": false,
+                "ignoreAutoIndex": false
+              },
+              {
+                "keywordTypeId": "123",
+                "documentTypeId": "111",
+                "keywordTypeGroupId": "136",
+                "required": false,
+                "keywordSetNum": 0,
+                "sequenceNum": 2,
+                "defaultKeywordValue": "",
+                "makesDocUnique": false,
+                "externalKeywordTypeNum": 0,
+                "hidden": false,
+                "readOnly": false,
+                "excludeFromDoubleBlind": false,
+                "requiredForRetrieval": false,
+                "ignoreAutoIndex": false
+              },
+              {
+                "keywordTypeId": "321",
+                "documentTypeId": "111",
+                "keywordTypeGroupId": "136",
+                "required": false,
+                "keywordSetNum": 0,
+                "sequenceNum": 2,
+                "defaultKeywordValue": "",
+                "makesDocUnique": false,
+                "externalKeywordTypeNum": 0,
+                "hidden": false,
+                "readOnly": false,
+                "excludeFromDoubleBlind": false,
+                "requiredForRetrieval": false,
+                "ignoreAutoIndex": false
+              },
+              {
+                "keywordTypeId": "198",
+                "documentTypeId": "111",
+                "keywordTypeGroupId": "0",
+                "required": false,
+                "keywordSetNum": 0,
+                "sequenceNum": 3,
+                "defaultKeywordValue": "",
+                "makesDocUnique": false,
+                "externalKeywordTypeNum": 0,
+                "hidden": false,
+                "readOnly": false,
+                "excludeFromDoubleBlind": false,
+                "requiredForRetrieval": false,
+                "ignoreAutoIndex": false
+              }
+            ]
+          }
+        }
+      },
+      "DocumentTypeKeywordTypeAssignment": {
+        "description": "An assignment of a keyword type to a document type.",
+        "required": [
+          "keywordTypeId",
+          "documentTypeId"
+        ],
+        "properties": {
+          "keywordTypeId": {
+            "description": "Id of the keyword type.",
+            "type": "string",
+            "example": "101"
+          },
+          "documentTypeId": {
+            "description": "Id of the document type.  Must match the Id in the route.",
+            "type": "string",
+            "example": "102"
+          },
+          "keywordTypeGroupId": {
+            "description": "Id of the keyword type group this keyword is in.\n0 if not in a group.",
+            "type": "string",
+            "example": "0"
+          },
+          "required": {
+            "description": "Indicates a value is required for indexing new documents.",
+            "type": "boolean",
+            "example": false
+          },
+          "keywordSetNum": {
+            "description": "Id of the assigned keyset.",
+            "type": "integer",
+            "readOnly": true,
+            "example": 0
+          },
+          "sequenceNum": {
+            "description": "The order in which the keyword type appears in dialog boxes.  If the keyword type is in a group, the sequence num should be the same\nfor all the keyword types in that group (keyword group order is determined by the keyword group itself).",
+            "type": "integer",
+            "example": 0
+          },
+          "defaultKeywordValue": {
+            "description": "Default value for the keyword.",
+            "type": "string",
+            "example": "Default Keyword"
+          },
+          "makesDocUnique": {
+            "description": "Indicates the keyword is used to determine the uniqueness of new documents.",
+            "type": "boolean",
+            "example": false
+          },
+          "externalKeywordTypeNum": {
+            "description": "External keyword type number.",
+            "type": "integer",
+            "example": 0
+          },
+          "hidden": {
+            "description": "Indicates if the keyword type should be hidden (unless the user has the access restricted keywords privilege.)",
+            "type": "boolean",
+            "example": false
+          },
+          "readOnly": {
+            "description": "Indicated the keyword should be read-only (unless the user has the access restricted keywords privilege.)",
+            "type": "boolean",
+            "example": false
+          },
+          "excludeFromDoubleBlind": {
+            "description": "Indicates if the keyword should be excluded from double blind indexing.",
+            "type": "boolean",
+            "example": false
+          },
+          "requiredForRetrieval": {
+            "description": "Indicates if the keyword is required for document retrieval queries.",
+            "type": "boolean",
+            "example": false
+          },
+          "ignoreAutoIndex": {
+            "description": "Indicates if the keyword ignores intelligent auto index.",
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "DocumentTypeGroupIdentifiersCollection": {
+        "description": "An array of document type group identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of document type group identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentTypeGroupIdentifiers"
+            },
+            "example": [
+              {
+                "id": "101",
+                "name": "Human Resources"
+              },
+              {
+                "id": "102",
+                "name": "Information Systems"
+              }
+            ]
+          }
+        }
+      },
+      "DocumentTypeGroupIdentifiers": {
+        "description": "Document Type group metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the document type group.",
+            "type": "string",
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the document type group.  This value is not localized.",
+            "type": "string",
+            "example": "Human Resources"
+          }
+        }
+      },
+      "PasswordPolicyIdentifiersCollection": {
+        "description": "An array of password policy identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of password policy identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PasswordPolicyIdentifiers"
+            },
+            "example": [
+              {
+                "id": "101",
+                "name": "NormalUser"
+              },
+              {
+                "id": "102",
+                "name": "HighLevelSecurity"
+              }
+            ]
+          }
+        }
+      },
+      "PasswordPolicyIdentifiers": {
+        "description": "Password policy metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the password policy.",
+            "type": "string",
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the password policy.",
+            "type": "string",
+            "example": "UserPasswordPolicy"
+          }
+        }
+      },
+      "PasswordPolicy": {
+        "description": "Password policy data.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the password policy.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the password policy.",
+            "type": "string",
+            "maxLength": 50,
+            "example": "HighLevel"
+          },
+          "description": {
+            "description": "The description of the password policy.",
+            "type": "string",
+            "maxLength": 200,
+            "example": "HighLevel"
+          },
+          "policyType": {
+            "description": "The type of the password policy.",
+            "type": "string",
+            "enum": [
+              "Standard",
+              "Legacy"
+            ],
+            "example": "Standard",
+            "default": "Standard"
+          },
+          "sequenceNumber": {
+            "description": "The sequence number of the password policy.",
+            "type": "string",
+            "example": 0
+          },
+          "isLocked": {
+            "description": "Indicates the password policy is locked.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "policyRules": {
+            "description": "An array of password policy rules.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PasswordPolicyRule"
+            },
+            "example": [
+              {
+                "ruleType": "NumberOfUppercase",
+                "ruleValue": "5"
+              },
+              {
+                "ruleType": "NumberOfDigits",
+                "ruleValue": "3"
+              }
+            ]
+          }
+        }
+      },
+      "PasswordPolicyRule": {
+        "description": "Password policy rule.",
+        "properties": {
+          "ruleType": {
+            "description": "The name of the password policy.",
+            "type": "string",
+            "enum": [
+              "NumberofUppercase",
+              "NumberOfLowercase",
+              "NumberOfDigits",
+              "NumberOfSpecialCharacters",
+              "CanNotContainUserName",
+              "RotationAfterUse",
+              "ReusePassword",
+              "ChangeFrequency",
+              "MaxRepeatingCharacters",
+              "MaxLength",
+              "MinLength",
+              "ExpiredAfterDays",
+              "AlphanumericOnly",
+              "NoRotation",
+              "ExpiredAfterFirstUse",
+              "MinimumQuotaRules",
+              "FailLoginLockout",
+              "AutoReleaseFailedLockout",
+              "ManualReleaseFailedLockout",
+              "NumberOfAlphabetic",
+              "LockoutIdle",
+              "MaxRepeatingSubstring"
+            ],
+            "example": "CanNotContainUserName"
+          },
+          "ruleValue": {
+            "description": "The value pairs with the password policy rule.",
+            "type": "string",
+            "example": "10"
+          }
+        }
+      },
+      "DocumentTypeGroup": {
+        "description": "Document Type Group data.",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the document type group.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the document type group.",
+            "type": "string",
+            "maxLength": 65,
+            "example": "Human Resources"
+          },
+          "documentSource": {
+            "description": "Determines retrieval behavior for this document type group.",
+            "type": "string",
+            "enum": [
+              "Normal",
+              "GroupEnabled",
+              "OleAPI",
+              "DMA",
+              "Catalog"
+            ],
+            "default": "Normal"
+          },
+          "usedInMedicalRecords": {
+            "description": "Indicates that the document type group is used in Medical Records Management.",
+            "type": "boolean",
+            "readOnly": true,
+            "example": false
+          },
+          "connectionInfo": {
+            "description": "Used for connecting to an external source.",
+            "type": "object",
+            "readOnly": true,
+            "properties": {
+              "dataSourceName": {
+                "readOnly": true,
+                "description": "External source name.",
+                "type": "string",
+                "maxLength": 100,
+                "example": "msxml2.domdocument"
+              },
+              "systemName": {
+                "readOnly": true,
+                "description": "External system name.",
+                "type": "string",
+                "maxLength": 128,
+                "example": "https://servername.com"
+              },
+              "diskGroupId": {
+                "readOnly": true,
+                "description": "The disk group to use as a cache for items retrieved.",
+                "type": "string",
+                "example": "101"
+              },
+              "useUserCredentials": {
+                "readOnly": true,
+                "description": "Determines if the user credentials are used instead of the credentials in this document type group.",
+                "type": "boolean",
+                "example": true
+              },
+              "userName": {
+                "readOnly": true,
+                "description": "Username to use for this document type group.",
+                "type": "string",
+                "maxLength": 30,
+                "example": "username"
+              }
+            }
+          }
+        }
+      },
+      "DocumentTypeGroupPOST": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DocumentTypeGroup"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "userGroupIds": {
+                "description": "Indicates initial user groups for this Document Type Group to be added to",
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "default": [],
+                "example": [
+                  101,
+                  102
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "UserGroupIdentifiersCollection": {
+        "description": "An array of user group identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of user group identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroupIdentifiers"
+            },
+            "example": [
+              {
+                "id": 101,
+                "name": "Developers"
+              },
+              {
+                "id": 102,
+                "name": "HR"
+              }
+            ]
+          }
+        }
+      },
+      "UserGroupIdentifiers": {
+        "description": "User Group metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the user group.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the user group.",
+            "type": "string"
+          }
+        }
+      },
+      "UserGroup": {
+        "description": "User Group data.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the user group.",
+            "type": "string",
+            "readOnly": true,
+            "example": 101
+          },
+          "name": {
+            "description": "The name of the user group.",
+            "type": "string",
+            "example": "Developers"
+          },
+          "passwordPolicyNumberOverride": {
+            "description": "Password policy number to override default value",
+            "type": "string",
+            "example": 1
+          }
+        }
+      },
+      "UserGroupPOST": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserGroup"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "userIds": {
+                "description": "Indicates initial users for this User Group to have added to it",
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "default": [],
+                "example": [
+                  101,
+                  102
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "KeywordTypeGroupIdentifiersCollection": {
+        "description": "An array of keyword type group identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of keyword type group identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordTypeGroupIdentifiers"
+            },
+            "example": [
+              {
+                "id": "101",
+                "name": "Human Resources"
+              },
+              {
+                "id": "102",
+                "name": "Information Systems"
+              }
+            ]
+          }
+        }
+      },
+      "KeywordTypeGroupIdentifiers": {
+        "description": "Keyword Type group metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the keyword type group.",
+            "type": "string",
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the keyword type group.",
+            "type": "string",
+            "example": "Human Resources"
+          }
+        }
+      },
+      "KeywordTypeGroup": {
+        "description": "Keyword Type Group data.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for keyword type group.",
+            "type": "string",
+            "readOnly": true,
+            "example": 101
+          },
+          "name": {
+            "description": "The name of the keyword type group.",
+            "type": "string",
+            "example": "EmployeeInformation"
+          },
+          "multiInstanceKeywordTypeGroup": {
+            "description": "This keyset allows mutliple keysets to be selected when therer are duplicate rows for the same primary.",
+            "type": "boolean",
+            "example": true
+          },
+          "nullAllowed": {
+            "description": "This keygroup stores NULL values in the table.",
+            "type": "boolean",
+            "example": true
+          },
+          "dateStored": {
+            "description": "The document date is stored in the keygroup table.",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "KeywordTypeGroupPOST": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/KeywordTypeGroup"
+          },
+          {
+            "type": "object",
+            "required": [
+              "keywordTypes"
+            ],
+            "properties": {
+              "keywordTypes": {
+                "description": "An array of keyword types and squence numbers on keyword type groups.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/KeywordTypeKeywordTypeGroupAssignment"
+                },
+                "example": [
+                  {
+                    "keywordTypeId": "101",
+                    "sequenceNum": "0"
+                  },
+                  {
+                    "keywordTypeId": "102",
+                    "sequenceNum": "1"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "KeywordTypeKeywordTypeGroupsCollectionRetrieval": {
+        "description": "An array of keyword types on a keyword type groups.",
+        "properties": {
+          "items": {
+            "description": "An array of keyword types on a keyword type groups.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordTypeKeywordTypeGroupRetrieval"
+            },
+            "example": [
+              {
+                "keywordTypeId": "0",
+                "keywordTypeGroupId": "101",
+                "sequenceNum": 0
+              },
+              {
+                "keywordTypeId": "2",
+                "keywordTypeGroupId": "101",
+                "sequenceNum": 1
+              }
+            ]
+          }
+        }
+      },
+      "KeywordTypeKeywordTypeGroupCollectionAssignment": {
+        "description": "An array of keyword types on a keyword type groups.",
+        "properties": {
+          "items": {
+            "description": "An array of keyword types on a keyword type groups.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordTypeKeywordTypeGroupAssignment"
+            },
+            "example": [
+              {
+                "keywordTypeId": "101",
+                "sequenceNum": "0"
+              },
+              {
+                "keywordTypeId": "102",
+                "sequenceNum": "1"
+              }
+            ]
+          }
+        }
+      },
+      "KeywordTypeKeywordTypeGroupRetrieval": {
+        "description": "Keyword Type metadata.",
+        "properties": {
+          "keywordTypeId": {
+            "description": "The unique identifier for the keyword type.",
+            "type": "string"
+          },
+          "keywordTypeGroupId": {
+            "description": "The unique identifier for the keyword type group.",
+            "type": "string"
+          },
+          "sequenceNum": {
+            "description": "The sequence number of this keyword type on a keyword type group",
+            "type": "string"
+          }
+        }
+      },
+      "KeywordTypeKeywordTypeGroupAssignment": {
+        "description": "Keyword Type metadata.",
+        "properties": {
+          "keywordTypeId": {
+            "description": "The unique identifier for the keyword type.",
+            "type": "string"
+          },
+          "sequenceNum": {
+            "description": "The sequence number of this keyword type on a keyword type group",
+            "type": "string"
+          }
+        }
+      },
+      "UserGroupPrivileges": {
+        "description": "User Group privileges data.",
+        "properties": {
+          "documents": {
+            "description": "Documents related privileges.",
+            "type": "object",
+            "properties": {
+              "retrieve": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "create": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "modify": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "saveRotation": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "delete": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "deleteUncommittedOnly": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "print": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "externalMail": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "internalMail": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "reIndex": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "viewRevisions": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "createRevisions": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "viewVersions": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "createVersions": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "viewKeywords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "modifyKeywords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "accessRestrictedKeywords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "viewHistory": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "copyToClipboard": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "separate": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "createIntegrationHyperlink": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          },
+          "folders": {
+            "description": "Folders related privileges.",
+            "type": "object",
+            "properties": {
+              "retrieve": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "create": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "modifyKeywords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "viewKeywords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "modifyFolderContentsKeywords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "copy": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "move": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "delete": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "addDocuments": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "removeDocuments": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "viewHistory": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          },
+          "scanIndexBatches": {
+            "description": "Scan/Index batches related privileges.",
+            "type": "object",
+            "properties": {
+              "indexScannedDocuments": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "restricted": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "splitBatches": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "commitScannedBatches": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "purgeScannedBatches": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "purgeCommittedScannedBatches": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "changeBatchScannedQueue": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "renameScanBatches": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          },
+          "clientFeatures": {
+            "description": "Client features related privileges.",
+            "type": "object",
+            "properties": {
+              "retrieveDialog": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "import": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "documentProperties": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "userWorkstationOptions": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "enableMarkupToolbar": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "thumbnailHitlistResultsViewer": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "toolbarConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "externalTextSearch": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "folderProperties": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "personalPageConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": true
+              },
+              "templateForPersonalPages": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "envelopes": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "envelopeSharing": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "onDemandDiagnostics": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "userDefinedCustomQueries": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "docRetentionExclusion": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "docRetentionRemoveExclusion": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "retrieveArchivedDocuments": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "accessSecurityMaskedKeywprds": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "documentPackaging": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "mediaStreaming": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "signWithSignaturePad": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          },
+          "clientBasedProducts": {
+            "description": "Client based product related privileges.",
+            "type": "object",
+            "properties": {
+              "createListReport": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "fullTextSearch": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "statementRendering": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "documentDistribution": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "hostApplicationEnabler": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "workflow": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "workflowRestricted": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "customerInformation": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "workview": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "timestampDocuments": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "advancedDocumentSplitter": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "wordDocumentComposition": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "sendAdHocCavionNotifications": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "documentCompositionAdministration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "signaturePadAdministration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "fieldApplication": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "folio": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "addModifyCADServicesHotspots": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "hostedSignatureUploading": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "hostedSignatureMonitoring": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "hostedSignatureConfig": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "intelligentCaptureAPVerification": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "dynamicAdvancedCapture": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "interactiveDataCapture": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "dailyTaskAutomation": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "dodCertifiedRecordsManagement": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "combinedViewer": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "generateCSVFiles": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          }
+        }
+      },
+      "UserGroupConfigurationRights": {
+        "description": "User Group configuration rights data.",
+        "properties": {
+          "generalSettings": {
+            "description": "General settings related rights.",
+            "type": "object",
+            "properties": {
+              "diskGroup": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "keyword": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "document": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "customQuery": {
+                "type": "string",
+                "description": "Custom Query Configuration Types.",
+                "enum": [
+                  "None",
+                  "AnyCustomQueryType",
+                  "OnlyEnforcingUserGroupTypes"
+                ]
+              },
+              "process": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "printing": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "output": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "system": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "translation": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          },
+          "users-usergroup": {
+            "description": "Users/User Groups related rights.",
+            "type": "object",
+            "properties": {
+              "userGroupSecurity": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "configurationRightsSecurity": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "user": {
+                "type": "string",
+                "description": "User Configuration Admin.",
+                "enum": [
+                  "None",
+                  "User Account Admin",
+                  "User Update Admin",
+                  "Password Admin"
+                ]
+              },
+              "limitAdministrativeAccess": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              }
+            }
+          },
+          "products": {
+            "description": "Products related rights.",
+            "type": "object",
+            "properties": {
+              "scanningConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "exceptionReportConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "terminalConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "physicalRecordManagement": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "documentKnowledgeTransfer": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "recordsManagement": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "medicalRecords": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "collaborationTemplates": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "med2webPhysicianPortal": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "patientPortal": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "fieldApplication": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "systemFolio": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "reportServices": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "formsDesigner": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "fulltextSearchConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "combinedViewersConfiguration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignCombinedViews": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignViewTabs": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignAutoFillKeywordSet": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignCustomQueryType": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignDocumentType": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignWorkflowLifecycleQueue": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "assignWorkViewClassFilter": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "f3Configuration": {
+                "type": "boolean",
+                "example": false,
+                "default": false
+              },
+              "workflowConfiguration": {
+                "type": "string",
+                "description": "Workflow Configuration Cycles.",
+                "enum": [
+                  "None",
+                  "All Life Cycles",
+                  "Assigned Life Cycles"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "UserGroupProductRights": {
+        "description": "User Group product rights data.",
+        "properties": {
+          "generalConfiguration": {
+            "description": "General configuration related rights.",
+            "type": "object",
+            "properties": {
+              "configuration": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              },
+              "databaseManagement": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              },
+              "workViewConfiguration": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              },
+              "testSystemCreation": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              },
+              "changeTracking": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              },
+              "environmentValueManagement": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              }
+            }
+          }
+        }
+      },
+      "UserGroupDocumentTypeAssignmentCollection": {
+        "description": "An array of user group, document type assignments.",
+        "properties": {
+          "items": {
+            "description": "An array of user group, document type assignments.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroupDocumentTypeAssignment"
+            },
+            "example": [
+              {
+                "userGroupId": "101",
+                "documentTypeId": "100"
+              },
+              {
+                "userGroupId": "101",
+                "documentTypeId": "101"
+              },
+              {
+                "userGroupId": "101",
+                "documentTypeId": "102"
+              }
+            ]
+          }
+        }
+      },
+      "UserGroupDocumentTypeAssignment": {
+        "description": "An assignment of a document type to a user group.",
+        "required": [
+          "userGroupId",
+          "documentTypeId"
+        ],
+        "properties": {
+          "userGroupId": {
+            "description": "Id of the user group.",
+            "type": "string",
+            "example": "101"
+          },
+          "documentTypeId": {
+            "description": "Id of the document type.",
+            "type": "string",
+            "example": "102"
+          }
+        }
+      },
+      "DiskGroupsIdentifiersCollection": {
+        "description": "An array of disk groups.",
+        "properties": {
+          "items": {
+            "description": "An array of disk groups.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiskGroupsIdentifiers"
+            },
+            "example": [
+              {
+                "Id": "101",
+                "Name": "System"
+              },
+              {
+                "Id": "102",
+                "Name": "Data"
+              }
+            ]
+          }
+        }
+      },
+      "DiskGroupsIdentifiers": {
+        "description": "A disk group item",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "description": "Id of the disk group.",
+            "type": "string",
+            "example": "101"
+          },
+          "Name": {
+            "description": "Name of the disk group.",
+            "type": "string",
+            "example": "System"
+          }
+        }
+      },
+      "UserGroupUserAssignmentCollection": {
+        "description": "An array of user group user assignments.",
+        "properties": {
+          "items": {
+            "description": "An array of user group user assignments.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroupUserAssignment"
+            },
+            "example": [
+              {
+                "userGroupId": "101",
+                "userId": "100"
+              },
+              {
+                "userGroupId": "101",
+                "userId": "101"
+              },
+              {
+                "userGroupId": "101",
+                "userId": "102"
+              }
+            ]
+          }
+        }
+      },
+      "UserGroupUserAssignment": {
+        "description": "An assignment of a user to a user group.",
+        "required": [
+          "userGroupId",
+          "userId"
+        ],
+        "properties": {
+          "userGroupId": {
+            "description": "Id of the user group. Must match the Id in the route.",
+            "type": "string",
+            "example": "101"
+          },
+          "userId": {
+            "description": "Id of the user.",
+            "type": "string",
+            "example": "102"
+          }
+        }
+      },
+      "UserIdentifiersCollection": {
+        "description": "An array of user identifiers.",
+        "properties": {
+          "items": {
+            "description": "An array of user identifiers.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserIdentifiers"
+            },
+            "example": [
+              {
+                "id": "1",
+                "name": "Manager"
+              },
+              {
+                "id": "123",
+                "name": "Bob"
+              }
+            ]
+          }
+        }
+      },
+      "UserIdentifiers": {
+        "description": "User metadata.",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the user.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the user.",
+            "type": "string"
+          },
+          "isServiceAccount": {
+            "description": "Indicates if account is a service account.",
+            "type": "boolean"
+          }
+        }
+      },
+      "User": {
+        "description": "User data.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the user.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the user.",
+            "type": "string",
+            "example": "Bob"
+          },
+          "realName": {
+            "description": "The real name of the user.",
+            "type": "string",
+            "maxLength": 100,
+            "default": "",
+            "example": "Bob Bobson II"
+          },
+          "emailAddress": {
+            "description": "The email address of the user.",
+            "type": "string",
+            "maxLength": 255,
+            "default": "",
+            "example": "Bob.Bobson@example.com"
+          },
+          "password": {
+            "description": "User password. The password must meet the requirements of the current password policy.",
+            "type": "string",
+            "example": "password"
+          },
+          "forcePasswordChangeOnNextLogin": {
+            "description": "Force the user to update their password the next time they login.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "locked": {
+            "description": "Lock this user, disabling their ability to log in.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "disableChangePassword": {
+            "description": "Disable the changing of this users password.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "userGroupAdministrator": {
+            "description": "Grants this user the ability to see most user groups, regardless of membership.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "accountExpires": {
+            "description": "When enabled, the user account will expire on the date set in accountExpirationDate.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "accountExpirationDate": {
+            "description": "When accountExpires is true, the account will expire on the date set here.",
+            "type": "string",
+            "default": "1964-01-01",
+            "example": "2030-07-15"
+          },
+          "deactivated": {
+            "readOnly": true,
+            "description": "Indicates user has been deactivated and can no longer be used.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "isServiceAccount": {
+            "readOnly": true,
+            "description": "Indicates this user is used for running services and applications.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "externallyAuthenticated": {
+            "readOnly": true,
+            "description": "Indicates the user is authenticated via an external service.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          }
+        }
+      },
+      "UserPOSTModel": {
+        "description": "User data.",
+        "required": [
+          "name",
+          "password"
+        ],
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the user.",
+            "type": "string",
+            "readOnly": true,
+            "example": "101"
+          },
+          "name": {
+            "description": "The name of the user.",
+            "type": "string",
+            "example": "Bob"
+          },
+          "realName": {
+            "description": "The real name of the user.",
+            "type": "string",
+            "maxLength": 100,
+            "default": "",
+            "example": "Bob Bobson II"
+          },
+          "emailAddress": {
+            "description": "The email address of the user.",
+            "type": "string",
+            "maxLength": 255,
+            "default": "",
+            "example": "Bob.Bobson@example.com"
+          },
+          "password": {
+            "description": "User password. The password must meet the requirements of the current password policy.",
+            "type": "string",
+            "example": "password"
+          },
+          "forcePasswordChangeOnNextLogin": {
+            "description": "Force the user to update their password the next time they login.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "locked": {
+            "description": "Lock this user, disabling their ability to log in.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "disableChangePassword": {
+            "description": "Disable the changing of this users password.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "userGroupAdministrator": {
+            "description": "Grants this user the ability to see most user groups, regardless of membership.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "accountExpires": {
+            "description": "When enabled, the user account will expire on the date set in accountExpirationDate.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "accountExpirationDate": {
+            "description": "When accountExpires is true, the account will expire on the date set here.",
+            "type": "string",
+            "default": "1964-01-01",
+            "example": "2030-07-15"
+          },
+          "deactivated": {
+            "readOnly": true,
+            "description": "Indicates user has been deactivated and can no longer be used.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "isServiceAccount": {
+            "readOnly": true,
+            "description": "Indicates this user is used for running services and applications.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "externallyAuthenticated": {
+            "readOnly": true,
+            "description": "Indicates the user is authenticated via an external service.",
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "userGroupIds": {
+            "description": "Indicates initial user groups for this user to be added to",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "default": [],
+            "example": [
+              101,
+              102
+            ]
+          }
+        }
+      },
+      "KeywordDatasetCollection": {
+        "description": "A list of keyword dataset values",
+        "properties": {
+          "items": {
+            "description": "An array of keyword data set.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordDatasetValue"
+            },
+            "example": [
+              {
+                "keywordSeqNum": 0,
+                "keywordValue": "MANAGER"
+              },
+              {
+                "keywordSeqNum": 1,
+                "keywordValue": "ADMIN"
+              }
+            ]
+          }
+        }
+      },
+      "KeywordDatasetValue": {
+        "description": "Value in a keyword dataset",
+        "properties": {
+          "keywordSeqNum": {
+            "description": "Dataset sequence number",
+            "type": "string"
+          },
+          "keywordValue": {
+            "description": "Dataset value",
+            "type": "string"
+          }
+        }
+      },
+      "UserPassword": {
+        "description": "User password.",
+        "required": [
+          "password"
+        ],
+        "properties": {
+          "password": {
+            "description": "The password for the user.",
+            "type": "string",
+            "example": "passw0rd"
+          },
+          "forcePasswordChangeOnNextLogin": {
+            "description": "Force the user to update their password the next time they login.",
+            "type": "boolean",
+            "default": false,
+            "example": true
+          }
+        }
+      },
+      "PatchDocument": {
+        "description": "A list of JSONPatch commands to execute.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PatchCommand"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/classification/notForRetrieval",
+            "value": false
+          },
+          {
+            "op": "replace",
+            "path": "/display/autoDisplay",
+            "value": true
+          }
+        ]
+      },
+      "PatchCommand": {
+        "description": "A JSONPatch command.",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "add",
+              "remove",
+              "replace",
+              "move",
+              "copy",
+              "test"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer to a property."
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operation."
+          },
+          "from": {
+            "type": "string",
+            "description": "A JSON-Pointer to a property."
+          }
+        }
+      },
+      "SystemSetting": {
+        "description": "System Setting data.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "description": "The name of the system setting.",
+            "type": "string",
+            "example": "AppServerPath",
+            "enum": [
+              "AppServerPath",
+              "AppServerDataSource",
+              "ChangeControl_EvmUrl",
+              "OnBaseConfiguration_ConfigUrl"
+            ]
+          },
+          "value": {
+            "description": "The value of the system setting.",
+            "type": "string",
+            "example": "https://systemsettingurl.net"
+          }
+        }
+      },
+      "SystemSettingCollection": {
+        "description": "An array of system settings information.",
+        "properties": {
+          "items": {
+            "description": "An array of system setting information.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemSetting"
+            },
+            "example": [
+              {
+                "name": "AppServerPath",
+                "value": "https://systemsettingurl.net"
+              },
+              {
+                "name": "ChangeControl_EvmUrl",
+                "value": "https://evmurl.net"
+              }
+            ]
+          }
+        }
+      },
+      "SecurityKeywordBaseModel": {
+        "description": "Security Keyword data",
+        "properties": {
+          "isUserName": {
+            "description": "Specifies if the SecurityKeyword is Static or Username",
+            "type": "boolean",
+            "example": true
+          },
+          "keyword": {
+            "description": "The keyword of this security keyword",
+            "type": "object",
+            "properties": {
+              "typeId": {
+                "description": "Keyword Type Id",
+                "type": "string",
+                "example": "101"
+              },
+              "value": {
+                "description": "Keyword Value",
+                "type": "string",
+                "example": "Smith"
+              }
+            }
+          },
+          "securityKeywordOperator": {
+            "description": "The Security Keyword Operator, defined as either Equal or NotEqual",
+            "type": "string",
+            "enum": [
+              "Equal",
+              "NotEqual"
+            ],
+            "example": "Equal"
+          },
+          "securityKeywordType": {
+            "description": "The Security Keyword Type, defined as either Retrieval or Indexing",
+            "type": "string",
+            "enum": [
+              "Retrieval",
+              "Indexing"
+            ],
+            "example": "Retrieval"
+          }
+        }
+      },
+      "UserSecurityKeywordModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SecurityKeywordBaseModel"
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "properties": {
+          "userId": {
+            "description": "The unique identifier for the user.",
+            "type": "string",
+            "example": "109"
+          }
+        }
+      },
+      "UserGroupSecurityKeywordModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SecurityKeywordBaseModel"
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "properties": {
+          "userGroupId": {
+            "description": "The unique identifier for the user group.",
+            "type": "string",
+            "example": "109"
+          }
+        }
+      },
+      "UserSecurityKeywordCollection": {
+        "description": "List of Security Keywords for the user",
+        "properties": {
+          "items": {
+            "description": "An array of security keywords",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserSecurityKeywordModel"
+            }
+          }
+        }
+      },
+      "UserGroupSecurityKeywordCollection": {
+        "description": "List of Security Keywords for the user group",
+        "properties": {
+          "items": {
+            "description": "An array of security keywords",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroupSecurityKeywordModel"
+            }
+          }
+        }
+      },
+      "Problem-Detail": {
+        "type": "object",
+        "description": "The <a href=\"https://tools.ietf.org/html/rfc7807\">Problem Detail</a>\nformat defines a way to carry machine-readable details of errors in a\nHTTP response to avoid the need to define new error response formats for\nHTTP APIs.\n\nProblem details can be extended and defined for specific\nproblem types.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the problem type.  When\ndereferenced, it should provide human-readable documentation\nfor the problem type (e.g., using HTML)."
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, human-readable summary of the problem type. It should\nnot change from occurrence to occurrence of the problem."
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code generated by the origin server for this\noccurrence of the problem.",
+            "minimum": 100,
+            "maximum": 600,
+            "exclusiveMaximum": true
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the\nproblem."
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri",
+            "description": "A URI reference that identifies the specific occurrence of\nthe problem.  It may or may not yield further information\nif dereferenced."
+          }
+        }
+      }
+    },
+    "parameters": {
+      "idsQuery": {
+        "description": "The unique identifier of one or more items.",
+        "name": "ids",
+        "in": "query",
+        "required": false,
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "example": "101,102,103"
+      },
+      "userServiceAccount": {
+        "description": "Indicate service account filtering.",
+        "name": "serviceAccount",
+        "in": "query",
+        "required": false,
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "boolean"
+        },
+        "example": true
+      },
+      "keywordTypeId": {
+        "description": "The unique identifier of a keyword type.",
+        "name": "keywordTypeId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "keywordTypeGroupId": {
+        "description": "The unique identifier of a keyword type group.",
+        "name": "keywordTypeGroupId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "keywordTypeGroupIdQuery": {
+        "description": "The unique identifier of a keyword type group.",
+        "name": "keywordTypeGroupId",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "keywordTypeIdQuery": {
+        "description": "The unique identifier of a keyword type.",
+        "name": "keywordTypeId",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "fileTypeId": {
+        "description": "The unique identifier of a file type.",
+        "name": "fileTypeId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "documentTypeId": {
+        "description": "The unique identifier of a document type.",
+        "name": "documentTypeId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "documentTypeIdQuery": {
+        "description": "The unique identifier of a document type.",
+        "name": "documentTypeId",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "documentTypeGroupId": {
+        "description": "The unique identifier of a document type group.",
+        "name": "documentTypeGroupId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "userGroupId": {
+        "description": "The unique identifier of a user group.",
+        "name": "userGroupId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "userGroupIdQuery": {
+        "description": "The unique identifier of a user group.",
+        "name": "userGroupId",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "userIdQuery": {
+        "description": "The unique identifier of a user.",
+        "name": "userId",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "diskGroupTypes": {
+        "description": "The disk group types.",
+        "name": "type",
+        "in": "query",
+        "required": false,
+        "style": "form",
+        "explode": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "userId": {
+        "description": "The unique identifier of a user.",
+        "name": "userId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "passwordPolicyId": {
+        "description": "The unique identifier of a password policy.",
+        "name": "passwordPolicyId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Origin": {
+        "$ref": "#/components/parameters/parameters-Origin"
+      },
+      "Access-Control-Request-Method": {
+        "$ref": "#/components/parameters/parameters-Access-Control-Request-Method"
+      },
+      "Access-Control-Request-Headers": {
+        "$ref": "#/components/parameters/parameters-Access-Control-Request-Headers"
+      },
+      "parameters-Origin": {
+        "name": "Origin",
+        "in": "header",
+        "description": "The <a href=\"https://tools.ietf.org/html/rfc6454#section-7\">Origin</a>\nrequest header indicates which origin(s) a request originated from.\nOrigin only includes the server name and no path information.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "https://example.net"
+      },
+      "parameters-Access-Control-Request-Method": {
+        "name": "Access-Control-Request-Method",
+        "in": "header",
+        "description": "The <a\nhref=\"https://fetch.spec.whatwg.org/#http-access-control-request-method\">Access-Control-Request-Method</a>\nrequest header is used when issuing a `CORS` preflight request to let\nthe server know which HTTP method will be used when the actual request\nis made.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "GET"
+      },
+      "parameters-Access-Control-Request-Headers": {
+        "name": "Access-Control-Request-Headers",
+        "in": "header",
+        "description": "The <a\nhref=\"https://fetch.spec.whatwg.org/#http-access-control-request-headers\">Access-Control-Request-Headers</a>\nrequest header is used when issuing a `CORS` preflight request to let\nthe server know which HTTP headers will be used when the actual request\nis made.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "example": "Range"
+      }
+    },
+    "headers": {
+      "Access-Control-Expose-Headers": {
+        "$ref": "#/components/headers/headers-Access-Control-Expose-Headers"
+      },
+      "Access-Control-Allow-Origin": {
+        "$ref": "#/components/headers/headers-Access-Control-Allow-Origin"
+      },
+      "Access-Control-Max-Age": {
+        "$ref": "#/components/headers/headers-Access-Control-Max-Age"
+      },
+      "Location": {
+        "$ref": "#/components/headers/headers-Location"
+      },
+      "headers-Access-Control-Expose-Headers": {
+        "description": "The Access-Control-Expose-Headers\nresponse header indicates which headers can be exposed as part of the\nresponse by listing their names.\n\nBrowsers and libraries that participate in the CORS standards will\nrestrict access to non-simple headers.\n\nReference: https://fetch.spec.whatwg.org/#http-access-control-expose-headers",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "headers-Access-Control-Allow-Origin": {
+        "description": "The Access-Control-Allow-Origin response header is returned after a\nsuccessful `CORS` preflight request to indicate whether the target\nresource can be shared with the given `Origin`.\nReference: https://fetch.spec.whatwg.org/#http-access-control-allow-origin",
+        "schema": {
+          "type": "string"
+        },
+        "example": "https://example.net"
+      },
+      "headers-Access-Control-Max-Age": {
+        "description": "The Access-Control-Max-Age response header indicates how long in seconds\nthe results of a `CORS` preflight request can be cached.\nReference: https://fetch.spec.whatwg.org/#http-access-control-max-age",
+        "schema": {
+          "type": "string"
+        },
+        "example": "600"
+      },
+      "headers-Location": {
+        "description": "The \"Location\" header field is used in some responses to refer to a\nspecific resource in relation to the response.  The type of\nrelationship is defined by the combination of request method and\nstatus code semantics.\nReference: https://tools.ietf.org/html/rfc7231#section-7.1.2",
+        "schema": {
+          "type": "string"
+        },
+        "example": "http://www.example.net/index.html"
+      }
+    },
+    "responses": {
+      "MODEL-INVALID": {
+        "description": "Response when the model sent is properly formed, but the data it contains is invalid.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem-Detail"
+            },
+            "example": {
+              "Type": "http://example.net/object-already-exists",
+              "Title": "The object cannot be created because it already exists.",
+              "Status": 422,
+              "Detail": "Cannot choose a name that already exists",
+              "Instance": null
+            }
+          }
+        }
+      },
+      "401-GENERIC-RESPONSE": {
+        "description": "Response when the user does not supply valid authorization credentials.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem-Detail"
+            },
+            "example": {
+              "type": "https://example.net/unauthorized",
+              "title": "Unauthorized",
+              "status": 401,
+              "detail": "Not authorized to perform this action.",
+              "instance": "/example-resource"
+            }
+          }
+        }
+      },
+      "403-GENERIC-RESPONSE": {
+        "description": "Response when the user does not have permissions to access the resource.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem-Detail"
+            },
+            "example": {
+              "type": "https://example.net/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "Do not have permissions to access this resource.",
+              "instance": "/example-resource"
+            }
+          }
+        }
+      },
+      "400-GENERIC-RESPONSE": {
+        "description": "Response for when a bad request is provided.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem-Detail"
+            },
+            "example": {
+              "type": "https://example.net/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "Request is missing required data.",
+              "instance": "/example-resource"
+            }
+          }
+        }
+      },
+      "404-GENERIC-RESPONSE": {
+        "description": "Response when the resource does not exist or the user does not have rights\nto the resource.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem-Detail"
+            },
+            "example": {
+              "type": "https://example.net/not-found",
+              "title": "Not Found",
+              "status": 404,
+              "detail": "The requested resource was not found.",
+              "instance": "/example-resource"
+            }
+          }
+        }
+      }
+    }
+  }
+}

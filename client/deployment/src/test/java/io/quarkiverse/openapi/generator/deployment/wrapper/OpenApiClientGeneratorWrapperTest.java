@@ -46,6 +46,15 @@ import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigPar
 public class OpenApiClientGeneratorWrapperTest {
 
     @Test
+    void verifyNOTFOUNDClass() throws java.net.URISyntaxException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-852.json");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue852");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+    }
+
+    @Test
     void verifyFlink() throws URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-flink.yaml");
         final List<File> generatedFiles = generatorWrapper.generate("org.acme.flink");

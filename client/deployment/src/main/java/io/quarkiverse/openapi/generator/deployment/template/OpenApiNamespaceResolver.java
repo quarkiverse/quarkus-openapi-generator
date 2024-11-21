@@ -7,6 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
+import org.openapitools.codegen.model.OperationMap;
+
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
 import io.quarkus.qute.EvalContext;
 import io.quarkus.qute.Expression;
@@ -18,9 +20,8 @@ import io.quarkus.qute.NamespaceResolver;
  * implement and use them.
  */
 public class OpenApiNamespaceResolver implements NamespaceResolver {
-    private static final String GENERATE_DEPRECATED_PROP = "generateDeprecated";
-
     static final OpenApiNamespaceResolver INSTANCE = new OpenApiNamespaceResolver();
+    private static final String GENERATE_DEPRECATED_PROP = "generateDeprecated";
 
     private OpenApiNamespaceResolver() {
     }
@@ -51,6 +52,10 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
 
     public String parseUri(String uri) {
         return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString().replace(File.separatorChar, '/');
+    }
+
+    public boolean hasAuthMethods(OperationMap operations) {
+        return operations != null && operations.getOperation().stream().anyMatch(operation -> operation.hasAuthMethods);
     }
 
     @Override
