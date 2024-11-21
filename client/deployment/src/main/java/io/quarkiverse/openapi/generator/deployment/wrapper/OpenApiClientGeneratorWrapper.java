@@ -261,6 +261,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefix(final Boolean modelNamePrefix) {
+        this.configurator.setRemoveOperationIdPrefix(modelNamePrefix);
+        return this;
+    }
+
     public List<File> generate(final String basePackage) {
         this.basePackage = basePackage;
         this.consolidatePackageNames();

@@ -5,16 +5,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITION
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -228,6 +219,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getModelNamePrefix(config, openApiFilePath)
                 .ifPresent(generator::withModelNamePrefix);
 
+        getRemoveOperationIdPrefix(config, openApiFilePath)
+                .ifPresent(generator::withRemoveOperationIdPrefix);
+
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY, Boolean.class)
                 .ifPresent(generator::withMutiny);
 
@@ -348,6 +342,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private Optional<String> getModelNamePrefix(final Config config, final Path openApiFilePath) {
         return config
                 .getOptionalValue(getSpecConfigName(MODEL_NAME_PREFIX, openApiFilePath), String.class);
+    }
+
+    private Optional<Boolean> getRemoveOperationIdPrefix(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(REMOVE_OPERATION_ID_PREFIX, openApiFilePath), Boolean.class);
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {

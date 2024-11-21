@@ -67,6 +67,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename"),
         ADDITIONAL_PROPERTIES_AS_ATTRIBUTE("additional-properties-as-attribute"),
         ADDITIONAL_REQUEST_ARGS("additional-request-args"),
+        REMOVE_OPERATION_ID_PREFIX("remove-operation-id-prefix"),
         BEAN_VALIDATION("use-bean-validation");
 
         private final String name;
