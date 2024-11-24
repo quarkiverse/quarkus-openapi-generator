@@ -88,7 +88,7 @@ quarkus.openapi-generator.codegen.spec.petstore_json.model-name-suffix=CustomMod
 quarkus.openapi-generator.codegen.spec.petstore_json.model-name-prefix=CustomModelPrefix
 ----
 
-You can customize the name of generated method. To do that, you must define the following properties:
+You can remove operationId prefix (e.g. User_findAll=> findAll). To do that, you must define the following properties:
 
 [source,properties]
 ----
