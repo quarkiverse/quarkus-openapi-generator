@@ -42,8 +42,9 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
                 .addDefaults()
                 .addValueResolver(new ReflectionValueResolver())
                 .addNamespaceResolver(OpenApiNamespaceResolver.INSTANCE)
+                .addNamespaceResolver(StrNamespaceResolver.INSTANCE)
                 .removeStandaloneLines(true)
-                .strictRendering(false)
+                .strictRendering(true)
                 .build();
     }
 

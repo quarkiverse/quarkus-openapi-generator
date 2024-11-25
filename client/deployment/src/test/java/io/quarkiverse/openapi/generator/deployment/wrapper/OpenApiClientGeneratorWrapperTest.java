@@ -45,6 +45,29 @@ import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigPar
 
 public class OpenApiClientGeneratorWrapperTest {
 
+    private static Optional<MethodDeclaration> getMethodDeclarationByIdentifier(List<MethodDeclaration> methodDeclarations,
+            String methodName) {
+        return methodDeclarations.stream().filter(md -> md.getName().getIdentifier().equals(methodName)).findAny();
+    }
+
+    @Test
+    void verifyDiscriminatorGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-852.json");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue852");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> classWithDiscriminator = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("PostRevisionForDocumentRequest.java")).findFirst();
+        assertThat(classWithDiscriminator).isPresent();
+
+        final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
+        assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
+                .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class)))
+                .isPresent();
+    }
+
     @Test
     void verifyFlink() throws URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-flink.yaml");
@@ -764,10 +787,5 @@ public class OpenApiClientGeneratorWrapperTest {
         return fields.stream().map(field -> field.getVariable(0))
                 .filter((VariableDeclarator variable) -> name.equals(variable.getName().asString()))
                 .findFirst();
-    }
-
-    private static Optional<MethodDeclaration> getMethodDeclarationByIdentifier(List<MethodDeclaration> methodDeclarations,
-            String methodName) {
-        return methodDeclarations.stream().filter(md -> md.getName().getIdentifier().equals(methodName)).findAny();
     }
 }
