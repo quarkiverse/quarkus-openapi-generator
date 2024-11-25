@@ -1,21 +1,11 @@
-    {#if withXml}
-    @XmlAccessorType(XmlAccessType.FIELD)
-    {#if m.hasVars}@XmlType(name = "{m.classname}", propOrder =
-        { {#for var in m.vars}"{var.name}"{#if var_hasNext}, {/if}{/for}
-    }){#else}
-    @XmlType(name = "{m.classname}")
-    {/if}
-    {#if !m.parent || m.parent.isEmpty}@XmlRootElement(name = "{m.classname}"){/if}
-    {#else}
     @JsonIgnoreProperties(ignoreUnknown = true)
-    {/if}
     {#if m.description}
     /**
       * {m.description}
      **/
     {/if}
     {#include additionalModelTypeAnnotations.qute m=m/}
-    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements Serializable{/if} {
+    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if serializableModel} implements Serializable{/if} {
 
         public final int myCustomQueryParamAttribute = 42;
 
@@ -27,9 +17,6 @@
         {#else if !v.isContainer}
 
         {#include enumClass.qute e=v/}{/if}
-        {/if}
-        {#if withXml}
-        @XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
         {/if}
         {#if m.description}
         /**
@@ -63,13 +50,11 @@
         {/if}
         * @return {v.name}
         **/
-        {#if !withXml}
         @JsonProperty("{v.baseName}")
-        {/if}
         {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
         {ext}
         {/for}
-        {#if v.useBeanValidation}{#include beanValidation.qute p=v/}{/if}
+        {#if use-bean-validation}{#include beanValidation.qute p=v/}{/if}
         {#if v.isEnum && v.isContainer}public {v.datatypeWithEnum} {v.getter}(){
             return {v.name};
         }{#else if v.isEnum && !v.isArray && !v.isMap}public {v.datatypeWithEnum} {v.getter}() {
