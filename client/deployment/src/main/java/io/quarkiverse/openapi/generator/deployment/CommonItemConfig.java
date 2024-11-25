@@ -153,4 +153,16 @@ public class CommonItemConfig {
      */
     @ConfigItem(name = "use-bean-validation")
     public Optional<Boolean> useBeanValidation;
+
+    /**
+     * Enable the generation of APIs. If you set this to {@code false}, APIs will not be generated.
+     */
+    @ConfigItem(name = "generate-apis")
+    public Optional<Boolean> generateApis;
+
+    /**
+     * Enable the generation of models. If you set this to {@code false}, models will not be generated.
+     */
+    @ConfigItem(name = "generate-models")
+    public Optional<Boolean> generateModels;
 }

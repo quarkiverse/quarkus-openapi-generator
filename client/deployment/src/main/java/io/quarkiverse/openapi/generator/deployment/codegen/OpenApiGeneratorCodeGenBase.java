@@ -288,6 +288,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.BEAN_VALIDATION, Boolean.class)
                 .ifPresent(generator::withUseBeanValidation);
 
+        getValues(config, openApiFilePath, CodegenConfig.ConfigName.GENERATE_APIS, Boolean.class)
+                .ifPresent(generator::withGenerateApis);
+
+        getValues(config, openApiFilePath, CodegenConfig.ConfigName.GENERATE_MODELS, Boolean.class)
+                .ifPresent(generator::withGenerateModels);
+
         SmallRyeConfig smallRyeConfig = config.unwrap(SmallRyeConfig.class);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.TYPE_MAPPINGS, String.class, String.class)

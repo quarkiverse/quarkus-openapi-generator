@@ -170,6 +170,16 @@ include::./includes/additional-request-args.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/bean-validation.adoc[leveloffset=+1, opts=optional]
 
+[[generate-apis]]
+== Generate APIs
+
+include::./includes/generate-apis.adoc[leveloffset=+1, opts=optional]
+
+[[generate-models]]
+== Generate Models
+
+include::./includes/generate-models.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments

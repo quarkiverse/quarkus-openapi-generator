@@ -23,6 +23,7 @@
     <module>enum-property</module>
     <module>enum-unexpected</module>
     <module>exclude</module>
+    <module>generate-flags</module>
     <module>generation-input</module>
     <module>generation-tests</module>
     <module>include</module>
