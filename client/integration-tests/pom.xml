@@ -55,6 +55,11 @@
         <artifactId>quarkus-openapi-generator-it-generation-input</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.quarkiverse.openapi.generator</groupId>
+        <artifactId>quarkus-openapi-generator-oidc</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <profiles>
@@ -67,14 +72,6 @@
         <dependency>
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-resteasy-client-jackson</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-resteasy-multipart</artifactId>
         </dependency>
       </dependencies>
       <build>
@@ -102,10 +99,6 @@
         <dependency>
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-rest-client-jackson</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-rest-client-oidc-filter</artifactId>
         </dependency>
         <dependency>
           <groupId>jakarta.validation</groupId>

@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator;
+package io.quarkiverse.openapi.generator.oidc;
 
 import java.io.IOException;
 
@@ -10,7 +10,9 @@ import jakarta.ws.rs.client.ClientRequestFilter;
 
 import org.jboss.logging.Logger;
 
-import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider;
+import io.quarkiverse.openapi.generator.OidcClient;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvider;
 import io.quarkus.oidc.client.runtime.AbstractTokensProducer;
 import io.quarkus.oidc.client.runtime.DisabledOidcClientException;
 
@@ -19,15 +21,13 @@ import io.quarkus.oidc.client.runtime.DisabledOidcClientException;
 public class ClassicOidcClientRequestFilterDelegate extends AbstractTokensProducer
         implements ClientRequestFilter, OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
 
-    private static final Logger LOG = Logger
-            .getLogger(ClassicOidcClientRequestFilterDelegate.class);
+    private static final Logger LOG = Logger.getLogger(ClassicOidcClientRequestFilterDelegate.class);
 
     final String clientId;
 
     ClassicOidcClientRequestFilterDelegate(InjectionPoint injectionPoint) {
         OidcClient annotation = (OidcClient) injectionPoint.getQualifiers().stream()
-                .filter(x -> x.annotationType().equals(OidcClient.class))
-                .findFirst().orElseThrow();
+                .filter(x -> x.annotationType().equals(OidcClient.class)).findFirst().orElseThrow();
 
         this.clientId = OpenApiGeneratorConfig.getSanitizedSecuritySchemeName(annotation.name());
     }

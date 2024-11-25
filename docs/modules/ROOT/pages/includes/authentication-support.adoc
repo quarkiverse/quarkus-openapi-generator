@@ -134,12 +134,18 @@ quarkus.oidc-client.petstore_auth.client-id=petstore-app
 
 The configuration suffix `quarkus.oidc-client.petstore_auth` is exclusive for the schema defined in the specification file and the `schemaName` is sanitized by applying the rules described above.
 
-For this to work you **must** add https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter[Quarkus OIDC Client Filter Extension] to your project:
+For this to work you **must** add https://quarkus.io/guides/security-openid-connect-client#oidc-client-filter[Quarkus OIDC Client Filter Extension] to your project.
+
+IMPORTANT: From version 2.7.0 and onwards you must also add the `quarkus-openapi-generator-oidc` additional dependency. Please see the details below.
 
 RESTEasy Classic:
 
 [source ,xml]
 ----
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator-oidc</artifactId>
+</dependency>
 <dependency>
   <groupId>io.quarkus</groupId>
   <artifactId>quarkus-oidc-client-filter</artifactId>
@@ -150,6 +156,10 @@ RESTEasy Reactive:
 
 [source ,xml]
 ----
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator-oidc</artifactId>
+</dependency>
 <dependency>
   <groupId>io.quarkus</groupId>
   <artifactId>quarkus-oidc-client-reactive-filter</artifactId>

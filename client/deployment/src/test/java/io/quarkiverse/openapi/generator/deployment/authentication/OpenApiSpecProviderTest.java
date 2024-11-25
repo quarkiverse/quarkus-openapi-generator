@@ -17,11 +17,11 @@ import io.quarkiverse.openapi.generator.OpenApiSpec;
 import io.quarkiverse.openapi.generator.markers.ApiKeyAuthenticationMarker;
 import io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker;
 import io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker;
+import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.AuthProvider;
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider;
 import io.quarkus.test.QuarkusUnitTest;
 
 public class OpenApiSpecProviderTest {

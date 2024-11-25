@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-it-polymorphism</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Polymorphism</name>
+    <name>Quarkus - Openapi Generator - Integration Tests - Client - Polymorphism</name>
 
     <dependencies>
         <dependency>

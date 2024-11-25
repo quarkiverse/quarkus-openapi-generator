@@ -38,16 +38,6 @@
     </dependency>
     <!-- We need an impl of RuntimeDelegate for testing purposes only. Thus, it doesn't matter whether it has a reactive or classic rest client dependency -->
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client-oidc-filter</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
@@ -65,6 +55,11 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
