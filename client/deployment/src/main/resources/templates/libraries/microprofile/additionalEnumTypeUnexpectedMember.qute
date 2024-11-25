@@ -2,4 +2,4 @@
  * Special value if the API response contains some new value not declared in this enum.
  * You should react accordingly.
  */
-{additionalEnumTypeUnexpectedMemberName}({#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf("{additionalEnumTypeUnexpectedMemberStringValue}")){#if e.allowableValues},{/if}
+{additionalEnumTypeUnexpectedMemberName}({#if e.isContainer.or(false)}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf("{additionalEnumTypeUnexpectedMemberStringValue}")){#if e.allowableValues},{/if}

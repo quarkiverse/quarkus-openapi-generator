@@ -17,10 +17,10 @@ import {imp.import};
   * {#if appDescription}<p>{appDescription}</p>{/if}
   */
 {/if}
-@jakarta.ws.rs.Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
-@org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
+@jakarta.ws.rs.Path("{#if useAnnotatedBasePath.or(false)}{contextPath}{/if}{commonPath}")
+@org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if !defaultServerUrl.or('') == ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
-{#if enable-security-generation && hasAuthMethods}
+{#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
 {/if}
@@ -53,7 +53,7 @@ public interface {classname} {
     @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
     @io.quarkiverse.openapi.generator.annotations.GeneratedMethod("{op.operationIdOriginal}")
-    {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == package + classname}
+    {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == str:fmt("%s.%s", package, classname)}
     {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     {/if}{/for}
@@ -138,13 +138,13 @@ public interface {classname} {
         {#for p in op.pathParams}@jakarta.validation.Valid {#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
         {#for p in op.queryParams}@jakarta.validation.Valid {#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
         {#for p in op.cookieParams}@jakarta.validation.Valid {#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
-        {#for p in op.headerParams}@jakarta.validation.Valid {#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},
+        {#for p in op.headerParams}@jakarta.validation.Valid {#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},
         {#for p in op.bodyParams}@jakarta.validation.Valid {#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{/if}
         {#else}
         {#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
         {#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
         {#for p in op.cookieParams}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
-        {#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}
+        {#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},{/if}
         {#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
         {/if}
         {#else}

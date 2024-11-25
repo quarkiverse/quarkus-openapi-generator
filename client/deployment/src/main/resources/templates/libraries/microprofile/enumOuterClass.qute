@@ -1,25 +1,25 @@
 
 /**
- * {#insert e.description}Gets or Sets {e.name}{/}{#if e.description}{description}{/}
+ * {#insert e.description}Gets or Sets {e.name}{/}{#if e.description}{e.description}{/}
  */
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
-{#include additionalEnumTypeAnnotations.qute e=e/}public enum {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} {
+{#include additionalEnumTypeAnnotations.qute e=e/}public enum {#if e.datatypeWithEnum.or(false)}{e.datatypeWithEnum}{#else}{e.classname}{/if} {
     {#if e.allowableValues}
     {#if additionalEnumTypeUnexpectedMember}{#include additionalEnumTypeUnexpectedMember.qute e=e/}{/if}
     {#for v in e.allowableValues.enumVars}{v.name}({e.dataType}.valueOf({v.value})){#if v_hasNext}, {#else};{/if}{/for}
     {/if}
 
     // caching enum access
-    private static final java.util.EnumSet<{#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}> values = java.util.EnumSet.allOf({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}.class);
+    private static final java.util.EnumSet<{#if e.datatypeWithEnum.or(false)}{e.datatypeWithEnum}{#else}{e.classname}{/if}> values = java.util.EnumSet.allOf({#if e.datatypeWithEnum.or(false)}{e.datatypeWithEnum}{#else}{e.classname}{/if}.class);
 
     private {e.dataType} value;
 
-    {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if}({e.dataType} value){
+    {#if e.datatypeWithEnum.or(false)}{e.datatypeWithEnum}{#else}{e.classname}{/if}({e.dataType} value){
         this.value = value;
     }
 
     @com.fasterxml.jackson.annotation.JsonValue
-    public {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value() {
+    public {#if e.isContainer.or(false)}{e.items.dataType}{#else}{e.dataType}{/if} value() {
         return value;
     }
 
@@ -29,12 +29,12 @@
     }
 
     @com.fasterxml.jackson.annotation.JsonCreator
-    public static {#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} fromString(String text) {
-        for ({#if e.datatypeWithEnum}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
+    public static {#if e.datatypeWithEnum.or(false)}{e.datatypeWithEnum}{#else}{e.classname}{/if} fromString(String text) {
+        for ({#if e.datatypeWithEnum.or(false)}{e.datatypeWithEnum}{#else}{e.classname}{/if} b : values) {
             if (String.valueOf(b.value).equalsIgnoreCase(text)) {
                 return b;
             }
         }
-        {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + text + "'");{/if}
+        {#if e.isNullable}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + text + "'");{/if}
     }
 }

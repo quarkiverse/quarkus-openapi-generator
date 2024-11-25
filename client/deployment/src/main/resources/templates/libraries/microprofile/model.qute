@@ -17,5 +17,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 {#for m in models}
 {#if m.model.isEnum}{#include enumOuterClass.qute e=m.model/}
-{#else}{#include pojo.qute m=m.model withXml=withXml codegen=classes-codegen package=modelPackage/}{/if}
+{#else}{#include pojo.qute m=m.model codegen=classes-codegen package=modelPackage/}{/if}
 {/for}

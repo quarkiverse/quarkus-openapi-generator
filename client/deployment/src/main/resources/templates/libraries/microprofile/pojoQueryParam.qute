@@ -3,19 +3,9 @@
       * {m.description}
      **/
     {/if}
-    {#if withXml}
-    @jakarta.xml.bind.annotation.XmlAccessorType(jakarta.xml.bind.annotation.XmlType.XmlAccessType.FIELD)
-    {#if m.hasVars}@jakarta.xml.bind.annotation.XmlType(name = "{m.classname}", propOrder =
-        { {#for var in m.vars}"{var.name}"{#if var_hasNext}, {/if}{/for}
-    }){#else}
-    @jakarta.xml.bind.annotation.XmlType(name = "{m.classname}")
-    {/if}
-    {#if !m.parent || m.parent.isEmpty}@jakarta.xml.bind.annotation.XmlRootElement(name = "{m.classname}"){/if}
-    {#else}
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
-    {/if}
     {#include additionalModelTypeAnnotations.qute m=m/}
-    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if m.serializableModel} implements java.io.Serializable{/if} {
+    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if serializableModel} implements java.io.Serializable{/if} {
 
         {#for v in m.vars}
         {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
@@ -25,9 +15,6 @@
         {#else if !v.isContainer}
 
         {#include enumClass.qute e=v/}{/if}
-        {/if}
-        {#if withXml}
-        @jakarta.xml.bind.annotation.XmlType.XmlElement(name="{v.basename}"{#if v.required}, required = {v.required}{/if})
         {/if}
         {#if m.description}
         /**
@@ -41,7 +28,7 @@
         {#include beanValidation.qute p=v/}
         {/if}
         {#if v.isContainer}
-        private {v.datatypeWithEnum} {v.name}{#if v.required&&v.defaultValue} = {v.defaultValue}{#else} = null{/if};
+        private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{#else} = null{/if};
         {#else}
         private {v.datatypeWithEnum} {v.name}{#if v.defaultValue} = {v.defaultValue}{/if};
         {/if}
@@ -64,9 +51,7 @@
         {/if}
         * @return {v.name}
         **/
-        {#if !withXml}
         @com.fasterxml.jackson.annotation.JsonProperty("{v.baseName}")
-        {/if}
         {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
         {ext}
         {/for}
