@@ -4,10 +4,10 @@ package {package};
 import {imp.import};
 {/for}
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-{#if hasAuthMethods || custom-register-providers.orEmpty.size > 0}
+{#if openapi:hasAuthMethods(operations) || custom-register-providers.orEmpty.size > 0}
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider; 
 {/if}
-{#if hasAuthMethods}
+{#if openapi:hasAuthMethods(operations)}
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import {package}.auth.CompositeAuthenticationProvider;
 {#if client-headers-factory is 'default'}
@@ -34,10 +34,10 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
   * {#if appDescription}<p>{appDescription}</p>{/if}
   */
 {/if}
-@Path("{#if useAnnotatedBasePath}{contextPath}{/if}{commonPath}")
-@RegisterRestClient({#if defaultServerUrl}baseUri="{defaultServerUrl}",{/if}configKey="{configKey}")
+@Path("{commonPath}")
+@RegisterRestClient({#if !defaultServerUrl.or('') == ''}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
-{#if hasAuthMethods}
+{#if openapi:hasAuthMethods(operations)}
 @RegisterProvider(CompositeAuthenticationProvider.class)
 {#when client-headers-factory}
 {#is 'default'}
@@ -106,13 +106,13 @@ public interface {classname} {
         {#if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
         !}{#for p in op.pathParams}{#include templates.path_params param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
-        !}{#for p in op.queryParams}{#include templates.query_params param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
+        !}{#for p in op.queryParams}{#include templates.query_params param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},{/if}{!
         !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
         !}{#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
         {#else}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}{!
         !}{#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}{!
-        !}{#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParams},{/if}{!
+        !}{#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},{/if}{!
         !}{#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}{!
         !}{#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
         {/if}

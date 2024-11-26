@@ -3,7 +3,7 @@ package {apiPackage}.auth;
 public class AuthenticationPropagationHeadersFactory extends io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory {
 
     @jakarta.inject.Inject
-    public AuthenticationPropagationHeadersFactory(@io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{configKey}") io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider compositeProvider, io.quarkiverse.openapi.generator.OpenApiGeneratorConfig generatorConfig, io.quarkiverse.openapi.generator.providers.HeadersProvider headersProvider) {
+    public AuthenticationPropagationHeadersFactory(@io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{quarkus-generator.openApiSpecId}") io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider compositeProvider, io.quarkiverse.openapi.generator.OpenApiGeneratorConfig generatorConfig, io.quarkiverse.openapi.generator.providers.HeadersProvider headersProvider) {
         super(compositeProvider, generatorConfig, headersProvider);
     }
 

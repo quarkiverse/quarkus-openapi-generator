@@ -32,7 +32,10 @@ public class OperationTest {
                     .addClass(PetApi.class)
                     .addClass(LocalAuthenticationProvider.class)
                     .addAsResource(
-                            new StringAsset("quarkus.oidc-client.oauth_auth.auth-server-url=localhost\n"),
+                            new StringAsset("""
+                                    quarkus.oidc-client.oauth_auth.auth-server-url=localhost
+                                    quarkus.keycloak.devservices.enabled=false
+                                    """),
                             "application.properties"));
 
     @Inject

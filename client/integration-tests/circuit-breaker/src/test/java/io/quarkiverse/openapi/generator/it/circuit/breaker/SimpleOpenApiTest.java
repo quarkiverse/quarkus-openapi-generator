@@ -24,8 +24,8 @@ class SimpleOpenApiTest {
 
     @Test
     void circuitBreaker() throws IOException {
-        Path generatedRestClient = Paths.get("target", "generated-sources", "open-api-json", "org", "openapi",
-                "quarkus", "simple_openapi_json", "api", "DefaultApi.java");
+        Path generatedRestClient = Paths.get("target", "generated-sources", "open-api-json", "org", "acme",
+                "openapi", "simple", "api", "DefaultApi.java");
 
         assertThat(generatedRestClient)
                 .exists()

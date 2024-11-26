@@ -1,15 +1,7 @@
-{#if e.withXml}
-    @jakarta.xml.bind.annotation.XmlType(name={#if e.isEnum}"{e.items.enumName}"{#else}"{e.enumName}"{/if})
-    @akarta.xml.bind.annotation.XmlEnum({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.class)
-{/if}
     {#include additionalEnumTypeAnnotations.qute e=e /}public enum {e.enumName} {
         {#if e.allowableValues}
         {#if additionalEnumTypeUnexpectedMember}{#include additionalEnumTypeUnexpectedMember.qute e=e/}{/if}
-        {#if e.withXml}
-        {#for v in e.allowableValues.enumVars}@XmlEnumValue({#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}{v.value}{#if v.isInteger || v.isDouble || v.isLong || v.isFloat}"{/if}) {v.name}({#if e.isEnum}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value})){#if v_hasNext}, {#else}; {/if}{/for}
-        {#else}
         {#for v in e.allowableValues.enumVars}{v.name}({#if eq e.isNumeric}{v.value}{#else}{#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value}){/if}){#if v_hasNext}, {#else};{/if}{/for}
-        {/if}
         {/if}
 
         // caching enum access
@@ -38,6 +30,6 @@
                     return b;
                 }
             }
-            {#if e.useNullForUnknownEnumValue}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
+            {#if e.isNullable}return null;{#else if additionalEnumTypeUnexpectedMember}return {additionalEnumTypeUnexpectedMemberName};{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
         }
     }
