@@ -14,8 +14,6 @@ import io.quarkiverse.openapi.generator.providers.AuthProvider;
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.arc.SyntheticCreationalContext;
 import io.quarkus.runtime.annotations.Recorder;
@@ -45,7 +43,7 @@ public class AuthenticationRecorder {
             String apiKeyName,
             List<OperationAuthInfo> operations) {
         return context -> new ApiKeyAuthenticationProvider(openApiSpecId, name, apiKeyIn, apiKeyName,
-                getAuthConfig(openApiSpecId, name),
+                getAuthConfig(generatorConfig, openApiSpecId, name),
                 operations);
     }
 
@@ -54,7 +52,8 @@ public class AuthenticationRecorder {
             String scheme,
             String openApiSpecId,
             List<OperationAuthInfo> operations) {
-        return context -> new BearerAuthenticationProvider(openApiSpecId, name, scheme, getAuthConfig(openApiSpecId, name),
+        return context -> new BearerAuthenticationProvider(openApiSpecId, name, scheme,
+                getAuthConfig(generatorConfig, openApiSpecId, name),
                 operations);
     }
 
@@ -62,18 +61,11 @@ public class AuthenticationRecorder {
             String name,
             String openApiSpecId,
             List<OperationAuthInfo> operations) {
-        return context -> new BasicAuthenticationProvider(openApiSpecId, name, getAuthConfig(openApiSpecId, name), operations);
+        return context -> new BasicAuthenticationProvider(openApiSpecId, name,
+                getAuthConfig(generatorConfig, openApiSpecId, name), operations);
     }
 
-    public Function<SyntheticCreationalContext<AuthProvider>, AuthProvider> recordOauthAuthProvider(
-            String name,
-            String openApiSpecId,
-            List<OperationAuthInfo> operations) {
-        return context -> new OAuth2AuthenticationProvider(getAuthConfig(openApiSpecId, name), name, openApiSpecId,
-                context.getInjectedReference(OidcClientRequestFilterDelegate.class, new OidcClient.Literal(name)), operations);
-    }
-
-    AuthConfig getAuthConfig(String openApiSpecId, String name) {
+    public static AuthConfig getAuthConfig(OpenApiGeneratorConfig generatorConfig, String openApiSpecId, String name) {
         return Objects.requireNonNull(generatorConfig, "generatorConfig can't be null.")
                 .getItemConfig(openApiSpecId)
                 .flatMap(SpecItemConfig::getAuth)
