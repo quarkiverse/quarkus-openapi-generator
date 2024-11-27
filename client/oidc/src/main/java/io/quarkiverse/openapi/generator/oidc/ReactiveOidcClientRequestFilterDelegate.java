@@ -1,7 +1,6 @@
-package io.quarkiverse.openapi.generator;
+package io.quarkiverse.openapi.generator.oidc;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.inject.spi.InjectionPoint;
@@ -13,8 +12,9 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestFilter;
 
-import io.quarkiverse.openapi.generator.providers.OAuth2AuthenticationProvider;
-import io.quarkus.oidc.client.Tokens;
+import io.quarkiverse.openapi.generator.OidcClient;
+import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
+import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvider;
 import io.quarkus.oidc.client.runtime.AbstractTokensProducer;
 import io.quarkus.oidc.client.runtime.DisabledOidcClientException;
 import io.quarkus.oidc.common.runtime.OidcConstants;
@@ -24,16 +24,14 @@ import io.quarkus.oidc.common.runtime.OidcConstants;
 public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProducer
         implements ResteasyReactiveClientRequestFilter, OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate {
 
-    private static final Logger LOG = Logger
-            .getLogger(ReactiveOidcClientRequestFilterDelegate.class);
+    private static final Logger LOG = Logger.getLogger(ReactiveOidcClientRequestFilterDelegate.class);
     private static final String BEARER_SCHEME_WITH_SPACE = OidcConstants.BEARER_SCHEME + " ";
 
     final String clientId;
 
     ReactiveOidcClientRequestFilterDelegate(InjectionPoint injectionPoint) {
         OidcClient annotation = (OidcClient) injectionPoint.getQualifiers().stream()
-                .filter(x -> x.annotationType().equals(OidcClient.class))
-                .findFirst().orElseThrow();
+                .filter(x -> x.annotationType().equals(OidcClient.class)).findFirst().orElseThrow();
         this.clientId = OpenApiGeneratorConfig.getSanitizedSecuritySchemeName(annotation.name());
     }
 
@@ -58,23 +56,17 @@ public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProdu
     public void filter(ResteasyReactiveClientRequestContext requestContext) {
         requestContext.suspend();
 
-        super.getTokens().subscribe().with(new Consumer<>() {
-            @Override
-            public void accept(Tokens tokens) {
-                requestContext.getHeaders().putSingle(HttpHeaders.AUTHORIZATION,
-                        BEARER_SCHEME_WITH_SPACE + tokens.getAccessToken());
+        super.getTokens().subscribe().with(tokens -> {
+            requestContext.getHeaders().putSingle(HttpHeaders.AUTHORIZATION,
+                    BEARER_SCHEME_WITH_SPACE + tokens.getAccessToken());
+            requestContext.resume();
+        }, t -> {
+            if (t instanceof DisabledOidcClientException) {
+                LOG.debug("Client is disabled, acquiring and propagating the token is not necessary");
                 requestContext.resume();
-            }
-        }, new Consumer<>() {
-            @Override
-            public void accept(Throwable t) {
-                if (t instanceof DisabledOidcClientException) {
-                    LOG.debug("Client is disabled, acquiring and propagating the token is not necessary");
-                    requestContext.resume();
-                } else {
-                    LOG.debugf("Access token is not available, cause: %s, aborting the request", t.getMessage());
-                    requestContext.resume((t instanceof RuntimeException) ? t : new RuntimeException(t));
-                }
+            } else {
+                LOG.debugf("Access token is not available, cause: %s, aborting the request", t.getMessage());
+                requestContext.resume((t instanceof RuntimeException) ? t : new RuntimeException(t));
             }
         });
     }
