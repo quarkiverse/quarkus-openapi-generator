@@ -280,6 +280,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefix(final Boolean modelNamePrefix) {
+        this.configurator.setRemoveOperationIdPrefix(modelNamePrefix);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withModelNamePrefix(final String modelNamePrefix) {
         this.configurator.setModelNamePrefix(modelNamePrefix);
         return this;
