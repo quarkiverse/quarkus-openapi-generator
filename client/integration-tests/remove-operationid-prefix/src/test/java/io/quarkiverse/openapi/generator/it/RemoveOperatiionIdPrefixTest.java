@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class RemoveOperatiionIdPrefixTest {
+public class RemoveOperationIdPrefixTest {
 
     String apiClassName = "org.openapi.quarkus.openapi_remove_operation_id_prefix_yaml.api.UserResourceApi";
     String modelClassName = "org.openapi.quarkus.openapi_remove_operation_id_prefix_yaml.model.User";
