@@ -13,7 +13,7 @@ public class RemoveOperationIdPrefixTest {
     String modelClassName = "org.openapi.quarkus.openapi_remove_operation_id_prefix_yaml.model.User";
 
     @Test
-    void apiIsBeingGenerated() throws NoSuchMethodException {
+    void apiIsBeingGenerated() {
         assertThatCode(() -> Class.forName(apiClassName).getMethod("find", Integer.class))
                 .doesNotThrowAnyException();
 
