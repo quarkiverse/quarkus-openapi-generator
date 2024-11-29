@@ -36,6 +36,23 @@ components:
     UserId:
       type: string
       format: uuid
+    YearMonth:
+      type: object
+      properties:
+        year:
+          format: int32
+          type: integer
+        month:
+          format: int32
+          type: integer
+        prolepticMonth:
+          format: int64
+          type: integer
+        monthValue:
+          format: int32
+          type: integer
+        leapYear:
+          type: boolean
 
     MultipartRequestBody:
       type: object
@@ -46,5 +63,7 @@ components:
           $ref: '#/components/schemas/SomeDateTime'
         binaryStringFile:
           $ref: '#/components/schemas/BinaryStringFile'
+        yearMonth:
+          $ref: '#/components/schemas/YearMonth'
 
 
