@@ -1,2 +1,3 @@
 * xref:client.adoc[Client Generator]
 * xref:server.adoc[Server Generator]
+* xref:moqu.adoc[Moqu Wiremock Generator]
