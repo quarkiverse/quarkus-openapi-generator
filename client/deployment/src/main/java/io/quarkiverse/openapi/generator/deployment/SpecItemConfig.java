@@ -38,4 +38,11 @@ public class SpecItemConfig extends CommonItemConfig {
      */
     @ConfigItem(name = "model-name-prefix")
     public Optional<String> modelNamePrefix;
+
+    /**
+     * Remove operation id prefix
+     */
+    @ConfigItem(name = "remove-operation-id-prefix")
+    public Optional<String> removeOperationIdPrefix;
+
 }

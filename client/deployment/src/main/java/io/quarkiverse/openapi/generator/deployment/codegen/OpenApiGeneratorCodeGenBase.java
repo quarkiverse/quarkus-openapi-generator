@@ -13,6 +13,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
@@ -228,6 +229,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getModelNamePrefix(config, openApiFilePath)
                 .ifPresent(generator::withModelNamePrefix);
 
+        getRemoveOperationIdPrefix(config, openApiFilePath)
+                .ifPresent(generator::withRemoveOperationIdPrefix);
+
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY, Boolean.class)
                 .ifPresent(generator::withMutiny);
 
@@ -351,6 +355,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private Optional<String> getModelNamePrefix(final Config config, final Path openApiFilePath) {
         return config
                 .getOptionalValue(getSpecConfigName(MODEL_NAME_PREFIX, openApiFilePath), String.class);
+    }
+
+    private Optional<Boolean> getRemoveOperationIdPrefix(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(REMOVE_OPERATION_ID_PREFIX, openApiFilePath), Boolean.class);
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
