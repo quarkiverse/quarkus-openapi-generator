@@ -10,7 +10,7 @@
   <artifactId>quarkus-openapi-generator-parent</artifactId>
   <version>3.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Quarkus - Openapi Generator - Parent</name>
+  <name>Quarkus - Openapi Generator - Parent<
   <modules>
     <module>client</module>
     <module>server</module>
@@ -31,7 +31,32 @@
     <version.com.github.javaparser>3.26.2</version.com.github.javaparser>
     <version.org.assertj>3.26.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.1</version.org.eclipse.microprofile.fault-tolerance>
-    <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
+    <version.org.wiremock>3.9.2</version.org.wiremock>
+  </properties>
+  <dependencyManagement>
+  <dependencies>
+  <dependency>/name>
+  <modules>
+    <module>client</module>
+    <module>server</module>
+  </modules>
+  <scm>
+    <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
+    <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</developerConnection>
+    <url>https://github.com/quarkiverse/quarkus-openapi-generator</url>
+    <tag>HEAD</tag>
+  </scm>
+  <properties>
+    <compiler-plugin.version>3.8.1</compiler-plugin.version>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <quarkus.version>3.17.2</quarkus.version>
+    <apicurio.version>1.1.1.Final</apicurio.version>
+    <version.com.github.javaparser>3.26.2</version.com.github.javaparser>
+    <version.org.assertj>3.26.3</version.org.assertj>
+    <version.org.eclipse.microprofile.fault-tolerance>4.1.1</version.org.eclipse.microprofile.fault-tolerance>
+    <version.org.wiremock>3.9.2</version.org.wiremock>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -63,9 +88,9 @@
         <version>${apicurio.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock-jre8</artifactId>
-        <version>${version.com.github.tomakehurst}</version>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${version.org.wiremock}</version>
       </dependency>
       <!-- Test -->
       <dependency>
