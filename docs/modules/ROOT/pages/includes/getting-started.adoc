@@ -95,7 +95,7 @@ You can remove operationId prefix (e.g. User_findAll=> findAll). To do that, you
 quarkus.openapi-generator.codegen.spec.petstore_json.remove-operation-id-prefix=true
 ----
 
-Character to use as a delimiter for the prefix. Default is '_'.You can define the prefix (e.g. User.findAll=> findAll):
+Character to use as a delimiter for the prefix. Default is '_'.You can define the prefix delimiter (e.g. User.findAll=> findAll):
 
 [source,properties]
 ----
