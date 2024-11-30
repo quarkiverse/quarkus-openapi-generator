@@ -43,7 +43,7 @@ public interface {classname} {
     @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
     {/if}
     @jakarta.ws.rs.{op.httpMethod}
-    {#if op.subresourceOperation}
+    {#if op.subresourceOperation || op.path eq '/'}
     @jakarta.ws.rs.Path("{op.path}")
     {/if}
     {#if op.hasConsumes}
