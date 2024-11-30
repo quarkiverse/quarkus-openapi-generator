@@ -43,6 +43,17 @@ public class SpecItemConfig extends CommonItemConfig {
      * Remove operation id prefix
      */
     @ConfigItem(name = "remove-operation-id-prefix")
-    public Optional<String> removeOperationIdPrefix;
+    public Optional<Boolean> removeOperationIdPrefix;
 
+    /**
+     * Remove operation id prefix
+     */
+    @ConfigItem(name = "remove-operation-id-prefix-delimiter")
+    public Optional<String> removeOperationIdPrefixDelimiter;
+
+    /**
+     * Remove operation id prefix
+     */
+    @ConfigItem(name = "remove-operation-id-prefix-count")
+    public Optional<Integer> removeOperationIdPrefixCount;
 }

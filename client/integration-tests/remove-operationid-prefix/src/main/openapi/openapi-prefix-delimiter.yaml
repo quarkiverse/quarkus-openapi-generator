@@ -1,0 +1,108 @@
+---
+openapi: 3.0.3
+info:
+  title: code-with-quarkus API
+  version: 1.0.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
+paths:
+  /users:
+    get:
+      tags:
+      - User Resource
+      description: Find All
+      operationId: UserResource.findAll
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      tags:
+      - User Resource
+      description: Add
+      operationId: UserResource.add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/{id}:
+    get:
+      tags:
+      - User Resource
+      description: Find
+      operationId: UserResource.find
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    put:
+      tags:
+      - User Resource
+      description: Update
+      operationId: UserResource.update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int32
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "204":
+          description: No Content
+    delete:
+      tags:
+      - User Resource
+      description: Delete
+      operationId: UserResource.delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "204":
+          description: No Content
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          type: string
