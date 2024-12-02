@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator.providers;
+package io.quarkiverse.openapi.generator.oidc.providers;
 
 import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.AuthConfig;
+import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
+import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.oidc.common.runtime.OidcConstants;
 
 public class OAuth2AuthenticationProvider extends AbstractAuthProvider {

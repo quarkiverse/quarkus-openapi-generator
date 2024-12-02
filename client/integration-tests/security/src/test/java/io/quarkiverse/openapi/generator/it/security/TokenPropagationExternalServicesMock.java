@@ -14,6 +14,9 @@ import java.util.Map;
 
 import jakarta.ws.rs.core.HttpHeaders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.tomakehurst.wiremock.WireMockServer;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
@@ -25,18 +28,25 @@ public class TokenPropagationExternalServicesMock implements QuarkusTestResource
     public static final String SERVICE3_AUTHORIZATION_TOKEN = "SERVICE3_AUTHORIZATION_TOKEN";
     public static final String SERVICE4_HEADER_TO_PROPAGATE = "SERVICE4_HEADER_TO_PROPAGATE";
     public static final String SERVICE4_AUTHORIZATION_TOKEN = "SERVICE4_AUTHORIZATION_TOKEN";
-
-    private static final String BEARER = "Bearer ";
-
     public static final String TOKEN_PROPAGATION_EXTERNAL_SERVICE_MOCK_URL = "propagation-external-service-mock.url";
-
+    private static final String BEARER = "Bearer ";
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenPropagationExternalServicesMock.class);
     private WireMockServer wireMockServer;
+
+    private static void stubForExternalService(String tokenPropagationExternalServiceUrl, String authorizationToken) {
+        stubFor(post(tokenPropagationExternalServiceUrl)
+                .withHeader(HttpHeaders.AUTHORIZATION, equalTo(BEARER + authorizationToken))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody("{}")));
+    }
 
     @Override
     public Map<String, String> start() {
         wireMockServer = new WireMockServer(options().dynamicPort());
         wireMockServer.start();
         configureFor(wireMockServer.port());
+        LOGGER.info("Mocked Server started at {}", wireMockServer.baseUrl());
 
         // stub the token-propagation-external-service1 invocation with the expected token
         stubForExternalService("/token-propagation-external-service1/executeQuery1", AUTHORIZATION_TOKEN);
@@ -56,14 +66,6 @@ public class TokenPropagationExternalServicesMock implements QuarkusTestResource
         stubForExternalService("/token-propagation-external-service5/executeQuery5", KEYCLOAK_ACCESS_TOKEN);
 
         return Map.of(TOKEN_PROPAGATION_EXTERNAL_SERVICE_MOCK_URL, wireMockServer.baseUrl());
-    }
-
-    private static void stubForExternalService(String tokenPropagationExternalServiceUrl, String authorizationToken) {
-        stubFor(post(tokenPropagationExternalServiceUrl)
-                .withHeader(HttpHeaders.AUTHORIZATION, equalTo(BEARER + authorizationToken))
-                .willReturn(aResponse()
-                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
-                        .withBody("{}")));
     }
 
     @Override
