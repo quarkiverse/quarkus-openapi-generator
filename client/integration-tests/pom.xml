@@ -46,9 +46,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock-jre8</artifactId>
-        <version>${version.com.github.tomakehurst}</version>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${version.org.wiremock}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -73,6 +73,10 @@
         <dependency>
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-resteasy-client-jackson</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-multipart-provider</artifactId>
         </dependency>
       </dependencies>
       <build>
