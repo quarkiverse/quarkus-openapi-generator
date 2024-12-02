@@ -31,7 +31,7 @@
     <version.com.github.javaparser>3.26.2</version.com.github.javaparser>
     <version.org.assertj>3.26.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.1</version.org.eclipse.microprofile.fault-tolerance>
-    <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
+    <version.org.wiremock>3.9.2</version.org.wiremock>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -63,9 +63,9 @@
         <version>${apicurio.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock-jre8</artifactId>
-        <version>${version.com.github.tomakehurst}</version>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${version.org.wiremock}</version>
       </dependency>
       <!-- Test -->
       <dependency>
