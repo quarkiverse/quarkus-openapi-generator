@@ -3,7 +3,7 @@
   <parent>
     <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
     <groupId>io.quarkiverse.openapi.generator</groupId>
-    <version>2.7.0</version>
+    <version>3.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
