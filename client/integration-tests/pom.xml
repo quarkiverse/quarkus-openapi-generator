@@ -31,6 +31,7 @@
     <module>mutiny-return-response</module>
     <module>open-api-normalizer</module>
     <module>part-filename</module>
+    <module>path</module>
     <module>polymorphism</module>
     <module>return-response</module>
     <module>remove-operationid-prefix</module>
