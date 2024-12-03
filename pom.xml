@@ -31,7 +31,7 @@
     <version.com.github.javaparser>3.26.2</version.com.github.javaparser>
     <version.org.assertj>3.26.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.1</version.org.eclipse.microprofile.fault-tolerance>
-    <version.org.wiremock>3.9.2</version.org.wiremock>
+    <version.org.wiremock>3.10.0</version.org.wiremock>
   </properties>
   <dependencyManagement>
     <dependencies>
