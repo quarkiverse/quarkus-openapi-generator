@@ -69,6 +69,8 @@ public class CodegenConfig extends GlobalCodegenConfig {
         ADDITIONAL_PROPERTIES_AS_ATTRIBUTE("additional-properties-as-attribute"),
         ADDITIONAL_REQUEST_ARGS("additional-request-args"),
         REMOVE_OPERATION_ID_PREFIX("remove-operation-id-prefix"),
+        REMOVE_OPERATION_ID_PREFIX_DELIMITER("remove-operation-id-prefix-delimiter"),
+        REMOVE_OPERATION_ID_PREFIX_COUNT("remove-operation-id-prefix-count"),
         BEAN_VALIDATION("use-bean-validation");
 
         private final String name;
