@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
@@ -35,6 +34,8 @@ class EnumUnexpectedTest {
     @RestClient
     @Inject
     org.openapi.quarkus.with_enum_unexpected_yaml.api.DefaultApi api;
+    @Inject
+    ObjectMapper objectMapper;
 
     @Test
     void apiIsBeingGenerated() {
@@ -44,9 +45,6 @@ class EnumUnexpectedTest {
         Assertions.assertThat(echo.getMsgType())
                 .isEqualTo(org.openapi.quarkus.with_enum_unexpected_yaml.model.Echo.MsgTypeEnum.UNEXPECTED);
     }
-
-    @Inject
-    ObjectMapper objectMapper;
 
     @Test
     void when_additional_enum_type_unexpected_member_is_true_should_have_extra_member() {
@@ -89,8 +87,7 @@ class EnumUnexpectedTest {
         }
 
         private void configureWiremockServer() {
-            var wireMockConfiguration = WireMockConfiguration.wireMockConfig()
-                    .extensions(new ResponseTemplateTransformer(false)).dynamicPort();
+            var wireMockConfiguration = WireMockConfiguration.wireMockConfig().dynamicPort();
             wireMockServer = new WireMockServer(wireMockConfiguration);
             wireMockServer.start();
 

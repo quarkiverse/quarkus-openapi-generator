@@ -188,6 +188,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withSchemaMappings(final Map<String, String> typeMappings) {
+        typeMappings.forEach(configurator::addSchemaMapping);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
         return this;
@@ -287,6 +292,21 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withModelNameSuffix(final String modelNameSuffix) {
         this.configurator.setModelNameSuffix(modelNameSuffix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefix(final Boolean removeOperationIdPrefix) {
+        this.configurator.setRemoveOperationIdPrefix(removeOperationIdPrefix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefixDelimiter(final String removeOperationIdPrefixDelimiter) {
+        this.configurator.addAdditionalProperty("removeOperationIdPrefixDelimiter", removeOperationIdPrefixDelimiter);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefixCount(final Integer removeOperationIdPrefixCount) {
+        this.configurator.addAdditionalProperty("removeOperationIdPrefixCount", removeOperationIdPrefixCount);
         return this;
     }
 

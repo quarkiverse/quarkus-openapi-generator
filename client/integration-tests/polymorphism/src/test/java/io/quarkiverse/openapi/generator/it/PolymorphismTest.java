@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
@@ -52,8 +51,7 @@ class PolymorphismTest {
         }
 
         private void configureWiremockServer() {
-            var wireMockConfiguration = WireMockConfiguration.wireMockConfig()
-                    .extensions(new ResponseTemplateTransformer(false)).dynamicPort();
+            var wireMockConfiguration = WireMockConfiguration.wireMockConfig().dynamicPort();
             wireMockServer = new WireMockServer(wireMockConfiguration);
             wireMockServer.start();
 

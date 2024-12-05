@@ -58,6 +58,7 @@ public class CodegenConfig extends GlobalCodegenConfig {
         ADDITIONAL_API_TYPE_ANNOTATIONS("additional-api-type-annotations"),
         TYPE_MAPPINGS("type-mappings"),
         IMPORT_MAPPINGS("import-mappings"),
+        SCHEMA_MAPPINGS("schema-mappings"),
         NORMALIZER("open-api-normalizer"),
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation"),
@@ -67,7 +68,10 @@ public class CodegenConfig extends GlobalCodegenConfig {
         USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename"),
         ADDITIONAL_PROPERTIES_AS_ATTRIBUTE("additional-properties-as-attribute"),
         ADDITIONAL_REQUEST_ARGS("additional-request-args"),
-        BEAN_VALIDATION("use-bean-validation"),
+        REMOVE_OPERATION_ID_PREFIX("remove-operation-id-prefix"),
+        REMOVE_OPERATION_ID_PREFIX_DELIMITER("remove-operation-id-prefix-delimiter"),
+        REMOVE_OPERATION_ID_PREFIX_COUNT("remove-operation-id-prefix-count"),
+        BEAN_VALIDATION("use-bean-validation");
         GENERATE_APIS("generate-apis"),
         GENERATE_MODELS("generate-models");
 

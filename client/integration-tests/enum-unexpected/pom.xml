@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-enum-unexpected</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Enum Unexpected</name>
+  <name>Quarkus - Openapi Generator - Integration Tests - Client - Enum Unexpected</name>
   <description>Example project for OpenAPI with enum unexpected value</description>
 
   <dependencies>
@@ -27,8 +27,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-jre8</artifactId>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

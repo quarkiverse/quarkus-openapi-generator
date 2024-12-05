@@ -13,6 +13,9 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_COUNT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_DELIMITER;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
@@ -228,6 +231,15 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getModelNamePrefix(config, openApiFilePath)
                 .ifPresent(generator::withModelNamePrefix);
 
+        getRemoveOperationIdPrefix(config, openApiFilePath)
+                .ifPresent(generator::withRemoveOperationIdPrefix);
+
+        getRemoveOperationIdPrefixDelimiter(config, openApiFilePath)
+                .ifPresent(generator::withRemoveOperationIdPrefixDelimiter);
+
+        getRemoveOperationIdPrefixCount(config, openApiFilePath)
+                .ifPresent(generator::withRemoveOperationIdPrefixCount);
+
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.MUTINY, Boolean.class)
                 .ifPresent(generator::withMutiny);
 
@@ -302,6 +314,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.IMPORT_MAPPINGS, String.class, String.class)
                 .ifPresent(generator::withImportMappings);
 
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.SCHEMA_MAPPINGS, String.class, String.class)
+                .ifPresent(generator::withSchemaMappings);
+
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.NORMALIZER, String.class, String.class)
                 .ifPresent(generator::withOpenApiNormalizer);
 
@@ -354,6 +369,21 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private Optional<String> getModelNamePrefix(final Config config, final Path openApiFilePath) {
         return config
                 .getOptionalValue(getSpecConfigName(MODEL_NAME_PREFIX, openApiFilePath), String.class);
+    }
+
+    private Optional<Boolean> getRemoveOperationIdPrefix(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(REMOVE_OPERATION_ID_PREFIX, openApiFilePath), Boolean.class);
+    }
+
+    private Optional<String> getRemoveOperationIdPrefixDelimiter(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(REMOVE_OPERATION_ID_PREFIX_DELIMITER, openApiFilePath), String.class);
+    }
+
+    private Optional<Integer> getRemoveOperationIdPrefixCount(final Config config, final Path openApiFilePath) {
+        return config
+                .getOptionalValue(getSpecConfigName(REMOVE_OPERATION_ID_PREFIX_COUNT, openApiFilePath), Integer.class);
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {

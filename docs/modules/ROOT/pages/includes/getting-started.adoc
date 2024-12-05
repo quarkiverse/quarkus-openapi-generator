@@ -88,6 +88,27 @@ quarkus.openapi-generator.codegen.spec.petstore_json.model-name-suffix=CustomMod
 quarkus.openapi-generator.codegen.spec.petstore_json.model-name-prefix=CustomModelPrefix
 ----
 
+You can remove operationId prefix (e.g. User_findAll=> findAll). To do that, you must define the following properties:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.remove-operation-id-prefix=true
+----
+
+Character to use as a delimiter for the prefix. Default is '_'.You can define the prefix delimiter (e.g. User.findAll=> findAll):
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.remove-operation-id-prefix-delimiter=.
+----
+
+You can define count of delimiter for the prefix (e.g. org.acme.UserResource.findAll=> findAll). Use -1 for last Default:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.remove-operation-id-prefix-count=3
+----
+
 The same way you can add any additional annotations to the generated api files with `additional-api-type-annotations`. Given you want to include Foo and Bar annotations, you must define additional-api-type-annotations as:
 
 [source,properties]

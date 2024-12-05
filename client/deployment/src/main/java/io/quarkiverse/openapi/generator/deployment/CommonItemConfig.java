@@ -37,6 +37,13 @@ public class CommonItemConfig {
     public Map<String, String> importMappings;
 
     /**
+     * Schema Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be
+     * imported when a given schema type (the keys of this map) is used
+     */
+    @ConfigItem(name = "schema-mappings")
+    public Map<String, String> schemaMappings;
+
+    /**
      * The specified annotations will be added to the generated model files
      */
     @ConfigItem(name = "additional-model-type-annotations")

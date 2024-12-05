@@ -36,6 +36,11 @@
       <artifactId>quarkus-openapi-generator</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.openapi.generator</groupId>
+      <artifactId>quarkus-openapi-generator-oidc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <!-- Forces swagger-parser version to avoid conflict with Quarkus.
     This is needed while org.openapitools:openapi-generator doesn't use swagger-parser 2.1.13 or greater -->
     <dependency>

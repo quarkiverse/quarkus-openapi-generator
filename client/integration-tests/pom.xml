@@ -32,8 +32,10 @@
     <module>mutiny-return-response</module>
     <module>open-api-normalizer</module>
     <module>part-filename</module>
+    <module>path</module>
     <module>polymorphism</module>
     <module>return-response</module>
+    <module>remove-operationid-prefix</module>
     <module>security</module>
     <module>simple</module>
     <module>skip-validation</module>
@@ -46,14 +48,19 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock-jre8</artifactId>
-        <version>${version.com.github.tomakehurst}</version>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${version.org.wiremock}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>io.quarkiverse.openapi.generator</groupId>
         <artifactId>quarkus-openapi-generator-it-generation-input</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.quarkiverse.openapi.generator</groupId>
+        <artifactId>quarkus-openapi-generator-oidc</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -70,12 +77,8 @@
           <artifactId>quarkus-resteasy-client-jackson</artifactId>
         </dependency>
         <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-resteasy-multipart</artifactId>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-multipart-provider</artifactId>
         </dependency>
       </dependencies>
       <build>
@@ -103,10 +106,6 @@
         <dependency>
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-rest-client-jackson</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-rest-client-oidc-filter</artifactId>
         </dependency>
         <dependency>
           <groupId>jakarta.validation</groupId>
