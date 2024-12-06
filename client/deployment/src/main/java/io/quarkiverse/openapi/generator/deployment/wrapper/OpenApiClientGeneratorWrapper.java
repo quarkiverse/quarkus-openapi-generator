@@ -275,6 +275,16 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withGenerateApis(Boolean config) {
+        configurator.addAdditionalProperty("generate-apis", config);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withGenerateModels(Boolean config) {
+        configurator.addAdditionalProperty("generate-models", config);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withApiNameSuffix(final String apiNameSuffix) {
         this.configurator.setApiNameSuffix(apiNameSuffix);
         return this;

@@ -1,0 +1,60 @@
+---
+openapi: 3.0.3
+info:
+  title: Test API
+  version: "1.0"
+paths:
+  /{pathParam}:
+    get:
+      tags:
+        - NonExistentEndpoint
+      operationId: test
+      parameters:
+        - name: pathParam
+          in: path
+          required: true
+          schema:
+            type: string
+            minimum: 5
+        - name: headerParam
+          in: header
+          required: false
+          schema:
+            type: integer
+            maximum: 5
+        - name: cookieParam
+          in: cookie
+          required: true
+          schema:
+            type: string
+            minLength: 10
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    ExistentObject:
+      type: object
+      description: Some object not to be validated
+      required:
+        - id
+        - name
+        - size
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          maximum: 100
+        name:
+          type: string
+          pattern: "[a-zA-Z]*"
+          minLength: 1
+          maxLength: 10
+        size:
+          type: number
+          minimum: 1.0
+          maximum: 10.0
