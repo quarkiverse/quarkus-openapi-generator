@@ -71,6 +71,8 @@ public class CodegenConfig extends GlobalCodegenConfig {
         REMOVE_OPERATION_ID_PREFIX("remove-operation-id-prefix"),
         REMOVE_OPERATION_ID_PREFIX_DELIMITER("remove-operation-id-prefix-delimiter"),
         REMOVE_OPERATION_ID_PREFIX_COUNT("remove-operation-id-prefix-count"),
+        GENERATE_APIS("generate-apis"),
+        GENERATE_MODELS("generate-models"),
         BEAN_VALIDATION("use-bean-validation");
 
         private final String name;
