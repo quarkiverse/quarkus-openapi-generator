@@ -387,6 +387,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "andybarilla",
+      "name": "Andy Barilla",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5983808?v=4",
+      "profile": "https://kranzilla.com/",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
