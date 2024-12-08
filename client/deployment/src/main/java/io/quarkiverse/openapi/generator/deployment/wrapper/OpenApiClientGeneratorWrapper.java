@@ -191,7 +191,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withSerialiableModel(final String serialiableModel) {
+    public OpenApiClientGeneratorWrapper withSerialiableModel(final Boolean serialiableModel) {
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, serialiableModel);
         return this;
     }
