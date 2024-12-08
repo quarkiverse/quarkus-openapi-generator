@@ -1,16 +1,16 @@
 package io.quarkiverse.openapi.generator.deployment;
 
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.common.utils.StringUtil;
+
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 // This configuration is read in codegen phase (before build time), the annotation is for document purposes and avoiding quarkus warns
 @ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
@@ -73,7 +73,8 @@ public class CodegenConfig extends GlobalCodegenConfig {
         REMOVE_OPERATION_ID_PREFIX_COUNT("remove-operation-id-prefix-count"),
         GENERATE_APIS("generate-apis"),
         GENERATE_MODELS("generate-models"),
-        BEAN_VALIDATION("use-bean-validation");
+        BEAN_VALIDATION("use-bean-validation"),
+        SERIALIZABLE_MODEL("serializable-model");
 
         private final String name;
 
