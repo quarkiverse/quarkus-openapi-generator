@@ -1,12 +1,13 @@
 package io.quarkiverse.openapi.generator.it;
 
-import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.Serializable;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @Tag("resteasy-reactive")

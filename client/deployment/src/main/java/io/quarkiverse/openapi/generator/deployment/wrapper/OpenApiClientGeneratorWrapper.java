@@ -1,20 +1,21 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import io.smallrye.config.common.utils.StringUtil;
-import org.openapitools.codegen.CodegenConstants;
-import org.openapitools.codegen.DefaultGenerator;
-import org.openapitools.codegen.config.GlobalSettings;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.util.*;
-
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
 import static io.quarkiverse.openapi.generator.deployment.wrapper.QuarkusJavaClientCodegen.QUARKUS_GENERATOR_NAME;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.requireNonNull;
 import static org.openapitools.codegen.languages.AbstractJavaCodegen.ADDITIONAL_MODEL_TYPE_ANNOTATIONS;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.*;
+
+import org.openapitools.codegen.CodegenConstants;
+import org.openapitools.codegen.DefaultGenerator;
+import org.openapitools.codegen.config.GlobalSettings;
+
+import io.smallrye.config.common.utils.StringUtil;
 
 /**
  * Wrapper for the OpenAPIGen tool.

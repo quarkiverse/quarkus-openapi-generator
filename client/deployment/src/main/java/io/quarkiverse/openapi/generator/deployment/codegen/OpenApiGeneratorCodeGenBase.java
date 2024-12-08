@@ -1,20 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
-import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
-import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
-import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
-import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
-import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiReactiveClientGeneratorWrapper;
-import io.quarkus.bootstrap.prebuild.CodeGenException;
-import io.quarkus.builder.Version;
-import io.quarkus.deployment.Capability;
-import io.quarkus.deployment.CodeGenContext;
-import io.quarkus.deployment.CodeGenProvider;
-import io.smallrye.config.SmallRyeConfig;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.eclipse.microprofile.config.Config;
-import org.openapitools.codegen.config.GlobalSettings;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,8 +14,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.eclipse.microprofile.config.Config;
+import org.openapitools.codegen.config.GlobalSettings;
+
+import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
+import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
+import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
+import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
+import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiReactiveClientGeneratorWrapper;
+import io.quarkus.bootstrap.prebuild.CodeGenException;
+import io.quarkus.builder.Version;
+import io.quarkus.deployment.Capability;
+import io.quarkus.deployment.CodeGenContext;
+import io.quarkus.deployment.CodeGenProvider;
+import io.smallrye.config.SmallRyeConfig;
 
 /**
  * Code generation for OpenApi Client. Generates Java classes from OpenApi spec files located in src/main/openapi or
