@@ -73,7 +73,8 @@ public class CodegenConfig extends GlobalCodegenConfig {
         REMOVE_OPERATION_ID_PREFIX_COUNT("remove-operation-id-prefix-count"),
         GENERATE_APIS("generate-apis"),
         GENERATE_MODELS("generate-models"),
-        BEAN_VALIDATION("use-bean-validation");
+        BEAN_VALIDATION("use-bean-validation"),
+        SERIALIZABLE_MODEL("serializable-model");
 
         private final String name;
 

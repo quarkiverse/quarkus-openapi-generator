@@ -1,8 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
 import static io.quarkiverse.openapi.generator.deployment.wrapper.QuarkusJavaClientCodegen.QUARKUS_GENERATOR_NAME;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -11,11 +9,7 @@ import static org.openapitools.codegen.languages.AbstractJavaCodegen.ADDITIONAL_
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
@@ -111,7 +105,6 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("use-bean-validation", FALSE);
         this.configurator.addAdditionalProperty("use-field-name-in-part-filename", FALSE);
         this.configurator.addAdditionalProperty("verbose", FALSE);
-        // TODO: expose as properties https://github.com/quarkiverse/quarkus-openapi-generator/issues/869
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
     }
 
@@ -195,6 +188,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withSerialiableModel(final Boolean serialiableModel) {
+        this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, serialiableModel);
         return this;
     }
 
