@@ -398,6 +398,16 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "yuhaibohotmail",
+      "name": "yuhaibohotmail",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48646226?v=4",
+      "profile": "https://github.com/yuhaibohotmail",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
