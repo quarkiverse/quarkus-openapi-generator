@@ -1,7 +1,23 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_NAME_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER_STRING_VALUE_DEFAULT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSpecConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.API_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_COUNT;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_DELIMITER;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
 import java.io.IOException;
 import java.nio.file.Files;

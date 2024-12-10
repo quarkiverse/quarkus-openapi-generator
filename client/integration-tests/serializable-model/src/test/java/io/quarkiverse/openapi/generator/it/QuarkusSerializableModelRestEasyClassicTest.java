@@ -15,14 +15,14 @@ class QuarkusSerializableModelRestEasyClassicTest {
 
     @Test
     void verifySerializableIsEnabled() {
-        var interfaces = io.quarkiverse.serializable.model.Animal.class.getInterfaces();
+        var interfaces = org.acme.serializable.model.Animal.class.getInterfaces();
 
         assertThat(interfaces).contains(Serializable.class);
     }
 
     @Test
     void verifySerializableIsNotEnabled() {
-        var interfaces = io.quarkiverse.non.serializable.model.Animal.class.getInterfaces();
+        var interfaces = org.acme.non.serializable.model.Animal.class.getInterfaces();
 
         assertThat(interfaces).doesNotContain(Serializable.class);
     }
