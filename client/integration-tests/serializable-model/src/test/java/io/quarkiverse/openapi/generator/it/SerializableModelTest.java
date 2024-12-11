@@ -4,14 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.Serializable;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-@Tag("resteasy-reactive")
-class QuarkusSerializableModelRestEasyReactiveTest {
+class SerializableModelTest {
 
     @Test
     void verifySerializableIsEnabled() {

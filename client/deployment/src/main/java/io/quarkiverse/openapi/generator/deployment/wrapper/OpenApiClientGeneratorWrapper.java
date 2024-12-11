@@ -1,6 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveApiPackage;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.resolveModelPackage;
 import static io.quarkiverse.openapi.generator.deployment.wrapper.QuarkusJavaClientCodegen.QUARKUS_GENERATOR_NAME;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -9,7 +11,11 @@ import static org.openapitools.codegen.languages.AbstractJavaCodegen.ADDITIONAL_
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;

@@ -44,7 +44,7 @@
     <module>config-key</module>
     <module>github</module>
     <module>without-oidc</module>
-      <module>serializable-model</module>
+    <module>serializable-model</module>
   </modules>
   <dependencyManagement>
     <dependencies>
