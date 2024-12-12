@@ -111,7 +111,6 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("use-bean-validation", FALSE);
         this.configurator.addAdditionalProperty("use-field-name-in-part-filename", FALSE);
         this.configurator.addAdditionalProperty("verbose", FALSE);
-        // TODO: expose as properties https://github.com/quarkiverse/quarkus-openapi-generator/issues/869
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
     }
 
@@ -195,6 +194,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withSerialiableModel(final Boolean serialiableModel) {
+        this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, serialiableModel);
         return this;
     }
 
