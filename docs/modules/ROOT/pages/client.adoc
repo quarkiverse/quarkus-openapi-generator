@@ -183,6 +183,17 @@ include::./includes/generate-apis.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/generate-models.adoc[leveloffset=+1, opts=optional]
 
+[[generate-serilazble-models]]
+== Generate Serilazable Models
+
+If you need to have the generated models to implement `java.io.Serializable`-interface then set the `serializable-model`
+to true:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.serializable-model=true
+----
+
 == Known Limitations
 
 === Supported Arguments
