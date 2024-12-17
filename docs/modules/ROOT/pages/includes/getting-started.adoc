@@ -8,7 +8,7 @@ WARNING: Version 2.x.x of this extension supports Quarkus 3, and version 1.x.x s
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0-lts-SNAPSHOT</version>
 </dependency>
 ----
 
