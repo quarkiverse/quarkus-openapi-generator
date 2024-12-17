@@ -6,7 +6,7 @@ Add the following dependency to your project's `pom.xml` file:
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator-server</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0-lts-SNAPSHOT</version>
 </dependency>
 ----
 

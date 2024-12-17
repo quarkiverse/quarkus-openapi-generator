@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: token-propagation-external-service1 API
-  version: 3.0.0-SNAPSHOT
+  version: 3.0.0-lts-SNAPSHOT
 paths:
   /token-propagation-external-service1/executeQuery1:
     post:
