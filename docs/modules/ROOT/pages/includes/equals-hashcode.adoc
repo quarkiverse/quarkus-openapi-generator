@@ -1,5 +1,5 @@
-`Hashcode` and `equals` are by default generated. It adds all the variables in the model
-to the model to the methods.
+`hashcode` and `equals` are by default generated to all models. `hashcode` and `equals` is based on all the variables
+in the model and can't be customized.
 
 To disable set `equals-hashcode` to false:
 
