@@ -74,7 +74,8 @@ public class CodegenConfig extends GlobalCodegenConfig {
         GENERATE_APIS("generate-apis"),
         GENERATE_MODELS("generate-models"),
         BEAN_VALIDATION("use-bean-validation"),
-        SERIALIZABLE_MODEL("serializable-model");
+        SERIALIZABLE_MODEL("serializable-model"),
+        EQUALS_HASHCODE("equals-hashcode");
 
         private final String name;
 

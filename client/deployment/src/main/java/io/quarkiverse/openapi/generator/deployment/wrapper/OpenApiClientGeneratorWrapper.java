@@ -112,6 +112,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("use-field-name-in-part-filename", FALSE);
         this.configurator.addAdditionalProperty("verbose", FALSE);
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
+        this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
     }
 
     /**
@@ -199,6 +200,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withSerialiableModel(final Boolean serialiableModel) {
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, serialiableModel);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withEqualsHashcode(final Boolean equalsHashcode) {
+        this.configurator.addAdditionalProperty("equals-hashcode", equalsHashcode);
         return this;
     }
 
