@@ -135,6 +135,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         sb.append("}");
         return sb.toString();
     }
+
     {#if equals-hashcode}
     {#if m.vars.size > 0}
     @Override
