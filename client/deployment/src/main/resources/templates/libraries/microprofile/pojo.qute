@@ -138,12 +138,22 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
 
     {#if equals-hashcode}
     {#if m.vars.size > 0}
+    /**
+     * Compares this object to the specified object. The result is
+     * \{@code true\} if and only if the argument is not
+     * \{@code null\} and is a \{@code {m.classname}\} object that
+     * contains the same values as this object.
+     *
+     * @param   obj   the object to compare with.
+     * @return  \{@code true\} if the objects are the same;
+     *          \{@code false\} otherwise.
+     **/
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
-        {m.classname} model = ({m.classname}) o;
+        {m.classname} model = ({m.classname}) obj;
 
         {#if m.vars.size == 1}
         return Objects.equals({m.vars.0.name}, model.{m.vars.0.name});
@@ -160,6 +170,11 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         {/if}
     }
 
+    /**
+     * Returns a hash code for a \{@code {m.classname}\}.
+     *
+     * @return a hash code value for a \{@code {m.classname}\}.
+     **/
     @Override
     public int hashCode() {
     {#if m.vars.size == 1}
