@@ -172,4 +172,11 @@ public class CommonItemConfig {
      */
     @ConfigItem(name = "generate-models")
     public Optional<Boolean> generateModels;
+
+    /**
+     * Enable the generation of equals and hashcode in models. If you set this to {@code false}, the models
+     * will not have equals and hashcode.
+     */
+    @ConfigItem(name = "equals-hashcode")
+    public Optional<Boolean> equalsHashcode;
 }

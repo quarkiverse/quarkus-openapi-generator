@@ -45,6 +45,7 @@
     <module>github</module>
     <module>without-oidc</module>
     <module>serializable-model</module>
+    <module>equals-hashcode</module>
   </modules>
   <dependencyManagement>
     <dependencies>
