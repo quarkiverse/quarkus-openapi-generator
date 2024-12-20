@@ -1,6 +1,5 @@
 {@org.openapitools.codegen.CodegenModel m}
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Objects;
 
 {#if m.description}
 /**
@@ -156,15 +155,15 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         {m.classname} model = ({m.classname}) obj;
 
         {#if m.vars.size == 1}
-        return Objects.equals({m.vars.0.name}, model.{m.vars.0.name});
+        return java.util.Objects.equals({m.vars.0.name}, model.{m.vars.0.name});
         {#else}
         {#for v in m.vars}
         {#if v_isFirst}
-        return Objects.equals({v.name}, model.{v.name}) &&
+        return java.util.Objects.equals({v.name}, model.{v.name}) &&
         {#else if v_isLast}
-        Objects.equals({v.name}, model.{v.name});
+        java.util.Objects.equals({v.name}, model.{v.name});
         {#else}
-        Objects.equals({v.name}, model.{v.name}) &&
+        java.util.Objects.equals({v.name}, model.{v.name}) &&
         {/if}
         {/for}
         {/if}
@@ -178,11 +177,11 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
     @Override
     public int hashCode() {
     {#if m.vars.size == 1}
-    return Objects.hash({m.vars.0.name});
+    return java.util.Objects.hash({m.vars.0.name});
     {#else}
         {#for v in m.vars}
         {#if v_isFirst}
-        return Objects.hash({v.name},
+        return java.util.Objects.hash({v.name},
         {#else if v_isLast}
         {v.name});
         {#else}
