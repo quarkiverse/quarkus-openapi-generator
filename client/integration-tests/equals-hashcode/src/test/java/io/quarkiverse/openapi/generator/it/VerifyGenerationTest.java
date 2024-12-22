@@ -14,7 +14,7 @@ import io.quarkus.test.junit.QuarkusTest;
 class VerifyGenerationTest {
 
     @Test
-    void verifyThatGeneratedModelDoesntHaveMethods() {
+    void verifyThatGeneratedModelDoesHaveMethods() {
         var equalsMethod = getMethod(org.acme.equals.hashcode.model.Animal.class, "equals");
         var hashCodeMethod = getMethod(org.acme.equals.hashcode.model.Animal.class, "hashCode");
 
@@ -23,7 +23,7 @@ class VerifyGenerationTest {
     }
 
     @Test
-    void verifyThatGeneratedModelDoesHaveMethods() {
+    void verifyThatGeneratedModelDoesntHaveMethods() {
         var equalsMethod = getMethod(org.acme.non.equals.hashcode.model.Animal.class, "equals");
         var hashCodeMethod = getMethod(org.acme.non.equals.hashcode.model.Animal.class, "hashCode");
 
