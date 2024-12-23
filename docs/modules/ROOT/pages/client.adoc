@@ -194,6 +194,11 @@ to true:
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.serializable-model=true
 ----
 
+[[equals-hashcode]]
+== Equals and hashcode
+
+include::./includes/equals-hashcode.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments
