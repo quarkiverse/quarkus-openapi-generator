@@ -135,6 +135,64 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         return sb.toString();
     }
 
+    {#if equals-hashcode}
+    {#if m.vars.size > 0}
+    /**
+     * Compares this object to the specified object. The result is
+     * \{@code true\} if and only if the argument is not
+     * \{@code null\} and is a \{@code {m.classname}\} object that
+     * contains the same values as this object.
+     *
+     * @param   obj   the object to compare with.
+     * @return  \{@code true\} if the objects are the same;
+     *          \{@code false\} otherwise.
+     **/
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        {m.classname} model = ({m.classname}) obj;
+
+        {#if m.vars.size == 1}
+        return java.util.Objects.equals({m.vars.0.name}, model.{m.vars.0.name});
+        {#else}
+        {#for v in m.vars}
+        {#if v_isFirst}
+        return java.util.Objects.equals({v.name}, model.{v.name}) &&
+        {#else if v_isLast}
+        java.util.Objects.equals({v.name}, model.{v.name});
+        {#else}
+        java.util.Objects.equals({v.name}, model.{v.name}) &&
+        {/if}
+        {/for}
+        {/if}
+    }
+
+    /**
+     * Returns a hash code for a \{@code {m.classname}\}.
+     *
+     * @return a hash code value for a \{@code {m.classname}\}.
+     **/
+    @Override
+    public int hashCode() {
+    {#if m.vars.size == 1}
+    return java.util.Objects.hash({m.vars.0.name});
+    {#else}
+        {#for v in m.vars}
+        {#if v_isFirst}
+        return java.util.Objects.hash({v.name},
+        {#else if v_isLast}
+        {v.name});
+        {#else}
+        {v.name},
+        {/if}
+        {/for}
+    {/if}
+    }
+    {/if}
+    {/if}
+
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
