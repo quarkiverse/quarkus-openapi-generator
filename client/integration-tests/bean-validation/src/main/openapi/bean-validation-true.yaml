@@ -65,3 +65,8 @@ components:
           type: number
           minimum: 1.0
           maximum: 10.0
+        list:
+          type: array
+          items:
+            type: string
+            minLength: 1
