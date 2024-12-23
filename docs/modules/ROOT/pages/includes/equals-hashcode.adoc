@@ -1,0 +1,8 @@
+By default, `hashcode` and `equals` methods are automatically generated for all models. These methods are based on all the variables in the model and can not be customized.
+
+To disable set `equals-hashcode` to false:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.equals-hashcode=false
+----
