@@ -21,8 +21,6 @@ import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
 
-import io.smallrye.config.common.utils.StringUtil;
-
 /**
  * Wrapper for the OpenAPIGen tool.
  * This is the same as calling the Maven plugin or the CLI.
@@ -356,11 +354,15 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public void withConfigKey(final String config) {
         if (config != null && !config.isBlank()) {
-            this.configurator.addAdditionalProperty("configKey", StringUtil.replaceNonAlphanumericByUnderscores(config));
+            this.configurator.addAdditionalProperty("configKey", transformToSafeConfigKey(config));
         }
     }
 
     public void withAdditionalPropertiesAsAttribute(final Boolean enable) {
         this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", Optional.ofNullable(enable).orElse(FALSE));
+    }
+
+    public static String transformToSafeConfigKey(String input) {
+        return input.replaceAll("[^a-zA-Z0-9\\-_]", "_");
     }
 }
