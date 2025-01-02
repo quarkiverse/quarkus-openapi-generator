@@ -46,16 +46,20 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
-        if (config.getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class).isEmpty()) {
-            return false;
+        boolean specIsPresent = config.getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class).isPresent();
+        if (!specIsPresent) {
+            log.warn("The {} property is not present, the code generation will be ignored",
+                    CodegenConfig.getSpecPropertyName());
         }
-        Path path = getInputBaseDir(sourceDir, config);
-        return Files.isDirectory(path);
+        return specIsPresent;
     }
 
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path openApiDir = getInputBaseDir(context.inputDir(), context.config());
+
+        validateOpenApiDir(context, openApiDir);
+
         final Path outDir = context.outDir();
         final ApicurioCodegenWrapper apicurioCodegenWrapper = new ApicurioCodegenWrapper(
                 context.config(), outDir.toFile());
@@ -90,6 +94,19 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
                     openApiResource.getAbsolutePath());
         }
         return true;
+    }
+
+    private static void validateOpenApiDir(CodeGenContext context, Path openApiDir) throws CodeGenException {
+        if (!Files.exists(openApiDir)) {
+            throw new CodeGenException(
+                    "The OpenAPI input base directory does not exist, please, create the directory on " + context.inputDir());
+        }
+
+        if (!Files.isDirectory(openApiDir)) {
+            throw new CodeGenException(
+                    "The OpenAPI input base directory is not a directory, please, create the directory on "
+                            + context.inputDir());
+        }
     }
 
     private File convertToJSON(Path yamlPath) throws CodeGenException {
