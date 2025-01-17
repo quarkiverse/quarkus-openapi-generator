@@ -8,7 +8,8 @@ import java.util.List;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.AuthConfig;
+import org.eclipse.microprofile.config.ConfigProvider;
+
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
@@ -21,18 +22,19 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     static final String USER_NAME = "username";
     static final String PASSWORD = "password";
 
-    public BasicAuthenticationProvider(final String openApiSpecId, String name, final AuthConfig authConfig,
-            List<OperationAuthInfo> operations) {
-        super(authConfig, name, openApiSpecId, operations);
+    public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations) {
+        super(name, openApiSpecId, operations);
         validateConfig();
     }
 
     private String getUsername() {
-        return getAuthConfigParam(USER_NAME, "");
+        return ConfigProvider.getConfig().getOptionalValue(getCanonicalAuthConfigPropertyName(USER_NAME), String.class)
+                .orElse("");
     }
 
     private String getPassword() {
-        return getAuthConfigParam(PASSWORD, "");
+        return ConfigProvider.getConfig().getOptionalValue(getCanonicalAuthConfigPropertyName(PASSWORD), String.class)
+                .orElse("");
     }
 
     @Override

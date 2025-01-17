@@ -6,7 +6,7 @@ import java.util.List;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.AuthConfig;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  * Provides bearer token authentication or any other valid scheme.
@@ -20,8 +20,8 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
     private final String scheme;
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
-            final AuthConfig authConfig, List<OperationAuthInfo> operations) {
-        super(authConfig, name, openApiSpecId, operations);
+            List<OperationAuthInfo> operations) {
+        super(name, openApiSpecId, operations);
         this.scheme = scheme;
     }
 
@@ -41,6 +41,7 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getBearerToken() {
-        return getAuthConfigParam(BEARER_TOKEN, "");
+        return ConfigProvider.getConfig().getOptionalValue(getCanonicalAuthConfigPropertyName(BEARER_TOKEN), String.class)
+                .orElse("");
     }
 }
