@@ -1,0 +1,1038 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-form-model[`quarkus.openapi-generator.codegen.skip-form-model`]##
+
+[.description]
+--
+Whether to skip the generation of models for form parameters
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SKIP_FORM_MODEL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SKIP_FORM_MODEL+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-type-mappings-type-mappings[`quarkus.openapi-generator.codegen.type-mappings."type-mappings"`]##
+
+[.description]
+--
+Type Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be used for a given OAS datatype (the keys of this map)
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_TYPE_MAPPINGS__TYPE_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_TYPE_MAPPINGS__TYPE_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-import-mappings-import-mappings[`quarkus.openapi-generator.codegen.import-mappings."import-mappings"`]##
+
+[.description]
+--
+Import Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be imported when a given OAS datatype (the keys of this map) is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_IMPORT_MAPPINGS__IMPORT_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_IMPORT_MAPPINGS__IMPORT_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-schema-mappings-schema-mappings[`quarkus.openapi-generator.codegen.schema-mappings."schema-mappings"`]##
+
+[.description]
+--
+Schema Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be imported when a given schema type (the keys of this map) is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SCHEMA_MAPPINGS__SCHEMA_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SCHEMA_MAPPINGS__SCHEMA_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-model-type-annotations[`quarkus.openapi-generator.codegen.additional-model-type-annotations`]##
+
+[.description]
+--
+The specified annotations will be added to the generated model files
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_MODEL_TYPE_ANNOTATIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_MODEL_TYPE_ANNOTATIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-enum-type-unexpected-member[`quarkus.openapi-generator.codegen.additional-enum-type-unexpected-member`]##
+
+[.description]
+--
+Defines if the enums should have an `UNEXPECTED` member to convey values that cannot be parsed. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-api-type-annotations[`quarkus.openapi-generator.codegen.additional-api-type-annotations`]##
+
+[.description]
+--
+The specified annotations will be added to the generated api files
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_API_TYPE_ANNOTATIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_API_TYPE_ANNOTATIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-request-args[`quarkus.openapi-generator.codegen.additional-request-args`]##
+
+[.description]
+--
+Add custom/additional HTTP Headers or other args to every request
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_REQUEST_ARGS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_REQUEST_ARGS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-return-response[`quarkus.openapi-generator.codegen.return-response`]##
+
+[.description]
+--
+Defines if the methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_RETURN_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_RETURN_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation[`quarkus.openapi-generator.codegen.enable-security-generation`]##
+
+[.description]
+--
+Defines if security support classes should be generated
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ENABLE_SECURITY_GENERATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ENABLE_SECURITY_GENERATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-open-api-normalizer-normalizer[`quarkus.openapi-generator.codegen.open-api-normalizer."normalizer"`]##
+
+[.description]
+--
+Defines the normalizer options.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_OPEN_API_NORMALIZER__NORMALIZER_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_OPEN_API_NORMALIZER__NORMALIZER_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny[`quarkus.openapi-generator.codegen.mutiny`]##
+
+[.description]
+--
+Enable SmallRye Mutiny support. If you set this to `true`, all return types will be wrapped in `io.smallrye.mutiny.Uni`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-return-response[`quarkus.openapi-generator.codegen.mutiny.return-response`]##
+
+[.description]
+--
+Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY_RETURN_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY_RETURN_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.mutiny.operation-ids."mutiny-multi-operation-ids"`]##
+
+[.description]
+--
+Handles the return type for each operation, depending on the configuration. The following cases are supported:
+
+1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
+
+2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
+
+3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY_OPERATION_IDS__MUTINY_MULTI_OPERATION_IDS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY_OPERATION_IDS__MUTINY_MULTI_OPERATION_IDS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-part-filename[`quarkus.openapi-generator.codegen.generate-part-filename`]##
+
+[.description]
+--
+Defines, whether the `PartFilename` (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) annotation should be generated for MultipartForm POJOs. By setting to `false`, the annotation will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GENERATE_PART_FILENAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GENERATE_PART_FILENAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-part-filename-value[`quarkus.openapi-generator.codegen.part-filename-value`]##
+
+[.description]
+--
+Defines the filename for a part in case the `PartFilename` annotation (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) is generated. In case no value is set, the default one is `<fieldName>File` or `file`, depending on the `CommonItemConfig++#++useFieldNameInPartFilename` configuration.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_PART_FILENAME_VALUE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_PART_FILENAME_VALUE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-field-name-in-part-filename[`quarkus.openapi-generator.codegen.use-field-name-in-part-filename`]##
+
+[.description]
+--
+Defines, whether the filename should also include the property name in case the `PartFilename` annotation (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) is generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_USE_FIELD_NAME_IN_PART_FILENAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_USE_FIELD_NAME_IN_PART_FILENAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-bean-validation[`quarkus.openapi-generator.codegen.use-bean-validation`]##
+
+[.description]
+--
+Enable bean validation. If you set this to `true`, validation annotations are added to generated sources E.g. `@Size`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_USE_BEAN_VALIDATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_USE_BEAN_VALIDATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-apis[`quarkus.openapi-generator.codegen.generate-apis`]##
+
+[.description]
+--
+Enable the generation of APIs. If you set this to `false`, APIs will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GENERATE_APIS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GENERATE_APIS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models[`quarkus.openapi-generator.codegen.generate-models`]##
+
+[.description]
+--
+Enable the generation of models. If you set this to `false`, models will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GENERATE_MODELS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GENERATE_MODELS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-equals-hashcode[`quarkus.openapi-generator.codegen.equals-hashcode`]##
+
+[.description]
+--
+Enable the generation of equals and hashcode in models. If you set this to `false`, the models will not have equals and hashcode.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_EQUALS_HASHCODE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_EQUALS_HASHCODE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`quarkus.openapi-generator.codegen.verbose`]##
+
+[.description]
+--
+Whether to log the internal generator codegen process in the default output or not.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_VERBOSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_VERBOSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`false`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir[`quarkus.openapi-generator.codegen.input-base-dir`]##
+
+[.description]
+--
+Option to change the directory where OpenAPI files must be found.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INPUT_BASE_DIR+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INPUT_BASE_DIR+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir[`quarkus.openapi-generator.codegen.template-base-dir`]##
+
+[.description]
+--
+Option to change the directory where template files must be found.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_TEMPLATE_BASE_DIR+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_TEMPLATE_BASE_DIR+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-validatespec]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-validatespec[`quarkus.openapi-generator.codegen.validateSpec`]##
+
+[.description]
+--
+Whether or not to skip validating the input spec prior to generation. By default, invalid specifications will result in an error.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_VALIDATESPEC+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_VALIDATESPEC+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`true`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include[`quarkus.openapi-generator.codegen.include`]##
+
+[.description]
+--
+Option to specify files for which generation should be executed only
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INCLUDE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INCLUDE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude[`quarkus.openapi-generator.codegen.exclude`]##
+
+[.description]
+--
+Option to exclude file from generation
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_EXCLUDE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_EXCLUDE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme[`quarkus.openapi-generator.codegen.default-security-scheme`]##
+
+[.description]
+--
+Create security for the referenced security scheme
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_DEFAULT_SECURITY_SCHEME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_DEFAULT_SECURITY_SCHEME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model[`quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model`]##
+
+[.description]
+--
+Whether to skip the generation of models for form parameters
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SKIP_FORM_MODEL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SKIP_FORM_MODEL+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-type-mappings-type-mappings[`quarkus.openapi-generator.codegen.spec."spec-item".type-mappings."type-mappings"`]##
+
+[.description]
+--
+Type Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be used for a given OAS datatype (the keys of this map)
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__TYPE_MAPPINGS__TYPE_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__TYPE_MAPPINGS__TYPE_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-import-mappings-import-mappings[`quarkus.openapi-generator.codegen.spec."spec-item".import-mappings."import-mappings"`]##
+
+[.description]
+--
+Import Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be imported when a given OAS datatype (the keys of this map) is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__IMPORT_MAPPINGS__IMPORT_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__IMPORT_MAPPINGS__IMPORT_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-schema-mappings-schema-mappings[`quarkus.openapi-generator.codegen.spec."spec-item".schema-mappings."schema-mappings"`]##
+
+[.description]
+--
+Schema Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be imported when a given schema type (the keys of this map) is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SCHEMA_MAPPINGS__SCHEMA_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SCHEMA_MAPPINGS__SCHEMA_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-model-type-annotations[`quarkus.openapi-generator.codegen.spec."spec-item".additional-model-type-annotations`]##
+
+[.description]
+--
+The specified annotations will be added to the generated model files
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_MODEL_TYPE_ANNOTATIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_MODEL_TYPE_ANNOTATIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-enum-type-unexpected-member[`quarkus.openapi-generator.codegen.spec."spec-item".additional-enum-type-unexpected-member`]##
+
+[.description]
+--
+Defines if the enums should have an `UNEXPECTED` member to convey values that cannot be parsed. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-api-type-annotations[`quarkus.openapi-generator.codegen.spec."spec-item".additional-api-type-annotations`]##
+
+[.description]
+--
+The specified annotations will be added to the generated api files
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_API_TYPE_ANNOTATIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_API_TYPE_ANNOTATIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-request-args[`quarkus.openapi-generator.codegen.spec."spec-item".additional-request-args`]##
+
+[.description]
+--
+Add custom/additional HTTP Headers or other args to every request
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_REQUEST_ARGS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_REQUEST_ARGS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-return-response[`quarkus.openapi-generator.codegen.spec."spec-item".return-response`]##
+
+[.description]
+--
+Defines if the methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__RETURN_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__RETURN_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation[`quarkus.openapi-generator.codegen.spec."spec-item".enable-security-generation`]##
+
+[.description]
+--
+Defines if security support classes should be generated
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ENABLE_SECURITY_GENERATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ENABLE_SECURITY_GENERATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-open-api-normalizer-normalizer[`quarkus.openapi-generator.codegen.spec."spec-item".open-api-normalizer."normalizer"`]##
+
+[.description]
+--
+Defines the normalizer options.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__OPEN_API_NORMALIZER__NORMALIZER_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__OPEN_API_NORMALIZER__NORMALIZER_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny`]##
+
+[.description]
+--
+Enable SmallRye Mutiny support. If you set this to `true`, all return types will be wrapped in `io.smallrye.mutiny.Uni`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-return-response[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny.return-response`]##
+
+[.description]
+--
+Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY_RETURN_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY_RETURN_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny.operation-ids."mutiny-multi-operation-ids"`]##
+
+[.description]
+--
+Handles the return type for each operation, depending on the configuration. The following cases are supported:
+
+1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
+
+2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
+
+3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY_OPERATION_IDS__MUTINY_MULTI_OPERATION_IDS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY_OPERATION_IDS__MUTINY_MULTI_OPERATION_IDS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-part-filename[`quarkus.openapi-generator.codegen.spec."spec-item".generate-part-filename`]##
+
+[.description]
+--
+Defines, whether the `PartFilename` (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) annotation should be generated for MultipartForm POJOs. By setting to `false`, the annotation will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_PART_FILENAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_PART_FILENAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-part-filename-value[`quarkus.openapi-generator.codegen.spec."spec-item".part-filename-value`]##
+
+[.description]
+--
+Defines the filename for a part in case the `PartFilename` annotation (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) is generated. In case no value is set, the default one is `<fieldName>File` or `file`, depending on the `CommonItemConfig++#++useFieldNameInPartFilename` configuration.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__PART_FILENAME_VALUE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__PART_FILENAME_VALUE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-field-name-in-part-filename[`quarkus.openapi-generator.codegen.spec."spec-item".use-field-name-in-part-filename`]##
+
+[.description]
+--
+Defines, whether the filename should also include the property name in case the `PartFilename` annotation (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) is generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE_FIELD_NAME_IN_PART_FILENAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE_FIELD_NAME_IN_PART_FILENAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-bean-validation[`quarkus.openapi-generator.codegen.spec."spec-item".use-bean-validation`]##
+
+[.description]
+--
+Enable bean validation. If you set this to `true`, validation annotations are added to generated sources E.g. `@Size`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE_BEAN_VALIDATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE_BEAN_VALIDATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-apis[`quarkus.openapi-generator.codegen.spec."spec-item".generate-apis`]##
+
+[.description]
+--
+Enable the generation of APIs. If you set this to `false`, APIs will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_APIS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_APIS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models[`quarkus.openapi-generator.codegen.spec."spec-item".generate-models`]##
+
+[.description]
+--
+Enable the generation of models. If you set this to `false`, models will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_MODELS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_MODELS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-equals-hashcode[`quarkus.openapi-generator.codegen.spec."spec-item".equals-hashcode`]##
+
+[.description]
+--
+Enable the generation of equals and hashcode in models. If you set this to `false`, the models will not have equals and hashcode.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__EQUALS_HASHCODE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__EQUALS_HASHCODE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package[`quarkus.openapi-generator.codegen.spec."spec-item".base-package`]##
+
+[.description]
+--
+Base package for where the generated code for the given OpenAPI specification will be added.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__BASE_PACKAGE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__BASE_PACKAGE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-name-suffix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-name-suffix[`quarkus.openapi-generator.codegen.spec."spec-item".api-name-suffix`]##
+
+[.description]
+--
+Suffix name for generated api classes
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__API_NAME_SUFFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__API_NAME_SUFFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-suffix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-suffix[`quarkus.openapi-generator.codegen.spec."spec-item".model-name-suffix`]##
+
+[.description]
+--
+Suffix name for generated model classes
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MODEL_NAME_SUFFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MODEL_NAME_SUFFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-prefix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-prefix[`quarkus.openapi-generator.codegen.spec."spec-item".model-name-prefix`]##
+
+[.description]
+--
+Prefix name for generated model classes
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MODEL_NAME_PREFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MODEL_NAME_PREFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix[`quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix`]##
+
+[.description]
+--
+Remove operation id prefix
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REMOVE_OPERATION_ID_PREFIX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REMOVE_OPERATION_ID_PREFIX+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-delimiter]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-delimiter[`quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-delimiter`]##
+
+[.description]
+--
+Remove operation id prefix
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REMOVE_OPERATION_ID_PREFIX_DELIMITER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REMOVE_OPERATION_ID_PREFIX_DELIMITER+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-count]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-count[`quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-count`]##
+
+[.description]
+--
+Remove operation id prefix
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REMOVE_OPERATION_ID_PREFIX_COUNT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REMOVE_OPERATION_ID_PREFIX_COUNT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation[`quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation`]##
+
+[.description]
+--
+Enables the authentication token propagation for this particular securityScheme.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-auth" the following configuration must be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__TOKEN_PROPAGATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__TOKEN_PROPAGATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`false`
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name[`quarkus.openapi-generator."item-configs".auth."auth-configs".header-name`]##
+
+[.description]
+--
+Configures a particular http header attribute from were to take the security token from when the token propagation is enabled. Use this fine-grained configuration in very particular scenarios.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-auth" the following configuration must be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyParticularHttpHeaderName
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__HEADER_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__HEADER_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-auth-config-params]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-auth-config-params[`quarkus.openapi-generator."item-configs".auth."auth-configs"."auth-config-params"`]##
+
+[.description]
+--
+Configures a particular parameter value to be used by any of the different internal authentication filters that processes the different securityScheme definitions.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-basic-auth", that is of http basic authentication type, the following configuration can establish the user and password to be used. must be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.username=MyUserName quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS___AUTH_CONFIG_PARAMS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS___AUTH_CONFIG_PARAMS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+|===
+

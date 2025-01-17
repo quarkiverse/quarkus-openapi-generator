@@ -226,3 +226,7 @@ These are the known limitations of this pre-release version:
 * Only Jackson support
 
 We will work in the next few releases to address these use cases, until there please provide feedback for the current state of this extension. We also love contributions icon:heart[1x,role=red].
+
+== Configuration Properties
+
+include::./includes/quarkus-openapi-generator_quarkus.openapi-generator.adoc[opts=optional, leveloffset=+1]
