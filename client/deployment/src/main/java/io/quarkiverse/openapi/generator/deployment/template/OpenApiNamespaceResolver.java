@@ -2,11 +2,17 @@ package io.quarkiverse.openapi.generator.deployment.template;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
+import org.openapitools.codegen.CodegenSecurity;
 import org.openapitools.codegen.model.OperationMap;
 
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
@@ -56,6 +62,26 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
 
     public boolean hasAuthMethods(OperationMap operations) {
         return operations != null && operations.getOperation().stream().anyMatch(operation -> operation.hasAuthMethods);
+    }
+
+    /**
+     * Ignore the OAuth flows by filtering every oauth instance by name. The inner openapi-generator library duplicates the
+     * OAuth instances per flow in the openapi spec.
+     * So a specification file with more than one flow defined has two entries in the list. For now, we do not use this
+     * information in runtime so it can be safely filtered and ignored.
+     *
+     * @param oauthOperations passed through the Qute template
+     * @see "resources/templates/libraries/microprofile/auth/compositeAuthenticationProvider.qute"
+     * @return The list filtered by unique auth name
+     */
+    public List<CodegenSecurity> getUniqueOAuthOperations(ArrayList<CodegenSecurity> oauthOperations) {
+        if (oauthOperations != null) {
+            return oauthOperations.stream()
+                    .collect(Collectors.toMap(security -> security.name, security -> security,
+                            (existing, replacement) -> existing, LinkedHashMap::new))
+                    .values().stream().toList();
+        }
+        return Collections.emptyList();
     }
 
     @Override

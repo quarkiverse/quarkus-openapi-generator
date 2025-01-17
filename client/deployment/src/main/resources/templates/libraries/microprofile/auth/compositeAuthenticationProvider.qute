@@ -1,9 +1,11 @@
 package {apiPackage}.auth;
 
 @jakarta.annotation.Priority(jakarta.ws.rs.Priorities.AUTHENTICATION)
-{#for auth in oauthMethods.orEmpty}
-@io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker(name="{auth.name}", openApiSpecId="{configKey}")
+{#if oauthMethods.orEmpty.size > 0}
+{#for auth in openapi:getUniqueOAuthOperations(oauthMethods)}
+@io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
 {/for}
+{/if}
 {#for auth in httpBasicMethods.orEmpty}
 @io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
 {/for}
