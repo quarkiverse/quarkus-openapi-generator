@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.template;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,12 +75,12 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      * @see "resources/templates/libraries/microprofile/auth/compositeAuthenticationProvider.qute"
      * @return The list filtered by unique auth name
      */
-    public List<CodegenSecurity> getUniqueOAuthOperations(ArrayList<CodegenSecurity> oauthOperations) {
+    public List<CodegenSecurity> getUniqueOAuthOperations(List<CodegenSecurity> oauthOperations) {
         if (oauthOperations != null) {
-            return oauthOperations.stream()
+            return new ArrayList<>(oauthOperations.stream()
                     .collect(Collectors.toMap(security -> security.name, security -> security,
                             (existing, replacement) -> existing, LinkedHashMap::new))
-                    .values().stream().toList();
+                    .values());
         }
         return Collections.emptyList();
     }
@@ -87,19 +88,49 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
     @Override
     public CompletionStage<Object> resolve(EvalContext context) {
         try {
-            Class<?>[] classArgs = new Class[context.getParams().size()];
             Object[] args = new Object[context.getParams().size()];
+            Class<?>[] classArgs = new Class[context.getParams().size()];
+
             int i = 0;
             for (Expression expr : context.getParams()) {
                 args[i] = context.evaluate(expr).toCompletableFuture().get();
                 classArgs[i] = args[i].getClass();
                 i++;
             }
-            return CompletableFuture
-                    .completedFuture(this.getClass().getMethod(context.getName(), classArgs).invoke(this, args));
+
+            Method targetMethod = findCompatibleMethod(context.getName(), classArgs);
+            if (targetMethod == null) {
+                throw new NoSuchMethodException("No compatible method found for: " + context.getName());
+            }
+
+            return CompletableFuture.completedFuture(targetMethod.invoke(this, args));
         } catch (ReflectiveOperationException | InterruptedException | ExecutionException ex) {
             return CompletableFuture.failedStage(ex);
         }
+    }
+
+    private Method findCompatibleMethod(String methodName, Class<?>[] argTypes) {
+        for (Method method : this.getClass().getMethods()) {
+            if (method.getName().equals(methodName)) {
+                Class<?>[] paramTypes = method.getParameterTypes();
+                if (isAssignable(paramTypes, argTypes)) {
+                    return method;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean isAssignable(Class<?>[] paramTypes, Class<?>[] argTypes) {
+        if (paramTypes.length != argTypes.length) {
+            return false;
+        }
+        for (int i = 0; i < paramTypes.length; i++) {
+            if (!paramTypes[i].isAssignableFrom(argTypes[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
