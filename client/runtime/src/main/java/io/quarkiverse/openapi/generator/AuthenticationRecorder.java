@@ -20,10 +20,6 @@ import io.quarkus.runtime.annotations.Recorder;
 @Recorder
 public class AuthenticationRecorder {
 
-    public AuthenticationRecorder() {
-
-    }
-
     public Function<SyntheticCreationalContext<CompositeAuthenticationProvider>, CompositeAuthenticationProvider> recordCompositeProvider(
             String openApiSpec) {
         return ctx -> {

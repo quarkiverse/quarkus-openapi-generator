@@ -13,9 +13,6 @@ import io.quarkus.runtime.annotations.Recorder;
 @Recorder
 public class OidcAuthenticationRecorder {
 
-    public OidcAuthenticationRecorder() {
-    }
-
     public Function<SyntheticCreationalContext<AuthProvider>, AuthProvider> recordOauthAuthProvider(
             String name,
             String openApiSpecId,
