@@ -33,6 +33,8 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
@@ -48,6 +50,38 @@ public class OpenApiClientGeneratorWrapperTest {
     private static Optional<MethodDeclaration> getMethodDeclarationByIdentifier(List<MethodDeclaration> methodDeclarations,
             String methodName) {
         return methodDeclarations.stream().filter(md -> md.getName().getIdentifier().equals(methodName)).findAny();
+    }
+
+    @Test
+    void verifyOAuthDuplicateAnnotationOnCompositeAuthProvider() throws URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-933-security.yaml");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue933");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> authProviderFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("CompositeAuthenticationProvider.java")).findFirst();
+        assertThat(authProviderFile).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(authProviderFile.orElseThrow());
+        // Get the class declaration
+        ClassOrInterfaceDeclaration classDeclaration = compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
+                .orElseThrow(() -> new AssertionError("Class not found in the file"));
+
+        // Collect all OauthAuthenticationMarker annotations
+        long oauthAnnotationsCount = classDeclaration.getAnnotations().stream()
+                .filter(annotation -> annotation.getNameAsString()
+                        .equals("io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker"))
+                .filter(Expression::isNormalAnnotationExpr)
+                .filter(annotation -> annotation
+                        .findFirst(MemberValuePair.class,
+                                pair -> pair.getNameAsString().equals("name") && pair.getValue().toString().equals("\"oauth\""))
+                        .isPresent())
+                .count();
+
+        // Assert that there's exactly one annotation with name=oauth
+        assertThat(oauthAnnotationsCount).isEqualTo(1);
     }
 
     @Test
