@@ -29,20 +29,20 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
 
     @Test
     void filterNoSchemaCase() throws IOException {
-        filter(null, INCOMING_TOKEN, INCOMING_TOKEN);
+        filter(null, INCOMING_TOKEN);
     }
 
     @Test
     void filterBearerSchemaCase() throws IOException {
-        filter(BEARER_SCHEMA, INCOMING_TOKEN, "Bearer " + INCOMING_TOKEN);
+        filter(BEARER_SCHEMA, "Bearer " + INCOMING_TOKEN);
     }
 
     @Test
     void filterCustomSchemaCase() throws IOException {
-        filter(CUSTOM_SCHEMA, INCOMING_TOKEN, CUSTOM_SCHEMA + " " + INCOMING_TOKEN);
+        filter(CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN);
     }
 
-    private void filter(String bearerScheme, String currentToken, String expectedAuthorizationHeader) throws IOException {
+    private void filter(String bearerScheme, String expectedAuthorizationHeader) throws IOException {
         provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme,
                 List.of());
         provider.filter(requestContext);
@@ -52,7 +52,6 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
     @ParameterizedTest
     @MethodSource("filterWithPropagationTestValues")
     void filterWithPropagation(String headerName,
-            String currentToken,
             String bearerScheme,
             String expectedAuthorizationHeader) throws IOException {
         String propagatedHeaderName;
@@ -64,14 +63,14 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
                     HEADER_NAME);
         }
         headers.putSingle(propagatedHeaderName, INCOMING_TOKEN);
-        filter(bearerScheme, currentToken, expectedAuthorizationHeader);
+        filter(bearerScheme, expectedAuthorizationHeader);
     }
 
     static Stream<Arguments> filterWithPropagationTestValues() {
         return Stream.of(
-                Arguments.of(null, INCOMING_TOKEN, "bearer", "Bearer " + INCOMING_TOKEN),
-                Arguments.of(null, INCOMING_TOKEN, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN),
-                Arguments.of(HEADER_NAME, INCOMING_TOKEN, "bearer", "Bearer " + INCOMING_TOKEN),
-                Arguments.of(HEADER_NAME, INCOMING_TOKEN, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN));
+                Arguments.of(null, "bearer", "Bearer " + INCOMING_TOKEN),
+                Arguments.of(null, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN),
+                Arguments.of(HEADER_NAME, "bearer", "Bearer " + INCOMING_TOKEN),
+                Arguments.of(HEADER_NAME, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN));
     }
 }

@@ -16,8 +16,6 @@ abstract class AbstractOpenApiSpecProviderTest<T extends AbstractAuthProvider> {
 
     protected static final String OPEN_API_FILE_SPEC_ID = "open_api_file_spec_id_json";
     protected static final String AUTH_SCHEME_NAME = "auth_scheme_name";
-    protected static final String QUARKUS_CONFIG_KEY = "quarkus.openapi-generator." + OPEN_API_FILE_SPEC_ID + ".auth."
-            + AUTH_SCHEME_NAME;
 
     @Mock
     protected ClientRequestContext requestContext;
