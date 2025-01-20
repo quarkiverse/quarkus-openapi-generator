@@ -8,16 +8,13 @@ import java.util.stream.Stream;
 
 import jakarta.ws.rs.core.HttpHeaders;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-@Disabled
 class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<BearerAuthenticationProvider> {
 
-    private static final String TOKEN = "TOKEN";
     private static final String INCOMING_TOKEN = "INCOMING_TOKEN";
 
     private static final String BEARER_SCHEMA = "bearer";
@@ -25,24 +22,24 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
     private static final String HEADER_NAME = "HEADER_NAME";
 
     @Override
-    protected BearerAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName) {
+    protected BearerAuthenticationProvider createProvider() {
         return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null,
                 List.of());
     }
 
     @Test
     void filterNoSchemaCase() throws IOException {
-        filter(null, TOKEN, TOKEN);
+        filter(null, INCOMING_TOKEN, INCOMING_TOKEN);
     }
 
     @Test
     void filterBearerSchemaCase() throws IOException {
-        filter(BEARER_SCHEMA, TOKEN, "Bearer " + TOKEN);
+        filter(BEARER_SCHEMA, INCOMING_TOKEN, "Bearer " + INCOMING_TOKEN);
     }
 
     @Test
     void filterCustomSchemaCase() throws IOException {
-        filter(CUSTOM_SCHEMA, TOKEN, CUSTOM_SCHEMA + " " + TOKEN);
+        filter(CUSTOM_SCHEMA, INCOMING_TOKEN, CUSTOM_SCHEMA + " " + INCOMING_TOKEN);
     }
 
     private void filter(String bearerScheme, String currentToken, String expectedAuthorizationHeader) throws IOException {

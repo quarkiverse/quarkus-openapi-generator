@@ -16,6 +16,8 @@ abstract class AbstractOpenApiSpecProviderTest<T extends AbstractAuthProvider> {
 
     protected static final String OPEN_API_FILE_SPEC_ID = "open_api_file_spec_id_json";
     protected static final String AUTH_SCHEME_NAME = "auth_scheme_name";
+    protected static final String QUARKUS_CONFIG_KEY = "quarkus.openapi-generator." + OPEN_API_FILE_SPEC_ID + ".auth."
+            + AUTH_SCHEME_NAME;
 
     @Mock
     protected ClientRequestContext requestContext;
@@ -27,10 +29,10 @@ abstract class AbstractOpenApiSpecProviderTest<T extends AbstractAuthProvider> {
     void setUp() {
         headers = new MultivaluedHashMap<>();
         Mockito.lenient().doReturn(headers).when(requestContext).getHeaders();
-        provider = createProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME);
+        provider = createProvider();
     }
 
-    protected abstract T createProvider(String openApiSpecId, String authSchemeName);
+    protected abstract T createProvider();
 
     protected void assertHeader(MultivaluedMap<String, Object> headers, String headerName, String value) {
         Assertions.assertThat(headers.getFirst(headerName))
