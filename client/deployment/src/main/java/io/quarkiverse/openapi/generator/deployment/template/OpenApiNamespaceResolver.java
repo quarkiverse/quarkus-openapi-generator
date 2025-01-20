@@ -39,6 +39,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      * @param codegenConfig Map with the model codegen properties
      * @return true if the given model class should generate the deprecated attributes
      */
+    @SuppressWarnings("unused")
     public boolean genDeprecatedModelAttr(final String pkg, final String classname,
             final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
@@ -51,16 +52,19 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      * @param codegenConfig Map with the model codegen properties
      * @return true if the given model class should generate the deprecated attributes
      */
+    @SuppressWarnings("unused")
     public boolean genDeprecatedApiAttr(final String pkg, final String classname,
             final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
     }
 
+    @SuppressWarnings("unused")
     public String parseUri(String uri) {
         return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString().replace(File.separatorChar, '/');
     }
 
+    @SuppressWarnings("unused")
     public boolean hasAuthMethods(OperationMap operations) {
         return operations != null && operations.getOperation().stream().anyMatch(operation -> operation.hasAuthMethods);
     }
@@ -75,6 +79,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      * @see "resources/templates/libraries/microprofile/auth/compositeAuthenticationProvider.qute"
      * @return The list filtered by unique auth name
      */
+    @SuppressWarnings("unused")
     public List<CodegenSecurity> getUniqueOAuthOperations(List<CodegenSecurity> oauthOperations) {
         if (oauthOperations != null) {
             return new ArrayList<>(oauthOperations.stream()
