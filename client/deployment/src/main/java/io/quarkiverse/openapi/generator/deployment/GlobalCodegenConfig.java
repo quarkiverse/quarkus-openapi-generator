@@ -2,8 +2,8 @@ package io.quarkiverse.openapi.generator.deployment;
 
 import java.util.Optional;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
+import io.smallrye.config.WithDefault;
+import io.smallrye.config.WithName;
 
 /*
  * Model for the configuration of this extension.
@@ -12,50 +12,51 @@ import io.quarkus.runtime.annotations.ConfigItem;
  * Not meant to be used outside this scope.
  * Config items can be applied only globally
  */
-@ConfigGroup
-public class GlobalCodegenConfig extends CommonItemConfig {
+public interface GlobalCodegenConfig extends CommonItemConfig {
 
     /**
      * Whether to log the internal generator codegen process in the default output or not.
      */
-    @ConfigItem(name = "verbose", defaultValue = "false")
-    public boolean verbose;
+    @WithDefault("false")
+    @WithName("verbose")
+    boolean verbose();
 
     /**
      * Option to change the directory where OpenAPI files must be found.
      */
-    @ConfigItem(name = "input-base-dir")
-    public Optional<String> inputBaseDir;
+    @WithName("input-base-dir")
+    Optional<String> inputBaseDir();
 
     /**
      * Option to change the directory where template files must be found.
      */
-    @ConfigItem(name = "template-base-dir")
-    public Optional<String> templateBaseDir;
+    @WithName("template-base-dir")
+    Optional<String> templateBaseDir();
 
     /**
      * Whether or not to skip validating the input spec prior to generation. By default, invalid specifications will result in
      * an error.
      */
-    @ConfigItem(name = "validateSpec", defaultValue = "true")
-    public boolean validateSpec;
+    @WithName("validateSpec")
+    @WithDefault("true")
+    boolean validateSpec();
 
     /**
      * Option to specify files for which generation should be executed only
      */
-    @ConfigItem(name = "include")
-    public Optional<String> include;
+    @WithName("include")
+    Optional<String> include();
 
     /**
      * Option to exclude file from generation
      */
-    @ConfigItem(name = "exclude")
-    public Optional<String> exclude;
+    @WithName("exclude")
+    Optional<String> exclude();
 
     /**
      * Create security for the referenced security scheme
      */
-    @ConfigItem(name = "default-security-scheme")
-    public Optional<String> defaultSecuritySchema;
+    @WithName("default-security-scheme")
+    Optional<String> defaultSecuritySchema();
 
 }

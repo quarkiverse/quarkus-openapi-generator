@@ -2,29 +2,31 @@ package io.quarkiverse.openapi.server.generator.deployment;
 
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
+import io.smallrye.config.ConfigMapping;
 
-@ConfigRoot(name = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX, phase = ConfigPhase.BUILD_TIME)
-public class CodegenConfig {
+@ConfigRoot(phase = ConfigPhase.BUILD_TIME)
+@ConfigMapping(prefix = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX)
+public interface CodegenConfig {
 
-    static final String CODEGEN_TIME_CONFIG_PREFIX = "quarkus.openapi.generator";
-    private static final String CODEGEN_BASE_PACKAGE = CODEGEN_TIME_CONFIG_PREFIX + ".base-package";
-    private static final String CODEGEN_SPEC = CODEGEN_TIME_CONFIG_PREFIX + ".spec";
-    private static final String INPUT_BASE_DIR = CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
-    private static final String CODEGEN_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + ".reactive";
+    String CODEGEN_TIME_CONFIG_PREFIX = "quarkus.openapi.generator";
+    String CODEGEN_BASE_PACKAGE = CODEGEN_TIME_CONFIG_PREFIX + ".base-package";
+    String CODEGEN_SPEC = CODEGEN_TIME_CONFIG_PREFIX + ".spec";
+    String INPUT_BASE_DIR = CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
+    String CODEGEN_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + ".reactive";
 
-    public static String getBasePackagePropertyName() {
+    static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
     }
 
-    public static String getSpecPropertyName() {
+    static String getSpecPropertyName() {
         return CODEGEN_SPEC;
     }
 
-    public static String getInputBaseDirPropertyName() {
+    static String getInputBaseDirPropertyName() {
         return INPUT_BASE_DIR;
     }
 
-    public static String getCodegenReactive() {
+    static String getCodegenReactive() {
         return CODEGEN_REACTIVE;
     }
 }
