@@ -62,7 +62,7 @@ public class CodegenTest {
     }
 
     @Test
-    public void shouldGenerateAnErrorWhenInputDirIsNotExist() throws CodeGenException {
+    public void shouldGenerateAnErrorWhenInputDirIsNotExist() {
         Config config = MockConfigUtils.getTestConfig("doesNotExistDir.application.properties");
         CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "inputDir"), WORK_DIR,
                 INPUT_DIR, false, config, true);
