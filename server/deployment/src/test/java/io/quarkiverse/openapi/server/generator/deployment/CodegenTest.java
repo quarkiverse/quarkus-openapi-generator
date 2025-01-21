@@ -9,6 +9,7 @@ import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.Config;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -58,6 +59,16 @@ public class CodegenTest {
         apicurioOpenApiServerCodegen.trigger(codeGenContext);
         assertTrue(Files.exists(
                 Path.of("target/generated-test-sources/inputDir/io/petstore/PetResource.java")));
+    }
+
+    @Test
+    public void shouldGenerateAnErrorWhenInputDirIsNotExist() {
+        Config config = MockConfigUtils.getTestConfig("doesNotExistDir.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "inputDir"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+
+        Assertions.assertThrows(CodeGenException.class, () -> apicurioOpenApiServerCodegen.trigger(codeGenContext));
     }
 
 }
