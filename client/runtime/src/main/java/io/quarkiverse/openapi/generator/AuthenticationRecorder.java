@@ -1,7 +1,6 @@
 package io.quarkiverse.openapi.generator;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 import jakarta.enterprise.inject.Instance;
@@ -21,12 +20,6 @@ import io.quarkus.runtime.annotations.Recorder;
 @Recorder
 public class AuthenticationRecorder {
 
-    final OpenApiGeneratorConfig generatorConfig;
-
-    public AuthenticationRecorder(OpenApiGeneratorConfig generatorConfig) {
-        this.generatorConfig = generatorConfig;
-    }
-
     public Function<SyntheticCreationalContext<CompositeAuthenticationProvider>, CompositeAuthenticationProvider> recordCompositeProvider(
             String openApiSpec) {
         return ctx -> {
@@ -42,9 +35,7 @@ public class AuthenticationRecorder {
             ApiKeyIn apiKeyIn,
             String apiKeyName,
             List<OperationAuthInfo> operations) {
-        return context -> new ApiKeyAuthenticationProvider(openApiSpecId, name, apiKeyIn, apiKeyName,
-                getAuthConfig(generatorConfig, openApiSpecId, name),
-                operations);
+        return context -> new ApiKeyAuthenticationProvider(openApiSpecId, name, apiKeyIn, apiKeyName, operations);
     }
 
     public Function<SyntheticCreationalContext<AuthProvider>, AuthProvider> recordBearerAuthProvider(
@@ -52,24 +43,14 @@ public class AuthenticationRecorder {
             String scheme,
             String openApiSpecId,
             List<OperationAuthInfo> operations) {
-        return context -> new BearerAuthenticationProvider(openApiSpecId, name, scheme,
-                getAuthConfig(generatorConfig, openApiSpecId, name),
-                operations);
+        return context -> new BearerAuthenticationProvider(openApiSpecId, name, scheme, operations);
     }
 
     public Function<SyntheticCreationalContext<AuthProvider>, AuthProvider> recordBasicAuthProvider(
             String name,
             String openApiSpecId,
             List<OperationAuthInfo> operations) {
-        return context -> new BasicAuthenticationProvider(openApiSpecId, name,
-                getAuthConfig(generatorConfig, openApiSpecId, name), operations);
+        return context -> new BasicAuthenticationProvider(openApiSpecId, name, operations);
     }
 
-    public static AuthConfig getAuthConfig(OpenApiGeneratorConfig generatorConfig, String openApiSpecId, String name) {
-        return Objects.requireNonNull(generatorConfig, "generatorConfig can't be null.")
-                .getItemConfig(openApiSpecId)
-                .flatMap(SpecItemConfig::getAuth)
-                .flatMap(authsConfig -> authsConfig.getItemConfig(name))
-                .orElse(null);
-    }
 }
