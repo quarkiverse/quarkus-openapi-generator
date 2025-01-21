@@ -104,7 +104,7 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
         if (!Files.isDirectory(openApiDir)) {
             throw new CodeGenException(
-                    "The OpenAPI input base directory is not a directory, please, create the directory on "
+                    "The OpenAPI input base directory is not a directory. Please create the directory at "
                             + context.inputDir());
         }
     }
