@@ -10,10 +10,10 @@ import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.UriBuilder;
 
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.openapi.generator.AuthConfig;
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
@@ -30,9 +30,8 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     private final String apiKeyName;
 
     public ApiKeyAuthenticationProvider(final String openApiSpecId, final String name, final ApiKeyIn apiKeyIn,
-            final String apiKeyName,
-            final AuthConfig authConfig, List<OperationAuthInfo> operations) {
-        super(authConfig, name, openApiSpecId, operations);
+            final String apiKeyName, List<OperationAuthInfo> operations) {
+        super(name, openApiSpecId, operations);
         this.apiKeyIn = apiKeyIn;
         this.apiKeyName = apiKeyName;
         validateConfig();
@@ -59,16 +58,19 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getApiKey() {
-        final String key = getAuthConfigParam(API_KEY, "");
+        final String key = ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(API_KEY), String.class).orElse("");
         if (key.isEmpty()) {
-            LOGGER.warn("configured " + API_KEY + " property (see application.properties) is empty. hint: configure it.");
+            LOGGER.warn("configured {} property (see application.properties) is empty. hint: configure it.",
+                    getCanonicalAuthConfigPropertyName(API_KEY));
         }
         return key;
     }
 
     private boolean isUseAuthorizationHeaderValue() {
-        final String value = getAuthConfigParam(USE_AUTHORIZATION_HEADER_VALUE, "true");
-        return "true".equals(value);
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(USE_AUTHORIZATION_HEADER_VALUE), Boolean.class)
+                .orElse(true);
     }
 
     private void validateConfig() {

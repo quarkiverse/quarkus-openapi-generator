@@ -17,6 +17,7 @@ import io.quarkus.runtime.annotations.ConfigItem;
 public class AuthConfig {
 
     public static final String TOKEN_PROPAGATION = "token-propagation";
+    public static final String HEADER_NAME = "header-name";
 
     /**
      * Enables the authentication token propagation for this particular securityScheme.
