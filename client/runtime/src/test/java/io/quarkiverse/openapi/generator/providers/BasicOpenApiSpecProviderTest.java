@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -9,7 +10,11 @@ import java.util.Optional;
 
 import jakarta.ws.rs.core.HttpHeaders;
 
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import io.quarkiverse.openapi.generator.AuthConfig;
 
@@ -22,25 +27,28 @@ class BasicOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Basic
             + Base64.getEncoder().encodeToString((USER + ":" + PASSWORD).getBytes());
 
     @Override
-    protected BasicAuthenticationProvider createProvider(String openApiSpecId, String authSchemeName,
-            AuthConfig authConfig) {
-        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, authConfig, List.of());
+    protected BasicAuthenticationProvider createProvider() {
+        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, List.of());
     }
 
     @Test
     void filter() throws IOException {
-        authConfig.authConfigParams.put(BasicAuthenticationProvider.USER_NAME, USER);
-        authConfig.authConfigParams.put(BasicAuthenticationProvider.PASSWORD, PASSWORD);
         provider.filter(requestContext);
         assertHeader(requestContext.getHeaders(), HttpHeaders.AUTHORIZATION, EXPECTED_BASIC_TOKEN);
     }
 
     @Test
     void tokenPropagationNotSupported() {
-        authConfig.tokenPropagation = Optional.of(true);
-        assertThatThrownBy(
-                () -> new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, authConfig, List.of()))
-                .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
-                        AUTH_SCHEME_NAME);
+        try (MockedStatic<ConfigProvider> configProviderMocked = Mockito.mockStatic(ConfigProvider.class)) {
+            Config mockedConfig = Mockito.mock(Config.class);
+            configProviderMocked.when(ConfigProvider::getConfig).thenReturn(mockedConfig);
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION),
+                    Boolean.class)).thenReturn(Optional.of(true));
+
+            assertThatThrownBy(() -> new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, List.of()))
+                    .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation", OPEN_API_FILE_SPEC_ID,
+                            AUTH_SCHEME_NAME);
+        }
+
     }
 }

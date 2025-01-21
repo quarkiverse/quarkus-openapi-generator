@@ -10,25 +10,31 @@ import java.util.Objects;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MultivaluedMap;
 
+import org.eclipse.microprofile.config.ConfigProvider;
+
 import io.quarkiverse.openapi.generator.AuthConfig;
 
 public abstract class AbstractAuthProvider implements AuthProvider {
 
     private static final String BEARER_WITH_SPACE = "Bearer ";
-    private static final String CANONICAL_AUTH_CONFIG_PROPERTY_NAME = "quarkus." +
-            RUNTIME_TIME_CONFIG_PREFIX + ".%s.auth.%s.%s";
+    private static final String CANONICAL_AUTH_CONFIG_PROPERTY_NAME = "quarkus." + RUNTIME_TIME_CONFIG_PREFIX
+            + ".%s.auth.%s.%s";
 
     private final String openApiSpecId;
     private final String name;
-    private final AuthConfig authConfig;
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
-    protected AbstractAuthProvider(AuthConfig authConfig, String name, String openApiSpecId,
-            List<OperationAuthInfo> operations) {
+    protected AbstractAuthProvider(String name, String openApiSpecId, List<OperationAuthInfo> operations) {
         this.name = name;
         this.openApiSpecId = openApiSpecId;
-        this.authConfig = authConfig;
         this.applyToOperations.addAll(operations);
+    }
+
+    protected static String sanitizeBearerToken(String token) {
+        if (token != null && token.toLowerCase().startsWith(BEARER_WITH_SPACE.toLowerCase())) {
+            return token.substring(BEARER_WITH_SPACE.length());
+        }
+        return token;
     }
 
     public String getOpenApiSpecId() {
@@ -41,7 +47,9 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public boolean isTokenPropagation() {
-        return authConfig != null && authConfig.getTokenPropagation().orElse(false);
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION), Boolean.class)
+                .orElse(false);
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
@@ -51,10 +59,8 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public String getHeaderName() {
-        if (authConfig != null) {
-            return authConfig.getHeaderName().orElse(null);
-        }
-        return null;
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME), String.class).orElse(null);
     }
 
     @Override
@@ -62,21 +68,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
         return applyToOperations;
     }
 
-    public String getAuthConfigParam(String paramName, String defaultValue) {
-        if (authConfig != null) {
-            return authConfig.getConfigParam(paramName).orElse(defaultValue);
-        }
-        return defaultValue;
-    }
-
-    protected static String sanitizeBearerToken(String token) {
-        if (token != null && token.toLowerCase().startsWith(BEARER_WITH_SPACE.toLowerCase())) {
-            return token.substring(BEARER_WITH_SPACE.length());
-        }
-        return token;
-    }
-
-    protected String getCanonicalAuthConfigPropertyName(String authPropertyName) {
+    public final String getCanonicalAuthConfigPropertyName(String authPropertyName) {
         return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, getOpenApiSpecId(), getName(), authPropertyName);
     }
 }
