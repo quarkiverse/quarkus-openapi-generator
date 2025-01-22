@@ -2,15 +2,11 @@ package io.quarkiverse.openapi.generator;
 
 import java.util.Optional;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
-
 /**
  * This class represents the runtime authentication related configurations for the individual OpenApi spec definitions,
  * i.e. the provided files.
  */
-@ConfigGroup
-public class SpecItemConfig {
+public interface SpecItemConfig {
 
     /**
      * Authentication related configurations for the different securitySchemes present on a given OpenApi spec
@@ -21,17 +17,9 @@ public class SpecItemConfig {
      *
      * @see AuthsConfig
      */
-    @ConfigItem
-    public AuthsConfig auth;
+    AuthsConfig auth();
 
-    public Optional<AuthsConfig> getAuth() {
-        return Optional.ofNullable(auth);
-    }
-
-    @Override
-    public String toString() {
-        return "SpecItemConfig{" +
-                "auth=" + auth +
-                '}';
+    default Optional<AuthsConfig> getAuth() {
+        return Optional.ofNullable(auth());
     }
 }
