@@ -3,7 +3,7 @@
     <parent>
         <artifactId>quarkus-openapi-generator-parent</artifactId>
         <groupId>io.quarkiverse.openapi.generator</groupId>
-        <version>2.8.0-lts</version>
+        <version>3.0.0-lts-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
