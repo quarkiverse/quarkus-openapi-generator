@@ -35,7 +35,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedParam;
   */
 {/if}
 @Path("{commonPath}")
-@RegisterRestClient({#if !defaultServerUrl.or('') == ''}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
+@RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}",{/if} configKey="{configKey}")
 @GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if openapi:hasAuthMethods(operations)}
 @RegisterProvider(CompositeAuthenticationProvider.class)

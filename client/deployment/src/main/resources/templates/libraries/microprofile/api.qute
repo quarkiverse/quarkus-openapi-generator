@@ -18,7 +18,7 @@ import {imp.import};
   */
 {/if}
 @jakarta.ws.rs.Path("{#if useAnnotatedBasePath.or(false)}{contextPath}{/if}{commonPath}")
-@org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if !defaultServerUrl.or('') == ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
+@org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
