@@ -3,11 +3,9 @@ package io.quarkiverse.openapi.generator;
 import java.util.Map;
 import java.util.Optional;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
+import io.smallrye.config.WithParentName;
 
-@ConfigGroup
-public class AuthsConfig {
+public interface AuthsConfig {
 
     /**
      * Configurations for the individual securitySchemes present on a given OpenApi spec definition file.
@@ -21,17 +19,10 @@ public class AuthsConfig {
      * @see SpecItemConfig
      * @see AuthConfig
      */
-    @ConfigItem(name = ConfigItem.PARENT)
-    public Map<String, AuthConfig> authConfigs;
+    @WithParentName()
+    Map<String, AuthConfig> authConfigs();
 
-    public Optional<AuthConfig> getItemConfig(String authConfig) {
-        return Optional.ofNullable(authConfigs.get(authConfig));
-    }
-
-    @Override
-    public String toString() {
-        return "AuthsConfig{" +
-                "authConfigs=" + authConfigs +
-                '}';
+    default Optional<AuthConfig> getItemConfig(String authConfig) {
+        return Optional.ofNullable(authConfigs().get(authConfig));
     }
 }
