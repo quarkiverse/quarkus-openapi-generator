@@ -7,19 +7,18 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
-
-> **⚠️** This is the instructions for the latest SNAPSHOT version (main branch). Please, see the [latest **released** documentation](https://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html) if you are looking for instructions.
-
-> **⚠️** This extension, [like Quarkus 3.7](https://quarkus.io/blog/java-17/), requires Java 17. The last version of this extension that supports earlier versions of Java is [2.2.16](https://github.com/quarkiverse/quarkus-openapi-generator/releases/tag/2.2.16).
-
-> **⚠️** Check versions 1.x.x if you're still using Quarkus 2. But be aware that we no longer support Quarkus 2. That means there are no updates planned for those versions.
-
 Quarkus' extensions for generation of [Rest Clients](https://quarkus.io/guides/rest-client) and server stubs generation based on the [Apicurio Codegen](https://github.com/Apicurio/apicurio-codegen) capabilities based on OpenAPI specification files.
 
-This client-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider donation to help them maintain the
+This client-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider a donation to help them maintain the
 project: https://opencollective.com/openapi_generator/donate
 
-This repository holds two Quarkus extensions. The one located on the client folder is for REST code generation for client side only. The extension located in the server folder can be used for server stubs generation.
+This repository holds two Quarkus extensions. The one located in the client folder is for REST code generation for client-side only. The extension located in the server folder can be used for server stubs generation.
+
+> [!WARNING]
+> This extension, [like Quarkus 3.7](https://quarkus.io/blog/java-17/), requires Java 17. The last version of this extension that supports earlier versions of Java is [2.2.16](https://github.com/quarkiverse/quarkus-openapi-generator/releases/tag/2.2.16).
+
+> [!CAUTION]
+> Check versions 1.x.x if you're still using Quarkus 2. But be aware that we no longer support Quarkus 2. That means there are no updates planned for those versions.
 
 **Want to contribute? Great!** We try to make it easy, and all contributions, even the smaller ones, are more than welcome. This includes bug reports, fixes, documentation, examples... But first, read [this page](CONTRIBUTING.md).
 
@@ -27,7 +26,7 @@ This repository holds two Quarkus extensions. The one located on the client fold
 
 You can learn more in [Quarkus Openapi Generator Documentation](http://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html).
 
-
+> [!TIP]
 > If you want to improve the docs, please feel free to contribute editing the docs in [Docs](https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/docs/modules/ROOT). But first, read [this page](CONTRIBUTING.md).
 
 ## Contributors ✨
