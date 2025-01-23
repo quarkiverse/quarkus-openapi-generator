@@ -34,3 +34,6 @@
     @jakarta.validation.constraints.DecimalMax("{p.maximum}")
     {/if}
     {/if}
+    {#if use-bean-validation}
+    @jakarta.validation.Valid
+    {/if}

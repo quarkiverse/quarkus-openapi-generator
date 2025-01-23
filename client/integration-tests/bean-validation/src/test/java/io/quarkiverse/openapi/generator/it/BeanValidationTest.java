@@ -63,6 +63,7 @@ class BeanValidationTest {
         assertThat(name.getAnnotationsByType(Size.class)).hasSize(2);
         assertThat(name.getAnnotationsByType(Size.class)[0].min()).isEqualTo(1);
         assertThat(name.getAnnotationsByType(Size.class)[1].max()).isEqualTo(10);
+        assertThat(name.isAnnotationPresent(Valid.class)).isTrue();
 
         assertThat(size.isAnnotationPresent(DecimalMin.class)).isTrue();
         assertThat(size.getAnnotation(DecimalMin.class).value()).isEqualTo("1.0");
@@ -94,6 +95,7 @@ class BeanValidationTest {
         assertThat(id.isAnnotationPresent(Max.class)).isFalse();
         assertThat(name.isAnnotationPresent(Pattern.class)).isFalse();
         assertThat(name.isAnnotationPresent(Size.List.class)).isFalse();
+        assertThat(name.isAnnotationPresent(Valid.class)).isFalse();
         assertThat(size.isAnnotationPresent(DecimalMin.class)).isFalse();
         assertThat(size.isAnnotationPresent(DecimalMax.class)).isFalse();
     }
