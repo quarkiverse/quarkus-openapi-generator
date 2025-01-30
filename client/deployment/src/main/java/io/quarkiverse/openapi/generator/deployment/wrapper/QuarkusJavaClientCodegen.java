@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -16,6 +17,8 @@ import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
+import org.openapitools.codegen.model.ModelMap;
+import org.openapitools.codegen.model.ModelsMap;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
@@ -41,6 +44,31 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         // immutable properties
         this.setSerializationLibrary(SERIALIZATION_LIBRARY_JACKSON);
         this.setTemplateDir("templates");
+    }
+
+    @Override
+    public ModelsMap postProcessModels(ModelsMap objs) {
+        objs = super.postProcessModels(objs);
+
+        objs.getModels().stream()
+                .map(ModelMap::getModel)
+                .map(CodegenModel::getVars)
+                .flatMap(Collection::stream)
+                .filter(codegenProperty -> codegenProperty.getDatatypeWithEnum().contains("@Size")
+                        || codegenProperty.getDataType().contains("@Size"))
+                .forEach(modelMap -> {
+                    Optional.of(modelMap)
+                            .map(CodegenProperty::getDatatypeWithEnum)
+                            .map(datatype -> datatype.replace("@Size", "@jakarta.validation.constraints.Size"))
+                            .ifPresent(modelMap::setDatatypeWithEnum);
+
+                    Optional.of(modelMap)
+                            .map(CodegenProperty::getDataType)
+                            .map(datatype -> datatype.replace("@Size", "@jakarta.validation.constraints.Size"))
+                            .ifPresent(modelMap::setDataType);
+                });
+
+        return objs;
     }
 
     @Override

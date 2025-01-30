@@ -49,6 +49,7 @@ components:
         - name
         - secondName
         - size
+        - listOfStrings
       properties:
         id:
           type: integer
@@ -65,3 +66,8 @@ components:
           type: number
           minimum: 1.0
           maximum: 10.0
+        listOfStrings:
+          type: array
+          items:
+            type: string
+            minLength: 1

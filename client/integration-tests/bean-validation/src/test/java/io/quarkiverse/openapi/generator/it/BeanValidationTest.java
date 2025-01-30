@@ -46,6 +46,7 @@ class BeanValidationTest {
         Field name = ValidatedObject.class.getDeclaredField("name");
         Field secondName = ValidatedObject.class.getDeclaredField("secondName");
         Field size = ValidatedObject.class.getDeclaredField("size");
+        Field listOfStrings = ValidatedObject.class.getDeclaredField("listOfStrings");
 
         assertThat(Stream.of(id, name, secondName, size)
                 .allMatch(f -> f.isAnnotationPresent(NotNull.class)))
@@ -69,6 +70,9 @@ class BeanValidationTest {
         assertThat(size.getAnnotation(DecimalMin.class).value()).isEqualTo("1.0");
         assertThat(size.isAnnotationPresent(DecimalMax.class)).isTrue();
         assertThat(size.getAnnotation(DecimalMax.class).value()).isEqualTo("10.0");
+
+        assertThat(listOfStrings.isAnnotationPresent(NotNull.class)).isTrue();
+        assertThat(listOfStrings.isAnnotationPresent(Valid.class)).isTrue();
     }
 
     @Test
