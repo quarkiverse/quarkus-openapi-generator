@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -16,12 +17,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.PathParam;
 
 import org.junit.jupiter.api.Test;
 import org.openapi.quarkus.bean_validation_false_yaml.api.UnvalidatedEndpointApi;
 import org.openapi.quarkus.bean_validation_false_yaml.model.UnvalidatedObject;
 import org.openapi.quarkus.bean_validation_true_yaml.api.ValidatedEndpointApi;
 import org.openapi.quarkus.bean_validation_true_yaml.model.ValidatedObject;
+import org.openapi.quarkus.issue_976_yaml.api.ValidatedEndpointIssue976Api;
 
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -98,5 +102,38 @@ class BeanValidationTest {
         assertThat(name.isAnnotationPresent(Valid.class)).isFalse();
         assertThat(size.isAnnotationPresent(DecimalMin.class)).isFalse();
         assertThat(size.isAnnotationPresent(DecimalMax.class)).isFalse();
+    }
+
+    @Test
+    void testValidationAnnotationsAreInPlaceApiIssue976() {
+        Method method = ValidatedEndpointIssue976Api.class.getMethods()[0];
+        Annotation[][] annotationsPerParameter = method.getParameterAnnotations();
+
+        Parameter pathParam = Arrays.stream(method.getParameters())
+                .filter(p -> p.getName().equals("pathParam"))
+                .findFirst().get();
+
+        Parameter headerParam = Arrays.stream(method.getParameters())
+                .filter(p -> p.getName().equals("headerParam"))
+                .findFirst().get();
+
+        Boolean validationAnnotationExists = Arrays.stream(annotationsPerParameter)
+                .allMatch(annotations -> Arrays.stream(annotations)
+                        .filter(a -> a.annotationType().equals(Valid.class)).toList()
+                        .size() == 1);
+
+        assertThat(validationAnnotationExists).isTrue();
+
+        assertThat(pathParam.isAnnotationPresent(Valid.class)).isTrue();
+        assertThat(pathParam.isAnnotationPresent(NotNull.class)).isTrue();
+        assertThat(pathParam.isAnnotationPresent(Pattern.class)).isTrue();
+        assertThat(pathParam.isAnnotationPresent(Size.List.class)).isTrue();
+        assertThat(pathParam.isAnnotationPresent(PathParam.class)).isTrue();
+
+        assertThat(headerParam.isAnnotationPresent(Valid.class)).isTrue();
+        assertThat(headerParam.isAnnotationPresent(NotNull.class)).isFalse();
+        assertThat(headerParam.isAnnotationPresent(Size.List.class)).isTrue();
+        assertThat(headerParam.isAnnotationPresent(Pattern.class)).isTrue();
+        assertThat(headerParam.isAnnotationPresent(HeaderParam.class)).isTrue();
     }
 }
