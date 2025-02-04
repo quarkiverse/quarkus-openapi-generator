@@ -408,6 +408,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "JPSantistebanQ",
+      "name": "Juan Piero Santisteban Quiroz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49204973?v=4",
+      "profile": "https://jpsantistebanq.github.io/portfolio",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
