@@ -1,0 +1,80 @@
+---
+openapi: 3.0.3
+info:
+  title: Test API
+  version: "1.0"
+paths:
+  /{pathParam}:
+    post:
+      tags:
+        - ValidatedEndpointIssue976
+      operationId: test
+      parameters:
+        - name: queryParam
+          in: query
+          schema:
+            $ref: '#/components/schemas/ValidatedObjectIssue976'
+        - name: pathParam
+          in: path
+          description: pathParam description
+          required: true
+          schema:
+            type: string
+            maxLength: 14
+            minLength: 14
+            pattern: '^[0-9]{14}$'
+            example: '19318085994179'
+        - name: headerParam
+          in: header
+          description: 'Header description'
+          required: false
+          schema:
+            maxLength: 32
+            minLength: 32
+            pattern: '^[a-z0-9]{32}$'
+            type: string
+            example: 3cfdad6e03c24d0ab7112dce75cdba35
+        - name: cookieParam
+          in: cookie
+          required: true
+          schema:
+            type: string
+            minLength: 10
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatedObjectIssue976'
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    ValidatedObjectIssue976:
+      type: object
+      description: Some object to be validated
+      required:
+        - id
+        - name
+        - secondName
+        - size
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          maximum: 100
+        name:
+          type: string
+          pattern: "[a-zA-Z]*"
+          minLength: 1
+          maxLength: 10
+        secondName:
+          type: string
+        size:
+          type: number
+          minimum: 1.0
+          maximum: 10.0

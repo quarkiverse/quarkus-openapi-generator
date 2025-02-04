@@ -19,6 +19,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
             "additionalModelTypeAnnotations.qute",
             "beanValidation.qute",
             "beanValidationCore.qute",
+            "beanValidationInlineCore.qute",
             "beanValidationHeaderParams.qute",
             "bodyParams.qute",
             "enumClass.qute",
