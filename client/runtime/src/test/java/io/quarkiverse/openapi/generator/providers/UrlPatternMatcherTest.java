@@ -16,6 +16,13 @@ class UrlPatternMatcherTest {
         Assertions.assertTrue(pattern.matches(requestPath));
     }
 
+    @ParameterizedTest
+    @MethodSource("providePathsThatNotMatch")
+    void verifyPathsNotMatch(final String pathPattern, final String requestPath) {
+        UrlPatternMatcher pattern = new UrlPatternMatcher(pathPattern);
+        Assertions.assertFalse(pattern.matches(requestPath));
+    }
+
     private static Stream<Arguments> providePathsThatMatch() {
         return Stream.of(
                 Arguments.of("/pets/{id}", "/pets/1"),
@@ -32,7 +39,16 @@ class UrlPatternMatcherTest {
                 Arguments.of("/{id}/{foo}/{id2}", "/1/2/3?q=1&q2=2"),
                 Arguments.of("/{id}/{foo}/{id2}", "/1/2/3"),
                 Arguments.of("/v2/pets/{id}", "/v2/pets/1"),
-                Arguments.of("/pets/{pet-id}/types/{type-id}", "/pets/1/types/2"));
+                Arguments.of("/pets/{pet-id}/types/{type-id}", "/pets/1/types/2"),
+                Arguments.of("/repos/{ref}", "/repos/prefixed/cool.sw"),
+                Arguments.of("/repos/{ref}/pepe", "/repos/prefixed/cool.sw/pepe"),
+                Arguments.of("pepe/pepa/pepu", "pepe/pepa/pepu"));
+    }
+
+    private static Stream<Arguments> providePathsThatNotMatch() {
+        return Stream.of(
+                Arguments.of("/pets/{id}", "/pes/1"),
+                Arguments.of("/{id}/pepe", "/1/2/pep"));
     }
 
 }
