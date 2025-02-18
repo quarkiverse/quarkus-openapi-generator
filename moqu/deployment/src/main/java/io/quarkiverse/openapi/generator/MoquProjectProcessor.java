@@ -26,7 +26,7 @@ public class MoquProjectProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(MoquProjectProcessor.class);
 
-    private static final Set<String> SUPPORTED_EXTENSIONS = Set.of("yaml", "yml");
+    private static final Set<String> SUPPORTED_EXTENSIONS = Set.of("yaml", "yml", "json");
 
     @BuildStep
     MoquProjectBuildItem generate(MoquConfig config) {

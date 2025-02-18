@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>quarkus-openapi-generator-moqu-core</artifactId>
-    <name>Quarkus - Openapi Generator - Moqu - Core</name>
+    <name>Quarkus :: Openapi Generator :: Moqu :: Core</name>
 
     <properties>
         <commons.io.version>2.16.1</commons.io.version>
