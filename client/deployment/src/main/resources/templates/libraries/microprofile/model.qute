@@ -2,6 +2,7 @@ package {package};
 
 {#if use-bean-validation}
 {! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
+import jakarta.validation.constraints.*;
 import jakarta.validation.Valid;
 {/if}
 
