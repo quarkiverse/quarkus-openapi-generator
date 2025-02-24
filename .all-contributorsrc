@@ -427,6 +427,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dellamas",
+      "name": "Luis Fabrício De Llamas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80655200?v=4",
+      "profile": "https://dev.to/dellamas",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
