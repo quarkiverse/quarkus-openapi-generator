@@ -44,7 +44,7 @@ If the OpenAPI specification file has `securitySchemes` definitions, but no http
 |`quarkus.openapi-generator.codegen.default-security-scheme=api_key`
 |===
 
-See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/client/integration-tests/security[https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/security][security] for an example of how to use this feature.
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/client/integration-tests/security[security] for an example of how to use this feature.
 
 == Basic HTTP Authentication
 
