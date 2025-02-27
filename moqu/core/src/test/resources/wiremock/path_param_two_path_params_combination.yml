@@ -1,0 +1,35 @@
+openapi: 3.0.3
+servers:
+  - url: http://localhost:8888
+info:
+  version: 999-SNAPSHOT
+  title: Method GET one path param
+paths:
+  "/users/{userId}/books/{bookId}":
+    get:
+      parameters:
+        - name: userId
+          in: path
+          examples:
+            john:
+              value: 1
+            mary:
+              value: 2
+        - name: bookId
+          in: path
+          examples:
+            john:
+              value: 80
+            mary:
+              value: 70
+
+      responses:
+        200:
+          content:
+            "application/json":
+              examples:
+                john:
+                  value: '{"name": "Book for John", "chapters": 8}'
+                mary:
+                  value: '{"name": "Book for Mary", "chapters": 10}'
+          description: Ok
