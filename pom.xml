@@ -27,7 +27,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>3.19.1</quarkus.version>
-    <apicurio.version>1.1.1.Final</apicurio.version>
+    <apicurio.version>1.2.0.Final</apicurio.version>
     <version.com.github.javaparser>3.26.3</version.com.github.javaparser>
     <version.org.assertj>3.27.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.1</version.org.eclipse.microprofile.fault-tolerance>
