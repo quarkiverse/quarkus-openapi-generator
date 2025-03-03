@@ -84,8 +84,13 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(oauthAnnotationsCount).isEqualTo(1);
     }
 
+    /**
+     * If the specification component has `oneOf` specified instead of `allOf`, the inner generator won't create a hierarchy of
+     * classes.
+     * In this situation, we can't generate the `JsonSubTypes` annotations.
+     */
     @Test
-    void verifyDiscriminatorGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+    void verifyOneOfDiscriminatorGeneration() throws java.net.URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-852.json");
         final List<File> generatedFiles = generatorWrapper.generate("org.issue852");
 
@@ -94,6 +99,30 @@ public class OpenApiClientGeneratorWrapperTest {
 
         final Optional<File> classWithDiscriminator = generatedFiles.stream()
                 .filter(f -> f.getName().endsWith("PostRevisionForDocumentRequest.java")).findFirst();
+        assertThat(classWithDiscriminator).isPresent();
+
+        final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
+        assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
+                .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class)))
+                .isNotPresent();
+    }
+
+    /**
+     * Only generates `JsonSubTypes` annotations in case the class has children, otherwise skip since Jackson will complain in
+     * runtime.
+     * The file issue-1022.json is a classic example of a spec with allOf to denote how the Java POJO should be and how Jackson
+     * would serialize.
+     */
+    @Test
+    void verifyAllOfDiscriminatorGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1022.json");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1022");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> classWithDiscriminator = generatedFiles.stream()
+                .filter(f -> f.getName().startsWith("Thing.java")).findFirst();
         assertThat(classWithDiscriminator).isPresent();
 
         final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
