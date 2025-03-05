@@ -158,12 +158,14 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         return java.util.Objects.equals({m.vars.0.name}, model.{m.vars.0.name});
         {#else}
         {#for v in m.vars}
+        {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
         {#if v_isFirst}
         return java.util.Objects.equals({v.name}, model.{v.name}) &&
         {#else if v_isLast}
         java.util.Objects.equals({v.name}, model.{v.name});
         {#else}
         java.util.Objects.equals({v.name}, model.{v.name}) &&
+        {/if}
         {/if}
         {/for}
         {/if}
@@ -180,12 +182,14 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
     return java.util.Objects.hash({m.vars.0.name});
     {#else}
         {#for v in m.vars}
+        {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
         {#if v_isFirst}
         return java.util.Objects.hash({v.name},
         {#else if v_isLast}
         {v.name});
         {#else}
         {v.name},
+        {/if}
         {/if}
         {/for}
     {/if}
