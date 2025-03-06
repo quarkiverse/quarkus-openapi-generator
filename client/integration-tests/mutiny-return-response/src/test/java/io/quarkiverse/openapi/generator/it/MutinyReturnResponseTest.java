@@ -4,10 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.acme.openapi.api.MutinyMultiReturnResponseFalseStringApi;
 import org.acme.openapi.api.MutinyMultiReturnResponseFalseVoidApi;
+import org.acme.openapi.api.MutinyMultiReturnResponseResponseStringApi;
+import org.acme.openapi.api.MutinyMultiReturnResponseResponseVoidApi;
 import org.acme.openapi.api.MutinyMultiReturnResponseTrueStringApi;
 import org.acme.openapi.api.MutinyMultiReturnResponseTrueVoidApi;
 import org.acme.openapi.api.MutinyReturnResponseFalseStringApi;
 import org.acme.openapi.api.MutinyReturnResponseFalseVoidApi;
+import org.acme.openapi.api.MutinyReturnResponseResponseStringApi;
+import org.acme.openapi.api.MutinyReturnResponseResponseVoidApi;
 import org.acme.openapi.api.MutinyReturnResponseTrueStringApi;
 import org.acme.openapi.api.MutinyReturnResponseTrueVoidApi;
 import org.junit.jupiter.api.Test;
@@ -45,6 +49,20 @@ class MutinyReturnResponseTest {
     }
 
     @Test
+    void testMutinyReturnResponseResponseString() throws NoSuchMethodException {
+        var method = MutinyReturnResponseResponseStringApi.class.getMethod("hello");
+        assertThat(method.getGenericReturnType().getTypeName())
+                .isEqualTo("io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>");
+    }
+
+    @Test
+    void testMutinyMultiReturnResponseResponseString() throws NoSuchMethodException {
+        var method = MutinyMultiReturnResponseResponseStringApi.class.getMethod("hello");
+        assertThat(method.getGenericReturnType().getTypeName())
+                .isEqualTo("io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>");
+    }
+
+    @Test
     void testMutinyReturnResponseFalseVoid() throws NoSuchMethodException {
         var method = MutinyReturnResponseFalseVoidApi.class.getMethod("hello");
         assertThat(method.getGenericReturnType().getTypeName())
@@ -68,6 +86,20 @@ class MutinyReturnResponseTest {
     @Test
     void testMutinyMultiReturnResponseTrueVoid() throws NoSuchMethodException {
         var method = MutinyMultiReturnResponseTrueVoidApi.class.getMethod("hello");
+        assertThat(method.getGenericReturnType().getTypeName())
+                .isEqualTo("io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>");
+    }
+
+    @Test
+    void testMutinyReturnResponseResponseVoid() throws NoSuchMethodException {
+        var method = MutinyReturnResponseResponseVoidApi.class.getMethod("hello");
+        assertThat(method.getGenericReturnType().getTypeName())
+                .isEqualTo("io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>");
+    }
+
+    @Test
+    void testMutinyMultiReturnResponseResponseVoid() throws NoSuchMethodException {
+        var method = MutinyMultiReturnResponseResponseVoidApi.class.getMethod("hello");
         assertThat(method.getGenericReturnType().getTypeName())
                 .isEqualTo("io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>");
     }
