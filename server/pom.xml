@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-server-parent</artifactId>
-    <name>Quarkus - Openapi Generator - Server - Parent</name>
+    <name>Quarkus - OpenAPI Generator - Server - Parent</name>
     <packaging>pom</packaging>
 
     <modules>

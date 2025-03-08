@@ -31,7 +31,7 @@ This repository holds two Quarkus extensions. The one located in the client fold
 
 ## Getting Started
 
-You can learn more in [Quarkus Openapi Generator Documentation](http://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html).
+You can learn more in [Quarkus OpenAPI Generator Documentation](http://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html).
 
 > [!TIP]
 > If you want to improve the docs, please feel free to contribute editing the docs in [Docs](https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/docs/modules/ROOT). But first, read [this page](CONTRIBUTING.md).
