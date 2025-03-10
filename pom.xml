@@ -10,7 +10,7 @@
   <artifactId>quarkus-openapi-generator-parent</artifactId>
   <version>3.0.0-lts-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Quarkus - Openapi Generator - Parent</name>
+  <name>Quarkus - OpenAPI Generator - Parent</name>
   <modules>
     <module>client</module>
     <module>server</module>

@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-without-oidc</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Client - Without OIDC</name>
+  <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Without OIDC</name>
   <description>Example project for general usage</description>
 
   <dependencies>

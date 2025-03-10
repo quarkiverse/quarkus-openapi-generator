@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-server</artifactId>
-    <name>Quarkus - Openapi Generator - Server</name>
+    <name>Quarkus - OpenAPI Generator - Server</name>
 
     <dependencies>
         <dependency>

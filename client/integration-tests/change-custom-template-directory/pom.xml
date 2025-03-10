@@ -7,7 +7,7 @@
         <version>3.0.0-lts-SNAPSHOT</version>
     </parent>
     <artifactId>quarkus-openapi-generator-it-change-custom-template-directory</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Client - Change custom template directory</name>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Change custom template directory</name>
 
     <dependencies>
         <dependency>

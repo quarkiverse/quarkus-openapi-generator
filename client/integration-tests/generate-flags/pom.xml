@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-it-generate-flags</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Client - Generate Flags</name>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Generate Flags</name>
     <description>Example project for usage of the generate-models and generate-apis properties</description>
 
     <dependencies>

@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>quarkus-openapi-generator-it-remove-operationid-prefix</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Client - remove operation id prefix</name>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - remove operation id prefix</name>
     <description>Example project for general usage with remove operation id prefix</description>
 
     <dependencies>
