@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-it-exclude</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Client - Exclude</name>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Exclude</name>
     <description>Example project with OpenAPI documents that should be excluded</description>
 
     <dependencies>

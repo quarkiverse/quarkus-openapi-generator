@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-array-enum</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Client - Array enum</name>
+  <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Array enum</name>
   <description>Example project for OpenAPI with array of enums</description>
 
   <dependencies>
