@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-circuit-breaker</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Client - Circuit Breaker</name>
+  <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Circuit Breaker</name>
 
   <dependencies>
     <dependency>

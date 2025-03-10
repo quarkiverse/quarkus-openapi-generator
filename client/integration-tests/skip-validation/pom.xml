@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quarkus-openapi-generator-it-skip-validation</artifactId>
-  <name>Quarkus - Openapi Generator - Integration Tests - Client - Skip Spec Validation</name>
+  <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Skip Spec Validation</name>
   <description>Skip OpenAPI Spec Validation</description>
 
   <dependencies>

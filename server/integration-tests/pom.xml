@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <artifactId>quarkus-openapi-generator-server-integration-tests-parent</artifactId>
-    <name>Quarkus - Openapi Generator - Server - Integration Tests</name>
+    <name>Quarkus - OpenAPI Generator - Server - Integration Tests</name>
 
     <modules>
         <module>reactive</module>

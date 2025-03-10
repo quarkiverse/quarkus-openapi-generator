@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>quarkus-openapi-generator-it-path</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Client - path</name>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - path</name>
     <description>Test from path</description>
 
     <dependencies>

@@ -8,7 +8,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>quarkus-openapi-generator</artifactId>
-  <name>Quarkus - Openapi Generator - Client - Runtime</name>
+  <name>Quarkus - OpenAPI Generator - Client - Runtime</name>
   <description>Generation of Rest Clients based on OpenAPI specification files</description>
   <dependencies>
     <!-- Quarkus -->

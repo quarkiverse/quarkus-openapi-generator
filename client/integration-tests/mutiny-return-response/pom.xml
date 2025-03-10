@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quarkus-openapi-generator-it-mutiny-return-response</artifactId>
-    <name>Quarkus - Openapi Generator - Integration Tests - Client - Mutiny Return Response</name>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - Mutiny Return Response</name>
     <description>Example project for usage of the mutiny-return-response property</description>
 
     <dependencies>
