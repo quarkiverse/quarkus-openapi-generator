@@ -1,0 +1,206 @@
+= Quarkus - Open API Generator - Moqu
+
+include::./includes/attributes.adoc[]
+
+The **OpenAPI Generator Moqu extension** converts an OpenAPI specification into a mock representation. This mock can then be mapped to the link:https://wiremock.org/[WireMock] for further use, providing a way to simulate APIs for testing and development purposes.
+
+[NOTE]
+====
+Currently, this extension supports only link:https://wiremock.org/[WireMock] definitions.
+====
+
+[[getting-started]]
+== Getting Started
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator-moqu</artifactId>
+  <version>{project-version}</version>
+</dependency>
+----
+
+Now, create the following OpenAPI specification file under your `src/resources/openapi` directory:
+
+[source,yaml]
+.src/main/openapi/hello.yaml
+----
+openapi: 3.0.3
+servers:
+  - url: http://localhost:8888
+info:
+  version: 999-SNAPSHOT
+  title: Get framework by ID
+paths:
+  "/frameworks/{id}":
+    get:
+      parameters:
+        - name: id
+          in: path
+          examples:
+            quarkus:
+              value: 1
+      responses:
+        200:
+          content:
+            "application/json":
+              examples:
+                quarkus:
+                  $ref: "#/components/schemas/Framework"
+          description: Ok
+components:
+  schemas:
+    Framework:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Quarkus"
+        versions:
+          type: array
+          example: ["999-SNAPSHOT", "3.15.1"]
+        supportsJava:
+          type: boolean
+          example: true
+        contributors:
+          type: integer
+          example: 1000
+        rules:
+          type: object
+          example:
+            hello: world
+----
+
+Execute now your application on Dev mode, and access the Dev UI for getting you wiremock stubbing:
+
+image::moqu-devui-card-framework.png[]
+
+Click on `Moqu Wiremock`, you will se a table containing all wiremock definitions:
+
+image::table-wiremock.png[]
+
+Now, you can `see` or `download` the Wiremock stubbing.
+
+== Request matching
+
+The Moqu extension uses the request and response examples defined in the OpenAPI Specification to determine the appropriate response for a specific request, creating a corresponding request/response pair.
+
+Example:
+
+[source,yaml]
+----
+openapi: 3.0.3
+info:
+  title: "Users API"
+  version: 1.0.0-alpha
+servers:
+  - url: http://localhost:8888
+paths:
+  /users/{id}:
+    get:
+      description: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+          examples:
+            john: <1>
+              value: 1 <2>
+      responses:
+        "200":
+          description: Ok
+          content:
+            "application/json":
+              examples:
+                john: <3>
+                  value:
+                    '{"id": 1, "name": "John Doe"}'
+----
+
+<1> Defines an example named `john` for request
+<2> Maps the request for path `/users/1` should use the response named as `john`
+<3> Defines an example named `john` for response
+
+
+In other words, if the user accesses `/users/1`, the response will be the one mapped for the `john` example in response.
+
+The Wiremock definition using the OpenAPI specification above, looks something like this:
+
+[source,json]
+----
+{
+  "mappings": [
+        {
+          "request": {
+          "method": "GET",
+          "url": "/users/1"
+        },
+          "response": {
+          "status": 200,
+          "body": "{\"name\":\"John\",\"age\": 80}",
+          "headers": {}
+        }
+      }
+  ]
+}
+----
+
+=== Response as Schema
+
+You can use the `$ref` to reference a schema for mapping a response:
+
+[source,yaml]
+----
+paths:
+  "/users/{id}":
+    get:
+      parameters:
+        - name: id
+          in: path
+          examples:
+            alice:
+              value: 1
+      responses:
+        200:
+          content:
+            "application/json":
+              examples:
+                alice:
+                  $ref: "#/components/schemas/User"
+          description: Ok
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Alice"
+        age:
+          type: number
+          example: 80
+----
+
+The Wiremock definition using the OpenAPI specification above, looks something like this:
+
+[source,json]
+----
+{
+    "mappings": [
+        {
+            "request": {
+                "method": "GET",
+                "url": "/users/1"
+            },
+            "response": {
+                "status": 200,
+                "body": "{\"name\":\"Alice\",\"age\":80}",
+                "headers": {}
+            }
+        }
+    ]
+}
+----

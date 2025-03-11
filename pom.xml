@@ -14,6 +14,8 @@
   <modules>
     <module>client</module>
     <module>server</module>
+    <module>docs</module>
+    <module>moqu</module>
   </modules>
   <scm>
     <connection>:git:git@github.com:quarkiverse/quarkus-openapi-generator.git</connection>
@@ -32,6 +34,8 @@
     <version.org.assertj>3.27.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.2</version.org.eclipse.microprofile.fault-tolerance>
     <version.org.wiremock>3.12.1</version.org.wiremock>
+    <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
+    <version.io.swagger.parser>2.1.22</version.io.swagger.parser>
   </properties>
   <dependencyManagement>
     <dependencies>

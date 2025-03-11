@@ -1,0 +1,11 @@
+name: "OpenAPI Generator - Moqu - Wiremock Generator"
+artifact: ${project.groupId}:${project.artifactId}:${project.version}
+description: The OpenAPI Generator Moqu Wiremock extension converts an OpenAPI specification into a Wiremock definition.
+metadata:
+  keywords:
+    - "openapi"
+    - "openapi-generator"
+    - "wiremock"
+  categories:
+    - "web"
+  status: "preview"
