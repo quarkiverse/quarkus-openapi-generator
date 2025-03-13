@@ -23,7 +23,7 @@ public class CompositeAuthenticationProvider implements jakarta.ws.rs.client.Cli
 
     @jakarta.inject.Inject
     @io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{quarkus-generator.openApiSpecId}")
-    io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider compositeProvider;
+    io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider compositeProvider;
 
     @java.lang.Override
     public void filter(jakarta.ws.rs.client.ClientRequestContext context) throws java.io.IOException {

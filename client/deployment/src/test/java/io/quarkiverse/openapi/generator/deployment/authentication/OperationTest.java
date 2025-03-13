@@ -20,7 +20,7 @@ import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
 import io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker;
 import io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker;
 import io.quarkiverse.openapi.generator.markers.OperationMarker;
-import io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider;
+import io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.test.QuarkusUnitTest;
 
@@ -40,10 +40,10 @@ public class OperationTest {
 
     @Inject
     @OpenApiSpec(openApiSpecId = "petstore_json")
-    CompositeAuthenticationProvider compositeProvider;
+    BaseCompositeAuthenticationProvider compositeProvider;
     @Inject
     @OpenApiSpec(openApiSpecId = "other_spec_json")
-    CompositeAuthenticationProvider otherProvider;
+    BaseCompositeAuthenticationProvider otherProvider;
 
     @Test
     public void test() {

@@ -16,11 +16,11 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
  * Composition of supported {@link ClientRequestFilter} defined by a given OpenAPI interface.
  * This class is used as the base class of generated code.
  */
-public class CompositeAuthenticationProvider implements ClientRequestFilter {
+public class BaseCompositeAuthenticationProvider implements ClientRequestFilter {
 
     private final List<AuthProvider> authProviders;
 
-    public CompositeAuthenticationProvider(List<AuthProvider> authProviders) {
+    public BaseCompositeAuthenticationProvider(List<AuthProvider> authProviders) {
         this.authProviders = List.copyOf(authProviders);
     }
 

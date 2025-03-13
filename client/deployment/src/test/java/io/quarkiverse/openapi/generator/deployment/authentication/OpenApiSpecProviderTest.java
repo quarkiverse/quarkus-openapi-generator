@@ -20,8 +20,8 @@ import io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker;
 import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.AuthProvider;
+import io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider;
 import io.quarkus.test.QuarkusUnitTest;
 
 public class OpenApiSpecProviderTest {
@@ -41,19 +41,19 @@ public class OpenApiSpecProviderTest {
 
     @Inject
     @OpenApiSpec(openApiSpecId = "spec_1")
-    CompositeAuthenticationProvider spec1CompositeProvider;
+    BaseCompositeAuthenticationProvider spec1CompositeProvider;
 
     @Inject
     @OpenApiSpec(openApiSpecId = "spec_2")
-    CompositeAuthenticationProvider spec2CompositeProvider;
+    BaseCompositeAuthenticationProvider spec2CompositeProvider;
 
     @Inject
     @OpenApiSpec(openApiSpecId = "spec_3")
-    CompositeAuthenticationProvider spec3CompositeProvider;
+    BaseCompositeAuthenticationProvider spec3CompositeProvider;
 
     @Inject
     @OpenApiSpec(openApiSpecId = "spec_multi")
-    CompositeAuthenticationProvider multiCompositeProvider;
+    BaseCompositeAuthenticationProvider multiCompositeProvider;
 
     @Test
     public void checkCompositeProvider() {
