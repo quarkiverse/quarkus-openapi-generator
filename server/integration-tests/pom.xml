@@ -16,6 +16,7 @@
     <modules>
         <module>reactive</module>
         <module>resteasy</module>
+        <module>codestarts</module>
     </modules>
 
 </project>

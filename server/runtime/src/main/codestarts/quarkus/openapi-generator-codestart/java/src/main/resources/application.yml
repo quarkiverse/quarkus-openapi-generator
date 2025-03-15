@@ -1,0 +1,5 @@
+quarkus:
+  openapi:
+    generator:
+      spec:
+        openapi.yml
