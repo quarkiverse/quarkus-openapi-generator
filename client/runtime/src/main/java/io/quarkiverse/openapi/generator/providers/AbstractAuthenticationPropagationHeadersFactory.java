@@ -19,11 +19,11 @@ public abstract class AbstractAuthenticationPropagationHeadersFactory implements
     private static final String HEADER_NAME_PREFIX_FOR_TOKEN_PROPAGATION = "QCG_%s";
     private static final String HEADER_NAME_FOR_TOKEN_PROPAGATION = "QCG_%s_%s_%s";
 
-    protected CompositeAuthenticationProvider compositeProvider;
+    protected BaseCompositeAuthenticationProvider compositeProvider;
     protected OpenApiGeneratorConfig generatorConfig;
     protected HeadersProvider headersProvider;
 
-    protected AbstractAuthenticationPropagationHeadersFactory(CompositeAuthenticationProvider compositeProvider,
+    protected AbstractAuthenticationPropagationHeadersFactory(BaseCompositeAuthenticationProvider compositeProvider,
             OpenApiGeneratorConfig generatorConfig,
             HeadersProvider headersProvider) {
         this.compositeProvider = compositeProvider;
