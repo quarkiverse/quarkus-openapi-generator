@@ -10,9 +10,9 @@ import io.quarkiverse.openapi.generator.OpenApiSpec.Literal;
 import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
 import io.quarkiverse.openapi.generator.providers.AuthProvider;
+import io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.CompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.arc.SyntheticCreationalContext;
 import io.quarkus.runtime.annotations.Recorder;
@@ -20,12 +20,12 @@ import io.quarkus.runtime.annotations.Recorder;
 @Recorder
 public class AuthenticationRecorder {
 
-    public Function<SyntheticCreationalContext<CompositeAuthenticationProvider>, CompositeAuthenticationProvider> recordCompositeProvider(
+    public Function<SyntheticCreationalContext<BaseCompositeAuthenticationProvider>, BaseCompositeAuthenticationProvider> recordCompositeProvider(
             String openApiSpec) {
         return ctx -> {
             List<AuthProvider> providers = ctx.getInjectedReference(new TypeLiteral<Instance<AuthProvider>>() {
             }, new Literal(openApiSpec)).stream().toList();
-            return new CompositeAuthenticationProvider(providers);
+            return new BaseCompositeAuthenticationProvider(providers);
         };
     }
 
