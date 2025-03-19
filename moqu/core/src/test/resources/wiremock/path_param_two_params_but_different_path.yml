@@ -1,0 +1,39 @@
+openapi: 3.0.3
+servers:
+  - url: http://localhost:8888
+info:
+  version: 999-SNAPSHOT
+  title: Method GET one path param
+paths:
+  "/users/{userId}":
+    get:
+      parameters:
+        - name: userId
+          in: path
+          examples:
+            john:
+              value: 1
+      responses:
+        200:
+          content:
+            "application/json":
+              examples:
+                john:
+                  value: '{"name": "John Doe"}'
+          description: Ok
+  "/frameworks/{name}":
+    get:
+      parameters:
+        - name: name
+          in: path
+          examples:
+            quarkus:
+              value: quarkus
+      responses:
+        200:
+          content:
+            "application/json":
+              examples:
+                quarkus:
+                  value: '{"description": "Quarkus, build time augmentation toolkit"}'
+          description: Ok
