@@ -1,0 +1,32 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-moqu-wiremock_quarkus-resource-dir]] [.property-path]##link:#quarkus-openapi-generator-moqu-wiremock_quarkus-resource-dir[`quarkus.resource-dir`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.resource-dir+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Path to the Moqu (relative to the project).
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_RESOURCE_DIR+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_RESOURCE_DIR+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`openapi`
+
+|===
+
