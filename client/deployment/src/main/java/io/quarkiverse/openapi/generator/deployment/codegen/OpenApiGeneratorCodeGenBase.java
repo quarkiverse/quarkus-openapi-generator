@@ -22,6 +22,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -132,7 +133,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                         .filter(Files::isRegularFile)
                         .filter(path -> {
                             String fileName = path.getFileName().toString();
-                            return fileName.endsWith(inputExtension())
+                            return Arrays.stream(this.inputExtensions()).anyMatch(fileName::endsWith)
                                     && !filesToExclude.contains(fileName)
                                     && (filesToInclude.isEmpty() || filesToInclude.contains(fileName));
                         }).toList();
