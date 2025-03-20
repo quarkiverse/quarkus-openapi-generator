@@ -436,6 +436,17 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "vladprado",
+      "name": "vladprado",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76523900?v=4",
+      "profile": "https://github.com/vladprado",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
