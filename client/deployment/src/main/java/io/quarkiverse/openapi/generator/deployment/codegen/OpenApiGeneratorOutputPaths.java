@@ -9,9 +9,7 @@ import java.util.List;
 
 public class OpenApiGeneratorOutputPaths {
 
-    public static final String YAML_PATH = "open-api-yaml";
-    public static final String YML_PATH = "open-api-yml";
-    public static final String JSON_PATH = "open-api-json";
+    public static final String OPENAPI_PATH = "open-api";
     public static final String STREAM_PATH = "open-api-stream";
 
     private static final Collection<String> rootPaths = Arrays.asList(STREAM_PATH);
