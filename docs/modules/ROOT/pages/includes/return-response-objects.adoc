@@ -1,6 +1,6 @@
 By default, this extension generates the methods according to their returning models based on the https://spec.openapis.org/oas/v3.1.0#schema-object[OpenAPI specification Schema Object]. If no response model is defined, `jakarta.ws.rs.core.Response` is returned.
 
-If you want to return `jakarta.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `true`.
+If you want to return `jakarta.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `Response` or `true`.
 
 == Example
 
@@ -8,5 +8,16 @@ Given you want to return `jakarta.ws.rs.core.Response` for the `my-openapi.yaml`
 
 [source,properties]
 ----
-quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=true
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=Rest
+----
+
+If you are using the reactive client and rather want `org.jboss.resteasy.reactive.RestResponse` to be returned in _all_ cases, you can set the `return-response` property to `RestResponse`.
+
+== Example
+
+Given you want to return `org.jboss.resteasy.reactive.RestResponse` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=RestResponse
 ----
