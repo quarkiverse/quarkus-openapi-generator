@@ -436,6 +436,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "jghagemann",
+      "name": "João Guilherme Hagemann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42047435?v=4",
+      "profile": "https://github.com/jghagemann",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
