@@ -11,6 +11,7 @@
 
     <artifactId>quarkus-openapi-generator-server</artifactId>
     <name>Quarkus - OpenAPI Generator - Server</name>
+    <description>Generates REST servers based on OpenAPI specification files</description>
 
     <dependencies>
         <dependency>
