@@ -19,6 +19,8 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     CredentialsProvider credentialsProvider;
 
     private static final String BEARER_WITH_SPACE = "Bearer ";
+    private static final String BASIC_WITH_SPACE = "Basic ";
+
     private static final String CANONICAL_AUTH_CONFIG_PROPERTY_NAME = "quarkus." + RUNTIME_TIME_CONFIG_PREFIX
             + ".%s.auth.%s.%s";
 
@@ -37,6 +39,13 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     protected static String sanitizeBearerToken(String token) {
         if (token != null && token.toLowerCase().startsWith(BEARER_WITH_SPACE.toLowerCase())) {
             return token.substring(BEARER_WITH_SPACE.length());
+        }
+        return token;
+    }
+
+    protected static String sanitizeBasicToken(String token) {
+        if (token != null && token.toLowerCase().startsWith(BASIC_WITH_SPACE.toLowerCase())) {
+            return token.substring(BASIC_WITH_SPACE.length());
         }
         return token;
     }
