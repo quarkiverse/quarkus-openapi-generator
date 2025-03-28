@@ -1,7 +1,5 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -9,8 +7,8 @@ import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
 import org.eclipse.microprofile.config.ConfigProvider;
-
-import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provider for Basic Authentication.
@@ -18,13 +16,13 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
  * during build time.
  */
 public class BasicAuthenticationProvider extends AbstractAuthProvider {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicAuthenticationProvider.class);
 
     static final String USER_NAME = "username";
     static final String PASSWORD = "password";
 
     public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations) {
         super(name, openApiSpecId, operations);
-        validateConfig();
     }
 
     private String getUsername() {
@@ -39,18 +37,18 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                AuthUtils.basicAuthAccessToken(getUsername(), getPassword()));
-    }
-
-    private void validateConfig() {
+        String basicToken;
         if (isTokenPropagation()) {
-            throw new OpenApiGeneratorException(
-                    "Token propagation is not admitted for the OpenApi securitySchemes of \"type\": \"http\", \"scheme\": \"basic\"."
-                            +
-                            " A potential source of the problem might be that the configuration property " +
-                            getCanonicalAuthConfigPropertyName(TOKEN_PROPAGATION) +
-                            " was set with the value true in your application, please check your configuration.");
+            LOGGER.warn("Token propagation enabled for BasicAuthentication");
+            basicToken = getTokenForPropagation(requestContext.getHeaders());
+            basicToken = sanitizeBasicToken(basicToken);
+        } else {
+            basicToken = AuthUtils.basicAuthAccessTokenWithoutPrefix(getUsername(), getPassword());
         }
+        if (!basicToken.isBlank()) {
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
+                    AuthUtils.basicAuthAccessToken(basicToken));
+        }
+
     }
 }
