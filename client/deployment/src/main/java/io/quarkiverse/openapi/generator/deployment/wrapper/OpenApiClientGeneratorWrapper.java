@@ -140,9 +140,13 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withMutinyReturnResponse(final Boolean config) {
+    public OpenApiClientGeneratorWrapper withMutinyReturnResponse(final String config) {
         Optional.ofNullable(config).ifPresent(cfg -> {
-            this.configurator.addAdditionalProperty("mutiny-return-response", cfg);
+            if (cfg.equalsIgnoreCase("true")) {
+                this.configurator.addAdditionalProperty("mutiny-return-response", "Response");
+            } else {
+                this.configurator.addAdditionalProperty("mutiny-return-response", cfg);
+            }
         });
         return this;
     }
