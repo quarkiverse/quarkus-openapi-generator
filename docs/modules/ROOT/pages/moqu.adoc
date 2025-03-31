@@ -15,16 +15,16 @@ Currently, this extension supports only link:https://wiremock.org/[WireMock] def
 [source,xml]
 ----
 <dependency>
-  <groupId>io.quarkiverse.openapi.generator</groupId>
-  <artifactId>quarkus-openapi-generator-moqu</artifactId>
-  <version>{project-version}</version>
+    <groupId>io.quarkiverse.openapi.generator</groupId>
+    <artifactId>quarkus-openapi-generator-moqu-wiremock</artifactId>
+    <version>{project-version}</version>
 </dependency>
 ----
 
 Now, create the following OpenAPI specification file under your `src/resources/openapi` directory:
 
 [source,yaml]
-.src/main/openapi/hello.yaml
+.src/main/resources/openapi/hello.yaml
 ----
 openapi: 3.0.3
 servers:
@@ -74,11 +74,11 @@ components:
 
 Execute now your application on Dev mode, and access the Dev UI for getting you wiremock stubbing:
 
-image::moqu-devui-card-framework.png[]
+image::moqu-devui-card-framework.png[alt=Moque Dev UI card,width=640,height=480]
 
 Click on `Moqu Wiremock`, you will se a table containing all wiremock definitions:
 
-image::table-wiremock.png[]
+image::table-wiremock.png[alt=Wiremock mappings table,width=640,height=480]
 
 Now, you can `see` or `download` the Wiremock stubbing.
 
