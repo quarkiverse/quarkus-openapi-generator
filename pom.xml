@@ -30,7 +30,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>3.21.0</quarkus.version>
     <apicurio.version>1.2.0.Final</apicurio.version>
-    <version.com.github.javaparser>3.26.3</version.com.github.javaparser>
+    <version.com.github.javaparser>3.26.4</version.com.github.javaparser>
     <version.org.assertj>3.27.3</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.2</version.org.eclipse.microprofile.fault-tolerance>
     <version.org.wiremock>3.12.1</version.org.wiremock>
