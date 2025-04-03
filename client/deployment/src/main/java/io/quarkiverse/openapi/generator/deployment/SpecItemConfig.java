@@ -20,6 +20,12 @@ public interface SpecItemConfig extends CommonItemConfig {
     Optional<String> basePackage();
 
     /**
+     * Custom config key to use in place of the openapi spec file
+     */
+    @WithName("config-key")
+    Optional<String> configKey();
+
+    /**
      * Suffix name for generated api classes
      */
     @WithName("api-name-suffix")
@@ -55,4 +61,11 @@ public interface SpecItemConfig extends CommonItemConfig {
      */
     @WithName("remove-operation-id-prefix-count")
     Optional<Integer> removeOperationIdPrefixCount();
+
+    /**
+     * Set serializable model
+     */
+    @WithName("serializable-model")
+    Optional<Boolean> serializableModel();
+
 }
