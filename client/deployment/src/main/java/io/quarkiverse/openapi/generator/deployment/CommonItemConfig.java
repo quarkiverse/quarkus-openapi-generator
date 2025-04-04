@@ -177,4 +177,10 @@ public interface CommonItemConfig {
      */
     @WithName("equals-hashcode")
     Optional<Boolean> equalsHashcode();
+
+    /**
+     * Add additional properties as attribute.
+     */
+    @WithName("additional-properties-as-attribute")
+    Optional<String> additionalPropertiesAsAttribute();
 }

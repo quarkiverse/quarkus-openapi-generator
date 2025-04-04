@@ -3,6 +3,6 @@ ref: openapi-generator
 type: code
 tags: extension-codestart
 metadata:
-  title: OpenAPI Generator Codestart
-  description: Start to code with the OpenAPI Generator extension.
-  related-guide-section: https://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html
+  title: OpenAPI Generator Client Codestart
+  description: Start to code with the OpenAPI Generator Client extension.
+  related-guide-section: https://docs.quarkiverse.io/quarkus-openapi-generator/dev/client.html

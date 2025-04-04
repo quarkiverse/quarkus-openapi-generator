@@ -1,23 +1,18 @@
 package io.quarkiverse.openapi.generator;
 
-import java.util.Map;
 import java.util.Optional;
 
-import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
-import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
 import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
 
 /**
  * This class represents the runtime authentication related configuration for an individual securityScheme present
  * on an OpenApi spec definition, i.e. the provided files.
  */
 @ConfigGroup
-public class AuthConfig {
+public interface AuthConfig {
 
-    public static final String TOKEN_PROPAGATION = "token-propagation";
-    public static final String HEADER_NAME = "header-name";
+    String TOKEN_PROPAGATION = "token-propagation";
+    String HEADER_NAME = "header-name";
 
     /**
      * Enables the authentication token propagation for this particular securityScheme.
@@ -31,8 +26,7 @@ public class AuthConfig {
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig
      */
-    @ConfigItem(defaultValue = "false")
-    public Optional<Boolean> tokenPropagation;
+    Optional<Boolean> tokenPropagation();
 
     /**
      * Configures a particular http header attribute from were to take the security token from when the token propagation
@@ -47,48 +41,91 @@ public class AuthConfig {
      * @see SpecItemConfig
      * @see OpenApiGeneratorConfig
      */
-    @ConfigItem
-    public Optional<String> headerName;
+    Optional<String> headerName();
 
     /**
-     * Configures a particular parameter value to be used by any of the different internal authentication filters
-     * that processes the different securityScheme definitions.
-     * <p>
+     * Sets the Basic Authentication username for a given OpenAPI securityScheme.
+     * <p/>
      * For example, given a file named petstore.json with a securityScheme named "petstore-basic-auth", that is of
-     * http basic authentication type, the following configuration can establish the user and password to be used.
-     * must be used.
-     * <p>
+     * http basic authentication type, the following configuration can establish the user to be used.
+     * <p/>
      * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.username=MyUserName
-     * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
      *
-     * @see AuthsConfig
-     * @see SpecItemConfig
-     * @see OpenApiGeneratorConfig
-     * @see BasicAuthenticationProvider
-     * @see BearerAuthenticationProvider
-     * @see ApiKeyAuthenticationProvider
+     * @return the username portion for Basic Authentication
+     * @see AuthConfig#password()
+     * @see <a href="https://spec.openapis.org/oas/v3.1.0.html#basic-authentication-sample">4.8.27.2.1 Basic Authentication
+     *      Sample</a>
      */
-    @ConfigItem(name = ConfigItem.PARENT)
-    public Map<String, String> authConfigParams;
+    Optional<String> username();
 
-    public Optional<Boolean> getTokenPropagation() {
-        return tokenPropagation;
-    }
+    /**
+     * Sets the Basic Authentication password for a given OpenAPI securityScheme.
+     * <p/>
+     * For example, given a file named petstore.json with a securityScheme named "petstore-basic-auth", that is of
+     * http basic authentication type, the following configuration can establish the password to be used.
+     * <p/>
+     * quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
+     * <p/>
+     * Ignored if the given securityScheme is not Basic Authentication
+     *
+     * @return the password portion for Basic Authentication
+     * @see AuthConfig#username()
+     * @see <a href="https://spec.openapis.org/oas/v3.1.0.html#basic-authentication-sample">4.8.27.2.1 Basic Authentication
+     *      Sample</a>
+     */
+    Optional<String> password();
 
-    public Optional<String> getHeaderName() {
-        return headerName;
-    }
+    /**
+     * Sets the Bearer Token for a given OpenAPI securityScheme.
+     * <p/>
+     * For example, given a file named petstore.json with a securityScheme named "petstore-bearer-auth", that is of
+     * bearer authentication type, the following configuration can establish the token to be used.
+     * <p/>
+     * quarkus.openapi-generator.petstore_json.auth.petstore_bearer_auth.token=1234567890
+     * <p/>
+     * Ignored if the given securityScheme is not Bearer Token Authentication
+     *
+     * @return the token
+     * @see <a href="https://spec.openapis.org/oas/v3.1.0.html#jwt-bearer-sample">4.8.27.2.3 JWT Bearer Sample</a>
+     */
+    Optional<String> bearerToken();
 
-    public Optional<String> getConfigParam(String paramName) {
-        return Optional.ofNullable(authConfigParams.get(paramName));
-    }
+    /**
+     * Sets the API Key for a given OpenAPI securityScheme.
+     * <p/>
+     * For example, given a file named petstore.json with a securityScheme named "petstore-apikey-auth", that is of
+     * API Key authentication type, the following configuration can establish the API Key to be used.
+     * <p/>
+     * quarkus.openapi-generator.petstore_json.auth.petstore_apikey_auth.api-key=${MY_SECRET_KEY_IN_AN_ENV_VAR}
+     * <p/>
+     * Ignored if the given securityScheme is not API Key Authentication
+     *
+     * @return the token
+     * @see <a href="https://spec.openapis.org/oas/v3.1.0.html#api-key-sample">4.8.27.2.2 API Key Samplee</a>
+     */
+    Optional<String> apiKey();
 
-    @Override
-    public String toString() {
-        return "AuthConfig{" +
-                "tokenPropagation=" + tokenPropagation +
-                ", headerName=" + headerName +
-                ", authConfigParams=" + authConfigParams +
-                '}';
-    }
+    /**
+     * Only valid for API Key Authentication.
+     * <p/>
+     * When to add the `Authorization` value to the API Key in the authentication header.
+     * <p/>
+     * For example, if this property is set to `true`, the API Key will be sent to the server in the header along with
+     * `Authorization`:
+     * <p/>
+     * [source]
+     * ---
+     * Authentication: Authorization MY-API-KEY
+     * ---
+     * <p/>
+     * If set to `false`, the header should be:
+     * <p/>
+     * [source]
+     * ---
+     * Authentication: MY-API-KEY
+     * ---
+     *
+     * @return whether to use the prefix `Authorization` when sending an API Key using headers.
+     */
+    Optional<Boolean> useAuthorizationHeaderValue();
 }
