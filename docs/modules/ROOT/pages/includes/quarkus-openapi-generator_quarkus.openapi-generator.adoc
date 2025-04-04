@@ -454,6 +454,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-properties-as-attribute[`quarkus.openapi-generator.codegen.additional-properties-as-attribute`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.additional-properties-as-attribute+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Add additional properties as attribute.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`quarkus.openapi-generator.codegen.verbose`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.verbose+++[]
@@ -1048,6 +1069,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-properties-as-attribute[`quarkus.openapi-generator.codegen.spec."spec-item".additional-properties-as-attribute`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".additional-properties-as-attribute+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Add additional properties as attribute.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package[`quarkus.openapi-generator.codegen.spec."spec-item".base-package`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".base-package+++[]
@@ -1064,6 +1106,27 @@ Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODE
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__BASE_PACKAGE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-config-key]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-config-key[`quarkus.openapi-generator.codegen.spec."spec-item".config-key`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".config-key+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Custom config key to use in place of the openapi spec file
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__CONFIG_KEY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__CONFIG_KEY+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
@@ -1193,6 +1256,214 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REM
 endif::add-copy-button-to-env-var[]
 --
 |int
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-serializable-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-serializable-model[`quarkus.openapi-generator.codegen.spec."spec-item".serializable-model`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".serializable-model+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Set serializable model
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SERIALIZABLE_MODEL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SERIALIZABLE_MODEL+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation[`quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Enables the authentication token propagation for this particular securityScheme.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-auth" the following configuration must be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_auth.token-propagation=true
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__TOKEN_PROPAGATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__TOKEN_PROPAGATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name[`quarkus.openapi-generator."item-configs".auth."auth-configs".header-name`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".header-name+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Configures a particular http header attribute from were to take the security token from when the token propagation is enabled. Use this fine-grained configuration in very particular scenarios.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-auth" the following configuration must be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_auth.header-name=MyParticularHttpHeaderName
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__HEADER_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__HEADER_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-username]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-username[`quarkus.openapi-generator."item-configs".auth."auth-configs".username`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".username+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Sets the Basic Authentication username for a given OpenAPI securityScheme.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-basic-auth", that is of http basic authentication type, the following configuration can establish the user to be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.username=MyUserName
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__USERNAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__USERNAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-password]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-password[`quarkus.openapi-generator."item-configs".auth."auth-configs".password`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".password+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Sets the Basic Authentication password for a given OpenAPI securityScheme.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-basic-auth", that is of http basic authentication type, the following configuration can establish the password to be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_basic_auth.password=MyPassword
+
+Ignored if the given securityScheme is not Basic Authentication
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__PASSWORD+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__PASSWORD+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-bearer-token]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-bearer-token[`quarkus.openapi-generator."item-configs".auth."auth-configs".bearer-token`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".bearer-token+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Sets the Bearer Token for a given OpenAPI securityScheme.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-bearer-auth", that is of bearer authentication type, the following configuration can establish the token to be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_bearer_auth.token=1234567890
+
+Ignored if the given securityScheme is not Bearer Token Authentication
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__BEARER_TOKEN+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__BEARER_TOKEN+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-api-key]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-api-key[`quarkus.openapi-generator."item-configs".auth."auth-configs".api-key`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".api-key+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Sets the API Key for a given OpenAPI securityScheme.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-apikey-auth", that is of API Key authentication type, the following configuration can establish the API Key to be used.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_apikey_auth.api-key=$++{++MY_SECRET_KEY_IN_AN_ENV_VAR++}++
+
+Ignored if the given securityScheme is not API Key Authentication
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__API_KEY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__API_KEY+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-use-authorization-header-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-use-authorization-header-value[`quarkus.openapi-generator."item-configs".auth."auth-configs".use-authorization-header-value`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".use-authorization-header-value+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Only valid for API Key Authentication.
+
+When to add the `Authorization` value to the API Key in the authentication header.
+
+For example, if this property is set to `true`, the API Key will be sent to the server in the header along with `Authorization`:
+
+++[++source++]++ --- Authentication: Authorization MY-API-KEY ---
+
+If set to `false`, the header should be:
+
+++[++source++]++ --- Authentication: MY-API-KEY ---
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__USE_AUTHORIZATION_HEADER_VALUE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__USE_AUTHORIZATION_HEADER_VALUE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
 |
 
 |===
