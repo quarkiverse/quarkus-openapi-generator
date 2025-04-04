@@ -28,6 +28,9 @@ class BasicOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Basic
     private static final String USER = "USER";
     private static final String PASSWORD = "PASSWORD";
 
+    private static final String USER_PROP = "username";
+    private static final String PASSWORD_PROP = "password";
+
     private static final String CUSTOM_SCHEMA = "custom_scheme";
     private static final String HEADER_NAME = "HEADER_NAME";
 
@@ -53,14 +56,9 @@ class BasicOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Basic
     @MethodSource("filterWithPropagationTestValues")
     void filterWithPropagation(String headerName,
             String expectedAuthorizationHeader) throws IOException {
-        String propagatedHeaderName;
-        if (headerName == null) {
-            propagatedHeaderName = propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME,
-                    HttpHeaders.AUTHORIZATION);
-        } else {
-            propagatedHeaderName = propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME,
-                    HEADER_NAME);
-        }
+        String propagatedHeaderName = headerName == null
+                ? propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, HttpHeaders.AUTHORIZATION)
+                : propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, HEADER_NAME);
         try (MockedStatic<ConfigProvider> configProviderMocked = Mockito.mockStatic(ConfigProvider.class)) {
             Config mockedConfig = Mockito.mock(Config.class);
             configProviderMocked.when(ConfigProvider::getConfig).thenReturn(mockedConfig);
@@ -69,7 +67,10 @@ class BasicOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Basic
                     Boolean.class)).thenReturn(Optional.of(true));
             when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME),
                     String.class)).thenReturn(Optional.of(headerName == null ? HttpHeaders.AUTHORIZATION : headerName));
-
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(USER_PROP),
+                    String.class)).thenReturn(Optional.of(USER));
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(PASSWORD_PROP),
+                    String.class)).thenReturn(Optional.of(PASSWORD));
             headers.putSingle(propagatedHeaderName, PROPAGATED_TOKEN);
             filter(expectedAuthorizationHeader);
         }

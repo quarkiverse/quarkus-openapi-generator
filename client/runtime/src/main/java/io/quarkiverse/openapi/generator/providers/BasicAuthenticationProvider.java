@@ -6,8 +6,6 @@ import java.util.List;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +36,8 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        String basicToken = AuthUtils.basicAuthAccessTokenWithoutPrefix(getUsername(requestContext), getPassword(requestContext));
+        String basicToken = AuthUtils.basicAuthAccessTokenWithoutPrefix(getUsername(requestContext),
+                getPassword(requestContext));
 
         if (isTokenPropagation()) {
             LOGGER.warn("Token propagation enabled for BasicAuthentication");
@@ -47,7 +46,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
 
         if (!basicToken.isBlank()) {
             requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                AuthUtils.basicAuthAccessToken(basicToken));
+                    AuthUtils.basicAuthAccessToken(basicToken));
         }
 
     }

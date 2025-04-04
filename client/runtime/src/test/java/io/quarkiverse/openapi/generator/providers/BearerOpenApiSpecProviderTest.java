@@ -28,6 +28,8 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
     private static final String PROPAGATED_TOKEN = "PROPAGATED_TOKEN";
 
     private static final String BEARER_SCHEMA = "bearer";
+
+    private static final String BEARER_TOKEN = "bearer-token";
     private static final String CUSTOM_SCHEMA = "custom_scheme";
     private static final String HEADER_NAME = "HEADER_NAME";
 
@@ -88,6 +90,8 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
                     Boolean.class)).thenReturn(Optional.of(true));
             when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME),
                     String.class)).thenReturn(Optional.of(headerName == null ? HttpHeaders.AUTHORIZATION : headerName));
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(BEARER_TOKEN),
+                    String.class)).thenReturn(Optional.of(INCOMING_TOKEN));
 
             headers.putSingle(propagatedHeaderName, PROPAGATED_TOKEN);
             filter(bearerScheme, expectedAuthorizationHeader);

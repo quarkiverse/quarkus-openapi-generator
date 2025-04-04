@@ -28,13 +28,12 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        String bearerToken;
+        String bearerToken = getBearerToken(requestContext);
+
         if (isTokenPropagation()) {
-            bearerToken = getTokenForPropagation(requestContext.getHeaders());
-            bearerToken = sanitizeBearerToken(bearerToken);
-        } else {
-            bearerToken = getBearerToken(requestContext);
+            bearerToken = sanitizeBearerToken(getTokenForPropagation(requestContext.getHeaders()));
         }
+
         if (!bearerToken.isBlank()) {
             requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
         }
