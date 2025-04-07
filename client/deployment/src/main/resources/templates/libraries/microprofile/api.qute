@@ -128,7 +128,7 @@ public interface {classname} {
                 !}{arg}{#if arg_hasNext}, {/if}{/for}{!
             !}{#if op.allParams || op.hasFormParams},{/if}
         {/if}
-        {#if is-resteasy-reactive}
+        {#if is-resteasy-reactive && use-dynamic-url}
         // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
         @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
         {/if}

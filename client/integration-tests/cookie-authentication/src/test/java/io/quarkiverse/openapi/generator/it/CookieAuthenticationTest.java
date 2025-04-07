@@ -32,7 +32,7 @@ class CookieAuthenticationTest {
 
     @Test
     void apiIsBeingGenerated() {
-        final Response response = testApi.doTest(null)
+        final Response response = testApi.doTest()
                 .await()
                 .atMost(Duration.ofSeconds(5L));
         assertThat(response)

@@ -339,6 +339,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE,
                 additionalPropertiesAsAttribute.toString());
 
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_DYNAMIC_URL, Boolean.class)
+                .ifPresent(generator::withUseDynamicUrl);
+
+        System.out.println("This is the DYNAMIC URL "
+                + getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_DYNAMIC_URL, Boolean.class));
+
         generator.generate(basePackage);
     }
 

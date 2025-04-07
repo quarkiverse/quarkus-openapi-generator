@@ -674,7 +674,10 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyDynamicUrlAnnotation() throws Exception {
-        List<File> generatedFiles = createGeneratorWrapperReactive("petstore-openapi.json").generate("org.dynamic.url").stream()
+        List<File> generatedFiles = createGeneratorWrapperReactive("petstore-openapi.json")
+                .withUseDynamicUrl(true)
+                .generate("org.dynamic.url")
+                .stream()
                 .filter(file -> file.getPath().endsWith("PetApi.java")).toList();
 
         assertThat(generatedFiles).isNotEmpty();

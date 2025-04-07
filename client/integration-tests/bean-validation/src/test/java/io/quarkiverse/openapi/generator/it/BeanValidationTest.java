@@ -27,7 +27,6 @@ import org.openapi.quarkus.bean_validation_true_yaml.api.ValidatedEndpointApi;
 import org.openapi.quarkus.bean_validation_true_yaml.model.ValidatedObject;
 import org.openapi.quarkus.issue_976_yaml.api.ValidatedEndpointIssue976Api;
 
-import io.quarkus.rest.client.reactive.Url;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -37,17 +36,12 @@ class BeanValidationTest {
     void testValidationAnnotationsAreInPlaceApi() {
         Method method = ValidatedEndpointApi.class.getMethods()[0];
         Annotation[][] annotationsPerParameter = method.getParameterAnnotations();
+        Boolean validationAnnotationExists = Arrays.stream(annotationsPerParameter)
+                .allMatch(annotations -> Arrays.stream(annotations)
+                        .filter(a -> a.annotationType().equals(Valid.class)).toList()
+                        .size() == 1);
 
-        boolean allValidExceptUrl = Arrays.stream(annotationsPerParameter)
-                .allMatch(annotations -> {
-                    boolean hasUrl = Arrays.stream(annotations)
-                            .anyMatch(a -> a.annotationType().equals(Url.class));
-                    boolean hasValid = Arrays.stream(annotations)
-                            .anyMatch(a -> a.annotationType().equals(Valid.class));
-                    return hasUrl || hasValid;
-                });
-
-        assertThat(allValidExceptUrl).isTrue();
+        assertThat(validationAnnotationExists).isTrue();
     }
 
     @Test
@@ -117,24 +111,18 @@ class BeanValidationTest {
 
         Parameter pathParam = Arrays.stream(method.getParameters())
                 .filter(p -> p.getName().equals("pathParam"))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("pathParam not found"));
+                .findFirst().get();
 
         Parameter headerParam = Arrays.stream(method.getParameters())
                 .filter(p -> p.getName().equals("headerParam"))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("headerParam not found"));
+                .findFirst().get();
 
-        boolean allValidExceptUrl = Arrays.stream(annotationsPerParameter)
-                .allMatch(annotations -> {
-                    boolean hasUrl = Arrays.stream(annotations)
-                            .anyMatch(a -> a.annotationType().equals(Url.class));
-                    boolean hasValid = Arrays.stream(annotations)
-                            .anyMatch(a -> a.annotationType().equals(Valid.class));
-                    return hasUrl || hasValid;
-                });
+        Boolean validationAnnotationExists = Arrays.stream(annotationsPerParameter)
+                .allMatch(annotations -> Arrays.stream(annotations)
+                        .filter(a -> a.annotationType().equals(Valid.class)).toList()
+                        .size() == 1);
 
-        assertThat(allValidExceptUrl).isTrue();
+        assertThat(validationAnnotationExists).isTrue();
 
         assertThat(pathParam.isAnnotationPresent(Valid.class)).isTrue();
         assertThat(pathParam.isAnnotationPresent(NotNull.class)).isTrue();

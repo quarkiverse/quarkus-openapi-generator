@@ -36,7 +36,7 @@ class BeanParamOpenApiTest {
         TestObjQueryParam model = new TestObjQueryParam();
         model.size(42);
 
-        ResponseDto responseDto = api.getTest(null, model, true);
+        ResponseDto responseDto = api.getTest(model, true);
         assertThat(responseDto.getMessage()).isEqualTo("Hello");
 
         wireMockServer.verify(getRequestedFor(urlEqualTo("/get?size=42&unpaged=true")));
@@ -48,7 +48,7 @@ class BeanParamOpenApiTest {
         requestModel.setName("Max");
         requestModel.setAge(42);
 
-        api.patchTest(null, requestModel);
+        api.patchTest(requestModel);
 
         wireMockServer.verify(patchRequestedFor(urlEqualTo("/patch"))
                 .withHeader("Content-Type", equalTo("application/json"))

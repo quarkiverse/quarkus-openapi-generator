@@ -111,6 +111,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("verbose", FALSE);
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
         this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
+        this.configurator.addAdditionalProperty("use-dynamic-url", FALSE);
     }
 
     /**
@@ -320,6 +321,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withModelNamePrefix(final String modelNamePrefix) {
         this.configurator.setModelNamePrefix(modelNamePrefix);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withUseDynamicUrl(final Boolean useDynamicUrl) {
+        this.configurator.addAdditionalProperty("use-dynamic-url", useDynamicUrl);
         return this;
     }
 
