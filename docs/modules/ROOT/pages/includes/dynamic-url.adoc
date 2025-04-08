@@ -1,0 +1,16 @@
+
+If you need the generated `RestClient` to target different server URLs at runtime—rather than relying solely on the static URL from the application configuration—you can enable dynamic base URL support.
+
+To do so, set the following property in your configuration:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.use-dynamic-url=true
+----
+
+When this property is enabled and `quarkus-rest-client` is present on the classpath, the generator will include a method parameter annotated with `@io.quarkus.rest.client.reactive.Url`. This allows your application to supply the target URL dynamically at runtime.
+
+This feature is particularly useful when integrating with multiple instances of the same API or switching endpoints based on contextual information.
+
+For more details, refer to the official Quarkus documentation:
+https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls

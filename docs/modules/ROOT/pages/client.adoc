@@ -199,6 +199,11 @@ quarkus.openapi-generator.codegen.spec.my_openapi_yaml.serializable-model=true
 
 include::./includes/equals-hashcode.adoc[leveloffset=+1, opts=optional]
 
+[[dynamic-url]]
+== Dynamic base URLs
+
+include::./includes/dynamic-url.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments

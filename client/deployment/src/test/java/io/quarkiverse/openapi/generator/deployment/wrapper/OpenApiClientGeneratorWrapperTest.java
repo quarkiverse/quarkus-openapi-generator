@@ -36,7 +36,6 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.SimpleName;
-import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.type.Type;
 
@@ -70,9 +69,10 @@ public class OpenApiClientGeneratorWrapperTest {
                 .orElseThrow(() -> new AssertionError("Class not found in the file"));
 
         // Collect all OauthAuthenticationMarker annotations
-        long oauthAnnotationsCount = classDeclaration.getAnnotations().stream()
-                .filter(annotation -> annotation.getNameAsString()
-                        .equals("io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker"))
+        long oauthAnnotationsCount = classDeclaration
+                .getAnnotations().stream().filter(
+                        annotation -> annotation.getNameAsString()
+                                .equals("io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker"))
                 .filter(Expression::isNormalAnnotationExpr)
                 .filter(annotation -> annotation
                         .findFirst(MemberValuePair.class,
@@ -121,14 +121,13 @@ public class OpenApiClientGeneratorWrapperTest {
         assertNotNull(generatedFiles);
         assertFalse(generatedFiles.isEmpty());
 
-        final Optional<File> classWithDiscriminator = generatedFiles.stream()
-                .filter(f -> f.getName().startsWith("Thing.java")).findFirst();
+        final Optional<File> classWithDiscriminator = generatedFiles.stream().filter(f -> f.getName().startsWith("Thing.java"))
+                .findFirst();
         assertThat(classWithDiscriminator).isPresent();
 
         final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
         assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
-                .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class)))
-                .isPresent();
+                .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class))).isPresent();
     }
 
     @Test
@@ -147,8 +146,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(vars).isNotEmpty();
 
         // This openApi file has a duplicated field
-        assertThat(vars.stream()
-                .filter(v -> "failureCause".equals(v.getNameAsString())).count()).isEqualTo(4);
+        assertThat(vars.stream().filter(v -> "failureCause".equals(v.getNameAsString())).count()).isEqualTo(4);
     }
 
     @Test
@@ -203,8 +201,7 @@ public class OpenApiClientGeneratorWrapperTest {
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
         assertThat(methodDeclarations).isNotEmpty();
 
-        Optional<MethodDeclaration> initMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals("filter"))
+        Optional<MethodDeclaration> initMethod = methodDeclarations.stream().filter(m -> m.getNameAsString().equals("filter"))
                 .findAny();
         assertThat(initMethod).isPresent();
 
@@ -221,17 +218,14 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyEnumGeneration() throws URISyntaxException, FileNotFoundException {
-        final List<File> generatedFiles = createGeneratorWrapper("issue-28.yaml")
-                .generate("org.issue28");
+        final List<File> generatedFiles = createGeneratorWrapper("issue-28.yaml").generate("org.issue28");
         final Optional<File> enumFile = generatedFiles.stream()
                 .filter(f -> f.getName().endsWith("ConnectorNamespaceState.java")).findFirst();
         assertThat(enumFile).isPresent();
 
         final CompilationUnit cu = StaticJavaParser.parse(enumFile.orElseThrow());
         final List<EnumConstantDeclaration> constants = cu.findAll(EnumConstantDeclaration.class);
-        assertThat(constants)
-                .hasSize(3)
-                .extracting(EnumConstantDeclaration::getNameAsString)
+        assertThat(constants).hasSize(3).extracting(EnumConstantDeclaration::getNameAsString)
                 .containsExactlyInAnyOrder("DISCONNECTED", "READY", "DELETING");
     }
 
@@ -239,23 +233,20 @@ public class OpenApiClientGeneratorWrapperTest {
     void verifyDeprecatedFields() throws URISyntaxException, FileNotFoundException {
         final Map<String, Object> codegenConfig = ClassCodegenConfigParser
                 .parse(MockConfigUtils.getTestConfig("/codegen/application.properties"), "org.issue38");
-        final List<File> generatedFiles = this.createGeneratorWrapper("issue-38.yaml")
-                .withClassesCodeGenConfig(codegenConfig)
+        final List<File> generatedFiles = this.createGeneratorWrapper("issue-38.yaml").withClassesCodeGenConfig(codegenConfig)
                 .generate("org.issue38");
 
         // we have two attributes that will be generated with the same name, one of them is deprecated
-        final Optional<File> metaV1Condition = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("MetaV1Condition.java")).findFirst();
+        final Optional<File> metaV1Condition = generatedFiles.stream().filter(f -> f.getName().endsWith("MetaV1Condition.java"))
+                .findFirst();
         assertThat(metaV1Condition).isPresent();
         final CompilationUnit cu = StaticJavaParser.parse(metaV1Condition.orElseThrow());
         final List<FieldDeclaration> fields = cu.findAll(FieldDeclaration.class);
 
         assertThat(fields).extracting(FieldDeclaration::getVariables).hasSize(10);
 
-        assertThat(fields.stream()
-                .flatMap(v -> v.getVariables().stream())
-                .anyMatch(f -> f.getNameAsString().equals("lastTransitionTime")))
-                .isTrue();
+        assertThat(fields.stream().flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("lastTransitionTime"))).isTrue();
 
         // this one we optionally removed the deprecated attribute
         final Optional<File> connectorDeploymentSpec = generatedFiles.stream()
@@ -264,10 +255,8 @@ public class OpenApiClientGeneratorWrapperTest {
         final CompilationUnit cu2 = StaticJavaParser.parse(connectorDeploymentSpec.orElseThrow());
         final List<FieldDeclaration> fields2 = cu2.findAll(FieldDeclaration.class);
 
-        assertThat(fields2.stream()
-                .flatMap(v -> v.getVariables().stream())
-                .anyMatch(f -> f.getNameAsString().equals("allowUpgrade")))
-                .isFalse();
+        assertThat(fields2.stream().flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("allowUpgrade"))).isFalse();
 
         // this class has a deprecated attribute, so we check the default behavior
         final Optional<File> connectorDeploymentStatus = generatedFiles.stream()
@@ -276,24 +265,19 @@ public class OpenApiClientGeneratorWrapperTest {
         final CompilationUnit cu3 = StaticJavaParser.parse(connectorDeploymentStatus.orElseThrow());
         final List<FieldDeclaration> fields3 = cu3.findAll(FieldDeclaration.class);
 
-        assertThat(fields3.stream()
-                .flatMap(v -> v.getVariables().stream())
-                .anyMatch(f -> f.getNameAsString().equals("availableUpgrades")))
-                .isTrue();
+        assertThat(fields3.stream().flatMap(v -> v.getVariables().stream())
+                .anyMatch(f -> f.getNameAsString().equals("availableUpgrades"))).isTrue();
     }
 
     @Test
     void verifyDeprecatedOperations() throws URISyntaxException, FileNotFoundException {
         final Map<String, Object> codegenConfig = ClassCodegenConfigParser
                 .parse(MockConfigUtils.getTestConfig("/deprecated/application.properties"), "org.deprecated");
-        List<File> generatedFiles = this.createGeneratorWrapper("deprecated.json")
-                .withClassesCodeGenConfig(codegenConfig)
+        List<File> generatedFiles = this.createGeneratorWrapper("deprecated.json").withClassesCodeGenConfig(codegenConfig)
                 .generate("org.deprecated");
         assertFalse(generatedFiles.isEmpty());
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("DefaultApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("DefaultApi.java")).findAny();
 
         assertThat(file).isNotEmpty();
 
@@ -309,14 +293,12 @@ public class OpenApiClientGeneratorWrapperTest {
 
         // hello operation is NOT deprecated and should be generated
         Optional<MethodDeclaration> helloMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals("helloGet"))
-                .findAny();
+                .filter(m -> m.getNameAsString().equals("helloGet")).findAny();
 
         assertThat(helloMethod).isNotEmpty();
 
         // bye operation is deprecated and should NOT be generated
-        Optional<MethodDeclaration> byeMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals("byeGet"))
+        Optional<MethodDeclaration> byeMethod = methodDeclarations.stream().filter(m -> m.getNameAsString().equals("byeGet"))
                 .findAny();
 
         assertThat(byeMethod).isEmpty();
@@ -329,9 +311,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertNotNull(restClientFiles);
         assertFalse(restClientFiles.isEmpty());
 
-        Optional<File> file = restClientFiles.stream()
-                .filter(f -> f.getName().endsWith("DefaultApi.java"))
-                .findAny();
+        Optional<File> file = restClientFiles.stream().filter(f -> f.getName().endsWith("DefaultApi.java")).findAny();
 
         assertThat(file).isNotEmpty();
 
@@ -358,30 +338,23 @@ public class OpenApiClientGeneratorWrapperTest {
         });
 
         Optional<MethodDeclaration> byeMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals(byeMethodGet))
-                .findAny();
+                .filter(m -> m.getNameAsString().equals(byeMethodGet)).findAny();
 
         assertThat(byeMethod).isNotEmpty();
 
-        assertThat(byeMethod.orElseThrow())
-                .hasCircuitBreakerAnnotation()
-                .doesNotHaveAnyCircuitBreakerAttribute();
+        assertThat(byeMethod.orElseThrow()).hasCircuitBreakerAnnotation().doesNotHaveAnyCircuitBreakerAttribute();
 
-        methodDeclarations.stream()
-                .filter(m -> !m.getNameAsString().equals(byeMethodGet))
+        methodDeclarations.stream().filter(m -> !m.getNameAsString().equals(byeMethodGet))
                 .forEach(m -> assertThat(m).doesNotHaveCircuitBreakerAnnotation());
     }
 
     @Test
     void verifyMultipartFormAnnotationIsGeneratedForParameter() throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
-                .withSkipFormModelConfig("false")
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml").withSkipFormModelConfig("false")
                 .generate("org.acme");
         assertThat(generatedFiles).isNotEmpty();
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
         assertThat(file).isPresent();
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
@@ -389,8 +362,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(methodDeclarations).isNotEmpty();
 
         Optional<MethodDeclaration> multipartPostMethod = methodDeclarations.stream()
-                .filter(m -> m.getNameAsString().equals("postUserProfileData"))
-                .findAny();
+                .filter(m -> m.getNameAsString().equals("postUserProfileData")).findAny();
         assertThat(multipartPostMethod).isPresent();
 
         List<Parameter> parameters = multipartPostMethod.orElseThrow().getParameters();
@@ -402,21 +374,16 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyMultipartPojoGeneratedAndFieldsHaveAnnotations() throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
-                .withSkipFormModelConfig("false")
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml").withSkipFormModelConfig("false")
                 .generate("org.acme");
         assertFalse(generatedFiles.isEmpty());
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
         assertThat(file).isNotEmpty();
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         Optional<ClassOrInterfaceDeclaration> multipartPojo = compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                .stream()
-                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm"))
-                .findAny();
+                .stream().filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny();
         assertThat(multipartPojo).isNotEmpty();
 
         List<FieldDeclaration> fields = multipartPojo.orElseThrow().getFields();
@@ -433,20 +400,15 @@ public class OpenApiClientGeneratorWrapperTest {
     @Test
     void shouldMapFileTypeToFullyQualifiedInputStream() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
-                .withTypeMappings(Map.of("File", "java.io.InputStream"))
-                .generate("org.acme");
+                .withTypeMappings(Map.of("File", "java.io.InputStream")).generate("org.acme");
         assertFalse(generatedFiles.isEmpty());
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
         assertThat(file).isNotEmpty();
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         Optional<ClassOrInterfaceDeclaration> multipartPojo = compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                .stream()
-                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm"))
-                .findAny();
+                .stream().filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny();
         assertThat(multipartPojo).isNotEmpty();
 
         Optional<VariableDeclarator> fileUploadVariable = findVariableByName(multipartPojo.orElseThrow().getFields(),
@@ -456,76 +418,55 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void shouldReplaceFileImportWithInputStream() throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml")
-                .withSkipFormModelConfig("false")
-                .withTypeMappings(Map.of("File", "InputStream"))
-                .withImportMappings(Map.of("File", "java.io.InputStream"))
+        List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml").withSkipFormModelConfig("false")
+                .withTypeMappings(Map.of("File", "InputStream")).withImportMappings(Map.of("File", "java.io.InputStream"))
                 .generate("org.acme");
         assertFalse(generatedFiles.isEmpty());
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("UserProfileDataApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
         assertThat(file).isNotEmpty();
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         Optional<ClassOrInterfaceDeclaration> multipartPojo = compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                .stream()
-                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm"))
-                .findAny();
+                .stream().filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny();
         assertThat(multipartPojo).isNotEmpty();
 
         Optional<VariableDeclarator> fileUploadVariable = findVariableByName(multipartPojo.orElseThrow().getFields(),
                 "profileImage");
         assertThat(fileUploadVariable.orElseThrow().getType().asString()).isEqualTo("InputStream");
 
-        List<String> imports = compilationUnit.findAll(ImportDeclaration.class)
-                .stream()
-                .map(importDeclaration -> importDeclaration.getName().asString())
-                .collect(Collectors.toList());
-        assertThat(imports).contains("java.io.InputStream")
-                .doesNotContain("java.io.File");
+        List<String> imports = compilationUnit.findAll(ImportDeclaration.class).stream()
+                .map(importDeclaration -> importDeclaration.getName().asString()).collect(Collectors.toList());
+        assertThat(imports).contains("java.io.InputStream").doesNotContain("java.io.File");
     }
 
     @Test
     void withoutAnyTypeOrImportMappingsItShouldGenerateUsingJava8DatesAndTimes()
             throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
-                .generate("org.datetime.regression");
+        List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml").generate("org.datetime.regression");
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("SomeName.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("SomeName.java")).findAny();
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
         assertThat(classes).hasSize(2);
         ClassOrInterfaceDeclaration generatedPojoClass = classes.get(0);
 
-        verifyGeneratedDateAndTimeTypes(
-                generatedPojoClass,
-                Map.of(
-                        "someDate", "LocalDate",
-                        "someDateTime", "OffsetDateTime",
-                        "dateArray", "List<LocalDate>",
-                        "dateTimeArray", "List<OffsetDateTime>",
-                        "dateSet", "Set<LocalDate>",
-                        "dateTimeSet", "Set<OffsetDateTime>",
-                        "dateMap", "Map<String,LocalDate>",
-                        "dateTimeMap", "Map<String,OffsetDateTime>"));
-        assertThat(compilationUnit.getImports().stream().map(NodeWithName::getNameAsString))
-                .contains("java.time.LocalDate", "java.time.OffsetDateTime");
+        verifyGeneratedDateAndTimeTypes(generatedPojoClass,
+                Map.of("someDate", "LocalDate", "someDateTime", "OffsetDateTime", "dateArray", "List<LocalDate>",
+                        "dateTimeArray", "List<OffsetDateTime>", "dateSet", "Set<LocalDate>", "dateTimeSet",
+                        "Set<OffsetDateTime>", "dateMap", "Map<String,LocalDate>", "dateTimeMap",
+                        "Map<String,OffsetDateTime>"));
+        assertThat(compilationUnit.getImports().stream().map(NodeWithName::getNameAsString)).contains("java.time.LocalDate",
+                "java.time.OffsetDateTime");
     }
 
     @Test
     void shouldBeAbleToEnableMutiny() throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json")
-                .withMutiny(true)
+        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json").withMutiny(true)
                 .generate("org.mutiny.enabled");
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("DefaultApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("DefaultApi.java")).findAny();
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
@@ -541,14 +482,10 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void shouldBeAbleToApplyMutinyOnSpecificEndpoints() throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json")
-                .withMutiny(true)
-                .withMutinyReturnTypes(Map.of("helloMethod", "Uni", "Bye method_get", "Multi"))
-                .generate("org.mutiny.enabled");
+        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json").withMutiny(true)
+                .withMutinyReturnTypes(Map.of("helloMethod", "Uni", "Bye method_get", "Multi")).generate("org.mutiny.enabled");
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("DefaultApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("DefaultApi.java")).findAny();
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
@@ -558,10 +495,8 @@ public class OpenApiClientGeneratorWrapperTest {
                 "helloMethod");
         Optional<MethodDeclaration> byeMethodGetDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
                 "byeMethodGet");
-        Optional<MethodDeclaration> getUserDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
-                "getUser");
-        Optional<MethodDeclaration> getNumbersDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
-                "getNumbers");
+        Optional<MethodDeclaration> getUserDeclaration = getMethodDeclarationByIdentifier(methodDeclarations, "getUser");
+        Optional<MethodDeclaration> getNumbersDeclaration = getMethodDeclarationByIdentifier(methodDeclarations, "getNumbers");
 
         assertThat(helloMethodDeclaration).hasValueSatisfying(
                 methodDeclaration -> assertEquals("io.smallrye.mutiny.Uni<String>", methodDeclaration.getType().toString()));
@@ -569,21 +504,18 @@ public class OpenApiClientGeneratorWrapperTest {
                 methodDeclaration -> assertEquals("io.smallrye.mutiny.Multi<String>", methodDeclaration.getType().toString()));
         assertThat(getUserDeclaration).hasValueSatisfying(
                 methodDeclaration -> assertEquals("GetUser200Response", methodDeclaration.getType().toString()));
-        assertThat(getNumbersDeclaration).hasValueSatisfying(
-                methodDeclaration -> assertEquals("List<Integer>", methodDeclaration.getType().toString()));
+        assertThat(getNumbersDeclaration)
+                .hasValueSatisfying(methodDeclaration -> assertEquals("List<Integer>", methodDeclaration.getType().toString()));
     }
 
     @Test
     void shouldBeAbleToApplyMutinyOnSpecificEndpointsWhenUserDefineWrongConfiguration()
             throws URISyntaxException, FileNotFoundException {
-        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json")
-                .withMutiny(true)
+        List<File> generatedFiles = createGeneratorWrapper("simple-openapi.json").withMutiny(true)
                 .withMutinyReturnTypes(Map.of("helloMethod", "Uni", "Bye method_get", "BadConfig"))
                 .generate("org.mutiny.enabled");
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("DefaultApi.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("DefaultApi.java")).findAny();
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
@@ -593,10 +525,8 @@ public class OpenApiClientGeneratorWrapperTest {
                 "helloMethod");
         Optional<MethodDeclaration> byeMethodGetDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
                 "byeMethodGet");
-        Optional<MethodDeclaration> getUserDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
-                "getUser");
-        Optional<MethodDeclaration> getNumbersDeclaration = getMethodDeclarationByIdentifier(methodDeclarations,
-                "getNumbers");
+        Optional<MethodDeclaration> getUserDeclaration = getMethodDeclarationByIdentifier(methodDeclarations, "getUser");
+        Optional<MethodDeclaration> getNumbersDeclaration = getMethodDeclarationByIdentifier(methodDeclarations, "getNumbers");
 
         assertThat(helloMethodDeclaration).hasValueSatisfying(
                 methodDeclaration -> assertEquals("io.smallrye.mutiny.Uni<String>", methodDeclaration.getType().toString()));
@@ -604,54 +534,40 @@ public class OpenApiClientGeneratorWrapperTest {
                 methodDeclaration -> assertEquals("io.smallrye.mutiny.Uni<String>", methodDeclaration.getType().toString()));
         assertThat(getUserDeclaration).hasValueSatisfying(
                 methodDeclaration -> assertEquals("GetUser200Response", methodDeclaration.getType().toString()));
-        assertThat(getNumbersDeclaration).hasValueSatisfying(
-                methodDeclaration -> assertEquals("List<Integer>", methodDeclaration.getType().toString()));
+        assertThat(getNumbersDeclaration)
+                .hasValueSatisfying(methodDeclaration -> assertEquals("List<Integer>", methodDeclaration.getType().toString()));
     }
 
     @Test
     void shouldBeAbleToAddCustomDateAndTimeMappings() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("datetime-regression.yml")
-                .withTypeMappings(Map.of(
-                        "date", "ThaiBuddhistDate",
-                        "DateTime", "Instant"))
-                .withImportMappings(Map.of(
-                        "ThaiBuddhistDate", "java.time.chrono.ThaiBuddhistDate",
-                        "Instant", "java.time.Instant"))
+                .withTypeMappings(Map.of("date", "ThaiBuddhistDate", "DateTime", "Instant"))
+                .withImportMappings(
+                        Map.of("ThaiBuddhistDate", "java.time.chrono.ThaiBuddhistDate", "Instant", "java.time.Instant"))
                 .generate("org.datetime.mappings");
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("SomeName.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("SomeName.java")).findAny();
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
         assertThat(classes).hasSize(2);
         ClassOrInterfaceDeclaration generatedPojoClass = classes.get(0);
 
-        verifyGeneratedDateAndTimeTypes(
-                generatedPojoClass,
-                Map.of(
-                        "someDate", "ThaiBuddhistDate",
-                        "someDateTime", "Instant",
-                        "dateArray", "List<ThaiBuddhistDate>",
-                        "dateTimeArray", "List<Instant>",
-                        "dateSet", "Set<ThaiBuddhistDate>",
-                        "dateTimeSet", "Set<Instant>",
-                        "dateMap", "Map<String,ThaiBuddhistDate>",
-                        "dateTimeMap", "Map<String,Instant>"));
+        verifyGeneratedDateAndTimeTypes(generatedPojoClass,
+                Map.of("someDate", "ThaiBuddhistDate", "someDateTime", "Instant", "dateArray", "List<ThaiBuddhistDate>",
+                        "dateTimeArray", "List<Instant>", "dateSet", "Set<ThaiBuddhistDate>", "dateTimeSet", "Set<Instant>",
+                        "dateMap", "Map<String,ThaiBuddhistDate>", "dateTimeMap", "Map<String,Instant>"));
         assertThat(compilationUnit.getImports().stream().map(NodeWithName::getNameAsString))
                 .contains("java.time.chrono.ThaiBuddhistDate", "java.time.Instant");
     }
 
-    private void verifyGeneratedDateAndTimeTypes(
-            ClassOrInterfaceDeclaration classDeclaration,
+    private void verifyGeneratedDateAndTimeTypes(ClassOrInterfaceDeclaration classDeclaration,
             Map<String, String> expectedFieldsAndTypes) {
         expectedFieldsAndTypes.forEach((fieldName, expectedFieldType) -> {
             Optional<FieldDeclaration> fieldDeclaration = classDeclaration.getFieldByName(fieldName);
             assertThat(fieldDeclaration).isPresent();
 
             Optional<Node> fieldVariableDeclaration = fieldDeclaration.orElseThrow().getChildNodes().stream()
-                    .filter(it -> it instanceof VariableDeclarator)
-                    .findFirst();
+                    .filter(it -> it instanceof VariableDeclarator).findFirst();
             assertThat(fieldVariableDeclaration).isPresent();
 
             Type fieldType = ((VariableDeclarator) fieldVariableDeclaration.orElseThrow()).getType();
@@ -666,19 +582,17 @@ public class OpenApiClientGeneratorWrapperTest {
                 .generate("org.additionalmodeltypeannotations");
         assertFalse(generatedFiles.isEmpty());
 
-        generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*/model/.*.java"))
+        generatedFiles.stream().filter(file -> file.getPath().matches(".*/model/.*.java"))
                 .forEach(this::verifyModelAdditionalAnnotations);
     }
 
     private void verifyModelAdditionalAnnotations(File file) {
         try {
             CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                    .forEach(c -> {
-                        assertThat(c.getAnnotationByName("Foo")).isPresent();
-                        assertThat(c.getAnnotationByName("Bar")).isPresent();
-                    });
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class).forEach(c -> {
+                assertThat(c.getAnnotationByName("Foo")).isPresent();
+                assertThat(c.getAnnotationByName("Bar")).isPresent();
+            });
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -686,25 +600,22 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyAdditionalApiTypeAnnotations() throws URISyntaxException {
-        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
-                .withEnabledSecurityGeneration(false)
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").withEnabledSecurityGeneration(false)
                 .withAdditionalApiTypeAnnotationsConfig("@org.test.Foo;@org.test.Bar")
                 .generate("org.additionalapitypeannotations");
         assertFalse(generatedFiles.isEmpty());
 
-        generatedFiles.stream()
-                .filter(file -> file.getPath().matches(".*api.*Api.java"))
+        generatedFiles.stream().filter(file -> file.getPath().matches(".*api.*Api.java"))
                 .forEach(this::verifyApiAdditionalAnnotations);
     }
 
     private void verifyApiAdditionalAnnotations(File file) {
         try {
             CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-            compilationUnit.findAll(ClassOrInterfaceDeclaration.class)
-                    .forEach(c -> {
-                        assertThat(c.getAnnotationByName("Foo")).isPresent();
-                        assertThat(c.getAnnotationByName("Bar")).isPresent();
-                    });
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class).forEach(c -> {
+                assertThat(c.getAnnotationByName("Foo")).isPresent();
+                assertThat(c.getAnnotationByName("Bar")).isPresent();
+            });
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -712,86 +623,34 @@ public class OpenApiClientGeneratorWrapperTest {
 
     @Test
     void verifyAdditionalRequestArgs() throws URISyntaxException {
-        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
-                .withEnabledSecurityGeneration(false)
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").withEnabledSecurityGeneration(false)
                 .withAdditionalRequestArgs(
                         "@HeaderParam(\"jaxrs-style-header\") String headerValue;@HeaderParam(\"x-correlation-id\") String correlationId;@PathParam(\"stream\") String stream")
                 .generate("org.additionalHTTPHeaders");
         assertFalse(generatedFiles.isEmpty());
 
-        generatedFiles.stream()
-                .filter(file -> file.getPath()
-                        .matches(".*api.*Api.java"))
+        generatedFiles.stream().filter(file -> file.getPath().matches(".*api.*Api.java"))
                 .forEach(this::verifyApiAdditionalHTTPHeaders);
-    }
-
-    private void verifyApiAdditionalHTTPHeaders(File file) {
-        try {
-            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-            compilationUnit.findAll(MethodDeclaration.class)
-                    .forEach(c -> {
-                        assertParameter(c.getParameterByName("correlationId"),
-                                "String",
-                                Map.of("HeaderParam",
-                                        "\"x-correlation-id\""));
-                        assertParameter(c.getParameterByName("headerValue"),
-                                "String",
-                                Map.of("HeaderParam",
-                                        "\"jaxrs-style-header\""));
-                        assertParameter(c.getParameterByName("stream"),
-                                "String",
-                                Map.of("PathParam",
-                                        "\"stream\""));
-                    });
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    private void assertParameter(Optional<Parameter> optionalParameter,
-            String type,
-            Map<String, String> annotations) {
-        assertThat(optionalParameter).isPresent();
-        var parameter = optionalParameter.orElseThrow();
-        assertThat(parameter.getTypeAsString()).isEqualTo(type);
-        annotations.forEach((annotationName, annotationValue) -> {
-            var parameterAnnotation = parameter.getAnnotationByName(annotationName);
-            assertThat(parameterAnnotation).isPresent();
-            assertThat(parameterAnnotation.get()
-                    .asSingleMemberAnnotationExpr()
-                    .getMemberValue()
-                    .toString()).hasToString(annotationValue);
-        });
     }
 
     @Test
     void verifyCookieParams() throws URISyntaxException {
-        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
-                .generate("org.cookieParams");
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate("org.cookieParams");
 
-        generatedFiles.stream()
-                .filter(file -> file.getPath()
-                        .matches("PetApi.java"))
-                .forEach(file -> {
-                    try {
-                        CompilationUnit compilationUnit = StaticJavaParser.parse(file);
-                        var positiveFounds = compilationUnit.findAll(MethodDeclaration.class)
-                                .stream()
-                                .filter(c -> c.getNameAsString()
-                                        .equals("findPetsByStatus"))
-                                .filter(c -> {
-                                    assertParameter(c.getParameterByName("exampleCookie"),
-                                            "String",
-                                            Map.of("CookieParam",
-                                                    "\"example-cookie\""));
-                                    return true;
-                                })
-                                .count();
-                        assertThat(positiveFounds).isEqualTo(1);
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e.getMessage());
-                    }
-                });
+        generatedFiles.stream().filter(file -> file.getPath().matches("PetApi.java")).forEach(file -> {
+            try {
+                CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+                var positiveFounds = compilationUnit.findAll(MethodDeclaration.class).stream()
+                        .filter(c -> c.getNameAsString().equals("findPetsByStatus")).filter(c -> {
+                            assertParameter(c.getParameterByName("exampleCookie"), "String",
+                                    Map.of("CookieParam", "\"example-cookie\""));
+                            return true;
+                        }).count();
+                assertThat(positiveFounds).isEqualTo(1);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        });
     }
 
     @Test
@@ -803,9 +662,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertNotNull(generatedFiles);
         assertFalse(generatedFiles.isEmpty());
 
-        Optional<File> file = generatedFiles.stream()
-                .filter(f -> f.getName().endsWith("Primate.java"))
-                .findAny();
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("Primate.java")).findAny();
         assertThat(file).isNotEmpty();
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<ClassOrInterfaceDeclaration> types = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
@@ -815,31 +672,53 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(types.get(0).getExtendedTypes(0).getName()).isEqualTo(new SimpleName("Mammal"));
     }
 
-    private Optional<AnnotationExpr> getRegisterProviderAnnotation(ClassOrInterfaceDeclaration declaration,
-            String annotationValue) {
-        return declaration.getAnnotations()
+    @Test
+    void verifyDynamicUrlAnnotation() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapperReactive("petstore-openapi.json")
+                .withUseDynamicUrl(true)
+                .generate("org.dynamic.url")
                 .stream()
-                .filter(annotationExpr -> "RegisterProvider".equals(annotationExpr.getNameAsString()) &&
-                        annotationExpr instanceof SingleMemberAnnotationExpr &&
-                        annotationValue.equals(((SingleMemberAnnotationExpr) annotationExpr).getMemberValue()
-                                .toString()))
-                .findFirst();
+                .filter(file -> file.getPath().endsWith("PetApi.java")).toList();
+
+        assertThat(generatedFiles).isNotEmpty();
+        for (File file : generatedFiles) {
+            try {
+                CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+                var positiveFounds = compilationUnit.findAll(MethodDeclaration.class).stream()
+                        .filter(c -> c.getNameAsString().equals("findPetsByStatus")).filter(c -> {
+                            assertMarkerAnnotationParameter(c.getParameterByName("dynUrl"), "Url");
+                            return true;
+                        }).count();
+                assertThat(positiveFounds).isEqualTo(1);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
-        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json")
-                .withCircuitBreakerConfig(Map.of(
-                        "org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeMethodGet")));
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json").withCircuitBreakerConfig(
+                Map.of("org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeMethodGet")));
 
         return generatorWrapper.generate("org.openapitools.client");
     }
 
-    private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {
-        final Path openApiSpec = Path
-                .of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
-        final Path targetPath = Paths.get(getTargetDir(), "openapi-gen");
+    private OpenApiClientGeneratorWrapper createGeneratorWrapperReactive(String specFileName) throws URISyntaxException {
+        final Path openApiSpec = getOpenApiSpecPath(specFileName);
+        return new OpenApiReactiveClientGeneratorWrapper(openApiSpec, getOpenApiTargetPath(openApiSpec), false, true);
+    }
 
-        return new OpenApiClassicClientGeneratorWrapper(openApiSpec, targetPath, false, true);
+    private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {
+        final Path openApiSpec = getOpenApiSpecPath(specFileName);
+        return new OpenApiClassicClientGeneratorWrapper(openApiSpec, getOpenApiTargetPath(openApiSpec), false, true);
+    }
+
+    private Path getOpenApiSpecPath(String specFileName) throws URISyntaxException {
+        return Path.of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
+    }
+
+    private Path getOpenApiTargetPath(Path openApiSpec) throws URISyntaxException {
+        return Paths.get(getTargetDir(), "openapi-gen");
     }
 
     private String getTargetDir() throws URISyntaxException {
@@ -848,7 +727,39 @@ public class OpenApiClientGeneratorWrapperTest {
 
     private Optional<VariableDeclarator> findVariableByName(List<FieldDeclaration> fields, String name) {
         return fields.stream().map(field -> field.getVariable(0))
-                .filter((VariableDeclarator variable) -> name.equals(variable.getName().asString()))
-                .findFirst();
+                .filter((VariableDeclarator variable) -> name.equals(variable.getName().asString())).findFirst();
+    }
+
+    private void verifyApiAdditionalHTTPHeaders(File file) {
+        try {
+            CompilationUnit compilationUnit = StaticJavaParser.parse(file);
+            compilationUnit.findAll(MethodDeclaration.class).forEach(c -> {
+                assertParameter(c.getParameterByName("correlationId"), "String", Map.of("HeaderParam", "\"x-correlation-id\""));
+                assertParameter(c.getParameterByName("headerValue"), "String", Map.of("HeaderParam", "\"jaxrs-style-header\""));
+                assertParameter(c.getParameterByName("stream"), "String", Map.of("PathParam", "\"stream\""));
+            });
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private void assertParameter(Optional<Parameter> optionalParameter, String type, Map<String, String> annotations) {
+        assertThat(optionalParameter).isPresent();
+        var parameter = optionalParameter.orElseThrow();
+        assertThat(parameter.getTypeAsString()).isEqualTo(type);
+        annotations.forEach((annotationName, annotationValue) -> {
+            var parameterAnnotation = parameter.getAnnotationByName(annotationName);
+            assertThat(parameterAnnotation).isPresent();
+            assertThat(parameterAnnotation.get().asSingleMemberAnnotationExpr().getMemberValue().toString())
+                    .hasToString(annotationValue);
+        });
+    }
+
+    private void assertMarkerAnnotationParameter(Optional<Parameter> optionalParameter, String annotationName) {
+        assertThat(optionalParameter).isPresent();
+        var parameter = optionalParameter.orElseThrow();
+        var parameterAnnotation = parameter.getAnnotationByName(annotationName);
+        assertThat(parameterAnnotation).isPresent();
+        assertThat(parameterAnnotation.get().asMarkerAnnotationExpr()).isNotNull();
     }
 }
