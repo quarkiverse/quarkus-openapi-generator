@@ -103,11 +103,11 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
     }
     {/if}
     {#if v.isMap}
-    public {m.classname} put{v.nameInPascalCase}Item(String key, {v.items.datatypeWithEnum} {v.name}Item) {
+    public {m.classname} put{v.nameInPascalCase}Item(String mapKey, {v.items.datatypeWithEnum} {v.name}Item) {
            if (this.{v.name} == null){
                 {v.name} = {#if v.defaultValue}{v.defaultValue}{#else}new HashMap<>(){/if};
             }
-        this.{v.name}.put(key, {v.name}Item);
+        this.{v.name}.put(mapKey, {v.name}Item);
         return this;
     }
     {/if}
