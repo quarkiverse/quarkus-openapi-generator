@@ -34,6 +34,7 @@ import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvi
 import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
 import io.quarkiverse.openapi.generator.providers.AuthProvider;
 import io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider;
+import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.SyntheticBeanBuildItem;
@@ -201,6 +202,7 @@ public class GeneratorProcessor {
                     .annotation(OpenApiSpec.class)
                     .addValue("openApiSpecId", openApiSpecId)
                     .done()
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(recorder.recordBasicAuthProvider(sanitizeAuthName(name), openApiSpecId, operations))
                     .unremovable()
                     .done());
@@ -240,6 +242,7 @@ public class GeneratorProcessor {
                     .annotation(OpenApiSpec.class)
                     .addValue("openApiSpecId", openApiSpecId)
                     .done()
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(recorder.recordBearerAuthProvider(sanitizeAuthName(name), scheme, openApiSpecId, operations))
                     .unremovable()
                     .done());
@@ -282,6 +285,7 @@ public class GeneratorProcessor {
                     .annotation(OpenApiSpec.class)
                     .addValue("openApiSpecId", openApiSpecId)
                     .done()
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(recorder.recordApiKeyAuthProvider(sanitizeAuthName(name), openApiSpecId, apiKeyIn, apiKeyName,
                             operations))
                     .unremovable()

@@ -8,8 +8,6 @@ import java.util.List;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import org.eclipse.microprofile.config.ConfigProvider;
-
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
 /**
@@ -19,28 +17,28 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
  */
 public class BasicAuthenticationProvider extends AbstractAuthProvider {
 
-    static final String USER_NAME = "username";
-    static final String PASSWORD = "password";
-
-    public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations) {
-        super(name, openApiSpecId, operations);
+    public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations,
+            CredentialsProvider credentialsProvider) {
+        super(name, openApiSpecId, operations, credentialsProvider);
         validateConfig();
     }
 
-    private String getUsername() {
-        return ConfigProvider.getConfig().getOptionalValue(getCanonicalAuthConfigPropertyName(USER_NAME), String.class)
-                .orElse("");
+    public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations) {
+        this(openApiSpecId, name, operations, new ConfigCredentialsProvider());
     }
 
-    private String getPassword() {
-        return ConfigProvider.getConfig().getOptionalValue(getCanonicalAuthConfigPropertyName(PASSWORD), String.class)
-                .orElse("");
+    private String getUsername(ClientRequestContext requestContext) {
+        return credentialsProvider.getBasicUsername(requestContext, getOpenApiSpecId(), getName());
+    }
+
+    private String getPassword(ClientRequestContext requestContext) {
+        return credentialsProvider.getBasicPassword(requestContext, getOpenApiSpecId(), getName());
     }
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                AuthUtils.basicAuthAccessToken(getUsername(), getPassword()));
+                AuthUtils.basicAuthAccessToken(getUsername(requestContext), getPassword(requestContext)));
     }
 
     private void validateConfig() {

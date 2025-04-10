@@ -13,6 +13,7 @@ import io.quarkiverse.openapi.generator.providers.AuthProvider;
 import io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BasicAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.BearerAuthenticationProvider;
+import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.arc.SyntheticCreationalContext;
 import io.quarkus.runtime.annotations.Recorder;
@@ -35,7 +36,8 @@ public class AuthenticationRecorder {
             ApiKeyIn apiKeyIn,
             String apiKeyName,
             List<OperationAuthInfo> operations) {
-        return context -> new ApiKeyAuthenticationProvider(openApiSpecId, name, apiKeyIn, apiKeyName, operations);
+        return context -> new ApiKeyAuthenticationProvider(openApiSpecId, name, apiKeyIn,
+                apiKeyName, operations, context.getInjectedReference(CredentialsProvider.class));
     }
 
     public Function<SyntheticCreationalContext<AuthProvider>, AuthProvider> recordBearerAuthProvider(
@@ -43,14 +45,18 @@ public class AuthenticationRecorder {
             String scheme,
             String openApiSpecId,
             List<OperationAuthInfo> operations) {
-        return context -> new BearerAuthenticationProvider(openApiSpecId, name, scheme, operations);
+        return context -> new BearerAuthenticationProvider(openApiSpecId, name, scheme,
+                operations, context.getInjectedReference(CredentialsProvider.class));
     }
 
     public Function<SyntheticCreationalContext<AuthProvider>, AuthProvider> recordBasicAuthProvider(
             String name,
             String openApiSpecId,
             List<OperationAuthInfo> operations) {
-        return context -> new BasicAuthenticationProvider(openApiSpecId, name, operations);
+
+        return context -> new BasicAuthenticationProvider(openApiSpecId, name,
+                operations, context.getInjectedReference(CredentialsProvider.class));
+
     }
 
 }

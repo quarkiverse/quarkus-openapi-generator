@@ -21,6 +21,14 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
     private static final String CUSTOM_SCHEMA = "custom_scheme";
     private static final String HEADER_NAME = "HEADER_NAME";
 
+    static Stream<Arguments> filterWithPropagationTestValues() {
+        return Stream.of(
+                Arguments.of(null, "bearer", "Bearer " + INCOMING_TOKEN),
+                Arguments.of(null, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN),
+                Arguments.of(HEADER_NAME, "bearer", "Bearer " + INCOMING_TOKEN),
+                Arguments.of(HEADER_NAME, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN));
+    }
+
     @Override
     protected BearerAuthenticationProvider createProvider() {
         return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null,
@@ -64,13 +72,5 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
         }
         headers.putSingle(propagatedHeaderName, INCOMING_TOKEN);
         filter(bearerScheme, expectedAuthorizationHeader);
-    }
-
-    static Stream<Arguments> filterWithPropagationTestValues() {
-        return Stream.of(
-                Arguments.of(null, "bearer", "Bearer " + INCOMING_TOKEN),
-                Arguments.of(null, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN),
-                Arguments.of(HEADER_NAME, "bearer", "Bearer " + INCOMING_TOKEN),
-                Arguments.of(HEADER_NAME, CUSTOM_SCHEMA, CUSTOM_SCHEMA + " " + INCOMING_TOKEN));
     }
 }

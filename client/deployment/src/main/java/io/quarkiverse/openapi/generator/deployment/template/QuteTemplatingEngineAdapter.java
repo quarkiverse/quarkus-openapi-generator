@@ -1,6 +1,5 @@
 package io.quarkiverse.openapi.generator.deployment.template;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.openapitools.codegen.api.AbstractTemplatingEngineAdapter;
@@ -12,8 +11,8 @@ import io.quarkus.qute.Template;
 
 public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter {
 
-    public static final String IDENTIFIER = "qute";
-    public static final String[] INCLUDE_TEMPLATES = {
+    private static final String IDENTIFIER = "qute";
+    private static final String[] DEFAULT_TEMPLATES = {
             "additionalEnumTypeAnnotations.qute",
             "additionalEnumTypeUnexpectedMember.qute",
             "additionalModelTypeAnnotations.qute",
@@ -60,8 +59,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
     }
 
     @Override
-    public String compileTemplate(TemplatingExecutor executor, Map<String, Object> bundle, String templateFile)
-            throws IOException {
+    public String compileTemplate(TemplatingExecutor executor, Map<String, Object> bundle, String templateFile) {
         this.cacheTemplates(executor);
         Template template = engine.getTemplate(templateFile);
         if (template == null) {
@@ -72,7 +70,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
     }
 
     public void cacheTemplates(TemplatingExecutor executor) {
-        for (String templateId : INCLUDE_TEMPLATES) {
+        for (String templateId : DEFAULT_TEMPLATES) {
             Template incTemplate = engine.getTemplate(templateId);
             if (incTemplate == null) {
                 incTemplate = engine.parse(executor.getFullTemplateContents(templateId));
