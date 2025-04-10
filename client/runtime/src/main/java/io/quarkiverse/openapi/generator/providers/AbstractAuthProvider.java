@@ -16,6 +16,8 @@ import io.quarkiverse.openapi.generator.AuthConfig;
 
 public abstract class AbstractAuthProvider implements AuthProvider {
 
+    CredentialsProvider credentialsProvider;
+
     private static final String BEARER_WITH_SPACE = "Bearer ";
     private static final String CANONICAL_AUTH_CONFIG_PROPERTY_NAME = "quarkus." + RUNTIME_TIME_CONFIG_PREFIX
             + ".%s.auth.%s.%s";
@@ -24,10 +26,12 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private final String name;
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
-    protected AbstractAuthProvider(String name, String openApiSpecId, List<OperationAuthInfo> operations) {
+    protected AbstractAuthProvider(String name, String openApiSpecId, List<OperationAuthInfo> operations,
+            CredentialsProvider credentialsProvider) {
         this.name = name;
         this.openApiSpecId = openApiSpecId;
         this.applyToOperations.addAll(operations);
+        this.credentialsProvider = credentialsProvider;
     }
 
     protected static String sanitizeBearerToken(String token) {
@@ -69,6 +73,10 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public final String getCanonicalAuthConfigPropertyName(String authPropertyName) {
-        return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, getOpenApiSpecId(), getName(), authPropertyName);
+        return getCanonicalAuthConfigPropertyName(authPropertyName, getOpenApiSpecId(), getName());
+    }
+
+    public static String getCanonicalAuthConfigPropertyName(String authPropertyName, String openApiSpecId, String authName) {
+        return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, openApiSpecId, authName, authPropertyName);
     }
 }

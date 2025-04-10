@@ -42,6 +42,11 @@ include::./includes/authentication-support.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/authorization-token-propagation.adoc[leveloffset=+1, opts=optional]
 
+[[custom-credentials-provider]]
+== Custom Credentials Provider
+
+include::./includes/custom-auth-provider.adoc[leveloffset=+1, opts=optional]
+
 [[circuit-breaker]]
 == Circuit Breaker
 
