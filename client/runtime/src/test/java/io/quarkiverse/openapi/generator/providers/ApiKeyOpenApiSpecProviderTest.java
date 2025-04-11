@@ -69,7 +69,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
                     provider.getCanonicalAuthConfigPropertyName(ApiKeyAuthenticationProvider.USE_AUTHORIZATION_HEADER_VALUE),
                     Boolean.class)).thenReturn(Optional.of(false));
             when(mockedConfig.getOptionalValue(
-                    provider.getCanonicalAuthConfigPropertyName(ApiKeyAuthenticationProvider.API_KEY), String.class))
+                    provider.getCanonicalAuthConfigPropertyName(ConfigCredentialsProvider.API_KEY), String.class))
                     .thenReturn(Optional.of(API_KEY_VALUE));
             doReturn(API_KEY_AUTH_HEADER_VALUE).when(requestContext).getHeaderString("Authorization");
 
