@@ -6,8 +6,6 @@ import java.util.List;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
-import org.eclipse.microprofile.config.ConfigProvider;
-
 /**
  * Provides bearer token authentication or any other valid scheme.
  *
@@ -15,14 +13,17 @@ import org.eclipse.microprofile.config.ConfigProvider;
  */
 public class BearerAuthenticationProvider extends AbstractAuthProvider {
 
-    static final String BEARER_TOKEN = "bearer-token";
-
     private final String scheme;
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
-            List<OperationAuthInfo> operations) {
-        super(name, openApiSpecId, operations);
+            List<OperationAuthInfo> operations, CredentialsProvider credentialsProvider) {
+        super(name, openApiSpecId, operations, credentialsProvider);
         this.scheme = scheme;
+    }
+
+    public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
+            List<OperationAuthInfo> operations) {
+        this(openApiSpecId, name, scheme, operations, new ConfigCredentialsProvider());
     }
 
     @Override
@@ -32,16 +33,14 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
             bearerToken = getTokenForPropagation(requestContext.getHeaders());
             bearerToken = sanitizeBearerToken(bearerToken);
         } else {
-            bearerToken = getBearerToken();
+            bearerToken = getBearerToken(requestContext);
         }
         if (!bearerToken.isBlank()) {
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                    AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
         }
     }
 
-    private String getBearerToken() {
-        return ConfigProvider.getConfig().getOptionalValue(getCanonicalAuthConfigPropertyName(BEARER_TOKEN), String.class)
-                .orElse("");
+    private String getBearerToken(ClientRequestContext requestContext) {
+        return credentialsProvider.getBearerToken(requestContext, getOpenApiSpecId(), getName());
     }
 }

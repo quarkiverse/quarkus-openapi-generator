@@ -1,0 +1,78 @@
+
+Instead of relying solely on application properties to provide runtime credentials, you can implement the `io.quarkiverse.openapi.generator.providers.CredentialsProvider` interface. This approach lets you override the default behavior of looking up configuration values and instead supply credentials dynamically at runtime.
+
+== Default Behavior
+
+By default, the extension searches for pre-configured values. For instance, to provide a `username` and `password` for a specific OpenAPI security schema definition, you might add these properties to your configuration:
+
+[source,properties]
+----
+quarkus.openapi-generator.myopenapi_yaml.auth.mybasicsecscheme.username=alice
+quarkus.openapi-generator.myopenapi_yaml.auth.mybasicsecscheme.password=${SECRET}
+----
+
+== Overriding with a Custom Implementation
+
+In some cases, you might need to determine credentials at runtime—for example, when the credentials depend on the server's current URL or other request-specific details. To do this, you can implement the `CredentialsProvider` interface.
+
+For example:
+
+[source,java]
+----
+import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.inject.Alternative;
+import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
+
+@RequestScoped
+@Alternative
+@Priority(10) // A higher priority than the default provider.
+public class RuntimeCredentialsProvider implements CredentialsProvider {
+
+    @Override
+    public String getApiKey(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+        // Example: return an API key dynamically based on the current request.
+        // You could inspect requestContext to decide which API key to return.
+        return "runtimeApiKey";
+    }
+
+    @Override
+    public String getBasicUsername(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+        // Use requestContext to obtain dynamic request data (like URL or headers)
+        // for your custom lookup logic.
+        return "runtimeUser";
+    }
+
+    @Override
+    public String getBasicPassword(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+        // Return the password dynamically, potentially using details from requestContext.
+        return "runtimePassword";
+    }
+
+    @Override
+    public String getBearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+        // Dynamically compute or look up the bearer token using data in requestContext.
+        return "runtimeBearerToken";
+    }
+}
+----
+
+== How It Works
+
+* `openApiSpecId` – Identifies the specific OpenAPI specification file.
+* `authName` – Refers to the name of the security schema defined in your OpenAPI file.
+* `ClientRequestContext` – Provides access to information about the current request (for example, the URL and headers). This data can be crucial if credential resolution depends on runtime request details, such as when different servers or endpoints require different authentication credentials.
+
+When you implement the provider, the extension will pass the current `ClientRequestContext` along with the identifiers. Your custom code can then use any available request information to dynamically look up or compute the appropriate credentials before they are applied by the authentication filter.
+
+== Summary
+
+By implementing the `CredentialsProvider` interface, you gain the following benefits:
+
+* **Dynamic Credential Resolution:** Obtain credentials at runtime, which is useful if they vary based on the current request context.
+* **Custom Lookup Logic:** Use request-specific data (via `ClientRequestContext`) such as URL or headers to determine the correct authentication values.
+* **Seamless Integration:** Your custom provider integrates into the authentication filter, replacing static configuration with dynamic behavior as needed.
+
+This design provides maximum flexibility and control over how authentication credentials are supplied in your application.
+
