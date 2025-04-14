@@ -11,7 +11,7 @@
     <name>Quarkus :: Openapi Generator :: Moqu :: Core</name>
 
     <properties>
-        <commons.io.version>2.16.1</commons.io.version>
+        <commons.io.version>2.19.0</commons.io.version>
     </properties>
 
     <dependencies>
