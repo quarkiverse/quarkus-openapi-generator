@@ -78,7 +78,7 @@ WARNING: When configured, the token propagation applies to all the operations se
 
 === Propagation flow configuration
 
-The token propagation can be used with type "oauth2" or "bearer" security schemes. Finally, considering that a given security scheme might be configured on a set of operations in the same specification file when configured, it'll apply to all these operations.
+The token propagation can be used with type "oauth2", "bearer" or "basic" security schemes. Finally, considering that a given security scheme might be configured on a set of operations in the same specification file when configured, it'll apply to all these operations.
 
 [%autowidth]
 |===
