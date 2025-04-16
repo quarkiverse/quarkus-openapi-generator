@@ -1,0 +1,11 @@
+openapi: 3.0.0
+info:
+  title: Spec From Dir 1
+  version: 1.0.0
+paths:
+  /path1:
+    get:
+      summary: Endpoint from Directory 1
+      responses:
+        '200':
+          description: OK
