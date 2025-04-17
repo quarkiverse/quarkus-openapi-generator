@@ -16,3 +16,7 @@ include::includes/want-to-contribute.adoc[]
 == Getting Started
 
 include::./includes/server-getting-started.adoc[leveloffset=+1, opts=optional]
+
+== Configuration Properties
+
+include::./includes/quarkus-openapi-generator-server.adoc[opts=optional, leveloffset=+1]

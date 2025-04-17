@@ -6,7 +6,7 @@ import io.smallrye.config.ConfigMapping;
 
 @ConfigRoot(phase = ConfigPhase.BUILD_TIME)
 @ConfigMapping(prefix = CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX)
-public interface CodegenConfig {
+public interface CodegenConfig extends ServerCodegenConfig {
 
     String CODEGEN_TIME_CONFIG_PREFIX = "quarkus.openapi.generator";
     String CODEGEN_BASE_PACKAGE = CODEGEN_TIME_CONFIG_PREFIX + ".base-package";
