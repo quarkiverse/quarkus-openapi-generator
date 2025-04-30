@@ -12,9 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
+import io.quarkiverse.openapi.generator.providers.AuthUtils;
 import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
+import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
-import io.quarkus.oidc.common.runtime.OidcConstants;
 
 public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
@@ -24,19 +25,32 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
     public OAuth2AuthenticationProvider(String name,
             String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations) {
-        super(name, openApiSpecId, operations, new ConfigCredentialsProvider());
+        this(name, openApiSpecId, delegate, operations, new ConfigCredentialsProvider());
+    }
+
+    public OAuth2AuthenticationProvider(String name,
+            String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations,
+            CredentialsProvider credentialsProvider) {
+        super(name, openApiSpecId, operations, credentialsProvider);
         this.delegate = delegate;
         validateConfig();
     }
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        if (isTokenPropagation()) {
-            String bearerToken = getTokenForPropagation(requestContext.getHeaders());
-            bearerToken = sanitizeBearerToken(bearerToken);
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, OidcConstants.BEARER_SCHEME + " " + bearerToken);
+        String bearerToken;
+
+        if (this.isTokenPropagation()) {
+            bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
         } else {
             delegate.filter(requestContext);
+            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(requestContext);
+        }
+
+        if (bearerToken != null && !bearerToken.isBlank()) {
+            requestContext.getHeaders().remove(HttpHeaders.AUTHORIZATION);
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
+                    AuthUtils.authTokenOrBearer("Bearer", AbstractAuthProvider.sanitizeBearerToken(bearerToken)));
         }
     }
 

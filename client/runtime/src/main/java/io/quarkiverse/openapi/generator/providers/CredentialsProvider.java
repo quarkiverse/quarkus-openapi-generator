@@ -44,4 +44,12 @@ public interface CredentialsProvider {
      * @return the Bearer Token to use when filtering the request
      */
     String getBearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName);
+
+    /**
+     * Gets the OAuth2 Bearer Token given the OpenAPI definition and security schema
+     *
+     * @param requestContext The current request context in which set the authorization header token
+     * @return the Bearer Token to use when filtering the request
+     */
+    String getOauth2BearerToken(ClientRequestContext requestContext);
 }
