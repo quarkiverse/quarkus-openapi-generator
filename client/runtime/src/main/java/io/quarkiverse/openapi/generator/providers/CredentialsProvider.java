@@ -46,12 +46,12 @@ public interface CredentialsProvider {
     String getBearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName);
 
     /**
-     * Sets the Access Token in the request context
+     * Gets the OAuth2 Bearer Token given the OpenAPI definition and security schema
      *
      * @param requestContext The current request context in which set the authorization header token
-     * @param accessToken The accessToken to use, contains Bearer string
      * @param openApiSpecId the OpenAPI Spec identification as defined by the OpenAPI Extension
      * @param authName The security schema for this Bearer Token definition
+     * @return the Bearer Token to use when filtering the request
      */
-    void setOauth2BearerToken(ClientRequestContext requestContext, String accessToken, String openApiSpecId, String authName);
+    String getOauth2BearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName);
 }

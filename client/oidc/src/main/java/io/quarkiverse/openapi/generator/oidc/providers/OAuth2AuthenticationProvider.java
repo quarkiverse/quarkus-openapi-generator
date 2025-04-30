@@ -12,9 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
+import io.quarkiverse.openapi.generator.providers.AuthUtils;
 import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
-import io.quarkus.oidc.common.runtime.OidcConstants;
 
 public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
@@ -31,15 +31,20 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
+        String bearerToken;
+
         if (this.isTokenPropagation()) {
-            String bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                    OidcConstants.BEARER_SCHEME + " " + AbstractAuthProvider.sanitizeBearerToken(bearerToken));
+            bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
         } else {
             delegate.filter(requestContext);
+            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(requestContext, this.getOpenApiSpecId(),
+                    this.getName());
         }
-        this.getCredentialsProvider().setOauth2BearerToken(requestContext,
-                requestContext.getHeaderString(HttpHeaders.AUTHORIZATION), this.getOpenApiSpecId(), this.getName());
+
+        if (bearerToken != null && !bearerToken.isBlank()) {
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
+                    AuthUtils.authTokenOrBearer("Bearer", AbstractAuthProvider.sanitizeBearerToken(bearerToken)));
+        }
     }
 
     private void validateConfig() {

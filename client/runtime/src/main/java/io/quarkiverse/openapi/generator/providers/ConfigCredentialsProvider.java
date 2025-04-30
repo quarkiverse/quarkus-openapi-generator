@@ -4,6 +4,7 @@ import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
@@ -64,9 +65,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public void setOauth2BearerToken(ClientRequestContext requestContext, String accessToken, String openApiSpecId,
-            String authName) {
-        // no need to do anything as the base OAuth2AuthenticationProvider class already sets the access token in the context
+    public String getOauth2BearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+        return requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
     }
-
 }
