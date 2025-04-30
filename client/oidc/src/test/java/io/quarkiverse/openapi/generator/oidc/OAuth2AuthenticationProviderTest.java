@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
+
 import org.assertj.core.api.Assertions;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -25,11 +30,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import io.quarkiverse.openapi.generator.AuthConfig;
 import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvider;
 import io.quarkus.oidc.client.Tokens;
-
-import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.MultivaluedHashMap;
-import jakarta.ws.rs.core.MultivaluedMap;
 
 @ExtendWith(MockitoExtension.class)
 public class OAuth2AuthenticationProviderTest {
