@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
 import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
+import io.quarkus.oidc.common.runtime.OidcConstants;
 
 public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
@@ -29,7 +31,15 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        getCredentialsProvider().setOauth2BearerToken(requestContext, getOpenApiSpecId(), getName(), delegate::filter);
+        if (this.isTokenPropagation()) {
+            String bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
+                    OidcConstants.BEARER_SCHEME + " " + AbstractAuthProvider.sanitizeBearerToken(bearerToken));
+        } else {
+            delegate.filter(requestContext);
+        }
+        this.getCredentialsProvider().setOauth2BearerToken(requestContext,
+                requestContext.getHeaderString(HttpHeaders.AUTHORIZATION), this.getOpenApiSpecId(), this.getName());
     }
 
     private void validateConfig() {

@@ -1,18 +1,13 @@
 package io.quarkiverse.openapi.generator.providers;
 
-import java.io.IOException;
-
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.quarkus.oidc.common.runtime.OidcConstants;
 
 @Dependent
 @Alternative
@@ -69,21 +64,9 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public void setOauth2BearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName,
-            ThrowingConsumer<ClientRequestContext, IOException> filter) throws IOException {
-        if (AbstractAuthProvider.isTokenPropagation(openApiSpecId, authName)) {
-            String bearerToken = AbstractAuthProvider.getTokenForPropagation(requestContext.getHeaders(), openApiSpecId,
-                    authName);
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                    OidcConstants.BEARER_SCHEME + " " + AbstractAuthProvider.sanitizeBearerToken(bearerToken));
-        } else {
-            filter.accept(requestContext);
-        }
-    }
-
-    @FunctionalInterface
-    public interface ThrowingConsumer<T, E extends Exception> {
-        void accept(T t) throws E;
+    public void setOauth2BearerToken(ClientRequestContext requestContext, String accessToken, String openApiSpecId,
+            String authName) {
+        // no need to do anything as the base OAuth2AuthenticationProvider class already sets the access token in the context
     }
 
 }
