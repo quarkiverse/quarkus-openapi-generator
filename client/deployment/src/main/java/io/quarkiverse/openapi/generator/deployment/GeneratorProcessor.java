@@ -174,6 +174,7 @@ public class GeneratorProcessor {
                     .annotation(OpenApiSpec.class)
                     .addValue("openApiSpecId", openApiSpecId)
                     .done()
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .addInjectionPoint(ClassType.create(OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate.class),
                             AnnotationInstance.builder(OidcClient.class).add("name", sanitizeAuthName(name)).build())
                     .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
