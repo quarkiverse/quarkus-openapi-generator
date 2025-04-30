@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.providers;
 
+import java.io.IOException;
+
 import jakarta.ws.rs.client.ClientRequestContext;
 
 /**
@@ -44,4 +46,13 @@ public interface CredentialsProvider {
      * @return the Bearer Token to use when filtering the request
      */
     String getBearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName);
+
+    /**
+     * Gets the Bearer Token given the OpenAPI definition and security schema
+     *
+     * @param openApiSpecId the OpenAPI Spec identification as defined by the OpenAPI Extension
+     * @param authName The security schema for this Bearer Token definition
+     */
+    void setOauth2BearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName,
+            ConfigCredentialsProvider.ThrowingConsumer<ClientRequestContext, IOException> filter) throws IOException;
 }
