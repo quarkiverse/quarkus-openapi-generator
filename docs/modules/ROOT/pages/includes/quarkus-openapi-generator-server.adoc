@@ -7,7 +7,89 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-3+|No configuration properties found.
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-spec[`quarkus.openapi.generator.spec`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.spec+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The OpenAPI specification filename.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SPEC+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SPEC+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir[`quarkus.openapi.generator.input-base-dir`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.input-base-dir+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The input base dir where the OpenAPI specification is.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_INPUT_BASE_DIR+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_INPUT_BASE_DIR+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`src/main/resources/openapi`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-reactive[`quarkus.openapi.generator.reactive`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.reactive+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether it must generate with reactive code.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_REACTIVE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_REACTIVE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`false`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-base-package[`quarkus.openapi.generator.base-package`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.base-package+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The base package to be used to generated sources.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_BASE_PACKAGE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_BASE_PACKAGE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`io.apicurio.api`
 
 |===
 
