@@ -65,7 +65,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getOauth2BearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+    public String getOauth2BearerToken(ClientRequestContext requestContext) {
         return requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
     }
 }
