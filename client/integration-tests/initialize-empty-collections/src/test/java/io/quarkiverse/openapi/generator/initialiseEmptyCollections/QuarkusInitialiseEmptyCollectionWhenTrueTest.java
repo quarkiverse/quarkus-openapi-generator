@@ -7,8 +7,8 @@ import jakarta.inject.Inject;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.openapi.quarkus.quarkus_simple_openapi_empty_collection_yaml.model.CloudEvent;
-import org.openapi.quarkus.quarkus_simple_openapi_empty_collection_yaml.model.Link;
+import org.openapi.quarkus.quarkus_simple_openapi_empty_collections_yaml.model.CloudEvent;
+import org.openapi.quarkus.quarkus_simple_openapi_empty_collections_yaml.model.Link;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
