@@ -69,6 +69,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         PART_FILENAME_VALUE("part-filename-value"),
         USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename"),
         ADDITIONAL_PROPERTIES_AS_ATTRIBUTE("additional-properties-as-attribute"),
+        INITIALIZE_EMPTY_COLLECTIONS("initialize-empty-collections"),
         ADDITIONAL_REQUEST_ARGS("additional-request-args"),
         REMOVE_OPERATION_ID_PREFIX("remove-operation-id-prefix"),
         REMOVE_OPERATION_ID_PREFIX_DELIMITER("remove-operation-id-prefix-delimiter"),
