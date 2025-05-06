@@ -89,6 +89,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         // Set default values directly here
         this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", new String[0]);
         this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", FALSE);
+        this.configurator.addAdditionalProperty("initializeEmptyCollections", FALSE);
         this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMember", FALSE);
         this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberName", "");
         this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberStringValue", "");
@@ -366,6 +367,10 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public void withAdditionalPropertiesAsAttribute(final Boolean enable) {
         this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", Optional.ofNullable(enable).orElse(FALSE));
+    }
+
+    public void withInitializeEmptyCollections(final Boolean enable) {
+        this.configurator.addAdditionalProperty("initializeEmptyCollections", Optional.ofNullable(enable).orElse(FALSE));
     }
 
     public static String transformToSafeConfigKey(String input) {
