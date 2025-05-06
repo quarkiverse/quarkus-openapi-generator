@@ -1,0 +1,9 @@
+In the default configuration, the generated RestClient is designed to set container types (e.g., lists, maps, or other collections) to null when no data is provided by the API.
+
+However, if you prefer container types to default to empty values instead (e.g., an empty list or map), you can override the default behavior by setting the following property in your configuration:
+
+[source,properties]
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.initialize-empty-collections=true
+
+When this property is set to true, the generator will ensure that container types are initialized with empty values instead of null, allowing you to avoid null-checks and directly work with populated collections.
+This feature is particularly useful when you expect the generated code to follow a defensive programming approach, or when dealing with APIs that always expect empty containers instead of null values.

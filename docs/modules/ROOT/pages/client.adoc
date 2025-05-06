@@ -199,6 +199,11 @@ to true:
 quarkus.openapi-generator.codegen.spec.my_openapi_yaml.serializable-model=true
 ----
 
+[[initialize-empty-collections]]
+== Initialize Empty Collections
+
+include::./includes/initialize-empty-collections.adoc[leveloffset=+1, opts=optional]
+
 [[equals-hashcode]]
 == Equals and hashcode
 
