@@ -12,6 +12,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>additional-properties</module>
+    <module>auth-provider</module>
     <module>array-enum</module>
     <module>bean-validation</module>
     <module>beanparam</module>
