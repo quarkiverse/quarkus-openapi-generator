@@ -60,20 +60,31 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public boolean isTokenPropagation() {
-        return ConfigProvider.getConfig()
-                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION), Boolean.class)
-                .orElse(false);
+        return isTokenPropagation(getOpenApiSpecId(), getName());
+    }
+
+    public static String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders, String openApiSpecId,
+            String authName) {
+        String headerName = getHeaderName(openApiSpecId, authName) != null ? getHeaderName(openApiSpecId, authName)
+                : HttpHeaders.AUTHORIZATION;
+        String propagatedHeaderName = propagationHeaderName(openApiSpecId, authName, headerName);
+        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName));
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
-        String headerName = getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
-        String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), headerName);
-        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName));
+        return getTokenForPropagation(httpHeaders, getOpenApiSpecId(), getName());
     }
 
     public String getHeaderName() {
         return ConfigProvider.getConfig()
                 .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME), String.class).orElse(null);
+    }
+
+    public static String getHeaderName(String openApiSpecId, String authName) {
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME, openApiSpecId, authName),
+                        String.class)
+                .orElse(null);
     }
 
     @Override
@@ -87,5 +98,16 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public static String getCanonicalAuthConfigPropertyName(String authPropertyName, String openApiSpecId, String authName) {
         return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, openApiSpecId, authName, authPropertyName);
+    }
+
+    public static boolean isTokenPropagation(String openApiSpecId, String authName) {
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION, openApiSpecId, authName),
+                        Boolean.class)
+                .orElse(false);
+    }
+
+    public CredentialsProvider getCredentialsProvider() {
+        return credentialsProvider;
     }
 }
