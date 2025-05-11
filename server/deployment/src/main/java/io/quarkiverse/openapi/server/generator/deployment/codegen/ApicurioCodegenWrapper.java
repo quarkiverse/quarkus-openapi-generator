@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
 import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getCodegenReactive;
+import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_PACKAGE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +27,6 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 public class ApicurioCodegenWrapper {
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
-    private static final String DEFAULT_PACKAGE = "io.apicurio.api";
 
     private final File outdir;
     private final JaxRsProjectSettings projectSettings;
