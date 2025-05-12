@@ -1,17 +1,35 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
+  # Maven updates for main branch
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "daily"
+    target-branch: "main"
     ignore:
       - dependency-name: "org.apache.maven.plugins:maven-compiler-plugin"
+
+  # Maven updates for main-lts branch
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "main-lts"
+    ignore:
+      - dependency-name: "org.apache.maven.plugins:maven-compiler-plugin"
+      - dependency-name: "io.quarkus:quarkus-bom"
+      - dependency-name: "io.quarkus.platform:quarkus-bom"
+
+  # GitHub Actions updates for main branch
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    target-branch: "main"
+
+  # GitHub Actions updates for main-lts branch
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "main-lts"
