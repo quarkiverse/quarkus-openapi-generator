@@ -475,6 +475,27 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-initialize-empty-collections[`quarkus.openapi-generator.codegen.initialize-empty-collections`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.initialize-empty-collections+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Initialise collections as empty instead of null
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INITIALIZE_EMPTY_COLLECTIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INITIALIZE_EMPTY_COLLECTIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`quarkus.openapi-generator.codegen.verbose`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.verbose+++[]
@@ -1085,6 +1106,27 @@ Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODE
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-initialize-empty-collections[`quarkus.openapi-generator.codegen.spec."spec-item".initialize-empty-collections`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".initialize-empty-collections+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Initialise collections as empty instead of null
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__INITIALIZE_EMPTY_COLLECTIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__INITIALIZE_EMPTY_COLLECTIONS+++`
 endif::add-copy-button-to-env-var[]
 --
 |string

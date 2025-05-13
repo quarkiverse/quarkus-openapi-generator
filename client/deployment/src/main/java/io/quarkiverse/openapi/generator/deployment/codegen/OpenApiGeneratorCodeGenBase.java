@@ -335,6 +335,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .ifPresent(generator::withMutinyReturnTypes);
 
         generator.withAdditionalPropertiesAsAttribute(additionalPropertiesAsAttribute);
+
+        Boolean initialiseEmptyCollection = getValues(smallRyeConfig, openApiFilePath,
+                CodegenConfig.ConfigName.INITIALIZE_EMPTY_COLLECTIONS, Boolean.class)
+                .orElse(Boolean.FALSE);
+        generator.withInitializeEmptyCollections(initialiseEmptyCollection);
+
         GlobalSettings.setProperty(
                 OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE,
                 additionalPropertiesAsAttribute.toString());

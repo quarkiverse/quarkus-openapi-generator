@@ -27,6 +27,7 @@
     <module>generation-input</module>
     <module>generation-tests</module>
     <module>include</module>
+    <module>initialize-empty-collections</module>
     <module>multipart-request</module>
     <module>mutiny</module>
     <module>mutiny-return-response</module>
