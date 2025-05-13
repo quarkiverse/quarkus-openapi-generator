@@ -1,17 +1,13 @@
-name: openapi-generator-server
+name: openapi-generator-server-codestart
 ref: openapi-generator-server
 type: code
 tags: extension-codestart
 metadata:
-  title: OpenAPI Generator Codestart - Server Extension
+  title: OpenAPI Generator Server
   description: This codestart generates a simple API with OpenAPI documentation.
   related-guide-section: https://docs.quarkiverse.io/quarkus-openapi-generator/dev/server.html
 language:
   base:
-    data:
-      resource:
-        class-name: YourResource
-        path: "/your-api"
     dependencies:
       - io.quarkus:quarkus-resteasy
       - io.quarkus:quarkus-smallrye-openapi
