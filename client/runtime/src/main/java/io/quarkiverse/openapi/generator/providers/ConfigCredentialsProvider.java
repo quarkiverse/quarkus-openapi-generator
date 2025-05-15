@@ -26,7 +26,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getApiKey(DataInput input) {
+    public String getApiKey(CredentialsContext input) {
         final String key = ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, input.getOpenApiSpecId(),
@@ -42,7 +42,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getBasicUsername(DataInput input) {
+    public String getBasicUsername(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(USER_NAME, input.getOpenApiSpecId(),
@@ -52,7 +52,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getBasicPassword(DataInput input) {
+    public String getBasicPassword(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(PASSWORD, input.getOpenApiSpecId(),
@@ -62,7 +62,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getBearerToken(DataInput input) {
+    public String getBearerToken(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(BEARER_TOKEN, input.getOpenApiSpecId(),
@@ -72,7 +72,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getOauth2BearerToken(DataInput input) {
+    public String getOauth2BearerToken(CredentialsContext input) {
         return input.getRequestContext().getHeaderString(HttpHeaders.AUTHORIZATION);
     }
 }

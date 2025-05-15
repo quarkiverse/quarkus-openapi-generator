@@ -16,12 +16,12 @@ public class CustomCredentialsProvider extends ConfigCredentialsProvider {
     }
 
     @Override
-    public String getBearerToken(DataInput input) {
+    public String getBearerToken(CredentialsContext input) {
         return super.getBearerToken(input) + "_TEST";
     }
 
     @Override
-    public String getOauth2BearerToken(DataInput input) {
+    public String getOauth2BearerToken(CredentialsContext input) {
         return super.getOauth2BearerToken(input) + "_TEST";
     }
 }

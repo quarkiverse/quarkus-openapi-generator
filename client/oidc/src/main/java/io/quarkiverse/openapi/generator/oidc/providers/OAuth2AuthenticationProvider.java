@@ -44,7 +44,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
             bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
         } else {
             delegate.filter(requestContext);
-            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(CredentialsProvider.DataInput.builder()
+            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(CredentialsProvider.CredentialsContext.builder()
                     .requestContext(requestContext)
                     .openApiSpecId(getOpenApiSpecId())
                     .authName(getName())

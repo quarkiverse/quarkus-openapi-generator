@@ -15,7 +15,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the API Key to use when filtering the request
      */
-    String getApiKey(DataInput input);
+    String getApiKey(CredentialsContext input);
 
     /**
      * Gets the username given the OpenAPI definition and security schema
@@ -23,7 +23,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the username to use when filtering the request
      */
-    String getBasicUsername(DataInput input);
+    String getBasicUsername(CredentialsContext input);
 
     /**
      * Gets the password given the OpenAPI definition and security schema
@@ -31,7 +31,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the password to use when filtering the request
      */
-    String getBasicPassword(DataInput input);
+    String getBasicPassword(CredentialsContext input);
 
     /**
      * Gets the Bearer Token given the OpenAPI definition and security schema
@@ -39,7 +39,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the Bearer Token to use when filtering the request
      */
-    String getBearerToken(DataInput input);
+    String getBearerToken(CredentialsContext input);
 
     /**
      * Gets the OAuth2 Bearer Token given the OpenAPI definition and security schema
@@ -47,9 +47,9 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the Bearer Token to use when filtering the request
      */
-    String getOauth2BearerToken(DataInput input);
+    String getOauth2BearerToken(CredentialsContext input);
 
-    class DataInput {
+    class CredentialsContext {
         // requestContext The current request context in which set the authorization header token
         private ClientRequestContext requestContext;
         // openApiSpecId the OpenAPI Spec identification as defined by the OpenAPI Extension
@@ -57,7 +57,7 @@ public interface CredentialsProvider {
         // authName The security schema for this Bearer Token definition
         private String authName;
 
-        public DataInput(ClientRequestContext requestContext, String openApiSpecId, String authName) {
+        public CredentialsContext(ClientRequestContext requestContext, String openApiSpecId, String authName) {
             this.requestContext = requestContext;
             this.openApiSpecId = openApiSpecId;
             this.authName = authName;
@@ -75,32 +75,32 @@ public interface CredentialsProvider {
             return authName;
         }
 
-        public static DataInputBuilder builder() {
-            return new DataInputBuilder();
+        public static CredentialsContextBuilder builder() {
+            return new CredentialsContextBuilder();
         }
 
-        public static class DataInputBuilder {
+        public static class CredentialsContextBuilder {
             private ClientRequestContext requestContext;
             private String openApiSpecId;
             private String authName;
 
-            public DataInputBuilder requestContext(ClientRequestContext requestContext) {
+            public CredentialsContextBuilder requestContext(ClientRequestContext requestContext) {
                 this.requestContext = requestContext;
                 return this;
             }
 
-            public DataInputBuilder openApiSpecId(String openApiSpecId) {
+            public CredentialsContextBuilder openApiSpecId(String openApiSpecId) {
                 this.openApiSpecId = openApiSpecId;
                 return this;
             }
 
-            public DataInputBuilder authName(String authName) {
+            public CredentialsContextBuilder authName(String authName) {
                 this.authName = authName;
                 return this;
             }
 
-            public CredentialsProvider.DataInput build() {
-                return new CredentialsProvider.DataInput(requestContext, openApiSpecId, authName);
+            public CredentialsContext build() {
+                return new CredentialsContext(requestContext, openApiSpecId, authName);
             }
         }
     }

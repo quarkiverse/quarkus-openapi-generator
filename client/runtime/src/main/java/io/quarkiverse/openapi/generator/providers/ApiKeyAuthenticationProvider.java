@@ -59,7 +59,7 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getApiKey(ClientRequestContext requestContext) {
-        return credentialsProvider.getApiKey(CredentialsProvider.DataInput.builder()
+        return credentialsProvider.getApiKey(CredentialsProvider.CredentialsContext.builder()
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
