@@ -7,6 +7,7 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.client.ClientRequestFilter;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.jboss.logging.Logger;
 
@@ -41,7 +42,7 @@ public class ClassicOidcClientRequestFilterDelegate extends AbstractTokensProduc
     public void filter(ClientRequestContext requestContext) throws IOException {
         try {
             String accessToken = this.getAccessToken();
-            requestContext.getHeaders().add("Authorization", "Bearer " + accessToken);
+            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         } catch (DisabledOidcClientException ex) {
             LOG.debug("Client is disabled, acquiring and propagating the token is not necessary");
         } catch (RuntimeException ex) {
