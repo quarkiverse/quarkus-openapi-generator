@@ -1,9 +1,12 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_DIR;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
@@ -36,27 +39,34 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         return "resources";
     }
 
-    private Path getInputBaseDir(final Path sourceDir, final Config config) {
-        return config.getOptionalValue(CodegenConfig.getInputBaseDirPropertyName(), String.class)
-                .map(inputBaseDir -> {
-                    int srcIndex = sourceDir.toString().lastIndexOf("src");
-                    return Path.of(sourceDir.toString().substring(0, srcIndex), inputBaseDir);
-                }).orElse(Path.of(sourceDir.toString(), "openapi"));
+    private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
+        return config.getOptionalValue(CodegenConfig.getInputBaseDirPropertyName(), String.class).map(baseDir -> {
+            int srcIndex = sourceDir.toString().lastIndexOf("src");
+            return srcIndex < 0 ? null : Path.of(sourceDir.toString().substring(0, srcIndex), baseDir).toString();
+        });
     }
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
-        boolean specIsPresent = config.getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class).isPresent();
-        if (!specIsPresent) {
+        Optional<String> possibleSpecPropertyName = config.getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class);
+        if (possibleSpecPropertyName.isEmpty()) {
             log.warn("The {} property is not present, the code generation will be ignored",
                     CodegenConfig.getSpecPropertyName());
+            return false;
         }
-        return specIsPresent;
+        String specPropertyName = possibleSpecPropertyName.get();
+        String relativeInputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config).orElse(null);
+        if (relativeInputBaseDir != null) {
+            return Files.exists(Path.of(relativeInputBaseDir).resolve(specPropertyName));
+        } else {
+            return Files.exists(sourceDir.resolve(DEFAULT_DIR).resolve(specPropertyName));
+        }
     }
 
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
-        final Path openApiDir = getInputBaseDir(context.inputDir(), context.config());
+        final Path openApiDir = Path.of(getInputBaseDirRelativeToModule(context.inputDir(), context.config())
+                .orElse(context.inputDir().resolve(DEFAULT_DIR).toString()));
 
         validateOpenApiDir(context, openApiDir);
 
