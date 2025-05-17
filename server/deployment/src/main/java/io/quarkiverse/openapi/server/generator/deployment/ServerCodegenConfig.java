@@ -7,6 +7,7 @@ import io.smallrye.config.WithDefault;
 public interface ServerCodegenConfig {
 
     String DEFAULT_PACKAGE = "io.apicurio.api";
+    String DEFAULT_DIR = "openapi";
 
     /**
      * The OpenAPI specification filename.
