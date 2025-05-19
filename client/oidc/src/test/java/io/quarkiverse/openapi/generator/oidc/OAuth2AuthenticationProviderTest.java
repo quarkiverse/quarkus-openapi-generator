@@ -69,11 +69,11 @@ public class OAuth2AuthenticationProviderTest {
 
     }
 
-    protected OAuth2AuthenticationProvider createClassicProvider() {
+    private OAuth2AuthenticationProvider createClassicProvider() {
         return new OAuth2AuthenticationProvider(AUTH_SCHEME_NAME, OPEN_API_FILE_SPEC_ID, classicDelegate, List.of());
     }
 
-    protected void assertHeader(MultivaluedMap<String, Object> headers, String headerName, String value) {
+    private void assertHeader(MultivaluedMap<String, Object> headers, String headerName, String value) {
         Assertions.assertThat(headers.getFirst(headerName))
                 .isNotNull()
                 .isEqualTo(value);

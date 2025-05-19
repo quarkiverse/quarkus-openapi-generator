@@ -58,16 +58,18 @@ public class KeycloakServiceMock implements QuarkusTestResourceLifecycleManager 
     }
 
     private static String getTokenResult() {
-        return "{\n" +
-                "    \"access_token\": \"" + KEYCLOAK_ACCESS_TOKEN + "\",\n" +
-                "    \"expires_in\": 300,\n" +
-                "    \"refresh_expires_in\": 1800,\n" +
-                "    \"refresh_token\": \"" + KEYCLOAK_REFRESH_TOKEN + "\",\n" +
-                "    \"token_type\": \"bearer\",\n" +
-                "    \"not-before-policy\": 0,\n" +
-                "    \"session_state\": \"" + KEYCLOAK_SESSION_STATE + "\",\n" +
-                "    \"scope\": \"email profile\"\n" +
-                "}";
+        return """
+                {
+                    "access_token": "%s",
+                    "expires_in": 300,
+                    "refresh_expires_in": 1800,
+                    "refresh_token": "%s",
+                    "token_type": "bearer",
+                    "not-before-policy": 0,
+                    "session_state": "%s",
+                    "scope": "email profile"
+                }
+                """.formatted(KEYCLOAK_ACCESS_TOKEN, KEYCLOAK_REFRESH_TOKEN, KEYCLOAK_SESSION_STATE);
     }
 
     @Override

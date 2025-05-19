@@ -25,7 +25,7 @@ public class TokenExternalServicesMock implements QuarkusTestResourceLifecycleMa
 
     public static final String AUTHORIZATION_TOKEN = "AUTHORIZATION_TOKEN";
     public static final String SERVICE3_AUTHORIZATION_TOKEN = "BEARER_TOKEN";
-    public static final String token_external_service_MOCK_URL = "propagation-external-service-mock.url";
+    public static final String TOKEN_EXTERNAL_SERVICE_MOCK_URL = "propagation-external-service-mock.url";
     private static final String BEARER = "Bearer ";
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenExternalServicesMock.class);
     private WireMockServer wireMockServer;
@@ -60,7 +60,7 @@ public class TokenExternalServicesMock implements QuarkusTestResourceLifecycleMa
         // configured. The token will be overridden by the custom credential provider
         stubForExternalService("/token-external-service5/executeQuery5", KEYCLOAK_ACCESS_TOKEN + "_TEST");
 
-        return Map.of(token_external_service_MOCK_URL, wireMockServer.baseUrl());
+        return Map.of(TOKEN_EXTERNAL_SERVICE_MOCK_URL, wireMockServer.baseUrl());
     }
 
     @Override
