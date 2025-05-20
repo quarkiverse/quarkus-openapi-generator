@@ -17,6 +17,14 @@
     </dependency>
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
+      <artifactId>quarkus-openapi-generator-oidc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator-it-generation-input</artifactId>
     </dependency>
     <dependency>
