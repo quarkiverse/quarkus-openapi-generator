@@ -20,10 +20,6 @@
       <artifactId>quarkus-openapi-generator-oidc</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
       <artifactId>quarkus-openapi-generator-it-generation-input</artifactId>
     </dependency>
@@ -99,6 +95,27 @@
       <properties>
         <quarkus.package.type>native</quarkus.package.type>
       </properties>
+    </profile>
+    <profile>
+      <id>resteasy-classic</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>resteasy-reactive</id>
+      <dependencies>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-rest-client-oidc-filter</artifactId>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 </project>
