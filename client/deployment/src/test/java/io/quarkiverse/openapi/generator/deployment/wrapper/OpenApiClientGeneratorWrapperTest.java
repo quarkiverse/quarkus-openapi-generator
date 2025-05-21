@@ -104,7 +104,7 @@ public class OpenApiClientGeneratorWrapperTest {
         final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
         assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
                 .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class)))
-                        .isNotPresent();
+                .isNotPresent();
     }
 
     /**

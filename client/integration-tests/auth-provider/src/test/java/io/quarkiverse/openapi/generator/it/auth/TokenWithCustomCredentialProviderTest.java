@@ -3,7 +3,6 @@ package io.quarkiverse.openapi.generator.it.auth;
 import static io.quarkiverse.openapi.generator.it.auth.TokenExternalServicesMock.AUTHORIZATION_TOKEN;
 import static io.restassured.RestAssured.given;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.ws.rs.core.HttpHeaders;

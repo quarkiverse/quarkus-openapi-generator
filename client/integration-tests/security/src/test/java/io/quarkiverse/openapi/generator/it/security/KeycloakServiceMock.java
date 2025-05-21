@@ -36,6 +36,7 @@ public class KeycloakServiceMock implements QuarkusTestResourceLifecycleManager 
     public static final String AUTH_REQUEST_BODY = "grant_type=client_credentials";
 
     private static final ThreadLocal<WireMockServer> wireMockServer = new ThreadLocal<>();
+
     @Override
     public Map<String, String> start() {
         wireMockServer.set(new WireMockServer(options().dynamicPort()));
