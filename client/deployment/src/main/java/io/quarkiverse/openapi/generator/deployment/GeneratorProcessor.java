@@ -128,14 +128,10 @@ public class GeneratorProcessor {
     @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
     void produceOauthAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
-            BuildProducer<AuthProviderBuildItem> authenticationProviders, BuildProducer<SyntheticBeanBuildItem> beanProducer,
+            BuildProducer<AuthProviderBuildItem> authenticationProviders,
+            BuildProducer<SyntheticBeanBuildItem> beanProducer,
             OidcAuthenticationRecorder oidcRecorder) {
 
-        if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
-            LOGGER.debug("{} class not found in runtime, skipping OAuth bean generation", ABSTRACT_TOKEN_PRODUCER);
-            return;
-        }
-        LOGGER.debug("{} class found in runtime, producing OAuth bean generation", ABSTRACT_TOKEN_PRODUCER);
         Collection<AnnotationInstance> authenticationMarkers = beanArchiveBuildItem.getIndex()
                 .getAnnotationsWithRepeatable(OAUTH_AUTHENTICATION_MARKER, beanArchiveBuildItem.getIndex())
                 .stream()
@@ -144,6 +140,24 @@ public class GeneratorProcessor {
                         marker -> marker,
                         (existing, duplicate) -> existing))
                 .values();
+
+        if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
+            if (!authenticationMarkers.isEmpty()) {
+                throw new IllegalStateException(
+                        "OAuth2 flows detected in spec(s) " +
+                                authenticationMarkers.stream()
+                                        .map(m -> m.value("openApiSpecId").asString())
+                                        .distinct()
+                                        .collect(Collectors.joining(", "))
+                                +
+                                " but quarkus-openapi-generator-oidc and quarkus-rest-client-oidc-filter or quarkus-oidc-client-reactive-filter are not on the classpath. "
+                                +
+                                "Please add those dependencies to your project. See https://docs.quarkiverse.io/quarkus-openapi-generator/dev/client.html#_oauth2_authentication");
+            }
+            LOGGER.debug("{} class not found in runtime, skipping OAuth bean generation", ABSTRACT_TOKEN_PRODUCER);
+            return;
+        }
+        LOGGER.debug("{} class found in runtime, producing OAuth bean generation", ABSTRACT_TOKEN_PRODUCER);
 
         Map<String, List<AnnotationInstance>> operationsBySpec = getOperationsBySpec(beanArchiveBuildItem);
 
