@@ -35,13 +35,13 @@ public class KeycloakServiceMock implements QuarkusTestResourceLifecycleManager 
 
     public static final String AUTH_REQUEST_BODY = "grant_type=client_credentials";
 
-    private WireMockServer wireMockServer;
+    private static final ThreadLocal<WireMockServer> wireMockServer = new ThreadLocal<>();
 
     @Override
     public Map<String, String> start() {
-        wireMockServer = new WireMockServer(options().dynamicPort());
-        wireMockServer.start();
-        configureFor(wireMockServer.port());
+        wireMockServer.set(new WireMockServer(options().dynamicPort()));
+        wireMockServer.get().start();
+        configureFor(wireMockServer.get().port());
 
         stubFor(post(KEY_CLOAK_SERVICE_TOKEN_PATH_VALUE)
                 .withHeader(CONTENT_TYPE, equalTo(APPLICATION_FORM_URLENCODED))
@@ -52,7 +52,7 @@ public class KeycloakServiceMock implements QuarkusTestResourceLifecycleManager 
                         .withBody(getTokenResult())));
 
         Map<String, String> properties = new HashMap<>();
-        properties.put(KEY_CLOAK_SERVICE_URL, wireMockServer.baseUrl());
+        properties.put(KEY_CLOAK_SERVICE_URL, wireMockServer.get().baseUrl());
         properties.put(KEY_CLOAK_SERVICE_TOKEN_PATH, KEY_CLOAK_SERVICE_TOKEN_PATH_VALUE);
         return properties;
     }
@@ -74,8 +74,9 @@ public class KeycloakServiceMock implements QuarkusTestResourceLifecycleManager 
 
     @Override
     public void stop() {
-        if (wireMockServer != null) {
-            wireMockServer.stop();
+        if (wireMockServer.get() != null) {
+            wireMockServer.get().stop();
+            wireMockServer.remove();
         }
     }
 }

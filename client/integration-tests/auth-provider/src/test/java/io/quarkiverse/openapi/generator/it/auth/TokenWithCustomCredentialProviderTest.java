@@ -27,9 +27,7 @@ class TokenWithCustomCredentialProviderTest {
     @ParameterizedTest
     @ValueSource(strings = { "service1", "service2", "service3", "service5" })
     void testService(String service) {
-        Map<String, String> headers = new HashMap<>();
-        // service token-external-service1 and token-external-service2 will receive the AUTHORIZATION_TOKEN
-        headers.put(HttpHeaders.AUTHORIZATION, AUTHORIZATION_TOKEN);
+        Map<String, String> headers = Map.of(HttpHeaders.AUTHORIZATION, AUTHORIZATION_TOKEN);
 
         given()
                 .headers(headers)

@@ -16,7 +16,8 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import org.assertj.core.api.Assertions;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
-import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext;
+import org.jboss.resteasy.reactive.client.impl.ClientRequestContextImpl;
+import org.jboss.resteasy.reactive.client.impl.RestClientRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,10 @@ public class ReactiveOAuth2AuthenticationProviderTest {
 
     private static final String HEADER_NAME = "HEADER_NAME";
     @Mock
-    private ResteasyReactiveClientRequestContext reactiveRequestContext;
+    private ClientRequestContextImpl reactiveRequestContext;
+
+    @Mock
+    private RestClientRequestContext restClientRequestContext;
     private MultivaluedMap<String, Object> headers;
 
     private ReactiveOidcClientRequestFilterDelegate reactiveDelegate;
@@ -57,7 +61,11 @@ public class ReactiveOAuth2AuthenticationProviderTest {
     void setUp() {
         headers = new MultivaluedHashMap<>();
         Mockito.lenient().doReturn(headers).when(reactiveRequestContext).getHeaders();
-
+        Mockito.lenient().doReturn(restClientRequestContext).when(reactiveRequestContext).getRestClientRequestContext();
+        Mockito.lenient().doAnswer(invocationOnMock -> restClientRequestContext.setSuspended(true))
+                .when(restClientRequestContext).suspend();
+        Mockito.lenient().doAnswer(invocationOnMock -> restClientRequestContext.setSuspended(false))
+                .when(restClientRequestContext).resume();
         reactiveDelegate = Mockito.mock(ReactiveOidcClientRequestFilterDelegate.class);
         try {
             Mockito.lenient().doCallRealMethod().when(reactiveDelegate).filter(Mockito.any(ClientRequestContext.class));
@@ -87,19 +95,23 @@ public class ReactiveOAuth2AuthenticationProviderTest {
     }
 
     @Test
-    void filterReactive() throws IOException {
+    void filterReactive() throws IOException, InterruptedException {
         filter(provider, "Bearer " + ACCESS_TOKEN);
     }
 
-    private void filter(OAuth2AuthenticationProvider provider, String expectedAuthorizationHeader) throws IOException {
+    private void filter(OAuth2AuthenticationProvider provider, String expectedAuthorizationHeader)
+            throws IOException, InterruptedException {
         provider.filter(reactiveRequestContext);
+        while (reactiveRequestContext.getRestClientRequestContext().isSuspended()) {
+            Thread.sleep(1000);
+        }
         assertHeader(headers, HttpHeaders.AUTHORIZATION, expectedAuthorizationHeader);
     }
 
     @ParameterizedTest
     @MethodSource("filterWithPropagationTestValues")
     void filterWithPropagation(String headerName,
-            String expectedAuthorizationHeader) throws IOException {
+            String expectedAuthorizationHeader) throws IOException, InterruptedException {
         String propagatedHeaderName;
         if (headerName == null) {
             propagatedHeaderName = propagationHeaderName(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME,
