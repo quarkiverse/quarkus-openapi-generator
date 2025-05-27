@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
 import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
 import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getCodegenReactive;
+import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getGenerateBuilders;
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_PACKAGE;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.Config;
+import org.jsonschema2pojo.DefaultGenerationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,7 @@ public class ApicurioCodegenWrapper {
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
 
+    private final Config config;
     private final File outdir;
     private final JaxRsProjectSettings projectSettings;
 
@@ -36,10 +39,11 @@ public class ApicurioCodegenWrapper {
     }
 
     public ApicurioCodegenWrapper(Config config, File outdir, JaxRsProjectSettings projectSettings) {
+        this.config = config;
         this.outdir = outdir;
         this.projectSettings = projectSettings;
-        this.projectSettings.setJavaPackage(getBasePackage(config));
-        this.projectSettings.setReactive(getReactiveValue(config));
+        this.projectSettings.setJavaPackage(getBasePackage());
+        this.projectSettings.setReactive(getReactiveValue());
     }
 
     public void generate(Path openApiResource) throws CodeGenException {
@@ -61,7 +65,18 @@ public class ApicurioCodegenWrapper {
 
         try (FileOutputStream fos = new FileOutputStream(zipFile);
                 FileInputStream openApiStream = new FileInputStream(openApiFile)) {
-            OpenApi2JaxRs generator = new OpenApi2JaxRs();
+            OpenApi2JaxRs generator = new OpenApi2JaxRs() {
+                {
+                    config = new DefaultGenerationConfig() {
+                        @Override
+                        public boolean isGenerateBuilders() {
+                            Boolean generateBuildersValue = getGenerateBuildersValue();
+                            log.debug("Generate Builders={}", generateBuildersValue);
+                            return generateBuildersValue;
+                        }
+                    };
+                }
+            };
             generator.setSettings(projectSettings);
             generator.setUpdateOnly(true);
             generator.setOpenApiDocument(openApiStream);
@@ -106,15 +121,21 @@ public class ApicurioCodegenWrapper {
         }
     }
 
-    private String getBasePackage(final Config config) {
+    private String getBasePackage() {
         return config
                 .getOptionalValue(getBasePackagePropertyName(), String.class)
                 .orElse(DEFAULT_PACKAGE);
     }
 
-    private Boolean getReactiveValue(final Config config) {
+    private Boolean getReactiveValue() {
         return config
                 .getOptionalValue(getCodegenReactive(), Boolean.class)
+                .orElse(Boolean.FALSE);
+    }
+
+    private Boolean getGenerateBuildersValue() {
+        return config
+                .getOptionalValue(getGenerateBuilders(), Boolean.class)
                 .orElse(Boolean.FALSE);
     }
 
