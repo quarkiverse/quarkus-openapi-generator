@@ -47,6 +47,7 @@
     <module>without-oidc</module>
     <module>serializable-model</module>
     <module>equals-hashcode</module>
+    <module>override-credential-provider</module>
   </modules>
   <dependencyManagement>
     <dependencies>
