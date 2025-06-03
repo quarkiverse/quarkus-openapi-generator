@@ -20,7 +20,7 @@ public class CustomCredentialsProvider extends ConfigCredentialsProvider {
 
     @Override
     public String getBearerToken(ClientRequestContext requestContext, String openApiSpecId, String authName) {
-        LOGGER.info("========> getBearerToken");
+        LOGGER.info("========> getBearerToken from CustomCredentialsProvider");
         return TOKEN;
     }
 }
