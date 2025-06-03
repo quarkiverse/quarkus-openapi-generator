@@ -28,7 +28,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [
+          ubuntu-latest,
+          windows-latest
+        ]
         java: [
           { 'version': '17' },
           { 'version': '21' }
@@ -54,7 +57,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [
+          ubuntu-latest,
+          windows-latest
+        ]
         java: [
           { 'version': '17' },
           { 'version': '21' }
