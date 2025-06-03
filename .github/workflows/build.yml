@@ -30,7 +30,7 @@ jobs:
       matrix:
         os: [
           ubuntu-latest,
-          windows-latest
+#          windows-latest - Disabled due to https://github.com/quarkiverse/quarkus-openapi-generator/pull/836#issuecomment-2457329495
         ]
         java: [
           { 'version': '17' },
@@ -59,7 +59,7 @@ jobs:
       matrix:
         os: [
           ubuntu-latest,
-          windows-latest
+#          windows-latest - Disabled due to https://github.com/quarkiverse/quarkus-openapi-generator/pull/836#issuecomment-2457329495
         ]
         java: [
           { 'version': '17' },
