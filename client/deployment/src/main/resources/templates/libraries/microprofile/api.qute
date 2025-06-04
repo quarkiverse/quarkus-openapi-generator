@@ -124,9 +124,10 @@ public interface {classname} {
             {/if}
         {/if}
         {#if additionalRequestArgs}
-            {#for arg in additionalRequestArgs}{!
-                !}{arg}{#if arg_hasNext}, {/if}{/for}{!
-            !}{#if op.allParams || op.hasFormParams},{/if}
+            {#for arg in additionalRequestArgs}
+                {arg}{#if arg_hasNext}, {/if}
+            {/for}
+            {#if is-resteasy-reactive && use-dynamic-url}, {/if}
         {/if}
         {#if is-resteasy-reactive && use-dynamic-url}
         // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
