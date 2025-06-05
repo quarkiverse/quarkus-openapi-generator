@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
-import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
+import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.oidc.common.runtime.OidcConstants;
 
@@ -23,8 +23,9 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
     private final OidcClientRequestFilterDelegate delegate;
 
     public OAuth2AuthenticationProvider(String name,
-            String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations) {
-        super(name, openApiSpecId, operations, new ConfigCredentialsProvider());
+            String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations,
+            CredentialsProvider credentialsProvider) {
+        super(name, openApiSpecId, operations, credentialsProvider);
         this.delegate = delegate;
         validateConfig();
     }

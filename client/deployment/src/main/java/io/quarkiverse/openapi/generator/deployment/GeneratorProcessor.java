@@ -84,8 +84,7 @@ public class GeneratorProcessor {
     }
 
     @BuildStep
-    void additionalBean(Capabilities capabilities, BuildProducer<AdditionalBeanBuildItem> producer) {
-
+    void registerOidcClientBean(Capabilities capabilities, BuildProducer<AdditionalBeanBuildItem> producer) {
         if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
             LOGGER.debug("{} class not found in runtime, skipping OidcClientRequestFilterDelegate bean generation",
                     ABSTRACT_TOKEN_PRODUCER);
@@ -101,7 +100,6 @@ public class GeneratorProcessor {
             producer.produce(AdditionalBeanBuildItem.builder().addBeanClass(ClassicOidcClientRequestFilterDelegate.class)
                     .setDefaultScope(DotName.createSimple(Dependent.class)).setUnremovable().build());
         }
-
     }
 
     @BuildStep
@@ -126,7 +124,7 @@ public class GeneratorProcessor {
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
+    @Record(ExecutionTime.RUNTIME_INIT)
     void produceOauthAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
             BuildProducer<AuthProviderBuildItem> authenticationProviders,
             BuildProducer<SyntheticBeanBuildItem> beanProducer,
@@ -178,14 +176,16 @@ public class GeneratorProcessor {
                     .done()
                     .addInjectionPoint(ClassType.create(OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate.class),
                             AnnotationInstance.builder(OidcClient.class).add("name", sanitizeAuthName(name)).build())
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(oidcRecorder.recordOauthAuthProvider(sanitizeAuthName(name), openApiSpecId, operations))
+                    .setRuntimeInit()
                     .unremovable()
                     .done());
         }
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
+    @Record(ExecutionTime.RUNTIME_INIT)
     void produceBasicAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
             BuildProducer<AuthProviderBuildItem> authenticationProviders, BuildProducer<SyntheticBeanBuildItem> beanProducer,
             AuthenticationRecorder recorder) {
@@ -218,13 +218,14 @@ public class GeneratorProcessor {
                     .done()
                     .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(recorder.recordBasicAuthProvider(sanitizeAuthName(name), openApiSpecId, operations))
+                    .setRuntimeInit()
                     .unremovable()
                     .done());
         }
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
+    @Record(ExecutionTime.RUNTIME_INIT)
     void produceBearerAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
             BuildProducer<AuthProviderBuildItem> authenticationProviders, BuildProducer<SyntheticBeanBuildItem> beanProducer,
             AuthenticationRecorder recorder) {
@@ -258,6 +259,7 @@ public class GeneratorProcessor {
                     .done()
                     .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(recorder.recordBearerAuthProvider(sanitizeAuthName(name), scheme, openApiSpecId, operations))
+                    .setRuntimeInit()
                     .unremovable()
                     .done());
 
@@ -265,7 +267,7 @@ public class GeneratorProcessor {
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
+    @Record(ExecutionTime.RUNTIME_INIT)
     void produceApiKeyAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
             BuildProducer<AuthProviderBuildItem> authenticationProviders, BuildProducer<SyntheticBeanBuildItem> beanProducer,
             AuthenticationRecorder recorder) {
@@ -302,6 +304,7 @@ public class GeneratorProcessor {
                     .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
                     .createWith(recorder.recordApiKeyAuthProvider(sanitizeAuthName(name), openApiSpecId, apiKeyIn, apiKeyName,
                             operations))
+                    .setRuntimeInit()
                     .unremovable()
                     .done());
         }
