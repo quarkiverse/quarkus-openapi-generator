@@ -28,7 +28,7 @@ public class CustomCredentialsProviderTest {
     DefaultApi defaultApi;
 
     /**
-     * This test validates whether the custom CredentialsProvider is override.
+     * This test validates whether the custom CredentialsProvider is overriden.
      */
     @Test
     public void testGetHardCodedToken() {
