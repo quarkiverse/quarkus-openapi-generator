@@ -647,14 +647,11 @@ public class OpenApiClientGeneratorWrapperTest {
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
         List<MethodDeclaration> methods = compilationUnit.findAll(MethodDeclaration.class);
 
-        boolean found = methods.stream().anyMatch(m ->
-                m.getParameters().stream().anyMatch(p ->
-                        p.getNameAsString().equals("testHeader") && p.getAnnotationByName("HeaderParam").isPresent()
-                ) &&
-                        m.getParameters().stream().anyMatch(p ->
-                                p.getNameAsString().equals("id") && p.getAnnotationByName("PathParam").isPresent()
-                        )
-        );
+        boolean found = methods.stream()
+                .anyMatch(m -> m.getParameters().stream().anyMatch(
+                        p -> p.getNameAsString().equals("testHeader") && p.getAnnotationByName("HeaderParam").isPresent()) &&
+                        m.getParameters().stream().anyMatch(
+                                p -> p.getNameAsString().equals("id") && p.getAnnotationByName("PathParam").isPresent()));
         assertTrue(found, "Additional parameters must be generated when additionalRequestArgs.length > 0");
     }
 
