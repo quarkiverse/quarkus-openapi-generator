@@ -27,11 +27,19 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getUsername(ClientRequestContext requestContext) {
-        return credentialsProvider.getBasicUsername(requestContext, getOpenApiSpecId(), getName());
+        return credentialsProvider.getBasicUsername(CredentialsProvider.CredentialsContext.builder()
+                .requestContext(requestContext)
+                .openApiSpecId(getOpenApiSpecId())
+                .authName(getName())
+                .build());
     }
 
     private String getPassword(ClientRequestContext requestContext) {
-        return credentialsProvider.getBasicPassword(requestContext, getOpenApiSpecId(), getName());
+        return credentialsProvider.getBasicPassword(CredentialsProvider.CredentialsContext.builder()
+                .requestContext(requestContext)
+                .openApiSpecId(getOpenApiSpecId())
+                .authName(getName())
+                .build());
     }
 
     @Override

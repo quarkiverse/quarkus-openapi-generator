@@ -27,7 +27,7 @@ import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 
 @RequestScoped
 @Alternative
-@Priority(10) // A higher priority than the default provider.
+@Priority(200) // A higher priority than the default provider.
 public class RuntimeCredentialsProvider implements CredentialsProvider {
 
     @Override
