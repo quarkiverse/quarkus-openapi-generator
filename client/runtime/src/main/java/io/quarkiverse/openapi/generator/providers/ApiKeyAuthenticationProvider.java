@@ -31,11 +31,6 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
         validateConfig();
     }
 
-    public ApiKeyAuthenticationProvider(final String openApiSpecId, final String name, final ApiKeyIn apiKeyIn,
-            final String apiKeyName, List<OperationAuthInfo> operations) {
-        this(openApiSpecId, name, apiKeyIn, apiKeyName, operations, new ConfigCredentialsProvider());
-    }
-
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         switch (apiKeyIn) {

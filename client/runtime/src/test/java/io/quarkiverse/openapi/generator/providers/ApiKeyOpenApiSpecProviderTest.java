@@ -42,7 +42,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
     @Override
     protected ApiKeyAuthenticationProvider createProvider() {
         return new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.header, API_KEY_NAME,
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
     }
 
     @Test
@@ -88,7 +88,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
     void filterQueryCase() throws IOException {
         doReturn(INVOKED_URI).when(requestContext).getUri();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.query, API_KEY_NAME,
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
         provider.filter(requestContext);
         verify(requestContext).setUri(uriCaptor.capture());
         assertThat(uriCaptor.getValue()).isNotNull().hasParameter(API_KEY_NAME, API_KEY_VALUE);
@@ -99,7 +99,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
         final MultivaluedMap<String, Object> headers = new MultivaluedTreeMap<>();
         doReturn(headers).when(requestContext).getHeaders();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
         provider.filter(requestContext);
         final List<Object> cookies = headers.get(HttpHeaders.COOKIE);
         assertThat(cookies).singleElement().satisfies(cookie -> assertCookie(cookie, API_KEY_NAME, API_KEY_VALUE));
@@ -114,7 +114,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
         headers.add(HttpHeaders.COOKIE, existingCookie);
         doReturn(headers).when(requestContext).getHeaders();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
         provider.filter(requestContext);
         final List<Object> cookies = headers.get(HttpHeaders.COOKIE);
         assertThat(cookies).satisfiesExactlyInAnyOrder(cookie -> assertCookie(cookie, existingCookieName, existingCookieValue),
@@ -130,7 +130,8 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
                     Boolean.class)).thenReturn(Optional.of(true));
 
             assertThatThrownBy(() -> new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.header,
-                    API_KEY_NAME, List.of())).hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation",
+                    API_KEY_NAME, List.of(), new ConfigCredentialsProvider()))
+                    .hasMessageContaining("quarkus.openapi-generator.%s.auth.%s.token-propagation",
                             OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME);
         }
     }

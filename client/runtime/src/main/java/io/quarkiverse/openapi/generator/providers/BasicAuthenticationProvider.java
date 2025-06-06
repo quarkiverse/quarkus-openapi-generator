@@ -24,10 +24,6 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
         super(name, openApiSpecId, operations, credentialsProvider);
     }
 
-    public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations) {
-        this(openApiSpecId, name, operations, new ConfigCredentialsProvider());
-    }
-
     private String getUsername(ClientRequestContext requestContext) {
         return credentialsProvider.getBasicUsername(CredentialsProvider.CredentialsContext.builder()
                 .requestContext(requestContext)
