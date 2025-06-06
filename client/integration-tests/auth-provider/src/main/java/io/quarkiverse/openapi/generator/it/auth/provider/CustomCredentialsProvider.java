@@ -6,6 +6,7 @@ import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Specializes;
 
 import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
+import io.quarkiverse.openapi.generator.providers.CredentialsContext;
 
 @Dependent
 @Alternative
