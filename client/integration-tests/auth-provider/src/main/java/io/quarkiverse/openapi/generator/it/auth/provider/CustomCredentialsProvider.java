@@ -1,25 +1,27 @@
-package io.quarkiverse.openapi.generator.it.creds;
+package io.quarkiverse.openapi.generator.it.auth.provider;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.enterprise.inject.Specializes;
 
 import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
 
 @Dependent
 @Alternative
+@Specializes
 @Priority(200)
 public class CustomCredentialsProvider extends ConfigCredentialsProvider {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomCredentialsProvider.class);
-
-    public static String TOKEN = "FIXED_TEST_TOKEN";
+    public CustomCredentialsProvider() {
+    }
 
     @Override
     public String getBearerToken(CredentialsContext input) {
-        LOGGER.info("========> getBearerToken from CustomCredentialsProvider");
-        return TOKEN;
+        return super.getBearerToken(input) + "_TEST";
+    }
+
+    @Override
+    public String getOauth2BearerToken(CredentialsContext input) {
+        return super.getOauth2BearerToken(input) + "_TEST";
     }
 }

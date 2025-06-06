@@ -4,7 +4,6 @@ import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TI
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +29,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
     protected AbstractAuthProvider(String name, String openApiSpecId, List<OperationAuthInfo> operations,
-            CredentialsProvider credentialsProvider) {
+                                   CredentialsProvider credentialsProvider) {
         this.name = name;
         this.openApiSpecId = openApiSpecId;
         this.applyToOperations.addAll(operations);
@@ -61,23 +60,31 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public boolean isTokenPropagation() {
-        return ConfigProvider.getConfig()
-                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION), Boolean.class)
-                .orElse(false);
+        return isTokenPropagation(getOpenApiSpecId(), getName());
+    }
+
+    public static String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders, String openApiSpecId,
+                                                String authName) {
+        String headerName = getHeaderName(openApiSpecId, authName) != null ? getHeaderName(openApiSpecId, authName)
+                : HttpHeaders.AUTHORIZATION;
+        String propagatedHeaderName = propagationHeaderName(openApiSpecId, authName, headerName);
+        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName));
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
-        String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), getHeaderForPropagation());
-        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName), null);
-    }
-
-    public String getHeaderForPropagation() {
-        return getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
+        return getTokenForPropagation(httpHeaders, getOpenApiSpecId(), getName());
     }
 
     public String getHeaderName() {
         return ConfigProvider.getConfig()
                 .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME), String.class).orElse(null);
+    }
+
+    public static String getHeaderName(String openApiSpecId, String authName) {
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.HEADER_NAME, openApiSpecId, authName),
+                        String.class)
+                .orElse(null);
     }
 
     @Override
@@ -93,11 +100,14 @@ public abstract class AbstractAuthProvider implements AuthProvider {
         return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, openApiSpecId, authName, authPropertyName);
     }
 
-    protected void addAuthorizationHeader(MultivaluedMap<String, Object> headers, String value) {
-        headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(value));
+    public static boolean isTokenPropagation(String openApiSpecId, String authName) {
+        return ConfigProvider.getConfig()
+                .getOptionalValue(getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION, openApiSpecId, authName),
+                        Boolean.class)
+                .orElse(false);
     }
 
-    protected static boolean isEmptyOrBlank(String value) {
-        return value == null || value.isBlank();
+    public CredentialsProvider getCredentialsProvider() {
+        return credentialsProvider;
     }
 }
