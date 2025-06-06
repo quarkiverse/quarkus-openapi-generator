@@ -12,6 +12,7 @@ import jakarta.ws.rs.client.ClientRequestFilter;
 import io.quarkiverse.openapi.generator.providers.ApiKeyAuthenticationProvider;
 import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
 import io.quarkiverse.openapi.generator.providers.AuthProvider;
+import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
 
 @Priority(Priorities.AUTHENTICATION)
 public class DummyApiKeyAuthenticationProvider implements ClientRequestFilter {
@@ -21,7 +22,7 @@ public class DummyApiKeyAuthenticationProvider implements ClientRequestFilter {
     @PostConstruct
     public void init() {
         authProvider = new ApiKeyAuthenticationProvider("open_weather_custom_security_yaml", "app_id", ApiKeyIn.query, "appid",
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
     }
 
     @Override

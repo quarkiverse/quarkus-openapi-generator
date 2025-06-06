@@ -21,11 +21,6 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
         this.scheme = scheme;
     }
 
-    public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
-            List<OperationAuthInfo> operations) {
-        this(openApiSpecId, name, scheme, operations, new ConfigCredentialsProvider());
-    }
-
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         String bearerToken = getBearerToken(requestContext);

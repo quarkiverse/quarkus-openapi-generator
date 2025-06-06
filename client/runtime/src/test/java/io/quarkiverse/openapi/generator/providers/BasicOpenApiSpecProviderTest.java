@@ -39,7 +39,8 @@ class BasicOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Basic
 
     @Override
     protected BasicAuthenticationProvider createProvider() {
-        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, List.of());
+        return new BasicAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, List.of(),
+                new ConfigCredentialsProvider());
     }
 
     @Test
