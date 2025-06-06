@@ -35,7 +35,7 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getBearerToken(ClientRequestContext requestContext) {
-        return credentialsProvider.getBearerToken(CredentialsProvider.CredentialsContext.builder()
+        return credentialsProvider.getBearerToken(CredentialsContext.builder()
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
