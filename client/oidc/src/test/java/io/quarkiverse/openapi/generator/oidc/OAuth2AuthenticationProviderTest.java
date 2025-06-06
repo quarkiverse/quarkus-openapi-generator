@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import io.quarkiverse.openapi.generator.AuthConfig;
 import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvider;
+import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
 import io.quarkus.oidc.client.Tokens;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,7 +71,8 @@ public class OAuth2AuthenticationProviderTest {
     }
 
     private OAuth2AuthenticationProvider createClassicProvider() {
-        return new OAuth2AuthenticationProvider(AUTH_SCHEME_NAME, OPEN_API_FILE_SPEC_ID, classicDelegate, List.of());
+        return new OAuth2AuthenticationProvider(AUTH_SCHEME_NAME, OPEN_API_FILE_SPEC_ID, classicDelegate, List.of(),
+                new ConfigCredentialsProvider());
     }
 
     private void assertHeader(MultivaluedMap<String, Object> headers, String headerName, String value) {
