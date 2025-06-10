@@ -634,6 +634,28 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void shouldGenerateAdditionalParametersWhenLengthGreaterThanZero() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json")
+                .withAdditionalRequestArgs("@HeaderParam(\"X-Test\") String testHeader;@PathParam(\"id\") String id")
+                .generate("org.test.additionalargs");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("PetApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methods = compilationUnit.findAll(MethodDeclaration.class);
+
+        boolean found = methods.stream()
+                .anyMatch(m -> m.getParameters().stream().anyMatch(
+                        p -> p.getNameAsString().equals("testHeader") && p.getAnnotationByName("HeaderParam").isPresent()) &&
+                        m.getParameters().stream().anyMatch(
+                                p -> p.getNameAsString().equals("id") && p.getAnnotationByName("PathParam").isPresent()));
+        assertTrue(found, "Additional parameters must be generated when additionalRequestArgs.length > 0");
+    }
+
+    @Test
     void verifyCookieParams() throws URISyntaxException {
         List<File> generatedFiles = createGeneratorWrapper("petstore-openapi.json").generate("org.cookieParams");
 
