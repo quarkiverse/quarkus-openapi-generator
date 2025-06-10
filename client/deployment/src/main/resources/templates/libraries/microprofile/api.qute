@@ -123,14 +123,13 @@ public interface {classname} {
                 {/if}
             {/if}
         {/if}
-        {#if additionalRequestArgs}
-            {#for arg in additionalRequestArgs}{!
-                !}{arg}{#if arg_hasNext}, {/if}{/for}{!
-            !}{#if op.allParams || op.hasFormParams},{/if}
+        {#if additionalRequestArgs && additionalRequestArgs.length > 0}
+            {#for arg in additionalRequestArgs}{arg}{#if arg_hasNext}, {/if}{/for}
+            {#if (op.allParams || op.hasFormParams)}, {/if}
         {/if}
         {#if is-resteasy-reactive && use-dynamic-url}
-        // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
-        @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
+            // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
+            @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
         {/if}
         {#if op.hasFormParams}
         {#if is-resteasy-reactive}
