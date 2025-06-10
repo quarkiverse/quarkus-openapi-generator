@@ -25,7 +25,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getUsername(ClientRequestContext requestContext) {
-        return credentialsProvider.getBasicUsername(CredentialsProvider.CredentialsContext.builder()
+        return credentialsProvider.getBasicUsername(CredentialsContext.builder()
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
@@ -33,7 +33,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getPassword(ClientRequestContext requestContext) {
-        return credentialsProvider.getBasicPassword(CredentialsProvider.CredentialsContext.builder()
+        return credentialsProvider.getBasicPassword(CredentialsContext.builder()
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())

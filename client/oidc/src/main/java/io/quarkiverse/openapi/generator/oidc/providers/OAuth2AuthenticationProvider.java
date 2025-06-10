@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.providers.AbstractAuthProvider;
 import io.quarkiverse.openapi.generator.providers.AuthUtils;
+import io.quarkiverse.openapi.generator.providers.CredentialsContext;
 import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 
@@ -38,7 +39,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
             bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
         } else {
             delegate.filter(requestContext);
-            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(CredentialsProvider.CredentialsContext.builder()
+            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(CredentialsContext.builder()
                     .requestContext(requestContext)
                     .openApiSpecId(getOpenApiSpecId())
                     .authName(getName())
