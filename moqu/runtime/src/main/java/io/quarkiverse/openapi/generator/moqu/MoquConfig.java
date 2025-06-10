@@ -12,7 +12,7 @@ public interface MoquConfig {
     String DEFAULT_RESOURCE_DIR = "openapi";
 
     /**
-     * Path to the Moqu (relative to the project).
+     * Path to the Moqu OpenAPI files, relative to the <code>src/main/resources</code> directory.
      */
     @WithDefault(DEFAULT_RESOURCE_DIR)
     String resourceDir();
