@@ -204,3 +204,7 @@ The Wiremock definition using the OpenAPI specification above, looks something l
     ]
 }
 ----
+
+== Configuration Properties
+
+include::./includes/quarkus-openapi-generator-moqu-wiremock.adoc[opts=optional, leveloffset=+1]
