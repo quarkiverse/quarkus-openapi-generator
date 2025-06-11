@@ -6,6 +6,9 @@ import java.util.List;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Provides bearer token authentication or any other valid scheme.
  *
@@ -14,6 +17,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 public class BearerAuthenticationProvider extends AbstractAuthProvider {
 
     private final String scheme;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BearerAuthenticationProvider.class);
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
             List<OperationAuthInfo> operations, CredentialsProvider credentialsProvider) {
@@ -23,6 +27,7 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
+        LOGGER.debug("Headers keys set in incoming requestContext: {}", requestContext.getHeaders().keySet());
         String bearerToken = getBearerToken(requestContext);
 
         if (isTokenPropagation()) {
@@ -32,6 +37,7 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
         if (!bearerToken.isBlank()) {
             requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
         }
+        LOGGER.debug("Header keys set in filtered requestContext: {}", requestContext.getHeaders().keySet());
     }
 
     private String getBearerToken(ClientRequestContext requestContext) {
