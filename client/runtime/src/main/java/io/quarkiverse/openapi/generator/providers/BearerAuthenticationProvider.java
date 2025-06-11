@@ -1,11 +1,9 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 /**
  * Provides bearer token authentication or any other valid scheme.
@@ -36,9 +34,7 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
         }
 
         if (!isEmptyOrBlank(bearerToken)) {
-            requestContext.getHeaders().remove(HttpHeaders.AUTHORIZATION);
-            requestContext.getHeaders().put(HttpHeaders.AUTHORIZATION,
-                    Collections.singletonList(AuthUtils.authTokenOrBearer(this.scheme, bearerToken)));
+            addAuthorizationHeader(requestContext.getHeaders(), AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
         }
     }
 

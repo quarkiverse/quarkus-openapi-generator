@@ -4,6 +4,7 @@ import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TI
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,6 +88,10 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public static String getCanonicalAuthConfigPropertyName(String authPropertyName, String openApiSpecId, String authName) {
         return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, openApiSpecId, authName, authPropertyName);
+    }
+
+    protected void addAuthorizationHeader(MultivaluedMap<String, Object> headers, String value) {
+        headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(value));
     }
 
     protected static boolean isEmptyOrBlank(String value) {

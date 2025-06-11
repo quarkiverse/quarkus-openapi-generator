@@ -3,11 +3,9 @@ package io.quarkiverse.openapi.generator.oidc.providers;
 import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +33,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
         if (isTokenPropagation()) {
             String bearerToken = sanitizeBearerToken(getTokenForPropagation(requestContext.getHeaders()));
             if (!isEmptyOrBlank(bearerToken)) {
-                requestContext.getHeaders().remove(HttpHeaders.AUTHORIZATION);
-                requestContext.getHeaders().put(HttpHeaders.AUTHORIZATION,
-                        Collections.singletonList(OidcConstants.BEARER_SCHEME + " " + bearerToken));
+                addAuthorizationHeader(requestContext.getHeaders(), OidcConstants.BEARER_SCHEME + " " + bearerToken);
             }
         } else {
             delegate.filter(requestContext);

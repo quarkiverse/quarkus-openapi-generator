@@ -1,11 +1,9 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +44,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
         }
 
         if (!isEmptyOrBlank(basicToken)) {
-            requestContext.getHeaders().remove(HttpHeaders.AUTHORIZATION);
-            requestContext.getHeaders().put(HttpHeaders.AUTHORIZATION,
-                    Collections.singletonList(AuthUtils.basicAuthAccessToken(basicToken)));
+            addAuthorizationHeader(requestContext.getHeaders(), AuthUtils.basicAuthAccessToken(basicToken));
         }
-
     }
 }
