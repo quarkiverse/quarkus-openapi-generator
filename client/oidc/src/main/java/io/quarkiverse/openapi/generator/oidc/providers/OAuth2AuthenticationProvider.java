@@ -34,6 +34,9 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
             String bearerToken = sanitizeBearerToken(getTokenForPropagation(requestContext.getHeaders()));
             if (!isEmptyOrBlank(bearerToken)) {
                 addAuthorizationHeader(requestContext.getHeaders(), OidcConstants.BEARER_SCHEME + " " + bearerToken);
+            } else {
+                LOGGER.debug("No oauth2 bearer token was found to propagate for the security scheme: {}." +
+                        " You must verify that the request header: {} is set.", getName(), getHeaderForPropagation());
             }
         } else {
             delegate.filter(requestContext);

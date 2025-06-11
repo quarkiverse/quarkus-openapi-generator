@@ -67,9 +67,12 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
-        String headerName = getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
-        String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), headerName);
+        String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), getHeaderForPropagation());
         return Objects.toString(httpHeaders.getFirst(propagatedHeaderName), null);
+    }
+
+    public String getHeaderForPropagation() {
+        return getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
     }
 
     public String getHeaderName() {
