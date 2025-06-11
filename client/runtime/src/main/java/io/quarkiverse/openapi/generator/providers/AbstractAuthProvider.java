@@ -68,7 +68,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
         String headerName = getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
         String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), headerName);
-        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName));
+        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName), null);
     }
 
     public String getHeaderName() {
@@ -87,5 +87,9 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public static String getCanonicalAuthConfigPropertyName(String authPropertyName, String openApiSpecId, String authName) {
         return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, openApiSpecId, authName, authPropertyName);
+    }
+
+    protected static boolean isEmptyOrBlank(String value) {
+        return value == null || value.isBlank();
     }
 }

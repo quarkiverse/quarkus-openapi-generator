@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.it.security;
 
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -25,36 +26,31 @@ public class TokenPropagationResource {
 
     @POST
     @Path("service1")
-    public String service1() {
-        defaultApi1.executeQuery1();
-        return "hello";
+    public Response service1() {
+        return defaultApi1.executeQuery1();
     }
 
     @POST
     @Path("service2")
-    public String service2() {
-        defaultApi2.executeQuery2();
-        return "hello";
+    public Response service2() {
+        return defaultApi2.executeQuery2();
     }
 
     @POST
     @Path("service3")
-    public String service3() {
-        defaultApi3.executeQuery3();
-        return "hello";
+    public Response service3() {
+        return defaultApi3.executeQuery3();
     }
 
     @POST
     @Path("service4")
-    public String service4() {
-        defaultApi4.executeQuery4();
-        return "hello";
+    public Response service4() {
+        return defaultApi4.executeQuery4();
     }
 
     @POST
     @Path("service5")
-    public String service5() {
-        defaultApi5.executeQuery5();
-        return "hello";
+    public Response service5() {
+        return defaultApi5.executeQuery5();
     }
 }

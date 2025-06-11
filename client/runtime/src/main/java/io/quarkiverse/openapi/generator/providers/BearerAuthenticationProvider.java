@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
@@ -34,8 +35,10 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
             bearerToken = sanitizeBearerToken(getTokenForPropagation(requestContext.getHeaders()));
         }
 
-        if (!bearerToken.isBlank()) {
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
+        if (!isEmptyOrBlank(bearerToken)) {
+            requestContext.getHeaders().remove(HttpHeaders.AUTHORIZATION);
+            requestContext.getHeaders().put(HttpHeaders.AUTHORIZATION,
+                    Collections.singletonList(AuthUtils.authTokenOrBearer(this.scheme, bearerToken)));
         }
     }
 
