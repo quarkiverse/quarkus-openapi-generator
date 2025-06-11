@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +32,13 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         if (isTokenPropagation()) {
-            String bearerToken = getTokenForPropagation(requestContext.getHeaders());
-            bearerToken = sanitizeBearerToken(bearerToken);
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, OidcConstants.BEARER_SCHEME + " " + bearerToken);
+            String bearerToken = sanitizeBearerToken(getTokenForPropagation(requestContext.getHeaders()));
+            if (!isEmptyOrBlank(bearerToken)) {
+                addAuthorizationHeader(requestContext.getHeaders(), OidcConstants.BEARER_SCHEME + " " + bearerToken);
+            } else {
+                LOGGER.debug("No oauth2 bearer token was found to propagate for the security scheme: {}." +
+                        " You must verify that the request header: {} is set.", getName(), getHeaderForPropagation());
+            }
         } else {
             delegate.filter(requestContext);
         }

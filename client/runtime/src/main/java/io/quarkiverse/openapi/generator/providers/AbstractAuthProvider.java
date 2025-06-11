@@ -4,6 +4,7 @@ import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TI
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,9 +67,12 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
-        String headerName = getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
-        String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), headerName);
-        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName));
+        String propagatedHeaderName = propagationHeaderName(getOpenApiSpecId(), getName(), getHeaderForPropagation());
+        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName), null);
+    }
+
+    public String getHeaderForPropagation() {
+        return getHeaderName() != null ? getHeaderName() : HttpHeaders.AUTHORIZATION;
     }
 
     public String getHeaderName() {
@@ -87,5 +91,13 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public static String getCanonicalAuthConfigPropertyName(String authPropertyName, String openApiSpecId, String authName) {
         return String.format(CANONICAL_AUTH_CONFIG_PROPERTY_NAME, openApiSpecId, authName, authPropertyName);
+    }
+
+    protected void addAuthorizationHeader(MultivaluedMap<String, Object> headers, String value) {
+        headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(value));
+    }
+
+    protected static boolean isEmptyOrBlank(String value) {
+        return value == null || value.isBlank();
     }
 }

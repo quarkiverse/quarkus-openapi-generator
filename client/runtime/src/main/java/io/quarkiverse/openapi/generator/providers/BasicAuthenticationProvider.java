@@ -1,10 +1,12 @@
 package io.quarkiverse.openapi.generator.providers;
 
+import static io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider.PASSWORD;
+import static io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider.USER_NAME;
+
 import java.io.IOException;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +46,14 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
             basicToken = sanitizeBasicToken(getTokenForPropagation(requestContext.getHeaders()));
         }
 
-        if (!basicToken.isBlank()) {
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION,
-                    AuthUtils.basicAuthAccessToken(basicToken));
+        if (!isEmptyOrBlank(basicToken)) {
+            addAuthorizationHeader(requestContext.getHeaders(), AuthUtils.basicAuthAccessToken(basicToken));
+        } else {
+            LOGGER.debug("No basic authentication token was found for the security scheme: {}." +
+                    " You must verify that the properties: {} and {} are properly configured, or the request header: {} is set when the token propagation is enabled.",
+                    getName(), getCanonicalAuthConfigPropertyName(USER_NAME, getOpenApiSpecId(), getName()),
+                    getCanonicalAuthConfigPropertyName(PASSWORD, getOpenApiSpecId(), getName()),
+                    getHeaderForPropagation());
         }
-
     }
 }
