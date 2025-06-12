@@ -29,7 +29,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
-                .build());
+                .build()).orElseThrow();
     }
 
     private String getPassword(ClientRequestContext requestContext) {
@@ -37,7 +37,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
-                .build());
+                .build()).orElseThrow();
     }
 
     @Override
