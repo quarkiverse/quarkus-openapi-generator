@@ -57,7 +57,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
                     " You must verify that the properties: {} and {} are properly configured, or the request header: {} is set when the token propagation is enabled.",
                     getName(), getCanonicalAuthConfigPropertyName(USER_NAME, getOpenApiSpecId(), getName()),
                     getCanonicalAuthConfigPropertyName(PASSWORD, getOpenApiSpecId(), getName()),
-                    getHeaderForPropagation());
+                    getHeaderForPropagation(getOpenApiSpecId(), getName()));
         }
     }
 }

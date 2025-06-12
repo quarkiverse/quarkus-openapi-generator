@@ -10,17 +10,12 @@ import jakarta.ws.rs.client.ClientRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Provides bearer token authentication or any other valid scheme.
  *
  * @see <a href="https://swagger.io/docs/specification/authentication/bearer-authentication/">Bearer Authentication</a>
  */
 public class BearerAuthenticationProvider extends AbstractAuthProvider {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(BearerAuthenticationProvider.class);
 
     private final String scheme;
     private static final Logger LOGGER = LoggerFactory.getLogger(BearerAuthenticationProvider.class);
@@ -46,7 +41,7 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
             LOGGER.debug("No bearer token was found for the security scheme: {}." +
                     " You must verify that the property: {} is properly configured, or the request header: {} is set when the token propagation is enabled.",
                     getName(), getCanonicalAuthConfigPropertyName(BEARER_TOKEN, getOpenApiSpecId(), getName()),
-                    getHeaderForPropagation());
+                    getHeaderForPropagation(getOpenApiSpecId(), getName()));
         }
         LOGGER.debug("Header keys set in filtered requestContext: {}", requestContext.getHeaders().keySet());
     }
