@@ -4,6 +4,7 @@ import static io.quarkiverse.openapi.generator.OpenApiGeneratorConfig.RUNTIME_TI
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,14 +66,18 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public static String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders, String openApiSpecId,
             String authName) {
-        String headerName = getHeaderName(openApiSpecId, authName) != null ? getHeaderName(openApiSpecId, authName)
-                : HttpHeaders.AUTHORIZATION;
+        String headerName = getHeaderForPropagation(openApiSpecId, authName);
         String propagatedHeaderName = propagationHeaderName(openApiSpecId, authName, headerName);
-        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName));
+        return Objects.toString(httpHeaders.getFirst(propagatedHeaderName), null);
     }
 
     public String getTokenForPropagation(MultivaluedMap<String, Object> httpHeaders) {
         return getTokenForPropagation(httpHeaders, getOpenApiSpecId(), getName());
+    }
+
+    public static String getHeaderForPropagation(String openApiSpecId, String authName) {
+        return getHeaderName(openApiSpecId, authName) != null ? getHeaderName(openApiSpecId, authName)
+                : HttpHeaders.AUTHORIZATION;
     }
 
     public String getHeaderName() {
@@ -109,5 +114,13 @@ public abstract class AbstractAuthProvider implements AuthProvider {
 
     public CredentialsProvider getCredentialsProvider() {
         return credentialsProvider;
+    }
+
+    protected void addAuthorizationHeader(MultivaluedMap<String, Object> headers, String value) {
+        headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(value));
+    }
+
+    protected static boolean isEmptyOrBlank(String value) {
+        return value == null || value.isBlank();
     }
 }

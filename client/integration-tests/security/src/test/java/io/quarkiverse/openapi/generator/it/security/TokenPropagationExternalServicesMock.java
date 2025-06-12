@@ -23,7 +23,8 @@ import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
 public class TokenPropagationExternalServicesMock implements QuarkusTestResourceLifecycleManager {
 
-    public static final String AUTHORIZATION_TOKEN = "AUTHORIZATION_TOKEN";
+    public static final String SERVICE1_AUTHORIZATION_TOKEN = "SERVICE1_AUTHORIZATION_TOKEN";
+    public static final String SERVICE2_AUTHORIZATION_TOKEN = "SERVICE2_AUTHORIZATION_TOKEN";
     public static final String SERVICE3_HEADER_TO_PROPAGATE = "SERVICE3_HEADER_TO_PROPAGATE";
     public static final String SERVICE3_AUTHORIZATION_TOKEN = "SERVICE3_AUTHORIZATION_TOKEN";
     public static final String SERVICE4_HEADER_TO_PROPAGATE = "SERVICE4_HEADER_TO_PROPAGATE";
@@ -49,10 +50,10 @@ public class TokenPropagationExternalServicesMock implements QuarkusTestResource
         LOGGER.info("Mocked Server started at {}", wireMockServer.baseUrl());
 
         // stub the token-propagation-external-service1 invocation with the expected token
-        stubForExternalService("/token-propagation-external-service1/executeQuery1", AUTHORIZATION_TOKEN);
+        stubForExternalService("/token-propagation-external-service1/executeQuery1", SERVICE1_AUTHORIZATION_TOKEN);
 
         // stub the token-propagation-external-service2 invocation with the expected token
-        stubForExternalService("/token-propagation-external-service2/executeQuery2", AUTHORIZATION_TOKEN);
+        stubForExternalService("/token-propagation-external-service2/executeQuery2", SERVICE2_AUTHORIZATION_TOKEN);
 
         // stub the token-propagation-external-service3 invocation with the expected token
         stubForExternalService("/token-propagation-external-service3/executeQuery3", SERVICE3_AUTHORIZATION_TOKEN);

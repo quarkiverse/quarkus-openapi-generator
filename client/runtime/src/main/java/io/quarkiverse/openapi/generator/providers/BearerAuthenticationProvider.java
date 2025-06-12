@@ -1,10 +1,11 @@
 package io.quarkiverse.openapi.generator.providers;
 
+import static io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider.BEARER_TOKEN;
+
 import java.io.IOException;
 import java.util.List;
 
 import jakarta.ws.rs.client.ClientRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,13 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
             bearerToken = sanitizeBearerToken(getTokenForPropagation(requestContext.getHeaders()));
         }
 
-        if (!bearerToken.isBlank()) {
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
+        if (!isEmptyOrBlank(bearerToken)) {
+            addAuthorizationHeader(requestContext.getHeaders(), AuthUtils.authTokenOrBearer(this.scheme, bearerToken));
+        } else {
+            LOGGER.debug("No bearer token was found for the security scheme: {}." +
+                    " You must verify that the property: {} is properly configured, or the request header: {} is set when the token propagation is enabled.",
+                    getName(), getCanonicalAuthConfigPropertyName(BEARER_TOKEN, getOpenApiSpecId(), getName()),
+                    getHeaderForPropagation(getOpenApiSpecId(), getName()));
         }
         LOGGER.debug("Header keys set in filtered requestContext: {}", requestContext.getHeaders().keySet());
     }
