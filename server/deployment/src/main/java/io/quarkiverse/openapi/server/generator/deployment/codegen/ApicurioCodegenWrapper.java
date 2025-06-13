@@ -18,7 +18,6 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.Config;
-import org.jsonschema2pojo.DefaultGenerationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,14 +66,7 @@ public class ApicurioCodegenWrapper {
                 FileInputStream openApiStream = new FileInputStream(openApiFile)) {
             OpenApi2JaxRs generator = new OpenApi2JaxRs() {
                 {
-                    config = new DefaultGenerationConfig() {
-                        @Override
-                        public boolean isGenerateBuilders() {
-                            Boolean generateBuildersValue = getGenerateBuildersValue();
-                            log.debug("Generate Builders={}", generateBuildersValue);
-                            return generateBuildersValue;
-                        }
-                    };
+                    config = new ConfigurableGenerationConfig(ApicurioCodegenWrapper.this.config);
                 }
             };
             generator.setSettings(projectSettings);
