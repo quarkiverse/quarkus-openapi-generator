@@ -473,12 +473,10 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             Class<T> propertyType) {
 
         Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
-        if (possibleConfigKey.isPresent()) {
-            return getValuesByConfigKey(config, CodegenConfig.getSpecConfigNameByConfigKey(possibleConfigKey.get(), configName),
-                    propertyType, configName);
-        }
+        return possibleConfigKey
+                .flatMap(s -> getValuesByConfigKey(config, CodegenConfig.getSpecConfigNameByConfigKey(s, configName),
+                        propertyType, configName));
 
-        return Optional.empty();
     }
 
     private <K, V> Optional<Map<K, V>> getConfigKeyValues(final SmallRyeConfig config, final Path openApiFilePath,
@@ -486,10 +484,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             Class<K> kClass, Class<V> vClass) {
 
         Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
-        if (possibleConfigKey.isPresent()) {
-            return getValuesByConfigKey(config, configName, kClass, vClass, possibleConfigKey.get());
-        }
+        return possibleConfigKey.flatMap(s -> getValuesByConfigKey(config, configName, kClass, vClass, s));
 
-        return Optional.empty();
     }
 }

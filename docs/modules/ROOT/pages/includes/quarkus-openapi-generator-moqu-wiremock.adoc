@@ -15,7 +15,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Path to the Moqu (relative to the project).
+Path to the Moqu OpenAPI files, relative to the `src/main/resources` directory.
 
 
 ifdef::add-copy-button-to-env-var[]

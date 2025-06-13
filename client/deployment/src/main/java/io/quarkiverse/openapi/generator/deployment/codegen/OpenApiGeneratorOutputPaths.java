@@ -2,7 +2,6 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +11,7 @@ public class OpenApiGeneratorOutputPaths {
     public static final String OPENAPI_PATH = "open-api";
     public static final String STREAM_PATH = "open-api-stream";
 
-    private static final Collection<String> rootPaths = Arrays.asList(STREAM_PATH);
+    private static final Collection<String> rootPaths = List.of(STREAM_PATH);
 
     public static Path getRelativePath(Path path) {
         List<String> paths = new ArrayList<>();
