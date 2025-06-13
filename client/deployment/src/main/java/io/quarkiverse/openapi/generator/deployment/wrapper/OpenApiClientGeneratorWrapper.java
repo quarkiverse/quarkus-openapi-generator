@@ -64,7 +64,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(ONCE_LOGGER, verbose ? FALSE.toString() : TRUE.toString());
 
         this.configurator = configurator;
-        this.configurator.setInputSpec(specFilePath.toString());
+        // toUri() for the input first to ensure consistent path names which became an issue with the 3.1.0 spec-parser
+        this.configurator.setInputSpec(specFilePath.toUri().toString());
         this.configurator.setOutputDir(outputDir.toString());
         this.configurator.addAdditionalProperty(QUARKUS_GENERATOR_NAME,
                 Collections.singletonMap("openApiSpecId", getSanitizedFileName(specFilePath)));

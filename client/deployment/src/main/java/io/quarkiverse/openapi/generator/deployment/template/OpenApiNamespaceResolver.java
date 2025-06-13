@@ -1,7 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.template;
 
-import java.io.File;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +61,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
 
     @SuppressWarnings("unused")
     public String parseUri(String uri) {
-        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(uri)).toString().replace(File.separatorChar, '/');
+        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(URI.create(uri))).toString();
     }
 
     @SuppressWarnings("unused")
