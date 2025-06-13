@@ -9,11 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -760,15 +763,34 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     private Path getOpenApiSpecPath(String specFileName) throws URISyntaxException {
-        return Path.of(requireNonNull(this.getClass().getResource(String.format("/openapi/%s", specFileName))).toURI());
+        URL url = this.getClass().getResource("/openapi/" + specFileName);
+        Objects.requireNonNull(url, "Could not find /openapi/" + specFileName);
+
+        URI uri;
+        try {
+            uri = url.toURI();
+        } catch (URISyntaxException e) {
+            // this should never happen for a well-formed file URL
+            throw new RuntimeException("Invalid URI for " + url, e);
+        }
+
+        return Paths.get(uri);
     }
 
     private Path getOpenApiTargetPath(Path openApiSpec) throws URISyntaxException {
         return Paths.get(getTargetDir(), "openapi-gen");
     }
 
-    private String getTargetDir() throws URISyntaxException {
-        return Paths.get(requireNonNull(getClass().getResource("/")).toURI()).getParent().toString();
+    private String getTargetDir() {
+        URL url = requireNonNull(getClass().getResource("/"),
+                "Could not locate classpath root");
+        try {
+            return Paths.get(url.toURI())
+                    .getParent()
+                    .toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Invalid URI for " + url, e);
+        }
     }
 
     private Optional<VariableDeclarator> findVariableByName(List<FieldDeclaration> fields, String name) {
