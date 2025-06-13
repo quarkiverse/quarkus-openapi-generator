@@ -718,6 +718,30 @@ public class OpenApiClientGeneratorWrapperTest {
         }
     }
 
+    @Test
+    void verifyAllowAdditionalPropertiesIfNotPresent() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapperReactive("issue-1185.json")
+                .generate("org.issue1185")
+                .stream()
+                .filter(file -> file.getPath().endsWith("PictureDescriptionLocal.java")).toList();
+
+        assertThat(generatedFiles).isNotEmpty();
+        // generationConfig
+        for (File file : generatedFiles) {
+            try {
+                Optional<FieldDeclaration> var = StaticJavaParser.parse(file)
+                        .findAll(FieldDeclaration.class).stream()
+                        .filter(c -> c.getVariable(0)
+                                .getNameAsString().equals("generationConfig"))
+                        .findFirst();
+                assertThat(var).isPresent();
+                assertThat(var.get().getElementType().asString()).contains("Map<String,Object>");
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+    }
+
     private List<File> generateRestClientFiles() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json").withCircuitBreakerConfig(
                 Map.of("org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeMethodGet")));
