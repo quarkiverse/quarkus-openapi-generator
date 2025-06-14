@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.providers;
 
+import java.util.Optional;
+
 /**
  * Provider for security credentials. Clients can implement this interface to control how to provide security credentials in
  * runtime.
@@ -13,7 +15,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the API Key to use when filtering the request
      */
-    String getApiKey(CredentialsContext input);
+    Optional<String> getApiKey(CredentialsContext input);
 
     /**
      * Gets the username given the OpenAPI definition and security schema
@@ -21,7 +23,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the username to use when filtering the request
      */
-    String getBasicUsername(CredentialsContext input);
+    Optional<String> getBasicUsername(CredentialsContext input);
 
     /**
      * Gets the password given the OpenAPI definition and security schema
@@ -29,7 +31,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the password to use when filtering the request
      */
-    String getBasicPassword(CredentialsContext input);
+    Optional<String> getBasicPassword(CredentialsContext input);
 
     /**
      * Gets the Bearer Token given the OpenAPI definition and security schema
@@ -37,7 +39,7 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the Bearer Token to use when filtering the request
      */
-    String getBearerToken(CredentialsContext input);
+    Optional<String> getBearerToken(CredentialsContext input);
 
     /**
      * Gets the OAuth2 Bearer Token given the OpenAPI definition and security schema
@@ -45,5 +47,5 @@ public interface CredentialsProvider {
      * @param input the input data available to the method
      * @return the Bearer Token to use when filtering the request
      */
-    String getOauth2BearerToken(CredentialsContext input);
+    Optional<String> getOauth2BearerToken(CredentialsContext input);
 }

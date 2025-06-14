@@ -4,6 +4,7 @@ import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 
@@ -32,17 +33,22 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        String bearerToken;
+        String bearerToken = "";
 
         if (this.isTokenPropagation()) {
             bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
         } else {
-            delegate.filter(requestContext);
-            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(CredentialsContext.builder()
-                    .requestContext(requestContext)
-                    .openApiSpecId(getOpenApiSpecId())
-                    .authName(getName())
-                    .build());
+            Optional<String> optionalBearerToken = this.getCredentialsProvider()
+                    .getOauth2BearerToken(CredentialsContext.builder()
+                            .requestContext(requestContext)
+                            .openApiSpecId(getOpenApiSpecId())
+                            .authName(getName())
+                            .build());
+            if (optionalBearerToken.isPresent()) {
+                bearerToken = optionalBearerToken.get();
+            } else {
+                delegate.filter(requestContext);
+            }
         }
 
         if (!isEmptyOrBlank(bearerToken)) {

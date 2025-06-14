@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.it.creds;
 
+import java.util.Optional;
+
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
@@ -19,8 +21,8 @@ public class CustomCredentialsProvider extends ConfigCredentialsProvider {
     public static String TOKEN = "FIXED_TEST_TOKEN";
 
     @Override
-    public String getBearerToken(CredentialsContext input) {
+    public Optional<String> getBearerToken(CredentialsContext input) {
         LOGGER.info("========> getBearerToken from CustomCredentialsProvider");
-        return TOKEN;
+        return Optional.of(TOKEN);
     }
 }
