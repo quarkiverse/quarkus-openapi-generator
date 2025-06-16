@@ -154,7 +154,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             // Property is a `type: object` without `additionalProperties: true`, without `properties`, but has `default` values set!
             // In this peculiar situation, the template will try to initialize a Java Object with such values, and it will fail to compile.
             // See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1185 for more context.
-            if (p.getType().equals("object") && p.getDefault() != null && p.getAdditionalProperties() == null
+            if ("object".equals(p.getType()) && p.getDefault() != null && p.getAdditionalProperties() == null
                     && p.getItems() == null) {
                 p.setAdditionalProperties(true);
             }
