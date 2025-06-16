@@ -1,0 +1,89 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Docling Serve – PictureDescriptionLocal",
+    "version": "0.13.0"
+  },
+  "paths": {
+    "/v1alpha/convert/file": {
+      "post": {
+        "summary": "Process File with Local Picture Description",
+        "operationId": "processFileWithPictureDescriptionLocal",
+        "tags": ["Docling"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "picture_description_local": {
+                    "$ref": "#/components/schemas/PictureDescriptionLocal"
+                  }
+                },
+                "required": ["files", "picture_description_local"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PictureDescriptionLocal": {
+        "type": "object",
+        "title": "PictureDescriptionLocal",
+        "description": "Options for running a local vision-language model in the picture description. Parameters refer to a model hosted on Hugging Face.",
+        "properties": {
+          "repo_id": {
+            "type": "string",
+            "title": "Repo Id",
+            "description": "Repository ID on the Hugging Face Hub."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Prompt used when calling the vision-language model.",
+            "default": "Describe this image in a few sentences."
+          },
+          "generation_config": {
+            "type": "object",
+            "title": "Generation Config",
+            "description": "Config from Transformers’ GenerationConfig (e.g. max_new_tokens, do_sample).",
+            "default": {
+              "max_new_tokens": 200,
+              "do_sample": false
+            },
+            "examples": [
+              {
+                "do_sample": false,
+                "max_new_tokens": 200
+              }
+            ]
+          }
+        },
+        "required": ["repo_id"]
+      }
+    }
+  }
+}
