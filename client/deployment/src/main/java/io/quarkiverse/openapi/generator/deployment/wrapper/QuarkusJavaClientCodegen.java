@@ -148,6 +148,20 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         return codegenModel;
     }
 
+    @Override
+    public CodegenProperty fromProperty(String name, Schema p, boolean required, boolean schemaIsFromAdditionalProperties) {
+        if (p != null && p.getType() != null) {
+            // Property is a `type: object` without `additionalProperties: true`, without `properties`, but has `default` values set!
+            // In this peculiar situation, the template will try to initialize a Java Object with such values, and it will fail to compile.
+            // See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1185 for more context.
+            if ("object".equals(p.getType()) && p.getDefault() != null && p.getAdditionalProperties() == null
+                    && p.getItems() == null) {
+                p.setAdditionalProperties(true);
+            }
+        }
+        return super.fromProperty(name, p, required, schemaIsFromAdditionalProperties);
+    }
+
     private void warnIfDuplicated(CodegenModel m) {
         Set<String> propertyNames = new TreeSet<>();
         for (CodegenProperty element : m.allVars) {
