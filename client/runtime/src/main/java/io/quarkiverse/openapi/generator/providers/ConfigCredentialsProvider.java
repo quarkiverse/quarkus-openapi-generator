@@ -28,48 +28,39 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
 
     @Override
     public Optional<String> getApiKey(CredentialsContext input) {
-        final String key = ConfigProvider.getConfig()
+        return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse("");
-        if (key.isEmpty()) {
-            LOGGER.warn("configured {} property (see application.properties) is empty. hint: configure it.",
-                    AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, input.getOpenApiSpecId(),
-                            input.getAuthName()));
-        }
-        return Optional.of(key);
+                        String.class);
+
     }
 
     @Override
     public Optional<String> getBasicUsername(CredentialsContext input) {
-        return Optional.of(ConfigProvider.getConfig()
+        return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(USER_NAME, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse(""));
+                        String.class);
     }
 
     @Override
     public Optional<String> getBasicPassword(CredentialsContext input) {
-        return Optional.of(ConfigProvider.getConfig()
+        return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(PASSWORD, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse(""));
+                        String.class);
     }
 
     @Override
     public Optional<String> getBearerToken(CredentialsContext input) {
-        return Optional.of(ConfigProvider.getConfig()
+        return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(BEARER_TOKEN, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse(""));
+                        String.class);
     }
 
     @Override

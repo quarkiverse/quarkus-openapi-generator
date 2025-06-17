@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,10 +56,9 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
             addAuthorizationHeader(requestContext.getHeaders(),
                     AuthUtils.authTokenOrBearer("Bearer", AbstractAuthProvider.sanitizeBearerToken(bearerToken)));
         } else {
-            LOGGER.debug("No bearer token was found for the oauth2 security scheme: {}." +
-                    " You must verify that a Quarkus OIDC Client with the name: {} is properly configured," +
-                    " or the request header: {} is set when the token propagation is enabled.",
-                    getName(), getName(), getHeaderForPropagation(getOpenApiSpecId(), getName()));
+            LOGGER.debug("Token propagation is not enabled or {} configured propagation header not populated and there is" +
+                    " no custom credential provider implementation. The {} header will be set using delegate's filter. ",
+                    getHeaderForPropagation(getOpenApiSpecId(), getName()), HttpHeaders.AUTHORIZATION);
         }
     }
 

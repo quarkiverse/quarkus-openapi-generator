@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.UriBuilder;
 
 import org.eclipse.microprofile.config.ConfigProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorException;
 
@@ -22,6 +24,8 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     static final String USE_AUTHORIZATION_HEADER_VALUE = "use-authorization-header-value";
     private final ApiKeyIn apiKeyIn;
     private final String apiKeyName;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiKeyAuthenticationProvider.class);
 
     public ApiKeyAuthenticationProvider(final String openApiSpecId, final String name, final ApiKeyIn apiKeyIn,
             final String apiKeyName, List<OperationAuthInfo> operations, CredentialsProvider credentialsProvider) {
@@ -54,11 +58,20 @@ public class ApiKeyAuthenticationProvider extends AbstractAuthProvider {
     }
 
     private String getApiKey(ClientRequestContext requestContext) {
-        return credentialsProvider.getApiKey(CredentialsContext.builder()
+        final String key = credentialsProvider.getApiKey(CredentialsContext.builder()
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
-                .build()).orElseThrow();
+                .build()).orElse("");
+
+        if (key.isEmpty()) {
+            LOGGER.warn("configured {} property (see application.properties) is empty. hint: configure it.",
+                    AbstractAuthProvider.getCanonicalAuthConfigPropertyName(ConfigCredentialsProvider.API_KEY,
+                            getOpenApiSpecId(),
+                            getName()));
+        }
+
+        return key;
     }
 
     private boolean isUseAuthorizationHeaderValue() {

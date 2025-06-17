@@ -20,11 +20,11 @@ public class CustomCredentialsProvider extends ConfigCredentialsProvider {
 
     @Override
     public Optional<String> getBearerToken(CredentialsContext input) {
-        return Optional.of(super.getBearerToken(input).get() + "_TEST");
+        return Optional.of("BEARER_TOKEN_TEST");
     }
 
     @Override
     public Optional<String> getOauth2BearerToken(CredentialsContext input) {
-        return Optional.of("KEYCLOAK_ACCESS_TOKEN" + "_TEST");
+        return Optional.of("KEYCLOAK_ACCESS_TOKEN_TEST");
     }
 }
