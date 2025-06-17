@@ -22,7 +22,7 @@ import io.quarkus.deployment.CodeGenProvider;
 
 public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
-    private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
+    private static final Logger log = LoggerFactory.getLogger(ApicurioOpenApiServerCodegen.class);
 
     @Override
     public String providerId() {
