@@ -38,6 +38,11 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
         if (this.isTokenPropagation()) {
             bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
+            if (isEmptyOrBlank(bearerToken)) {
+                LOGGER.debug(
+                        "Token propagation for OAUTH2 is enabled but the configured propagation header defined by {} is not present",
+                        getHeaderForPropagation(getOpenApiSpecId(), getName()));
+            }
         } else {
             Optional<String> optionalBearerToken = this.getCredentialsProvider()
                     .getOauth2BearerToken(CredentialsContext.builder()
@@ -47,7 +52,13 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
                             .build());
             if (optionalBearerToken.isPresent()) {
                 bearerToken = optionalBearerToken.get();
+                if (isEmptyOrBlank(bearerToken)) {
+                    LOGGER.debug("The CredentialProvider implementation returned an empty OAUTH2 bearer");
+                }
             } else {
+                LOGGER.debug(
+                        "There is no custom CredentialProvider implementation, the {} header will be set using delegate's filter. ",
+                        HttpHeaders.AUTHORIZATION);
                 delegate.filter(requestContext);
             }
         }
@@ -55,10 +66,6 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
         if (!isEmptyOrBlank(bearerToken)) {
             addAuthorizationHeader(requestContext.getHeaders(),
                     AuthUtils.authTokenOrBearer("Bearer", AbstractAuthProvider.sanitizeBearerToken(bearerToken)));
-        } else {
-            LOGGER.debug("Token propagation is not enabled or {} configured propagation header not populated and there is" +
-                    " no custom credential provider implementation. The {} header will be set using delegate's filter. ",
-                    getHeaderForPropagation(getOpenApiSpecId(), getName()), HttpHeaders.AUTHORIZATION);
         }
     }
 
