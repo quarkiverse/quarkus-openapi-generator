@@ -20,6 +20,7 @@ import io.quarkiverse.openapi.moqu.OpenAPIMoquImporter;
 import io.quarkus.deployment.IsDevelopment;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.builditem.HotDeploymentWatchedFileBuildItem;
 import io.quarkus.runtime.util.ClassPathUtils;
 
 public class MoquProjectProcessor {
@@ -66,6 +67,16 @@ public class MoquProjectProcessor {
             LOGGER.error("Was not possible to scan Moqu project files.", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @BuildStep(onlyIf = { IsDevelopment.class })
+    void watchOpenApiFiles(MoquConfig config, BuildProducer<HotDeploymentWatchedFileBuildItem> watchedPaths)
+            throws IOException {
+        ClassPathUtils.consumeAsPaths(config.resourceDir(), path -> {
+            if (Files.exists(path)) {
+                watchedPaths.produce(new HotDeploymentWatchedFileBuildItem(path.toString(), Files.isDirectory(path)));
+            }
+        });
     }
 
     @BuildStep(onlyIf = { IsDevelopment.class })
