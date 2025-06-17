@@ -9,6 +9,8 @@ import io.restassured.RestAssured;
 
 public class MoquProjectProcessorTest {
 
+    private static final String WIREMOCK_MAPPINGS_JSON_PATH = "/q/moqu/json/api/wiremock-mappings.json";
+
     @RegisterExtension
     static final QuarkusDevModeTest unitTest = new QuarkusDevModeTest()
             .withApplicationRoot(javaArchive -> javaArchive
@@ -38,10 +40,27 @@ public class MoquProjectProcessorTest {
     @Test
     void testModeAsDownloadUsingJson() {
         RestAssured.given()
-                .when().get("/q/moqu/json/api/wiremock-mappings.json")
+                .when().get(WIREMOCK_MAPPINGS_JSON_PATH)
                 .then()
                 .statusCode(200)
                 .body(Matchers.containsString("Alice"))
                 .log().ifError();
+    }
+
+    @Test
+    void testDevModeWatchOpenApiFiles() {
+        RestAssured.given()
+                .when().get(WIREMOCK_MAPPINGS_JSON_PATH)
+                .then()
+                .statusCode(200)
+                .body(Matchers.containsString("80"));
+
+        unitTest.modifyResourceFile("openapi/api.json", (content) -> content.replace("80", "77"));
+
+        RestAssured.given()
+                .when().get(WIREMOCK_MAPPINGS_JSON_PATH)
+                .then()
+                .statusCode(200)
+                .body(Matchers.containsString("77"));
     }
 }
