@@ -7,8 +7,6 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
 
 import org.eclipse.microprofile.config.ConfigProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Dependent
 @Alternative
@@ -20,17 +18,11 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     static final String BEARER_TOKEN = "bearer-token";
     static final String API_KEY = "api-key";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigCredentialsProvider.class);
-
-    public ConfigCredentialsProvider() {
-
-    }
-
     @Override
     public Optional<String> getApiKey(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
-                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, input.getOpenApiSpecId(),
+                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, getConfigKey(input),
                                 input.getAuthName()),
                         String.class);
 
@@ -40,7 +32,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     public Optional<String> getBasicUsername(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
-                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(USER_NAME, input.getOpenApiSpecId(),
+                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(USER_NAME, getConfigKey(input),
                                 input.getAuthName()),
                         String.class);
     }
@@ -49,7 +41,7 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     public Optional<String> getBasicPassword(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
-                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(PASSWORD, input.getOpenApiSpecId(),
+                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(PASSWORD, getConfigKey(input),
                                 input.getAuthName()),
                         String.class);
     }
@@ -58,9 +50,13 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     public Optional<String> getBearerToken(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
-                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(BEARER_TOKEN, input.getOpenApiSpecId(),
+                        AbstractAuthProvider.getCanonicalAuthConfigPropertyName(BEARER_TOKEN, getConfigKey(input),
                                 input.getAuthName()),
                         String.class);
+    }
+
+    protected String getConfigKey(CredentialsContext input) {
+        return input.getOpenApiSpecId();
     }
 
     @Override
