@@ -1,9 +1,10 @@
 package io.quarkiverse.openapi.generator.providers;
 
+import java.util.Optional;
+
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
-import jakarta.ws.rs.core.HttpHeaders;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
@@ -26,53 +27,44 @@ public class ConfigCredentialsProvider implements CredentialsProvider {
     }
 
     @Override
-    public String getApiKey(CredentialsContext input) {
-        final String key = ConfigProvider.getConfig()
+    public Optional<String> getApiKey(CredentialsContext input) {
+        return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse("");
-        if (key.isEmpty()) {
-            LOGGER.warn("configured {} property (see application.properties) is empty. hint: configure it.",
-                    AbstractAuthProvider.getCanonicalAuthConfigPropertyName(API_KEY, input.getOpenApiSpecId(),
-                            input.getAuthName()));
-        }
-        return key;
+                        String.class);
+
     }
 
     @Override
-    public String getBasicUsername(CredentialsContext input) {
+    public Optional<String> getBasicUsername(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(USER_NAME, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse("");
+                        String.class);
     }
 
     @Override
-    public String getBasicPassword(CredentialsContext input) {
+    public Optional<String> getBasicPassword(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(PASSWORD, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse("");
+                        String.class);
     }
 
     @Override
-    public String getBearerToken(CredentialsContext input) {
+    public Optional<String> getBearerToken(CredentialsContext input) {
         return ConfigProvider.getConfig()
                 .getOptionalValue(
                         AbstractAuthProvider.getCanonicalAuthConfigPropertyName(BEARER_TOKEN, input.getOpenApiSpecId(),
                                 input.getAuthName()),
-                        String.class)
-                .orElse("");
+                        String.class);
     }
 
     @Override
-    public String getOauth2BearerToken(CredentialsContext input) {
-        return input.getRequestContext().getHeaderString(HttpHeaders.AUTHORIZATION);
+    public Optional<String> getOauth2BearerToken(CredentialsContext input) {
+        return Optional.empty();
     }
 }

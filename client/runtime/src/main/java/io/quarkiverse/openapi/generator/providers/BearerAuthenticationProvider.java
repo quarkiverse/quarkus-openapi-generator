@@ -51,6 +51,6 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
                 .requestContext(requestContext)
                 .openApiSpecId(getOpenApiSpecId())
                 .authName(getName())
-                .build());
+                .build()).orElse("");
     }
 }
