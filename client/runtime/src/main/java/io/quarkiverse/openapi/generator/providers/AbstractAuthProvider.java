@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import io.vertx.codegen.doc.Token;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MultivaluedMap;
 
@@ -31,7 +30,7 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     private final List<OperationAuthInfo> applyToOperations = new ArrayList<>();
 
     protected AbstractAuthProvider(String name, String openApiSpecId, List<OperationAuthInfo> operations,
-                                   CredentialsProvider credentialsProvider) {
+            CredentialsProvider credentialsProvider) {
         this.name = name;
         this.openApiSpecId = openApiSpecId;
         this.applyToOperations.addAll(operations);
@@ -116,7 +115,6 @@ public abstract class AbstractAuthProvider implements AuthProvider {
     public CredentialsProvider getCredentialsProvider() {
         return credentialsProvider;
     }
-
 
     protected void addAuthorizationHeader(MultivaluedMap<String, Object> headers, String value) {
         headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(value));

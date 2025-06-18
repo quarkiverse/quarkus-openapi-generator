@@ -25,8 +25,8 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
     private final OidcClientRequestFilterDelegate delegate;
 
     public OAuth2AuthenticationProvider(String name,
-                                        String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations,
-                                        CredentialsProvider credentialsProvider) {
+            String openApiSpecId, OidcClientRequestFilterDelegate delegate, List<OperationAuthInfo> operations,
+            CredentialsProvider credentialsProvider) {
         super(name, openApiSpecId, operations, credentialsProvider);
         this.delegate = delegate;
         validateConfig();
@@ -72,7 +72,7 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
     private void validateConfig() {
         if (isTokenPropagation()) {
             LOGGER.warn("Token propagation was enabled for a the oauth2: {} securityScheme in the specification file: {}. " +
-                            "This configuration can be done by using the property: {} and is not necessary a problem if the configuration is intentional.",
+                    "This configuration can be done by using the property: {} and is not necessary a problem if the configuration is intentional.",
                     getName(), getOpenApiSpecId(), getCanonicalAuthConfigPropertyName(TOKEN_PROPAGATION));
         }
     }
