@@ -4,8 +4,10 @@ import static io.quarkiverse.openapi.generator.AuthConfig.TOKEN_PROPAGATION;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,27 +34,38 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        String bearerToken;
+        String bearerToken = "";
 
         if (this.isTokenPropagation()) {
             bearerToken = this.getTokenForPropagation(requestContext.getHeaders());
+            if (isEmptyOrBlank(bearerToken)) {
+                LOGGER.debug(
+                        "Token propagation for OAUTH2 is enabled but the configured propagation header defined by {} is not present",
+                        getHeaderForPropagation(getOpenApiSpecId(), getName()));
+            }
         } else {
-            delegate.filter(requestContext);
-            bearerToken = this.getCredentialsProvider().getOauth2BearerToken(CredentialsContext.builder()
-                    .requestContext(requestContext)
-                    .openApiSpecId(getOpenApiSpecId())
-                    .authName(getName())
-                    .build());
+            Optional<String> optionalBearerToken = this.getCredentialsProvider()
+                    .getOauth2BearerToken(CredentialsContext.builder()
+                            .requestContext(requestContext)
+                            .openApiSpecId(getOpenApiSpecId())
+                            .authName(getName())
+                            .build());
+            if (optionalBearerToken.isPresent()) {
+                bearerToken = optionalBearerToken.get();
+                if (isEmptyOrBlank(bearerToken)) {
+                    LOGGER.debug("The CredentialProvider implementation returned an empty OAUTH2 bearer");
+                }
+            } else {
+                LOGGER.debug(
+                        "There is no custom CredentialProvider implementation, the {} header will be set using delegate's filter. ",
+                        HttpHeaders.AUTHORIZATION);
+                delegate.filter(requestContext);
+            }
         }
 
         if (!isEmptyOrBlank(bearerToken)) {
             addAuthorizationHeader(requestContext.getHeaders(),
                     AuthUtils.authTokenOrBearer("Bearer", AbstractAuthProvider.sanitizeBearerToken(bearerToken)));
-        } else {
-            LOGGER.debug("No bearer token was found for the oauth2 security scheme: {}." +
-                    " You must verify that a Quarkus OIDC Client with the name: {} is properly configured," +
-                    " or the request header: {} is set when the token propagation is enabled.",
-                    getName(), getName(), getHeaderForPropagation(getOpenApiSpecId(), getName()));
         }
     }
 

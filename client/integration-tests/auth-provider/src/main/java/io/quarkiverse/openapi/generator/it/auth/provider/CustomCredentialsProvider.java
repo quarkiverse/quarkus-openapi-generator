@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.it.auth.provider;
 
+import java.util.Optional;
+
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
@@ -11,18 +13,18 @@ import io.quarkiverse.openapi.generator.providers.CredentialsContext;
 @Dependent
 @Alternative
 @Specializes
-@Priority(200)
+@Priority(201)
 public class CustomCredentialsProvider extends ConfigCredentialsProvider {
     public CustomCredentialsProvider() {
     }
 
     @Override
-    public String getBearerToken(CredentialsContext input) {
-        return super.getBearerToken(input) + "_TEST";
+    public Optional<String> getBearerToken(CredentialsContext input) {
+        return Optional.of("BEARER_TOKEN_TEST");
     }
 
     @Override
-    public String getOauth2BearerToken(CredentialsContext input) {
-        return super.getOauth2BearerToken(input) + "_TEST";
+    public Optional<String> getOauth2BearerToken(CredentialsContext input) {
+        return Optional.of("KEYCLOAK_ACCESS_TOKEN_TEST");
     }
 }
