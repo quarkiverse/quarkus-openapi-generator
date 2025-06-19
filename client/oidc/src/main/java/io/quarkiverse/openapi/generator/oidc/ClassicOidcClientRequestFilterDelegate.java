@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.oidc;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.inject.spi.InjectionPoint;
@@ -42,7 +43,7 @@ public class ClassicOidcClientRequestFilterDelegate extends AbstractTokensProduc
     public void filter(ClientRequestContext requestContext) throws IOException {
         try {
             String accessToken = this.getAccessToken();
-            requestContext.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+            requestContext.getHeaders().put(HttpHeaders.AUTHORIZATION, Collections.singletonList("Bearer " + accessToken));
         } catch (DisabledOidcClientException ex) {
             LOG.debug("Client is disabled, acquiring and propagating the token is not necessary");
         } catch (RuntimeException ex) {
