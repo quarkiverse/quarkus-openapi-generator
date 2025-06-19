@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Slack Actions for Slack API",
+    "description": "Slack Actions Slack API",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/api/chat.postMessage": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "summary": "Send slack message",
+        "description": "Send slack message to selected public channel",
+        "operationId": "sendSlackMessage",
+        "requestBody": {
+          "description": "Input parameters for the action sendSlackMessage",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Send Message Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendMessageResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "ErrorCollection": {
+        "type": "object"
+      },
+      "SendMessageRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "channel": {
+            "type": "string"
+          }
+        }
+      },
+      "SendMessageResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "description": "Indicates if the message was posted.",
+            "readOnly": true
+          },
+          "channel": {
+            "type": "string",
+            "description": "The ID of the channel the message was posted.",
+            "readOnly": true
+          },
+          "response_metadata": {
+            "type": "object",
+            "description": "The metadata of response details",
+            "readOnly": true
+          }
+        }
+      }
+    }
+  }
+}
