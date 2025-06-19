@@ -17,9 +17,8 @@ import org.slf4j.LoggerFactory;
  */
 public class BearerAuthenticationProvider extends AbstractAuthProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BearerAuthenticationProvider.class);
-
     private final String scheme;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BearerAuthenticationProvider.class);
 
     public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
             List<OperationAuthInfo> operations, CredentialsProvider credentialsProvider) {
@@ -27,13 +26,9 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
         this.scheme = scheme;
     }
 
-    public BearerAuthenticationProvider(final String openApiSpecId, final String name, final String scheme,
-            List<OperationAuthInfo> operations) {
-        this(openApiSpecId, name, scheme, operations, new ConfigCredentialsProvider());
-    }
-
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
+        LOGGER.debug("Headers keys set in incoming requestContext: {}", requestContext.getHeaders().keySet());
         String bearerToken = getBearerToken(requestContext);
 
         if (isTokenPropagation()) {
@@ -46,11 +41,16 @@ public class BearerAuthenticationProvider extends AbstractAuthProvider {
             LOGGER.debug("No bearer token was found for the security scheme: {}." +
                     " You must verify that the property: {} is properly configured, or the request header: {} is set when the token propagation is enabled.",
                     getName(), getCanonicalAuthConfigPropertyName(BEARER_TOKEN, getOpenApiSpecId(), getName()),
-                    getHeaderForPropagation());
+                    getHeaderForPropagation(getOpenApiSpecId(), getName()));
         }
+        LOGGER.debug("Header keys set in filtered requestContext: {}", requestContext.getHeaders().keySet());
     }
 
     private String getBearerToken(ClientRequestContext requestContext) {
-        return credentialsProvider.getBearerToken(requestContext, getOpenApiSpecId(), getName());
+        return credentialsProvider.getBearerToken(CredentialsContext.builder()
+                .requestContext(requestContext)
+                .openApiSpecId(getOpenApiSpecId())
+                .authName(getName())
+                .build()).orElse("");
     }
 }

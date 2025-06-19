@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.generator.it.security;
+package io.quarkiverse.openapi.generator.it.auth;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;

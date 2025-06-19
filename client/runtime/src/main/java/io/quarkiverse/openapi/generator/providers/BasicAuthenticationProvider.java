@@ -24,16 +24,20 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
         super(name, openApiSpecId, operations, credentialsProvider);
     }
 
-    public BasicAuthenticationProvider(final String openApiSpecId, String name, List<OperationAuthInfo> operations) {
-        this(openApiSpecId, name, operations, new ConfigCredentialsProvider());
-    }
-
     private String getUsername(ClientRequestContext requestContext) {
-        return credentialsProvider.getBasicUsername(requestContext, getOpenApiSpecId(), getName());
+        return credentialsProvider.getBasicUsername(CredentialsContext.builder()
+                .requestContext(requestContext)
+                .openApiSpecId(getOpenApiSpecId())
+                .authName(getName())
+                .build()).orElse("");
     }
 
     private String getPassword(ClientRequestContext requestContext) {
-        return credentialsProvider.getBasicPassword(requestContext, getOpenApiSpecId(), getName());
+        return credentialsProvider.getBasicPassword(CredentialsContext.builder()
+                .requestContext(requestContext)
+                .openApiSpecId(getOpenApiSpecId())
+                .authName(getName())
+                .build()).orElse("");
     }
 
     @Override
@@ -53,7 +57,7 @@ public class BasicAuthenticationProvider extends AbstractAuthProvider {
                     " You must verify that the properties: {} and {} are properly configured, or the request header: {} is set when the token propagation is enabled.",
                     getName(), getCanonicalAuthConfigPropertyName(USER_NAME, getOpenApiSpecId(), getName()),
                     getCanonicalAuthConfigPropertyName(PASSWORD, getOpenApiSpecId(), getName()),
-                    getHeaderForPropagation());
+                    getHeaderForPropagation(getOpenApiSpecId(), getName()));
         }
     }
 }

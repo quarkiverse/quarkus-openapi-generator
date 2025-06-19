@@ -44,7 +44,7 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
     @Override
     protected BearerAuthenticationProvider createProvider() {
         return new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, null,
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
     }
 
     @Test
@@ -64,7 +64,7 @@ class BearerOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<Bear
 
     private void filter(String bearerScheme, String expectedAuthorizationHeader) throws IOException {
         provider = new BearerAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, bearerScheme,
-                List.of());
+                List.of(), new ConfigCredentialsProvider());
         provider.filter(requestContext);
         assertHeader(headers, HttpHeaders.AUTHORIZATION, expectedAuthorizationHeader);
     }
