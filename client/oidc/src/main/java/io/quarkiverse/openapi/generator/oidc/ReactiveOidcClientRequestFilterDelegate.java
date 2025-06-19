@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.oidc;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.inject.spi.InjectionPoint;
@@ -57,8 +58,8 @@ public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProdu
         requestContext.suspend();
 
         super.getTokens().subscribe().with(tokens -> {
-            requestContext.getHeaders().putSingle(HttpHeaders.AUTHORIZATION,
-                    BEARER_SCHEME_WITH_SPACE + tokens.getAccessToken());
+            requestContext.getHeaders().put(HttpHeaders.AUTHORIZATION,
+                    Collections.singletonList(BEARER_SCHEME_WITH_SPACE + tokens.getAccessToken()));
             requestContext.resume();
         }, t -> {
             if (t instanceof DisabledOidcClientException) {

@@ -7,6 +7,8 @@ import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.eclipse.microprofile.rest.client.ext.ClientHeadersFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
@@ -23,6 +25,8 @@ public abstract class AbstractAuthenticationPropagationHeadersFactory implements
     protected OpenApiGeneratorConfig generatorConfig;
     protected HeadersProvider headersProvider;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAuthenticationPropagationHeadersFactory.class);
+
     protected AbstractAuthenticationPropagationHeadersFactory(BaseCompositeAuthenticationProvider compositeProvider,
             OpenApiGeneratorConfig generatorConfig,
             HeadersProvider headersProvider) {
@@ -36,6 +40,11 @@ public abstract class AbstractAuthenticationPropagationHeadersFactory implements
             MultivaluedMap<String, String> clientOutgoingHeaders) {
         MultivaluedMap<String, String> propagatedHeaders = new MultivaluedHashMap<>();
         MultivaluedMap<String, String> providedHeaders = headersProvider.getStringHeaders(generatorConfig);
+
+        LOGGER.debug("Incoming headers keys{}", incomingHeaders.keySet());
+        LOGGER.debug("Outgoing headers keys{}", clientOutgoingHeaders.keySet());
+        LOGGER.debug("Provided headers keys{}", providedHeaders.keySet());
+
         compositeProvider.getAuthenticationProviders().stream()
                 .filter(AbstractAuthProvider.class::isInstance)
                 .map(AbstractAuthProvider.class::cast)
@@ -46,9 +55,14 @@ public abstract class AbstractAuthenticationPropagationHeadersFactory implements
                     // get priority to the headers coming from the headers provider.
                     List<String> headerValue = providedHeaders.get(headerName);
                     if (headerValue == null) {
-                        // lastly look into the incoming headers.
+                        // next, look into the incoming headers.
                         headerValue = incomingHeaders.get(headerName);
                     }
+                    if (headerValue == null) {
+                        // lastly look into the outgoing headers.
+                        headerValue = clientOutgoingHeaders.get(headerName);
+                    }
+
                     if (headerValue != null) {
                         propagatedHeaders.put(propagationHeaderName(authProvider.getOpenApiSpecId(),
                                 authProvider.getName(),
