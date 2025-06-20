@@ -125,12 +125,6 @@ public class ApicurioCodegenWrapper {
                 .orElse(Boolean.FALSE);
     }
 
-    private Boolean getGenerateBuildersValue() {
-        return config
-                .getOptionalValue(getGenerateBuilders(), Boolean.class)
-                .orElse(Boolean.FALSE);
-    }
-
     private static JaxRsProjectSettings defaultProjectSettings() {
         JaxRsProjectSettings projectSettings = new JaxRsProjectSettings();
         projectSettings.setJavaPackage(DEFAULT_PACKAGE);

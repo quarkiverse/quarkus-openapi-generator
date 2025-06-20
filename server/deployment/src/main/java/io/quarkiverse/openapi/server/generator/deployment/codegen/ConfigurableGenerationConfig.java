@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
+import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import org.eclipse.microprofile.config.Config;
 import org.jsonschema2pojo.DefaultGenerationConfig;
 import org.slf4j.Logger;
@@ -13,9 +14,9 @@ public class ConfigurableGenerationConfig extends DefaultGenerationConfig {
 
     public ConfigurableGenerationConfig(Config config) {
         generateBuilders = config
-                .getOptionalValue("quarkus.openapi.generator.options.generate-builders", Boolean.class)
+                .getOptionalValue(CodegenConfig.getGenerateBuilders(), Boolean.class)
                 .orElse(Boolean.FALSE);
-        log.info("generateBuilders={}", generateBuilders);
+        log.debug("generateBuilders={}", generateBuilders);
     }
 
     @Override
