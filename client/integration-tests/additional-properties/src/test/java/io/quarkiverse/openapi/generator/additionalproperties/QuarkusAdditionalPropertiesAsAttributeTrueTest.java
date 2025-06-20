@@ -9,6 +9,7 @@ import org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.Priorit
 import org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.PriorityValue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -29,17 +30,20 @@ public class QuarkusAdditionalPropertiesAsAttributeTrueTest {
     void when_additional_properties_is_true_then_jackson_should_maps_the_additional_properties_correctly()
             throws JsonProcessingException {
         // arrange
-        Priority priority = new org.openapi.quarkus.with_additional_properties_as_attr_yaml.model.Priority();
+        Priority priority = new Priority();
         priority.setName("name");
-        PriorityValue priorityValue = new PriorityValue();
-        PriorityValue value = priorityValue.code(1).text("text");
+        PriorityValue value = new PriorityValue().code(1).text("text");
         priority.setAdditionalProperty("value", value);
 
         // act
-        String json = objectMapper.writeValueAsString(priority);
+        String actualJson = objectMapper.writeValueAsString(priority);
+
+        // parse both into JsonNode
+        JsonNode actualNode = objectMapper.readTree(actualJson);
+        JsonNode expectedNode = objectMapper.readTree("{\"name\":\"name\",\"value\":{\"code\":1,\"text\":\"text\"}}");
 
         // assert
-        Assertions.assertThat(json).isEqualTo("{\"name\":\"name\",\"value\":{\"code\":1,\"text\":\"text\"}}");
+        Assertions.assertThat(actualNode).isEqualTo(expectedNode);
     }
 
     @Test
