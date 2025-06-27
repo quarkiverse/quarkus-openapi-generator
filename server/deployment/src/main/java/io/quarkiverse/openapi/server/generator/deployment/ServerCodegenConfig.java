@@ -27,6 +27,12 @@ public interface ServerCodegenConfig {
     boolean reactive();
 
     /**
+     * Whether it must generate builders for properties.
+     */
+    @WithDefault("false")
+    boolean builders();
+
+    /**
      * The base package to be used to generated sources.
      */
     @WithDefault(DEFAULT_PACKAGE)
