@@ -446,6 +446,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "omatheusmesmo",
+      "name": "Matheus Oliveira da Silva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/99829531?v=4",
+      "profile": "https://github.com/omatheusmesmo",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
