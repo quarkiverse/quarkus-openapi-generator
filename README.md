@@ -8,7 +8,7 @@
 <br>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-47-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-48-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
@@ -105,6 +105,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/joschi"><img src="https://avatars.githubusercontent.com/u/43951?v=4?s=100" width="100px;" alt="Jochen Schalanda"/><br /><sub><b>Jochen Schalanda</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=joschi" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://dev.to/dellamas"><img src="https://avatars.githubusercontent.com/u/80655200?v=4?s=100" width="100px;" alt="Luis Fabrício De Llamas"/><br /><sub><b>Luis Fabrício De Llamas</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=dellamas" title="Documentation">📖</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=dellamas" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jghagemann"><img src="https://avatars.githubusercontent.com/u/42047435?v=4?s=100" width="100px;" alt="João Guilherme Hagemann"/><br /><sub><b>João Guilherme Hagemann</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=jghagemann" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/omatheusmesmo"><img src="https://avatars.githubusercontent.com/u/99829531?v=4?s=100" width="100px;" alt="Matheus Oliveira da Silva"/><br /><sub><b>Matheus Oliveira da Silva</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=omatheusmesmo" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
