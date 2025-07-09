@@ -24,6 +24,12 @@ public class TokenPropagationResource {
     @RestClient
     org.acme.externalservice5.api.DefaultApi defaultApi5;
 
+    @RestClient
+    org.acme.externalservice6.api.DefaultApi defaultApi6;
+
+    @RestClient
+    org.acme.externalservice7.api.DefaultApi defaultApi7;
+
     @POST
     @Path("service1")
     public Response service1() {
@@ -52,5 +58,17 @@ public class TokenPropagationResource {
     @Path("service5")
     public Response service5() {
         return defaultApi5.executeQuery5();
+    }
+
+    @POST
+    @Path("service6")
+    public Response service6() {
+        return defaultApi6.executeQuery6();
+    }
+
+    @POST
+    @Path("service7")
+    public Response service7() {
+        return defaultApi7.executeQuery7();
     }
 }

@@ -6,6 +6,9 @@ import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExter
 import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExternalServicesMock.SERVICE3_HEADER_TO_PROPAGATE;
 import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExternalServicesMock.SERVICE4_AUTHORIZATION_TOKEN;
 import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExternalServicesMock.SERVICE4_HEADER_TO_PROPAGATE;
+import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExternalServicesMock.SERVICE6_AUTHORIZATION_TOKEN;
+import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExternalServicesMock.SERVICE7_AUTHORIZATION_TOKEN;
+import static io.quarkiverse.openapi.generator.it.security.TokenPropagationExternalServicesMock.SERVICE7_HEADER_TO_PROPAGATE;
 import static io.restassured.RestAssured.given;
 
 import java.util.Collections;
@@ -63,8 +66,10 @@ class TokenPropagationTest {
                 // service token-propagation-external-service3 will receive the SERVICE3_AUTHORIZATION_TOKEN
                 Arguments.of("service3", new HeaderArgument(SERVICE3_HEADER_TO_PROPAGATE, SERVICE3_AUTHORIZATION_TOKEN)),
                 // service token-propagation-external-service4 will receive the SERVICE4_AUTHORIZATION_TOKEN
-                Arguments.of("service4", new HeaderArgument(SERVICE4_HEADER_TO_PROPAGATE, SERVICE4_AUTHORIZATION_TOKEN))
-
-        );
+                Arguments.of("service4", new HeaderArgument(SERVICE4_HEADER_TO_PROPAGATE, SERVICE4_AUTHORIZATION_TOKEN)),
+                // service token-propagation-external-service6-with-base-url will receive the SERVICE6_AUTHORIZATION_TOKEN
+                Arguments.of("service6", new HeaderArgument(HttpHeaders.AUTHORIZATION, SERVICE6_AUTHORIZATION_TOKEN)),
+                // service token-propagation-external-service7-with-base-url will receive the SERVICE7_AUTHORIZATION_TOKEN
+                Arguments.of("service7", new HeaderArgument(SERVICE7_HEADER_TO_PROPAGATE, SERVICE7_AUTHORIZATION_TOKEN)));
     }
 }

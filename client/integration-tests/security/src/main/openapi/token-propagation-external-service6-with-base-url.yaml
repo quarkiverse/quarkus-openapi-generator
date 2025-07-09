@@ -1,0 +1,19 @@
+---
+openapi: 3.0.3
+info:
+  title: token-propagation-external-service6-with-base-url API
+  version: 3.0.0-lts-SNAPSHOT
+paths:
+  /token-propagation-external-service6-with-base-url/executeQuery6:
+    post:
+      operationId: executeQuery6
+      responses:
+        "200":
+          description: OK
+      security:
+        - service6-http-bearer: []
+components:
+  securitySchemes:
+    service6-http-bearer:
+      type: http
+      scheme: bearer

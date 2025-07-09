@@ -1,0 +1,19 @@
+---
+openapi: 3.0.3
+info:
+  title: token-propagation-external-service7-with-base-url API
+  version: 3.0.0-lts-SNAPSHOT
+paths:
+  /token-propagation-external-service7-with-base-url/executeQuery7:
+    post:
+      operationId: executeQuery7
+      responses:
+        "200":
+          description: OK
+      security:
+        - service7-http-bearer: []
+components:
+  securitySchemes:
+    service7-http-bearer:
+      type: http
+      scheme: bearer

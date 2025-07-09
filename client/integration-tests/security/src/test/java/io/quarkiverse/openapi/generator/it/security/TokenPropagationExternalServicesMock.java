@@ -29,6 +29,9 @@ public class TokenPropagationExternalServicesMock implements QuarkusTestResource
     public static final String SERVICE3_AUTHORIZATION_TOKEN = "SERVICE3_AUTHORIZATION_TOKEN";
     public static final String SERVICE4_HEADER_TO_PROPAGATE = "SERVICE4_HEADER_TO_PROPAGATE";
     public static final String SERVICE4_AUTHORIZATION_TOKEN = "SERVICE4_AUTHORIZATION_TOKEN";
+    public static final String SERVICE6_AUTHORIZATION_TOKEN = "SERVICE6_AUTHORIZATION_TOKEN";
+    public static final String SERVICE7_HEADER_TO_PROPAGATE = "SERVICE7_HEADER_TO_PROPAGATE";
+    public static final String SERVICE7_AUTHORIZATION_TOKEN = "SERVICE7_AUTHORIZATION_TOKEN";
     public static final String TOKEN_PROPAGATION_EXTERNAL_SERVICE_MOCK_URL = "propagation-external-service-mock.url";
     private static final String BEARER = "Bearer ";
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenPropagationExternalServicesMock.class);
@@ -65,6 +68,14 @@ public class TokenPropagationExternalServicesMock implements QuarkusTestResource
         // in this case but the service must receive the token provided by Keycloak since it has oauth2 security
         // configured.
         stubForExternalService("/token-propagation-external-service5/executeQuery5", KEYCLOAK_ACCESS_TOKEN);
+
+        // stub the token-propagation-external-service6-with-base-url invocation with the expected token, emulate also the endpoint base url /external/api/v1
+        stubForExternalService("/external/api/v1/token-propagation-external-service6-with-base-url/executeQuery6",
+                SERVICE6_AUTHORIZATION_TOKEN);
+
+        // stub the token-propagation-external-service7-with-base-url invocation with the expected token, emulate also the endpoint base url /external/api/v1
+        stubForExternalService("/external/api/v1/token-propagation-external-service7-with-base-url/executeQuery7",
+                SERVICE7_AUTHORIZATION_TOKEN);
 
         return Map.of(TOKEN_PROPAGATION_EXTERNAL_SERVICE_MOCK_URL, wireMockServer.baseUrl());
     }
