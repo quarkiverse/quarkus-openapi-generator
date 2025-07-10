@@ -1,4 +1,13 @@
-# Quarkus - OpenAPI Generator
+<div align="center">
+  <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <img src="https://raw.githubusercontent.com/quarkiverse/.github/main/assets/images/quarkus.svg" alt="Quarkus logo" style="height: 70px; width: auto;">
+    <img src="https://raw.githubusercontent.com/quarkiverse/.github/main/assets/images/plus-sign.svg" alt="Plus sign" style="height: 70px; width: auto;">
+    <img src="https://raw.githubusercontent.com/quarkiverse/quarkus-openapi-generator/main/docs/modules/ROOT/assets/images/openapi.svg" alt="OpenAPI logo" style="height: 70px; width: auto;">
+  </div>
+
+  <h1>Quarkus OpenAPI Generator</h1>
+</div>
+<br>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-40-orange.svg?style=flat-square)](#contributors-)
