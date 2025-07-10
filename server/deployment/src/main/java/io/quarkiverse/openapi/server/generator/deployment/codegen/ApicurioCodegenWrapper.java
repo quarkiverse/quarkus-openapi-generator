@@ -28,6 +28,7 @@ public class ApicurioCodegenWrapper {
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
 
+    private final Config config;
     private final File outdir;
     private final JaxRsProjectSettings projectSettings;
 
@@ -36,10 +37,11 @@ public class ApicurioCodegenWrapper {
     }
 
     public ApicurioCodegenWrapper(Config config, File outdir, JaxRsProjectSettings projectSettings) {
+        this.config = config;
         this.outdir = outdir;
         this.projectSettings = projectSettings;
-        this.projectSettings.setJavaPackage(getBasePackage(config));
-        this.projectSettings.setReactive(getReactiveValue(config));
+        this.projectSettings.setJavaPackage(getBasePackage());
+        this.projectSettings.setReactive(getReactiveValue());
     }
 
     public void generate(Path openApiResource) throws CodeGenException {
@@ -61,7 +63,11 @@ public class ApicurioCodegenWrapper {
 
         try (FileOutputStream fos = new FileOutputStream(zipFile);
                 FileInputStream openApiStream = new FileInputStream(openApiFile)) {
-            OpenApi2JaxRs generator = new OpenApi2JaxRs();
+            OpenApi2JaxRs generator = new OpenApi2JaxRs() {
+                {
+                    config = new ConfigurableGenerationConfig(ApicurioCodegenWrapper.this.config);
+                }
+            };
             generator.setSettings(projectSettings);
             generator.setUpdateOnly(true);
             generator.setOpenApiDocument(openApiStream);
@@ -106,13 +112,13 @@ public class ApicurioCodegenWrapper {
         }
     }
 
-    private String getBasePackage(final Config config) {
+    private String getBasePackage() {
         return config
                 .getOptionalValue(getBasePackagePropertyName(), String.class)
                 .orElse(DEFAULT_PACKAGE);
     }
 
-    private Boolean getReactiveValue(final Config config) {
+    private Boolean getReactiveValue() {
         return config
                 .getOptionalValue(getCodegenReactive(), Boolean.class)
                 .orElse(Boolean.FALSE);
