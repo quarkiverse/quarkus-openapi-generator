@@ -1,0 +1,19 @@
+name: "OpenAPI Generator - REST Server Generator"
+description: "Provides personalized code generation to get started in a Server project "
+artifact: ${project.groupId}:${project.artifactId}:${project.version}
+metadata:
+  keywords:
+    - "openapi"
+    - "openapi-generator-server"
+    - "rest"
+    - "server"
+  categories:
+    - "web"
+  guide: "https://docs.quarkiverse.io/quarkus-openapi-generator/dev/index.html"
+  icon-url: "https://raw.githubusercontent.com/quarkiverse/quarkus-openapi-generator/main/docs/modules/ROOT/assets/images/openapi.svg"
+  status: "preview"
+  codestart:
+    name: "openapi-generator-server"
+    languages:
+      - "java"
+    artifact: "io.quarkiverse.openapi.generator:quarkus-openapi-generator-server:codestarts:jar:${project.version}"
