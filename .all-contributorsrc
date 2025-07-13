@@ -455,6 +455,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "cmoine-swi",
+      "name": "Christophe Moine",
+      "avatar_url": "https://avatars.githubusercontent.com/u/180930830?v=4",
+      "profile": "https://github.com/cmoine-swi",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
