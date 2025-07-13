@@ -15,6 +15,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
@@ -42,6 +43,8 @@ public class ApicurioCodegenWrapper {
         this.projectSettings = projectSettings;
         this.projectSettings.setJavaPackage(getBasePackage());
         this.projectSettings.setReactive(getReactiveValue());
+        this.projectSettings.setUseJsr303(getUseBeanValidation());
+//        this.projectSettings.setGenerateBuilders();
     }
 
     public void generate(Path openApiResource) throws CodeGenException {
@@ -63,14 +66,11 @@ public class ApicurioCodegenWrapper {
 
         try (FileOutputStream fos = new FileOutputStream(zipFile);
                 FileInputStream openApiStream = new FileInputStream(openApiFile)) {
-            OpenApi2JaxRs generator = new OpenApi2JaxRs() {
-                {
-                    config = new ConfigurableGenerationConfig(ApicurioCodegenWrapper.this.config);
-                }
-            };
+            OpenApi2JaxRs generator = new OpenApi2JaxRs();
             generator.setSettings(projectSettings);
             generator.setUpdateOnly(true);
             generator.setOpenApiDocument(openApiStream);
+
             log.info("Generating code...");
             generator.generate(fos);
         } catch (Exception e) {
@@ -114,13 +114,23 @@ public class ApicurioCodegenWrapper {
 
     private String getBasePackage() {
         return config
-                .getOptionalValue(getBasePackagePropertyName(), String.class)
+                .getOptionalValue(CodegenConfig.getBasePackagePropertyName(), String.class)
                 .orElse(DEFAULT_PACKAGE);
     }
 
     private Boolean getReactiveValue() {
         return config
-                .getOptionalValue(getCodegenReactive(), Boolean.class)
+                .getOptionalValue(CodegenConfig.getCodegenReactive(), Boolean.class)
+                .orElse(Boolean.FALSE);
+    }
+
+    private Boolean getUseBeanValidation() {
+        return config.getOptionalValue(CodegenConfig.getUseBeanValidation(), Boolean.class)
+                .orElse(Boolean.FALSE);
+    }
+
+    private Boolean getGenerateBuilders() {
+        return config.getOptionalValue(CodegenConfig.getGenerateBuilders(), Boolean.class)
                 .orElse(Boolean.FALSE);
     }
 
