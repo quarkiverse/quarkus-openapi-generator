@@ -31,4 +31,10 @@ public interface ServerCodegenConfig {
      */
     @WithDefault(DEFAULT_PACKAGE)
     Optional<String> basePackage();
+
+    /**
+     * Whether it must generate resources and beans using bean validation (JSR-303).
+     */
+    @WithDefault("false")
+    boolean useBeanValidation();
 }
