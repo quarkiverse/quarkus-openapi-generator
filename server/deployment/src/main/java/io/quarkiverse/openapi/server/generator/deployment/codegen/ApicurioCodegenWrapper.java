@@ -1,7 +1,5 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getCodegenReactive;
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_PACKAGE;
 
 import java.io.File;
@@ -22,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import io.apicurio.hub.api.codegen.JaxRsProjectSettings;
 import io.apicurio.hub.api.codegen.OpenApi2JaxRs;
+import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 
 public class ApicurioCodegenWrapper {
@@ -42,6 +41,8 @@ public class ApicurioCodegenWrapper {
         this.projectSettings = projectSettings;
         this.projectSettings.setJavaPackage(getBasePackage());
         this.projectSettings.setReactive(getReactiveValue());
+        this.projectSettings.setUseJsr303(getUseBeanValidation());
+        this.projectSettings.setGenerateBuilders(getGenerateBuilders());
     }
 
     public void generate(Path openApiResource) throws CodeGenException {
@@ -63,14 +64,11 @@ public class ApicurioCodegenWrapper {
 
         try (FileOutputStream fos = new FileOutputStream(zipFile);
                 FileInputStream openApiStream = new FileInputStream(openApiFile)) {
-            OpenApi2JaxRs generator = new OpenApi2JaxRs() {
-                {
-                    config = new ConfigurableGenerationConfig(ApicurioCodegenWrapper.this.config);
-                }
-            };
+            OpenApi2JaxRs generator = new OpenApi2JaxRs();
             generator.setSettings(projectSettings);
             generator.setUpdateOnly(true);
             generator.setOpenApiDocument(openApiStream);
+
             log.info("Generating code...");
             generator.generate(fos);
         } catch (Exception e) {
@@ -114,13 +112,23 @@ public class ApicurioCodegenWrapper {
 
     private String getBasePackage() {
         return config
-                .getOptionalValue(getBasePackagePropertyName(), String.class)
+                .getOptionalValue(CodegenConfig.getBasePackagePropertyName(), String.class)
                 .orElse(DEFAULT_PACKAGE);
     }
 
     private Boolean getReactiveValue() {
         return config
-                .getOptionalValue(getCodegenReactive(), Boolean.class)
+                .getOptionalValue(CodegenConfig.getCodegenReactive(), Boolean.class)
+                .orElse(Boolean.FALSE);
+    }
+
+    private Boolean getUseBeanValidation() {
+        return config.getOptionalValue(CodegenConfig.getUseBeanValidation(), Boolean.class)
+                .orElse(Boolean.FALSE);
+    }
+
+    private Boolean getGenerateBuilders() {
+        return config.getOptionalValue(CodegenConfig.getGenerateBuilders(), Boolean.class)
                 .orElse(Boolean.FALSE);
     }
 
