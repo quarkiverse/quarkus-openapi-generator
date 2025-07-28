@@ -162,4 +162,4 @@ public class PetResource {
 }
 ----
 
-See the https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests[integration-tests] module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
+See the https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/client/integration-tests[integration-tests] module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
