@@ -20,10 +20,6 @@ include::./includes/server-getting-started.adoc[leveloffset=+1, opts=optional]
 [[codegen-extensions]]
 == Codegen Extensions
 
-Apicurio Codegen Extensions uses https://swagger.io/docs/specification/v3_0/openapi-extensions/[OpenAPI specification extensions] to allow you change the source code that will be generated.
-[[codegen-extensions]]
-== Codegen Extensions
-
 Apicurio Codegen Extensions use https://swagger.io/docs/specification/v3_0/openapi-extensions/[OpenAPI specification extensions] to allow customization of the generated source code based on your API contract.
 
 The following extensions modify the behavior of the code generation in specific parts of the OpenAPI document.
