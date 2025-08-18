@@ -41,7 +41,7 @@ jobs:
         run: git config --global core.autocrlf false
         if: startsWith(matrix.os, 'windows')
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK  ${{matrix.java.version}}
         uses: actions/setup-java@v4
         with:
@@ -70,7 +70,7 @@ jobs:
         run: git config --global core.autocrlf false
         if: startsWith(matrix.os, 'windows')
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up JDK ${{matrix.java.version}}
         uses: actions/setup-java@v4
         with:
