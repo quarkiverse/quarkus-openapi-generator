@@ -1,0 +1,20 @@
+---
+openapi: 3.0.3
+info:
+  title: external-service6 API
+  version: 3.0.0-SNAPSHOT
+paths:
+  /token-propagation-external-service6/executeQuery6:
+    post:
+      operationId: executeQuery6
+      responses:
+        "200":
+          description: OK
+      security:
+        - service6-oidc: []
+components:
+  securitySchemes:
+    service6-oidc:
+      type: openIdConnect
+      description: Authentication for service6
+      openIdConnectUrl: https://example.com/realms/master/.well-known/openid-configuration

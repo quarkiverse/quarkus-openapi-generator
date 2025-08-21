@@ -22,7 +22,7 @@ import io.quarkus.test.junit.QuarkusTest;
 class TokenWithCustomCredentialProviderTest {
 
     @ParameterizedTest
-    @ValueSource(strings = { "service1", "service2", "service3", "service5" })
+    @ValueSource(strings = { "service1", "service2", "service3", "service5", "service6" })
     void testService(String service) {
         Map<String, String> headers = Map.of(HttpHeaders.AUTHORIZATION, AUTHORIZATION_TOKEN);
 

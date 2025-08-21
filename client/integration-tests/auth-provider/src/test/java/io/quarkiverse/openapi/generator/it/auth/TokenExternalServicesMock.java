@@ -60,6 +60,11 @@ public class TokenExternalServicesMock implements QuarkusTestResourceLifecycleMa
         // configured. The token will be overridden by the custom credential provider
         stubForExternalService("/token-external-service5/executeQuery5", KEYCLOAK_ACCESS_TOKEN + "_TEST");
 
+        // stub the token-external-service6 invocation with the expected token, no propagation is produced
+        // in this case but the service must receive the token provided by Keycloak since it has oidc security
+        // configured. The token will be overridden by the custom credential provider
+        stubForExternalService("/token-external-service6/executeQuery6", KEYCLOAK_ACCESS_TOKEN + "_TEST");
+
         return Map.of(TOKEN_EXTERNAL_SERVICE_MOCK_URL, wireMockServer.baseUrl());
     }
 
