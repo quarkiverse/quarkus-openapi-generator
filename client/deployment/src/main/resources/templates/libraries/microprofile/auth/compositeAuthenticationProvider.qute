@@ -5,7 +5,7 @@ package {apiPackage}.auth;
 @io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
 {/for}
 {#for auth in openapi:getUniqueOAuthOperations(openIdConnectMethods.orEmpty)}
-@io.quarkiverse.openapi.generator.markers.OpenIdConnectAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
+@io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
 {/for}
 {#for auth in httpBasicMethods.orEmpty}
 @io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}")
