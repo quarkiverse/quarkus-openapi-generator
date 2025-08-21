@@ -75,9 +75,10 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
         if (enableSecurityGeneration == null || enableSecurityGeneration) {
             if (ProcessUtils.hasHttpBasicMethods(this.openAPI) ||
-                    ProcessUtils.hasApiKeyMethods(this.openAPI) ||
-                    ProcessUtils.hasHttpBearerMethods(this.openAPI) ||
-                    ProcessUtils.hasOAuthMethods(this.openAPI)) {
+                ProcessUtils.hasApiKeyMethods(this.openAPI) ||
+                ProcessUtils.hasHttpBearerMethods(this.openAPI) ||
+                ProcessUtils.hasOAuthMethods(this.openAPI) ||
+                ProcessUtils.hasOpenIdConnectMethods(this.openAPI)) {
                 supportingFiles.add(
                         new SupportingFile(AUTH_PACKAGE + "/compositeAuthenticationProvider.qute",
                                 authFileFolder(),
