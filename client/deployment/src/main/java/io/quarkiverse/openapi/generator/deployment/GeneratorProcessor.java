@@ -22,11 +22,7 @@ import io.quarkiverse.openapi.generator.AuthenticationRecorder;
 import io.quarkiverse.openapi.generator.OidcClient;
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 import io.quarkiverse.openapi.generator.OpenApiSpec;
-import io.quarkiverse.openapi.generator.markers.ApiKeyAuthenticationMarker;
-import io.quarkiverse.openapi.generator.markers.BasicAuthenticationMarker;
-import io.quarkiverse.openapi.generator.markers.BearerAuthenticationMarker;
-import io.quarkiverse.openapi.generator.markers.OauthAuthenticationMarker;
-import io.quarkiverse.openapi.generator.markers.OperationMarker;
+import io.quarkiverse.openapi.generator.markers.*;
 import io.quarkiverse.openapi.generator.oidc.ClassicOidcClientRequestFilterDelegate;
 import io.quarkiverse.openapi.generator.oidc.OidcAuthenticationRecorder;
 import io.quarkiverse.openapi.generator.oidc.ReactiveOidcClientRequestFilterDelegate;
@@ -51,6 +47,8 @@ public class GeneratorProcessor {
 
     private static final String FEATURE = "openapi-generator";
     private static final DotName OAUTH_AUTHENTICATION_MARKER = DotName.createSimple(OauthAuthenticationMarker.class);
+    private static final DotName OPEN_ID_CONNECT_AUTHENTICATION_MARKER = DotName
+            .createSimple(OpenIdConnectAuthenticationMarker.class);
     private static final DotName BASIC_AUTHENTICATION_MARKER = DotName.createSimple(BasicAuthenticationMarker.class);
     private static final DotName BEARER_AUTHENTICATION_MARKER = DotName.createSimple(BearerAuthenticationMarker.class);
     private static final DotName API_KEY_AUTHENTICATION_MARKER = DotName.createSimple(ApiKeyAuthenticationMarker.class);
@@ -132,6 +130,68 @@ public class GeneratorProcessor {
 
         Collection<AnnotationInstance> authenticationMarkers = beanArchiveBuildItem.getIndex()
                 .getAnnotationsWithRepeatable(OAUTH_AUTHENTICATION_MARKER, beanArchiveBuildItem.getIndex())
+                .stream()
+                .collect(Collectors.toMap(
+                        AnnotationInstance::equivalenceHashCode,
+                        marker -> marker,
+                        (existing, duplicate) -> existing))
+                .values();
+
+        if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
+            if (!authenticationMarkers.isEmpty()) {
+                throw new IllegalStateException(
+                        "OAuth2 flows detected in spec(s) " +
+                                authenticationMarkers.stream()
+                                        .map(m -> m.value("openApiSpecId").asString())
+                                        .distinct()
+                                        .collect(Collectors.joining(", "))
+                                +
+                                " but quarkus-openapi-generator-oidc and quarkus-rest-client-oidc-filter or quarkus-oidc-client-reactive-filter are not on the classpath. "
+                                +
+                                "Please add those dependencies to your project. See https://docs.quarkiverse.io/quarkus-openapi-generator/dev/client.html#_oauth2_authentication");
+            }
+            LOGGER.debug("{} class not found in runtime, skipping OAuth bean generation", ABSTRACT_TOKEN_PRODUCER);
+            return;
+        }
+        LOGGER.debug("{} class found in runtime, producing OAuth bean generation", ABSTRACT_TOKEN_PRODUCER);
+
+        Map<String, List<AnnotationInstance>> operationsBySpec = getOperationsBySpec(beanArchiveBuildItem);
+
+        for (AnnotationInstance authenticationMarker : authenticationMarkers) {
+            String name = authenticationMarker.value("name").asString();
+            String openApiSpecId = authenticationMarker.value("openApiSpecId").asString();
+            List<OperationAuthInfo> operations = getOperations(operationsBySpec, openApiSpecId, name);
+            authenticationProviders.produce(new AuthProviderBuildItem(openApiSpecId, name));
+            beanProducer.produce(SyntheticBeanBuildItem.configure(AuthProvider.class)
+                    .scope(Dependent.class)
+                    .addQualifier()
+                    .annotation(AuthName.class)
+                    .addValue("name", name)
+                    .done()
+                    .addQualifier()
+                    .annotation(OpenApiSpec.class)
+                    .addValue("openApiSpecId", openApiSpecId)
+                    .done()
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
+                    .addInjectionPoint(ClassType.create(OAuth2AuthenticationProvider.OidcClientRequestFilterDelegate.class),
+                            AnnotationInstance.builder(OidcClient.class).add("name", sanitizeAuthName(name)).build())
+                    .addInjectionPoint(ClassType.create(DotName.createSimple(CredentialsProvider.class)))
+                    .createWith(oidcRecorder.recordOauthAuthProvider(sanitizeAuthName(name), openApiSpecId, operations))
+                    .setRuntimeInit()
+                    .unremovable()
+                    .done());
+        }
+    }
+
+    @BuildStep
+    @Record(ExecutionTime.RUNTIME_INIT)
+    void produceOpenIdConnectAuthentication(CombinedIndexBuildItem beanArchiveBuildItem,
+            BuildProducer<AuthProviderBuildItem> authenticationProviders,
+            BuildProducer<SyntheticBeanBuildItem> beanProducer,
+            OidcAuthenticationRecorder oidcRecorder) {
+
+        Collection<AnnotationInstance> authenticationMarkers = beanArchiveBuildItem.getIndex()
+                .getAnnotationsWithRepeatable(OPEN_ID_CONNECT_AUTHENTICATION_MARKER, beanArchiveBuildItem.getIndex())
                 .stream()
                 .collect(Collectors.toMap(
                         AnnotationInstance::equivalenceHashCode,
