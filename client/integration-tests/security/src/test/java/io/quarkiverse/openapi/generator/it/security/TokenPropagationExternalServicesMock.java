@@ -66,6 +66,11 @@ public class TokenPropagationExternalServicesMock implements QuarkusTestResource
         // configured.
         stubForExternalService("/token-propagation-external-service5/executeQuery5", KEYCLOAK_ACCESS_TOKEN);
 
+        // stub the token-propagation-external-service6 invocation with the expected token, no propagation is produced
+        // in this case but the service must receive the token provided by Keycloak since it has oidc security
+        // configured.
+        stubForExternalService("/token-propagation-external-service6/executeQuery6", KEYCLOAK_ACCESS_TOKEN);
+
         return Map.of(TOKEN_PROPAGATION_EXTERNAL_SERVICE_MOCK_URL, wireMockServer.baseUrl());
     }
 
