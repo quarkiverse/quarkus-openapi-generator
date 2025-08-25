@@ -20,6 +20,9 @@ public class TokenServerResource {
     @RestClient
     org.acme.externalservice5.api.DefaultApi defaultApi5;
 
+    @RestClient
+    org.acme.externalservice6.api.DefaultApi defaultApi6;
+
     @POST
     @Path("service1")
     public String service1() {
@@ -45,6 +48,13 @@ public class TokenServerResource {
     @Path("service5")
     public String service5() {
         defaultApi5.executeQuery5();
+        return "hello";
+    }
+
+    @POST
+    @Path("service6")
+    public String service6() {
+        defaultApi6.executeQuery6();
         return "hello";
     }
 }
