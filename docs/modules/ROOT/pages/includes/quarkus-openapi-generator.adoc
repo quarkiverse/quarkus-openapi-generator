@@ -515,7 +515,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_VERBOSE+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir[`quarkus.openapi-generator.codegen.input-base-dir`]##
 ifdef::add-copy-button-to-config-props[]
@@ -578,7 +578,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_VALIDATESPEC+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`true`
+|`+++true+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include[`quarkus.openapi-generator.codegen.include`]##
 ifdef::add-copy-button-to-config-props[]
@@ -1340,7 +1340,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation[`quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation`]##
 ifdef::add-copy-button-to-config-props[]
