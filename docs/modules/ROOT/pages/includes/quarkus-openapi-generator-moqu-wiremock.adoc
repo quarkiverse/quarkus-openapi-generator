@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_MOQU_RESOURCE_DIR+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`openapi`
+|`+++openapi+++`
 
 |===
 

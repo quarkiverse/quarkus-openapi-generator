@@ -14,7 +14,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String INPUT_BASE_DIR = CODEGEN_TIME_CONFIG_PREFIX + ".input-base-dir";
     String CODEGEN_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + ".reactive";
     String GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + ".builders";
-    String CODEGEN_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + ".bean-validation";
+    String CODEGEN_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + ".use-bean-validation";
 
     static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
