@@ -373,7 +373,7 @@ Without `x-codegen-type`, the code generator won't know what type to substitute,
   "additionalProperties": {
     "type": "string"
   },
-  "x-codegen-type": "Map<String, String>",
+  "x-codegen-type": "StringMap",
   "x-codegen-inline": true
 }
 ----
