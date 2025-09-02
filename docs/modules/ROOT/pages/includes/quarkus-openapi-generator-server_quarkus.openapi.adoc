@@ -47,7 +47,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_INPUT_BASE_DIR+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`src/main/resources/openapi`
+|`+++src/main/resources/openapi+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-reactive[`quarkus.openapi.generator.reactive`]##
 ifdef::add-copy-button-to-config-props[]
@@ -68,7 +68,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_REACTIVE+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-builders]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-builders[`quarkus.openapi.generator.builders`]##
 ifdef::add-copy-button-to-config-props[]
@@ -89,7 +89,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_BUILDERS+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-base-package[`quarkus.openapi.generator.base-package`]##
 ifdef::add-copy-button-to-config-props[]
@@ -110,7 +110,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_BASE_PACKAGE+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`io.apicurio.api`
+|`+++io.apicurio.api+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation[`quarkus.openapi.generator.use-bean-validation`]##
 ifdef::add-copy-button-to-config-props[]
@@ -131,7 +131,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_USE_BEAN_VALIDATION+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`false`
+|`+++false+++`
 
 |===
 
