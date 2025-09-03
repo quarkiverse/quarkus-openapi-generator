@@ -35,7 +35,7 @@
     <version.org.eclipse.microprofile.fault-tolerance>4.1.2</version.org.eclipse.microprofile.fault-tolerance>
     <version.org.wiremock>3.13.1</version.org.wiremock>
     <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
-    <version.io.swagger.parser>2.1.32</version.io.swagger.parser>
+    <version.io.swagger.parser>2.1.33</version.io.swagger.parser>
   </properties>
   <dependencyManagement>
     <dependencies>
