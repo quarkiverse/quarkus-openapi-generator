@@ -31,7 +31,7 @@
     <apicurio.version>1.2.6.Final</apicurio.version>
     <quarkus.version>3.28.0</quarkus.version>
     <version.com.github.javaparser>3.27.0</version.com.github.javaparser>
-    <version.org.assertj>3.27.5</version.org.assertj>
+    <version.org.assertj>3.27.6</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.2</version.org.eclipse.microprofile.fault-tolerance>
     <version.org.wiremock>3.13.1</version.org.wiremock>
     <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
