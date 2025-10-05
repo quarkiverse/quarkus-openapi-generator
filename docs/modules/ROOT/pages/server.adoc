@@ -20,7 +20,90 @@ include::./includes/server-getting-started.adoc[leveloffset=+1, opts=optional]
 [[codegen-extensions]]
 == Codegen Extensions
 
-Apicurio Codegen Extensions use https://swagger.io/docs/specification/v3_0/openapi-extensions/[OpenAPI specification extensions] to allow customization of the generated source code based on your API contract.
+Apicurio Codegen Extensions use https://spec.openapis.org/oas/v3.0.3.html#specification-extensions/[OpenAPI specification extensions] to allow customization of the generated source code based on your API contract.
+
+=== `x-codegen`
+
+The `x-codegen` extension can be defined at the root level of the OpenAPI document.
+
+It is applied globally and allows you to customize the generated bean classes by:
+- Adding annotations to all generated beans.
+- Controlling date/time formatting.
+- Configuring the application context root.
+
+=== `x-codegen.bean-annotations`
+
+Adding annotations to generated bean classes:
+
+[source,json]
+----
+{
+  "x-codegen": {
+    "bean-annotations": [
+      "@lombok.ToString", // (1)
+      {
+        "annotation": "@lombok.EqualsAndHashCode", // (2)
+        "excludeEnums": true
+      }
+    ]
+  }
+}
+----
+
+1. Adds the `@lombok.ToString` annotation to all generated bean classes.
+2. Adds the `@lombok.EqualsAndHashCode` annotation to all generated bean classes, except for Java enums (when excludeEnums is set to `true`).
+
+=== `x-codegen.contextRoot`
+
+Additionally, you can configure the application context root using the `x-codegen.contextRoot` property.
+
+This property defines a base path that will be automatically prefixed to all generated JAX-RS resource classes.
+
+For example, if you set the context root to `/apis/studio/v1`, all generated resource paths will include this prefix.
+
+[source,json]
+----
+{
+  "x-codegen": {
+    "contextRoot": "/apis/studio/v1",
+    "bean-annotations": []
+  }
+}
+----
+
+Corresponding JAX-RS code:
+
+[source,java]
+----
+@Path("/apis/studio/v1/users")
+public class UserResource {}
+----
+
+[NOTE]
+
+    You can use the xref:x-codegen-contextRoot[x-codegen-contextRoot] property to apply a context root prefix to a specific JAX-RS resource instead of using the global one.
+
+=== `x-codegen.suppress-date-time-formatting`
+
+By default, Apicurio Codegen generates properties of type `string` with the format `date-time` as shown below:
+
+[source,java]
+----
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+@JsonProperty("shipDate")
+private Date shipDate;
+----
+
+If you want to disable this behavior, you can use the `x-codegen.suppress-date-time-formatting` property to remove the `@JsonFormat` annotation from generated fields.
+
+[source,json]
+----
+{
+  "x-codegen": {
+    "suppress-date-time-formatting": true
+  }
+}
+----
 
 The following extensions modify the behavior of the code generation in specific parts of the OpenAPI document.
 
@@ -211,6 +294,7 @@ public Response deleteBeer(
 );
 ----
 
+[[x-codegen-contextRoot]]
 === x-codegen-contextRoot
 
 The `x-codegen-contextRoot` extension allows you to define a base path (context root) that is prepended to all generated endpoint paths.
