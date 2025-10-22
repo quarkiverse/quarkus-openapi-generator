@@ -36,9 +36,11 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         //global configs
         VERBOSE("verbose"),
         INPUT_BASE_DIR("input-base-dir"),
+        GAV_SCANNING("gav-scanning"),
         TEMPLATE_BASE_DIR("template-base-dir"),
         INCLUDE("include"),
         EXCLUDE("exclude"),
+        EXCLUDE_GAV("exclude-gav"),
         VALIDATE_SPEC("validateSpec"),
         DEFAULT_SECURITY_SCHEME("default-security-scheme"),
 
