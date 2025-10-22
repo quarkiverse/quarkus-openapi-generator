@@ -17,6 +17,11 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/webhook_create_update_payload'
+        - name: data-set
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/webhook_create_update_set_payload'
       responses:
         "200":
           description: OK
@@ -47,9 +52,43 @@ components:
               - message_created
               - message_updated
               - webwidget_triggered
+          default:
+            - conversation_created
           description: The events you want to subscribe to.
         message:
           type: array
+          items:
+            type: string
+          description: Non required Field to safe messages
+        messageMap:
+          type: object
+          additionalProperties: true
+          description: Non required Map Field to safe messages
+    webhook_create_update_set_payload:
+      required: [url, subscriptions]
+      type: object
+      properties:
+        url:
+          type: string
+          description: The url where the events should be sent
+        subscriptions:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - conversation_created
+              - conversation_status_changed
+              - conversation_updated
+              - message_created
+              - message_updated
+              - webwidget_triggered
+          default:
+            - conversation_created
+          description: The events you want to subscribe to.
+        message:
+          type: array
+          uniqueItems: true
           items:
             type: string
           description: Non required Field to safe messages
