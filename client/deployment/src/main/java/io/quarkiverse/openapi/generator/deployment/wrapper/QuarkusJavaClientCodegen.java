@@ -143,6 +143,14 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     @Override
+    public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+        super.postProcessModelProperty(model, property);
+        if ("set".equals(property.containerType)) {
+            model.imports.add("Arrays");
+        }
+    }
+
+    @Override
     public CodegenModel fromModel(String name, Schema model) {
         CodegenModel codegenModel = super.fromModel(name, model);
         warnIfDuplicated(codegenModel);
