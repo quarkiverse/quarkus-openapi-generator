@@ -22,7 +22,7 @@
             <goals>
               <goal>install-file</goal>
             </goals>
-            <phase>install</phase>
+            <phase>verify</phase>
             <configuration>
               <artifactId>quarkus-openapi-generator-gav-source-echo1</artifactId>
               <groupId>io.quarkiverse.openapi.generator</groupId>
@@ -36,7 +36,7 @@
             <goals>
               <goal>install-file</goal>
             </goals>
-            <phase>install</phase>
+            <phase>verify</phase>
             <configuration>
               <artifactId>quarkus-openapi-generator-gav-source-echo2</artifactId>
               <groupId>io.quarkiverse.openapi.generator</groupId>
@@ -50,7 +50,7 @@
             <goals>
               <goal>install-file</goal>
             </goals>
-            <phase>install</phase>
+            <phase>verify</phase>
             <configuration>
               <artifactId>quarkus-openapi-generator-gav-source-other</artifactId>
               <groupId>io.quarkiverse.openapi.generator</groupId>
