@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorOutputPaths;
 import io.quarkus.runtime.annotations.ConfigPhase;
@@ -30,7 +29,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
     String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
 
     List<String> SUPPORTED_CONFIGURATIONS = Arrays.stream(ConfigName.values()).map(cn -> cn.name)
-            .collect(Collectors.toList());
+            .toList();
 
     enum ConfigName {
         //global configs
@@ -40,7 +39,8 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         TEMPLATE_BASE_DIR("template-base-dir"),
         INCLUDE("include"),
         EXCLUDE("exclude"),
-        EXCLUDE_GAV("exclude-gav"),
+        ARTIFACT_ID_FILTER("artifact-id-filter"),
+        EXCLUDE_GAVS("exclude-gavs"),
         VALIDATE_SPEC("validateSpec"),
         DEFAULT_SECURITY_SCHEME("default-security-scheme"),
 

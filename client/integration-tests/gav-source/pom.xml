@@ -27,7 +27,7 @@
               <artifactId>quarkus-openapi-generator-gav-source-echo1</artifactId>
               <groupId>io.quarkiverse.openapi.generator</groupId>
               <version>3.0.0-SNAPSHOT</version>
-              <file>src/main/openapi/echo1.yaml</file>
+              <file>src/main/openapi/echo.yaml</file>
               <packaging>yaml</packaging>
             </configuration>
           </execution>
@@ -41,7 +41,21 @@
               <artifactId>quarkus-openapi-generator-gav-source-echo2</artifactId>
               <groupId>io.quarkiverse.openapi.generator</groupId>
               <version>3.0.0-SNAPSHOT</version>
-              <file>src/main/openapi/echo2.yaml</file>
+              <file>src/main/openapi/echo.yaml</file>
+              <packaging>yaml</packaging>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-other</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>install</phase>
+            <configuration>
+              <artifactId>quarkus-openapi-generator-gav-source-other</artifactId>
+              <groupId>io.quarkiverse.openapi.generator</groupId>
+              <version>3.0.0-SNAPSHOT</version>
+              <file>src/main/openapi/echo.yaml</file>
               <packaging>yaml</packaging>
             </configuration>
           </execution>

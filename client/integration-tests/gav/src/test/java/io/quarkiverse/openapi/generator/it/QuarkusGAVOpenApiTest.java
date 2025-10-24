@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class QuarkusGAVOpenApiTest {
     @Test
-    void apiIsBeingGenerated() {
+    void echo1IsBeingGenerated() {
         assertThatCode(
                 () -> Class.forName(
                         "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo1.api.DefaultApi"))
@@ -14,10 +14,18 @@ class QuarkusGAVOpenApiTest {
     }
 
     @Test
-    void apiIsBeingNotGenerated() {
+    void echo2IsBeingNotGenerated() {
         assertThatCode(
                 () -> Class.forName(
                         "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo2.api.DefaultApi"))
+                .isInstanceOf(ClassNotFoundException.class);
+    }
+
+    @Test
+    void otherIsBeingNotGenerated() {
+        assertThatCode(
+                () -> Class.forName(
+                        "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_other.api.DefaultApi"))
                 .isInstanceOf(ClassNotFoundException.class);
     }
 }
