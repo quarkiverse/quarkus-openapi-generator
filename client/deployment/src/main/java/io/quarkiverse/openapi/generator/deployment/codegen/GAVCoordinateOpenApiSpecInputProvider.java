@@ -17,6 +17,7 @@ import org.jboss.logging.Logger;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.maven.dependency.ResolvedDependency;
+import io.smallrye.config.common.utils.StringUtil;
 
 public class GAVCoordinateOpenApiSpecInputProvider implements OpenApiSpecInputProvider {
     private static final Logger LOG = Logger.getLogger(GAVCoordinateOpenApiSpecInputProvider.class);
@@ -48,7 +49,7 @@ public class GAVCoordinateOpenApiSpecInputProvider implements OpenApiSpecInputPr
         }
         var inputModels = new ArrayList<SpecInputModel>();
         for (ResolvedDependency yamlDependency : yamlDependencies) {
-            var gacString = yamlDependency.getKey().toGacString();
+            var gacString = StringUtil.replaceNonAlphanumericByUnderscores(yamlDependency.getKey().toGacString());
             var path = yamlDependency.getResolvedPaths().stream().findFirst()
                     .orElseThrow(() -> new CodeGenException("Could not find maven path of %s.".formatted(gacString)));
             try {
