@@ -1,7 +1,8 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE_GAV;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.GAV_SCANNING;
 
 import java.io.IOException;
 import java.nio.file.Files;
