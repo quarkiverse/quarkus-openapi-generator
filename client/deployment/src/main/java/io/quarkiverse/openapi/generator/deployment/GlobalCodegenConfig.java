@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment;
 
+import java.util.List;
 import java.util.Optional;
 
 import io.smallrye.config.WithDefault;
@@ -28,6 +29,13 @@ public interface GlobalCodegenConfig extends CommonItemConfig {
     Optional<String> inputBaseDir();
 
     /**
+     * Whether or not to skip gav scanning.
+     */
+    @WithName("gav-scanning")
+    @WithDefault("true")
+    boolean gavScanning();
+
+    /**
      * Option to change the directory where template files must be found.
      */
     @WithName("template-base-dir")
@@ -52,6 +60,19 @@ public interface GlobalCodegenConfig extends CommonItemConfig {
      */
     @WithName("exclude")
     Optional<String> exclude();
+
+    /**
+     * Option to filter artifactId from generation
+     */
+    @WithName("artifact-id-filter")
+    @WithDefault(".*openapi.*")
+    Optional<String> artifactIdFilter();
+
+    /**
+     * Option to exclude GAVs from generation
+     */
+    @WithName("exclude-gavs")
+    Optional<List<String>> excludeGavs();
 
     /**
      * Create security for the referenced security scheme

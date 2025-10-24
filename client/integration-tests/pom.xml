@@ -22,6 +22,8 @@
     <module>cookie-authentication</module>
     <module>custom-templates</module>
     <module>enum-property</module>
+    <module>gav-source</module>
+    <module>gav</module>
     <module>enum-unexpected</module>
     <module>exclude</module>
     <module>generate-flags</module>
