@@ -1,1 +1,1 @@
-io.quarkiverse.openapi.generator.deployment.codegen.GAVCoordinateOpenApiSpecInputProvider
+io.quarkiverse.openapi.generator.deployment.codegen.YamlOrJsonGAVCoordinateOpenApiSpecInputProvider
