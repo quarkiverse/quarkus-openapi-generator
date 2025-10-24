@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.jboss.logging.Logger;
 
@@ -18,8 +17,6 @@ import io.quarkus.maven.dependency.ResolvedDependency;
 
 public class GAVCoordinateOpenApiSpecInputProvider implements OpenApiSpecInputProvider {
     private static final Logger LOG = Logger.getLogger(GAVCoordinateOpenApiSpecInputProvider.class);
-
-    private static final Set<String> SUPPORTED_EXTENSIONS = Set.of("yaml", "yml", "json");
 
     @Override
     public List<SpecInputModel> read(CodeGenContext context) throws CodeGenException {
@@ -34,7 +31,7 @@ public class GAVCoordinateOpenApiSpecInputProvider implements OpenApiSpecInputPr
                 .orElse(List.of());
 
         List<ResolvedDependency> yamlDependencies = context.applicationModel().getDependencies().stream()
-                .filter(rd -> SUPPORTED_EXTENSIONS.contains(rd.getType()))
+                .filter(rd -> OpenApiGeneratorCodeGenBase.SUPPORTED_EXTENSIONS.contains(rd.getType()))
                 .filter(rd -> !gavsToExclude.contains(rd.getKey().toGacString()))
                 .toList();
 

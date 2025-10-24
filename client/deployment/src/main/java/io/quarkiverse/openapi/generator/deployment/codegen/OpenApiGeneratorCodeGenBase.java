@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,9 +57,12 @@ import io.smallrye.config.SmallRyeConfig;
  */
 public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
-    static final String YAML = ".yaml";
-    static final String YML = ".yml";
-    static final String JSON = ".json";
+    static final String YAML = "yaml";
+    static final String YML = "yml";
+    static final String JSON = "json";
+
+    static final Set<String> SUPPORTED_EXTENSIONS = Set.of(YAML, YML, JSON);
+    static final Set<String> SUPPORTED_EXTENSIONS_WITH_LEADING_DOT = Set.of("." + YAML, "." + YML, "." + JSON);
 
     private static final String DEFAULT_PACKAGE = "org.openapi.quarkus";
     private static final String CONFIG_KEY_PROPERTY = "config-key";
