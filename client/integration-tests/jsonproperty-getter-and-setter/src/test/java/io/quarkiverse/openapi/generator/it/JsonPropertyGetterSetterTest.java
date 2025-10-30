@@ -14,6 +14,7 @@ import org.acme.jsonproperty.gettersetter.model.Primate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -67,8 +68,8 @@ class JsonPropertyGetterSetterTest {
             var getter = Animal.class.getMethod("getAnimalName");
             var setter = Animal.class.getMethod("setAnimalName", String.class);
 
-            var getterAnnotation = getter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
-            var setterAnnotation = setter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
+            var getterAnnotation = getter.getAnnotation(JsonProperty.class);
+            var setterAnnotation = setter.getAnnotation(JsonProperty.class);
 
             assertEquals("animal_name", getterAnnotation.value());
             assertEquals("animal_name", setterAnnotation.value());
@@ -79,8 +80,8 @@ class JsonPropertyGetterSetterTest {
             var getter = Primate.class.getMethod("getAnimalName");
             var setter = Primate.class.getMethod("setAnimalName", String.class);
 
-            var getterAnnotation = getter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
-            var setterAnnotation = setter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
+            var getterAnnotation = getter.getAnnotation(JsonProperty.class);
+            var setterAnnotation = setter.getAnnotation(JsonProperty.class);
 
             assertEquals("animal_name", getterAnnotation.value());
             assertEquals("animal_name", setterAnnotation.value());
@@ -91,8 +92,8 @@ class JsonPropertyGetterSetterTest {
             var getter = Mammal.class.getMethod("getAnimalName");
             var setter = Mammal.class.getMethod("setAnimalName", String.class);
 
-            var getterAnnotation = getter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
-            var setterAnnotation = setter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
+            var getterAnnotation = getter.getAnnotation(JsonProperty.class);
+            var setterAnnotation = setter.getAnnotation(JsonProperty.class);
 
             assertEquals("animal_name", getterAnnotation.value());
             assertEquals("animal_name", setterAnnotation.value());
@@ -107,8 +108,8 @@ class JsonPropertyGetterSetterTest {
             var getter = Animal.AnimalQueryParam.class.getMethod("getAnimalName");
             var setter = Animal.AnimalQueryParam.class.getMethod("setAnimalName", String.class);
 
-            var getterAnnotation = getter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
-            var setterAnnotation = setter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
+            var getterAnnotation = getter.getAnnotation(JsonProperty.class);
+            var setterAnnotation = setter.getAnnotation(JsonProperty.class);
 
             assertEquals("animal_name", getterAnnotation.value());
             assertEquals("animal_name", setterAnnotation.value());
@@ -120,8 +121,8 @@ class JsonPropertyGetterSetterTest {
             var getter = Mammal.MammalQueryParam.class.getMethod("getAnimalName");
             var setter = Mammal.MammalQueryParam.class.getMethod("setAnimalName", String.class);
 
-            var getterAnnotation = getter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
-            var setterAnnotation = setter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
+            var getterAnnotation = getter.getAnnotation(JsonProperty.class);
+            var setterAnnotation = setter.getAnnotation(JsonProperty.class);
 
             assertEquals("animal_name", getterAnnotation.value());
             assertEquals("animal_name", setterAnnotation.value());
@@ -133,8 +134,8 @@ class JsonPropertyGetterSetterTest {
             var getter = Primate.PrimateQueryParam.class.getMethod("getAnimalName");
             var setter = Primate.PrimateQueryParam.class.getMethod("setAnimalName", String.class);
 
-            var getterAnnotation = getter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
-            var setterAnnotation = setter.getAnnotation(com.fasterxml.jackson.annotation.JsonProperty.class);
+            var getterAnnotation = getter.getAnnotation(JsonProperty.class);
+            var setterAnnotation = setter.getAnnotation(JsonProperty.class);
 
             assertEquals("animal_name", getterAnnotation.value());
             assertEquals("animal_name", setterAnnotation.value());
