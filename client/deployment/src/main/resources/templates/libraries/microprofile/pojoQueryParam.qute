@@ -74,6 +74,7 @@
         /**
          * Set {v.name}
          **/
+        @com.fasterxml.jackson.annotation.JsonProperty("{v.baseName}")
         public void {v.setter}({v.datatypeWithEnum} {v.name}) {
             this.{v.name} = {v.name};
         }
