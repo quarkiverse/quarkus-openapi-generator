@@ -85,6 +85,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
     /**
      * Set {v.name}
      **/
+    @JsonProperty("{v.baseName}")
     public void {v.setter}({v.datatypeWithEnum} {v.name}) {
         this.{v.name} = {v.name};
     }

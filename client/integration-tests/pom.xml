@@ -49,6 +49,7 @@
     <module>serializable-model</module>
     <module>equals-hashcode</module>
     <module>override-credential-provider</module>
+    <module>jsonproperty-getter-and-setter</module>
   </modules>
   <dependencyManagement>
     <dependencies>
