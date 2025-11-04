@@ -18,6 +18,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tested.version>${project.version}</tested.version>
+        <version.maven.invoker.plugin>3.6.1</version.maven.invoker.plugin>
     </properties>
 
     <build>
@@ -25,7 +26,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-invoker-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>${version.maven.invoker.plugin}</version>
                 <configuration>
                     <projectsDirectory>src/it</projectsDirectory>
                     <cloneProjectsTo>${project.build.directory}/it-work</cloneProjectsTo>
@@ -38,7 +39,6 @@
                         <!-- pass-through from outer -P… ; fallback provided below -->
                         <consume.profile>${consume.profile}</consume.profile>
                     </properties>
-                    <!-- Both projects run with the same goals, order is lexical: 01-* then 02-* -->
                     <goals>
                         <goal>clean</goal>
                         <goal>install</goal>
@@ -46,11 +46,24 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>run-gav-it</id>
+                        <id>it-01-install-gav-sources</id>
                         <phase>install</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <pomIncludes>
+                                <pomInclude>01-install-gav-sources/pom.xml</pomInclude>
+                            </pomIncludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>it-02-consume-gav</id>
+                        <phase>install</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <pomIncludes>
+                                <pomInclude>02-consume-gav/pom.xml</pomInclude>
+                            </pomIncludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
