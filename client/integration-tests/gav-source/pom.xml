@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
+    <groupId>io.quarkiverse.openapi.generator</groupId>
+    <version>3.0.0-lts-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>quarkus-openapi-generator-gav-source</artifactId>
+  <name>Quarkus - OpenAPI Generator - Integration Tests - Client - GAV source</name>
+  <description>Example project for OpenAPI with GAV source</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>install-echo1</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <artifactId>quarkus-openapi-generator-gav-source-echo1</artifactId>
+              <groupId>io.quarkiverse.openapi.generator</groupId>
+              <version>3.0.0-SNAPSHOT</version>
+              <file>src/main/openapi/echo.yaml</file>
+              <packaging>yaml</packaging>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-echo2</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <artifactId>quarkus-openapi-generator-gav-source-echo2</artifactId>
+              <groupId>io.quarkiverse.openapi.generator</groupId>
+              <version>3.0.0-SNAPSHOT</version>
+              <file>src/main/openapi/echo.yaml</file>
+              <packaging>yaml</packaging>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-other</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <artifactId>quarkus-openapi-generator-gav-source-other</artifactId>
+              <groupId>io.quarkiverse.openapi.generator</groupId>
+              <version>3.0.0-SNAPSHOT</version>
+              <file>src/main/openapi/echo.yaml</file>
+              <packaging>yaml</packaging>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -8,6 +8,6 @@ public class OpenApiGeneratorCodeGen extends OpenApiGeneratorCodeGenBase {
 
     @Override
     public String[] inputExtensions() {
-        return new String[] { JSON, YAML, YML };
+        return SUPPORTED_EXTENSIONS_WITH_LEADING_DOT.toArray(new String[0]);
     }
 }
