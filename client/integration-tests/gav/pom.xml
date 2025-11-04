@@ -1,105 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
-    <groupId>io.quarkiverse.openapi.generator</groupId>
-    <version>3.0.0-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>quarkus-openapi-generator-integration-tests</artifactId>
+        <groupId>io.quarkiverse.openapi.generator</groupId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>quarkus-openapi-generator-it-gav</artifactId>
-  <name>Quarkus - OpenAPI Generator - Integration Tests - Client - GAV</name>
-  <description>Example project for OpenAPI via GAV coordinates</description>
+    <artifactId>quarkus-openapi-generator-it-gav</artifactId>
+    <name>Quarkus - OpenAPI Generator - Integration Tests - Client - GAV</name>
+    <packaging>pom</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator</artifactId>
-    </dependency>
-    <!-- include yaml GAV coordinates -->
-    <!-- echo1 should be generated -->
-    <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator-gav-source-echo1</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-      <type>yaml</type>
-    </dependency>
-    <!-- echo2 will be excluded during test -->
-    <dependency>
-      <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>quarkus-openapi-generator-gav-source-echo2</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-      <type>yaml</type>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-              <goal>generate-code</goal>
-              <goal>generate-code-tests</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-  <profiles>
-    <profile>
-      <id>native-image</id>
-      <activation>
-        <property>
-          <name>native</name>
-        </property>
-      </activation>
-      <build>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <tested.version>${project.version}</tested.version>
+    </properties>
+
+    <build>
         <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skipTests>${native.surefire.skip}</skipTests>
-            </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-invoker-plugin</artifactId>
+                <version>3.6.1</version>
                 <configuration>
-                  <systemPropertyVariables>
-                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                    <maven.home>${maven.home}</maven.home>
-                  </systemPropertyVariables>
+                    <projectsDirectory>src/it</projectsDirectory>
+                    <cloneProjectsTo>${project.build.directory}/it-work</cloneProjectsTo>
+                    <localRepositoryPath>${settings.localRepository}</localRepositoryPath>
+                    <addTestClassPath>true</addTestClassPath>
+                    <streamLogs>true</streamLogs>
+                    <showErrors>true</showErrors>
+                    <properties>
+                        <tested.version>${tested.version}</tested.version>
+                        <!-- pass-through from outer -P… ; fallback provided below -->
+                        <consume.profile>${consume.profile}</consume.profile>
+                    </properties>
+                    <!-- Both projects run with the same goals, order is lexical: 01-* then 02-* -->
+                    <goals>
+                        <goal>clean</goal>
+                        <goal>install</goal>
+                    </goals>
                 </configuration>
-              </execution>
-            </executions>
-          </plugin>
+                <executions>
+                    <execution>
+                        <id>run-gav-it</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-      </build>
-      <properties>
-        <quarkus.package.type>native</quarkus.package.type>
-      </properties>
-    </profile>
-  </profiles>
+    </build>
 
 </project>
