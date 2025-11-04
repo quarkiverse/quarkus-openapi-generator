@@ -1,0 +1,66 @@
+<!-- 01-install-gav-sources/pom.xml -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- No parent; keep this fully standalone for the invoker -->
+    <groupId>io.quarkiverse.openapi.generator.it</groupId>
+    <artifactId>install-gav-sources</artifactId>
+    <version>1</version>
+    <packaging>pom</packaging>
+
+    <!-- tested.version is injected by the invoker as -Dtested.version=... -->
+    <properties>
+        <tested.version>0.0.0-UNSET</tested.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.1.4</version>
+                <executions>
+                    <execution>
+                        <id>install-echo1</id>
+                        <phase>package</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <groupId>io.quarkiverse.openapi.generator</groupId>
+                            <artifactId>quarkus-openapi-generator-gav-source-echo1</artifactId>
+                            <version>${tested.version}</version>
+                            <file>${project.basedir}/src/main/openapi/echo1.yaml</file>
+                            <packaging>yaml</packaging>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-echo2</id>
+                        <phase>package</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <groupId>io.quarkiverse.openapi.generator</groupId>
+                            <artifactId>quarkus-openapi-generator-gav-source-echo2</artifactId>
+                            <version>${tested.version}</version>
+                            <file>${project.basedir}/src/main/openapi/echo2.yaml</file>
+                            <packaging>yaml</packaging>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-other</id>
+                        <phase>package</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <groupId>io.quarkiverse.openapi.generator</groupId>
+                            <artifactId>quarkus-openapi-generator-gav-source-other</artifactId>
+                            <version>${tested.version}</version>
+                            <file>${project.basedir}/src/main/openapi/other.yaml</file>
+                            <packaging>yaml</packaging>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

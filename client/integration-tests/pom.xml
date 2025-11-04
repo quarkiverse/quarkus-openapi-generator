@@ -22,7 +22,6 @@
     <module>cookie-authentication</module>
     <module>custom-templates</module>
     <module>enum-property</module>
-    <module>gav-source</module>
     <module>gav</module>
     <module>enum-unexpected</module>
     <module>exclude</module>
@@ -76,6 +75,10 @@
   <profiles>
     <profile>
       <id>resteasy-classic</id>
+      <properties>
+        <!-- required to pass to the invoker in the `gav` module -->
+        <consume.profile>resteasy-classic</consume.profile>
+      </properties>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -110,6 +113,10 @@
     </profile>
     <profile>
       <id>resteasy-reactive</id>
+      <properties>
+        <!-- required to pass to the invoker in the `gav` module -->
+        <consume.profile>resteasy-reactive</consume.profile>
+      </properties>
       <dependencies>
         <dependency>
           <groupId>io.quarkus</groupId>
