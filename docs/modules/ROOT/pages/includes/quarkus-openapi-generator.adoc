@@ -557,7 +557,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV_SCANNING+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`+++true+++`
+|`true`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir[`quarkus.openapi-generator.codegen.template-base-dir`]##
 ifdef::add-copy-button-to-config-props[]
@@ -662,7 +662,7 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_ARTIFACT_ID_FILTER++
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`+++.*openapi.*+++`
+|`.*openapi.*`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude-gavs]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude-gavs[`quarkus.openapi-generator.codegen.exclude-gavs`]##
 ifdef::add-copy-button-to-config-props[]
