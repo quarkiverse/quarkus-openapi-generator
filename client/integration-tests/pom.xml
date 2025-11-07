@@ -51,6 +51,7 @@
     <module>equals-hashcode</module>
     <module>override-credential-provider</module>
     <module>jsonproperty-getter-and-setter</module>
+    <module>suppress-warnings</module>
   </modules>
   <dependencyManagement>
     <dependencies>

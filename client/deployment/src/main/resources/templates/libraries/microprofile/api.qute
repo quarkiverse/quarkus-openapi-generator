@@ -28,6 +28,7 @@ import {imp.import};
 {#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
 {apiAnnotation}
 {/for}
+{#include suppressWarnings.qute/}
 public interface {classname} {
 
     {#for op in operations.operation}
