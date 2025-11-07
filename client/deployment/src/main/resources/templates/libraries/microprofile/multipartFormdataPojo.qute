@@ -1,3 +1,4 @@
+    {#include suppressWarnings.qute/}
     public static class {op.operationIdCamelCase}MultipartForm {
     {#for p in op.formParams}
         @jakarta.ws.rs.FormParam("{p.baseName}")

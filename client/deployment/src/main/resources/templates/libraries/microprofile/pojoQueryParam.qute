@@ -5,6 +5,7 @@
     {/if}
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
     {#include additionalModelTypeAnnotations.qute m=m/}
+    {#include suppressWarnings.qute/}
     public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if serializableModel} implements java.io.Serializable{/if} {
 
         {#for v in m.vars}

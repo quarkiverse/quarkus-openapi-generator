@@ -13,6 +13,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
 
     private static final String IDENTIFIER = "qute";
     private static final String[] DEFAULT_TEMPLATES = {
+            "suppressWarnings.qute",
             "additionalEnumTypeAnnotations.qute",
             "additionalEnumTypeUnexpectedMember.qute",
             "additionalModelTypeAnnotations.qute",
