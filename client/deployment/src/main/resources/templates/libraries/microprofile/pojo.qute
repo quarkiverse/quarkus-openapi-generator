@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 {#else}
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 {/if}
+{#include suppressWarnings.qute/}
 public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializableModel} implements java.io.Serializable{/if} {
 
     {#for v in m.vars}

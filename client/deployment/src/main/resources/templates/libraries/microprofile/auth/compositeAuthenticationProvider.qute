@@ -19,6 +19,7 @@ package {apiPackage}.auth;
 @io.quarkiverse.openapi.generator.markers.ApiKeyAuthenticationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", apiKeyIn=io.quarkiverse.openapi.generator.providers.ApiKeyIn.cookie, apiKeyName="{auth.keyParamName}")
 {/if}
 {/for}
+{#include suppressWarnings.qute/}
 public class CompositeAuthenticationProvider implements jakarta.ws.rs.client.ClientRequestFilter {
 
     @jakarta.inject.Inject
