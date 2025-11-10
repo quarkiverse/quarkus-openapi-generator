@@ -49,6 +49,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         API_NAME_SUFFIX("api-name-suffix"),
         MODEL_NAME_SUFFIX("model-name-suffix"),
         MODEL_NAME_PREFIX("model-name-prefix"),
+        GAV_SPEC_FILES("gav-spec-files"),
 
         //global & spec configs
         SKIP_FORM_MODEL("skip-form-model"),

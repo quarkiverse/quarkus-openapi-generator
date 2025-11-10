@@ -61,7 +61,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
 
     @SuppressWarnings("unused")
     public String parseUri(String uri) {
-        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(URI.create(uri))).toString();
+        return escapeWindowsPath(OpenApiGeneratorOutputPaths.getRelativePath(Path.of(URI.create(uri))).toString());
     }
 
     @SuppressWarnings("unused")
@@ -136,6 +136,10 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
             }
         }
         return true;
+    }
+
+    private String escapeWindowsPath(String pathAsString) {
+        return pathAsString.replace("\\", "\\\\"); // without it would lead into compile error in generated sources
     }
 
     @Override
