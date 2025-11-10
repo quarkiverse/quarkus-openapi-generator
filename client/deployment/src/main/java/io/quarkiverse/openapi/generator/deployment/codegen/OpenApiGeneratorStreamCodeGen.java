@@ -82,7 +82,8 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                         openApiFilePath = Paths.get(pathToExtract.toString(), zippedSpecInputModel.getRootFileOfSpec());
                         if (!Files.exists(openApiFilePath)) {
                             throw new CodeGenException(
-                                    String.format("Could not locate openAPI specification file %s in extracted content", openApiFilePath));
+                                    String.format("Could not locate openAPI specification file %s in extracted content",
+                                            openApiFilePath));
                         }
                     } else {
                         openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
