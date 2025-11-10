@@ -37,6 +37,7 @@ abstract class AbstractGAVCoordinateOpenApiSpecInputProvider implements OpenApiS
                 .filter(rd -> getSupportedExtensions().contains(rd.getType().toLowerCase()))
                 .filter(rd -> rd.getArtifactId().matches(artifactIdFilter))
                 .filter(rd -> !gavsToExclude.contains(rd.getKey().toGacString()))
+                .filter(rd -> specificGAVSpecInputProviderFilter(context, rd.getKey().toGacString()))
                 .toList();
 
         if (dependencies.isEmpty()) {
@@ -57,8 +58,30 @@ abstract class AbstractGAVCoordinateOpenApiSpecInputProvider implements OpenApiS
 
     protected abstract Set<String> getSupportedExtensions();
 
+    /**
+     * Adds input models to the provided list based on the given context, GAC string, and path.
+     * This method is implemented by subclasses to generate or retrieve the appropriate
+     * {@code SpecInputModel} instances that will be processed during code generation.
+     *
+     * @param context the code generation context, providing access to configuration and utilities
+     * @param gacString the GAC (Group, Artifact, Classifier) string representing the dependency identifier
+     * @param path the path to the file or directory containing the input specification(s)
+     * @param inputModels the list to which the generated {@code SpecInputModel} instances are added
+     * @throws CodeGenException if an error occurs while processing the input specifications
+     */
     protected abstract void addInputModels(CodeGenContext context,
             String gacString,
             Path path,
             List<SpecInputModel> inputModels) throws CodeGenException;
+
+    /**
+     * Filters dependencies based on specific criteria defined in the implementing class.
+     * This method is invoked as part of the dependency resolution process to determine
+     * whether a dependency identified by its GAC string should be included for further processing.
+     *
+     * @param context the code generation context, providing access to configuration and other utilities
+     * @param gacString the GAC (Group, Artifact, Classifier) string representing the dependency identifier
+     * @return true if the dependency matches the filter criteria and should be included; false otherwise
+     */
+    protected abstract boolean specificGAVSpecInputProviderFilter(CodeGenContext context, String gacString);
 }

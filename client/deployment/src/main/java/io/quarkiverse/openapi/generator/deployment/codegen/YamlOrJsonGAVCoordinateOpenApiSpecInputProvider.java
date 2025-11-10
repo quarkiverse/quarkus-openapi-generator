@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
 import static io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorCodeGenBase.*;
 
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
@@ -29,6 +32,7 @@ import io.quarkus.deployment.CodeGenContext;
  * <li>Filters dependencies by artifact type (yaml/yml/json)</li>
  * <li>Applies artifact ID filtering using a regex pattern</li>
  * <li>Excludes specific GAVs based on configuration</li>
+ * <li>Includes specific GAVs based on configuration if available otherwise all GAVs are used</li>
  * <li>Creates {@link SpecInputModel} instances for each matching dependency</li>
  * </ol>
  *
@@ -73,5 +77,17 @@ public class YamlOrJsonGAVCoordinateOpenApiSpecInputProvider extends AbstractGAV
     @Override
     protected Set<String> getSupportedExtensions() {
         return SUPPORTED_EXTENSIONS;
+    }
+
+    @Override
+    protected boolean specificGAVSpecInputProviderFilter(final CodeGenContext context, final String gacString) {
+        List<String> includeGavs = context.config().getOptionalValues(getGlobalConfigName(INCLUDE_GAVS), String.class)
+                .orElse(null);
+        if (includeGavs == null) { // default behavior: all GAVs are included
+            return true;
+        }
+        return includeGavs
+                .stream().collect(Collectors.toSet())
+                .contains(gacString);
     }
 }

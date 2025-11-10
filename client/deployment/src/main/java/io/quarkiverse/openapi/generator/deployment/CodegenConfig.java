@@ -40,6 +40,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         INCLUDE("include"),
         EXCLUDE("exclude"),
         ARTIFACT_ID_FILTER("artifact-id-filter"),
+        INCLUDE_GAVS("include-gavs"),
         EXCLUDE_GAVS("exclude-gavs"),
         VALIDATE_SPEC("validateSpec"),
         DEFAULT_SECURITY_SCHEME("default-security-scheme"),

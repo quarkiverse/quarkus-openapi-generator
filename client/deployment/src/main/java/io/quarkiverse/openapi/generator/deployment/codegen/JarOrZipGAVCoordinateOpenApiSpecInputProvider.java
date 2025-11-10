@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
@@ -40,6 +41,7 @@ import io.quarkus.deployment.CodeGenContext;
  * <li>Filters dependencies by artifact type (jar/zip)</li>
  * <li>Applies artifact ID filtering using a regex pattern</li>
  * <li>Excludes specific GAVs based on configuration</li>
+ * <li>Includes specific GAVs based on configuration if not available no GAVs are used</li>
  * <li>Creates {@link ZippedSpecInputModel} instances for each matching dependency and openAPI specification file</li>
  * </ol>
  *
@@ -95,7 +97,16 @@ public class JarOrZipGAVCoordinateOpenApiSpecInputProvider extends AbstractGAVCo
         }
     }
 
+    @Override
     protected Set<String> getSupportedExtensions() {
         return SUPPORTED_EXTENSIONS;
+    }
+
+    @Override
+    protected boolean specificGAVSpecInputProviderFilter(final CodeGenContext context, final String gacString) {
+        return context.config().getOptionalValues(getGlobalConfigName(INCLUDE_GAVS), String.class)
+                .orElse(List.of()) // default to empty list to disable all if not specified
+                .stream().collect(Collectors.toSet())
+                .contains(gacString);
     }
 }

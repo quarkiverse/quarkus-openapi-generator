@@ -59,7 +59,7 @@
             <type>yaml</type>
         </dependency>
 
-        <!-- GAV YAML dependencies -->
+        <!-- GAV JAR dependencies -->
         <dependency>
             <groupId>io.quarkiverse.openapi.generator</groupId>
             <artifactId>quarkus-openapi-generator-gav-source-splitted-echo</artifactId>
