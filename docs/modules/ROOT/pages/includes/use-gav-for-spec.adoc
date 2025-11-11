@@ -1,0 +1,68 @@
+This feature introduces the capability to load OpenAPI specifications directly from Maven GAV dependencies that are packaged
+as YAML, JSON, JAR, ZIP files.
+
+== Overview
+
+OpenAPI specifications can now be specified as Maven GAV (GroupId:ArtifactId:Version) coordinates and use them directly for
+client generation. This allows developers to use external or prepackaged OpenAPI specifications as dependencies instead
+of embedding them directly in their projects.
+
+Key features included in this implementation:
+
+- Compatibility with YAML, JSON, JAR and ZIP formats containing OpenAPI specifications.
+- Configuration options to specify GAV dependencies via application properties.
+- Support for filtering dependencies by artifact ID and excluding specific GAVs.
+
+== Sample Configurations
+
+=== YAML or JSON specification
+
+To load an OpenAPI specification from a Maven GAV dependency in YAML or JSON format, you can use the following configuration:
+
+Add the dependency to your `pom.xml`:
+[source,xml]
+<dependency>
+    <groupId>com.example</groupId>
+    <artifactId>customer-openapi</artifactId>
+    <version>1.0.0</version>
+    <type>yaml</type>
+</dependency>
+
+GAV scanning is activated by default. YAML, YML and JSON types are supported. The default artifact ID filter is `.\*openapi.*`,
+so the above dependency will be picked up automatically.
+
+To configure the client generation process, add common options to your `application.properties` that reference to the GAV:
+
+e.g.
+[source,properties]
+quarkus.openapi-generator.codegen.spec.com_example_customer_openapi.serializable-model=true
+
+=== JAR or ZIP Files containing specification
+To load an OpenAPI specification from a Maven GAV dependency packaged as a JAR or ZIP file, use the following configuration:
+
+Add the dependency to your `pom.xml`:
+[source,xml]
+<dependency>
+    <groupId>com.example</groupId>
+    <artifactId>customer-openapi</artifactId>
+    <version>1.0.0</version>
+    <type>jar</type>
+</dependency>
+
+GAV scanning is activated by default. Jar and zip types are supported. The default artifact ID filter is `.\*openapi.*`. To add
+GAV scanning support for JAR and ZIP files, you also need to add each one explicitly in your `application.properties`:
+[source,properties]
+quarkus.openapi-generator.codegen.include-gavs=com.example:customer-openapi
+
+If your specification file is not named `openapi.yaml`, you need to specify the path to the file inside the archive.
+[source,properties]
+quarkus.openapi-generator.codegen.gav.com_example_customer_openapi.spec-files=customer.yaml
+
+==== Note
+- You can also have multiple specification files inside the same archive
+- You can have splitted specifications across multiple files inside the same archive, you need to
+tell the extension the spec-files to use
+
+For more configuration options, refer to the xref:includes/quarkus-openapi-generator.adoc[Configuration Documentation].
+
+
