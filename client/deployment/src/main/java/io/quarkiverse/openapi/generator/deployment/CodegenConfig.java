@@ -27,6 +27,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
     // package visibility for unit tests
     String BUILD_TIME_GLOBAL_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".%s";
     String BUILD_TIME_SPEC_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".spec.%s";
+    String BUILD_TIME_GAV_PREFIX_FORMAT = "quarkus." + CODEGEN_TIME_CONFIG_PREFIX + ".gav.%s";
 
     List<String> SUPPORTED_CONFIGURATIONS = Arrays.stream(ConfigName.values()).map(cn -> cn.name)
             .toList();
@@ -50,7 +51,9 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         API_NAME_SUFFIX("api-name-suffix"),
         MODEL_NAME_SUFFIX("model-name-suffix"),
         MODEL_NAME_PREFIX("model-name-prefix"),
-        GAV_SPEC_FILES("gav-spec-files"),
+
+        //gav configs only
+        SPEC_FILES("spec-files"),
 
         //global & spec configs
         SKIP_FORM_MODEL("skip-form-model"),
@@ -99,6 +102,12 @@ public interface CodegenConfig extends GlobalCodegenConfig {
     @WithName("spec")
     Map<String, SpecItemConfig> specItem();
 
+    /**
+     * OpenAPI GAV details for codegen configuration.
+     */
+    @WithName("gav")
+    Map<String, GavItemConfig> gavItem();
+
     static String resolveApiPackage(final String basePackage) {
         return String.format("%s%s", basePackage, API_PKG_SUFFIX);
     }
@@ -122,6 +131,13 @@ public interface CodegenConfig extends GlobalCodegenConfig {
     }
 
     /**
+     * Return gav config name openapi-generator.codegen.gav.%s.config-name
+     */
+    static String getGavConfigName(ConfigName configName, final Path openApiFilePath) {
+        return String.format("%s.%s", getBuildTimeGavPropertyPrefix(openApiFilePath), configName.name);
+    }
+
+    /**
      * Return spec config name by config-key (<b>openapi-generator.codegen.spec.%s.config-key</b>) property.
      * For example, given a configuration <code>quarkus.openapi.generator.codegen.spec.spec_yaml.config-key=petstore</code>, the
      * returned value is
@@ -140,6 +156,10 @@ public interface CodegenConfig extends GlobalCodegenConfig {
      */
     static String getBuildTimeSpecPropertyPrefix(final Path openApiFilePath) {
         return String.format(BUILD_TIME_SPEC_PREFIX_FORMAT, getSanitizedFileName(openApiFilePath));
+    }
+
+    static String getBuildTimeGavPropertyPrefix(final Path openApiFilePath) {
+        return String.format(BUILD_TIME_GAV_PREFIX_FORMAT, getSanitizedFileName(openApiFilePath));
     }
 
     static String getSanitizedFileName(final Path openApiFilePath) {
