@@ -1429,9 +1429,498 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-gav-spec-files]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-gav-spec-files[`quarkus.openapi-generator.codegen.spec."spec-item".gav-spec-files`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-skip-form-model[`quarkus.openapi-generator.codegen.gav."gav-item".skip-form-model`]##
 ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".gav-spec-files+++[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".skip-form-model+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether to skip the generation of models for form parameters
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SKIP_FORM_MODEL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SKIP_FORM_MODEL+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-type-mappings-type-mappings[`quarkus.openapi-generator.codegen.gav."gav-item".type-mappings."type-mappings"`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".type-mappings."type-mappings"+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Type Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be used for a given OAS datatype (the keys of this map)
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__TYPE_MAPPINGS__TYPE_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__TYPE_MAPPINGS__TYPE_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-import-mappings-import-mappings[`quarkus.openapi-generator.codegen.gav."gav-item".import-mappings."import-mappings"`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".import-mappings."import-mappings"+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Import Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be imported when a given OAS datatype (the keys of this map) is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__IMPORT_MAPPINGS__IMPORT_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__IMPORT_MAPPINGS__IMPORT_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-schema-mappings-schema-mappings[`quarkus.openapi-generator.codegen.gav."gav-item".schema-mappings."schema-mappings"`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".schema-mappings."schema-mappings"+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Schema Mapping is an OpenAPI Generator configuration specifying which Java types (the values) should be imported when a given schema type (the keys of this map) is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SCHEMA_MAPPINGS__SCHEMA_MAPPINGS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SCHEMA_MAPPINGS__SCHEMA_MAPPINGS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-model-type-annotations[`quarkus.openapi-generator.codegen.gav."gav-item".additional-model-type-annotations`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".additional-model-type-annotations+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The specified annotations will be added to the generated model files
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_MODEL_TYPE_ANNOTATIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_MODEL_TYPE_ANNOTATIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-enum-type-unexpected-member[`quarkus.openapi-generator.codegen.gav."gav-item".additional-enum-type-unexpected-member`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".additional-enum-type-unexpected-member+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines if the enums should have an `UNEXPECTED` member to convey values that cannot be parsed. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_ENUM_TYPE_UNEXPECTED_MEMBER+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-api-type-annotations[`quarkus.openapi-generator.codegen.gav."gav-item".additional-api-type-annotations`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".additional-api-type-annotations+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The specified annotations will be added to the generated api files
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_API_TYPE_ANNOTATIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_API_TYPE_ANNOTATIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-request-args[`quarkus.openapi-generator.codegen.gav."gav-item".additional-request-args`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".additional-request-args+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Add custom/additional HTTP Headers or other args to every request
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_REQUEST_ARGS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_REQUEST_ARGS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-return-response[`quarkus.openapi-generator.codegen.gav."gav-item".return-response`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".return-response+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines if the methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__RETURN_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__RETURN_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-enable-security-generation[`quarkus.openapi-generator.codegen.gav."gav-item".enable-security-generation`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".enable-security-generation+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines if security support classes should be generated
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ENABLE_SECURITY_GENERATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ENABLE_SECURITY_GENERATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-open-api-normalizer-normalizer[`quarkus.openapi-generator.codegen.gav."gav-item".open-api-normalizer."normalizer"`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".open-api-normalizer."normalizer"+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines the normalizer options.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__OPEN_API_NORMALIZER__NORMALIZER_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__OPEN_API_NORMALIZER__NORMALIZER_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-mutiny[`quarkus.openapi-generator.codegen.gav."gav-item".mutiny`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".mutiny+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Enable SmallRye Mutiny support. If you set this to `true`, all return types will be wrapped in `io.smallrye.mutiny.Uni`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__MUTINY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__MUTINY+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-mutiny-return-response[`quarkus.openapi-generator.codegen.gav."gav-item".mutiny.return-response`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".mutiny.return-response+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__MUTINY_RETURN_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__MUTINY_RETURN_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.gav."gav-item".mutiny.operation-ids."mutiny-multi-operation-ids"`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".mutiny.operation-ids."mutiny-multi-operation-ids"+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Handles the return type for each operation, depending on the configuration. The following cases are supported:
+
+1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
+
+2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
+
+3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__MUTINY_OPERATION_IDS__MUTINY_MULTI_OPERATION_IDS_+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__MUTINY_OPERATION_IDS__MUTINY_MULTI_OPERATION_IDS_+++`
+endif::add-copy-button-to-env-var[]
+--
+|Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-generate-part-filename[`quarkus.openapi-generator.codegen.gav."gav-item".generate-part-filename`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".generate-part-filename+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines, whether the `PartFilename` (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) annotation should be generated for MultipartForm POJOs. By setting to `false`, the annotation will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__GENERATE_PART_FILENAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__GENERATE_PART_FILENAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-part-filename-value[`quarkus.openapi-generator.codegen.gav."gav-item".part-filename-value`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".part-filename-value+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines the filename for a part in case the `PartFilename` annotation (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) is generated. In case no value is set, the default one is `<fieldName>File` or `file`, depending on the `CommonItemConfig++#++useFieldNameInPartFilename` configuration.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__PART_FILENAME_VALUE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__PART_FILENAME_VALUE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-use-field-name-in-part-filename[`quarkus.openapi-generator.codegen.gav."gav-item".use-field-name-in-part-filename`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".use-field-name-in-part-filename+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Defines, whether the filename should also include the property name in case the `PartFilename` annotation (`org.jboss.resteasy.reactive.PartFilename` or `org.jboss.resteasy.annotations.providers.multipart.PartFilename`) is generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__USE_FIELD_NAME_IN_PART_FILENAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__USE_FIELD_NAME_IN_PART_FILENAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-use-bean-validation[`quarkus.openapi-generator.codegen.gav."gav-item".use-bean-validation`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".use-bean-validation+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Enable bean validation. If you set this to `true`, validation annotations are added to generated sources E.g. `@Size`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__USE_BEAN_VALIDATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__USE_BEAN_VALIDATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-generate-apis[`quarkus.openapi-generator.codegen.gav."gav-item".generate-apis`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".generate-apis+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Enable the generation of APIs. If you set this to `false`, APIs will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__GENERATE_APIS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__GENERATE_APIS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-generate-models[`quarkus.openapi-generator.codegen.gav."gav-item".generate-models`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".generate-models+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Enable the generation of models. If you set this to `false`, models will not be generated.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__GENERATE_MODELS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__GENERATE_MODELS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-equals-hashcode[`quarkus.openapi-generator.codegen.gav."gav-item".equals-hashcode`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".equals-hashcode+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Enable the generation of equals and hashcode in models. If you set this to `false`, the models will not have equals and hashcode.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__EQUALS_HASHCODE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__EQUALS_HASHCODE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-additional-properties-as-attribute[`quarkus.openapi-generator.codegen.gav."gav-item".additional-properties-as-attribute`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".additional-properties-as-attribute+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Add additional properties as attribute.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__ADDITIONAL_PROPERTIES_AS_ATTRIBUTE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-initialize-empty-collections[`quarkus.openapi-generator.codegen.gav."gav-item".initialize-empty-collections`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".initialize-empty-collections+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Initialise collections as empty instead of null
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__INITIALIZE_EMPTY_COLLECTIONS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__INITIALIZE_EMPTY_COLLECTIONS+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files[`quarkus.openapi-generator.codegen.gav."gav-item".spec-files`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".spec-files+++[]
 endif::add-copy-button-to-config-props[]
 
 
@@ -1441,10 +1930,10 @@ List of OpenAPI spec files in GAV to be generated
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GAV_SPEC_FILES+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SPEC_FILES+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GAV_SPEC_FILES+++`
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SPEC_FILES+++`
 endif::add-copy-button-to-env-var[]
 --
 |list of string

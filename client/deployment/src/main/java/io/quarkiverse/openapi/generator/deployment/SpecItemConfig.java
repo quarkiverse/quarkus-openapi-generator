@@ -1,6 +1,5 @@
 package io.quarkiverse.openapi.generator.deployment;
 
-import java.util.List;
 import java.util.Optional;
 
 import io.smallrye.config.WithDefault;
@@ -79,12 +78,5 @@ public interface SpecItemConfig extends CommonItemConfig {
     @WithName("use-dynamic-url")
     @WithDefault("false")
     Optional<Boolean> useDynamicUrl();
-
-    /**
-     * List of OpenAPI spec files in GAV to be generated
-     */
-    @WithName("gav-spec-files")
-    @WithDefault("openapi.yaml")
-    Optional<List<String>> gavSpecFiles();
 
 }

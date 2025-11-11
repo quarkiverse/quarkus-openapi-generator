@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
@@ -54,7 +54,7 @@ import io.quarkus.deployment.CodeGenContext;
  * <li>{@code quarkus.openapi-generator.codegen.artifact-id-filter} - Regex pattern for artifact ID filtering</li>
  * <li>{@code quarkus.openapi-generator.codegen.exclude-gavs} - List of GAV coordinates to exclude
  * (format: groupId:artifactId:classifier)</li>
- * <li>{@code quarkus.openapi-generator.codegen.spec.com_sample_customer_service_openapi.gav-spec-files} - List of
+ * <li>{@code quarkus.openapi-generator.codegen.gav.com_sample_customer_service_openapi.spec-files} - List of
  * openAPI specification files in com.sample:customer-service-openapi:jar</li>
  * </ul>
  *
@@ -65,7 +65,7 @@ import io.quarkus.deployment.CodeGenContext;
  * quarkus.openapi-generator.codegen.gav-scanning=true
  * quarkus.openapi-generator.codegen.artifact-id-filter=.*api.*
  * quarkus.openapi-generator.codegen.exclude-gavs=com.example:old-api
- * quarkus.openapi-generator.codegen.spec.com_sample_customer_service_api.gav-spec-files=customer.yaml,another.yaml
+ * quarkus.openapi-generator.codegen.gav.com_sample_customer_service_api.spec-files=customer.yaml,another.yaml
  * </pre>
  *
  * @see AbstractGAVCoordinateOpenApiSpecInputProvider
@@ -81,7 +81,7 @@ public class JarOrZipGAVCoordinateOpenApiSpecInputProvider extends AbstractGAVCo
             Path path,
             List<SpecInputModel> inputModels) throws CodeGenException {
         List<String> rootFilesOfSpecOfDependency = context.config()
-                .getOptionalValues(getSpecConfigName(GAV_SPEC_FILES, Paths.get(gacString)), String.class)
+                .getOptionalValues(getGavConfigName(SPEC_FILES, Paths.get(gacString)), String.class)
                 .orElse(List.of("openapi.yaml"));
         for (String rootFileOfSpecForDependency : rootFilesOfSpecOfDependency) {
             try {
@@ -104,9 +104,8 @@ public class JarOrZipGAVCoordinateOpenApiSpecInputProvider extends AbstractGAVCo
 
     @Override
     protected boolean specificGAVSpecInputProviderFilter(final CodeGenContext context, final String gacString) {
-        return context.config().getOptionalValues(getGlobalConfigName(INCLUDE_GAVS), String.class)
-                .orElse(List.of()) // default to empty list to disable all if not specified
-                .stream().collect(Collectors.toSet())
+        return new HashSet<>(context.config().getOptionalValues(getGlobalConfigName(INCLUDE_GAVS), String.class)
+                .orElse(List.of())) // default to empty list to disable all if not specified
                 .contains(gacString);
     }
 }

@@ -18,7 +18,7 @@ public final class OpenApiConfigValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiConfigValidator.class);
 
     static final Pattern CONFIG_PATTERN = Pattern.compile(
-            "quarkus\\.openapi-generator\\.codegen\\.(spec.(?<specId>[\\w\\-]*)\\.)?(?<configName>[A-Za-z0-9_\\-]*)\\.?(?<configMap>.+)?");
+            "quarkus\\.openapi-generator\\.codegen\\.((spec|gav).(?<specId>[\\w\\-]*)\\.)?(?<configName>[A-Za-z0-9_\\-]*)\\.?(?<configMap>.+)?");
 
     private OpenApiConfigValidator() {
     }
