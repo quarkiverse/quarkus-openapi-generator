@@ -13,7 +13,7 @@ import io.smallrye.config.WithName;
  * Not meant to be used outside this scope.
  * Config items can be applied only on gav
  */
-public interface GavItemConfig extends CommonItemConfig {
+public interface GavItemConfig {
     /**
      * List of OpenAPI spec files in GAV to be generated
      */

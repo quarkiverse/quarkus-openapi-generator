@@ -1,5 +1,5 @@
 This feature introduces the capability to load OpenAPI specifications directly from Maven GAV dependencies that are packaged
-as YAML, JSON, JAR, ZIP files.
+as YAML, JSON, JAR, or ZIP files.
 
 == Overview
 
@@ -49,7 +49,7 @@ Add the dependency to your `pom.xml`:
     <type>jar</type>
 </dependency>
 
-GAV scanning is activated by default. Jar and zip types are supported. The default artifact ID filter is `.\*openapi.*`. To add
+GAV scanning is activated by default. JAR and ZIP types are supported. The default artifact ID filter is `.\*openapi.*`. To add
 GAV scanning support for JAR and ZIP files, you also need to add each one explicitly in your `application.properties`:
 [source,properties]
 quarkus.openapi-generator.codegen.include-gavs=com.example:customer-openapi

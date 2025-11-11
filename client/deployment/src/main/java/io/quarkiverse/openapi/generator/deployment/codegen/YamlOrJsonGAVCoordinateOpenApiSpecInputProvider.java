@@ -1,15 +1,15 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.*;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.*;
-import static io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorCodeGenBase.*;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getGlobalConfigName;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE_GAVS;
+import static io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorCodeGenBase.SUPPORTED_EXTENSIONS;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
@@ -86,8 +86,7 @@ public class YamlOrJsonGAVCoordinateOpenApiSpecInputProvider extends AbstractGAV
         if (includeGavs == null) { // default behavior: all GAVs are included
             return true;
         }
-        return includeGavs
-                .stream().collect(Collectors.toSet())
+        return new HashSet<>(includeGavs)
                 .contains(gacString);
     }
 }
