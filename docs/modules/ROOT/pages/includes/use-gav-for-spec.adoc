@@ -31,7 +31,7 @@ Add the dependency to your `pom.xml`:
 GAV scanning is activated by default. YAML, YML and JSON types are supported. The default artifact ID filter is `.\*openapi.*`,
 so the above dependency will be picked up automatically.
 
-To configure the client generation process, add common options to your `application.properties` that reference to the GAV:
+To configure the client generation process, add common options to your `application.properties` that refer to the GAV:
 
 e.g.
 [source,properties]
@@ -50,7 +50,7 @@ Add the dependency to your `pom.xml`:
 </dependency>
 
 GAV scanning is activated by default. JAR and ZIP types are supported. The default artifact ID filter is `.\*openapi.*`. To add
-GAV scanning support for JAR and ZIP files, you also need to add each one explicitly in your `application.properties`:
+GAV scanning support for JAR and ZIP files, you also need to add each GAV explicitly in your `application.properties`:
 [source,properties]
 quarkus.openapi-generator.codegen.include-gavs=com.example:customer-openapi
 
@@ -60,6 +60,11 @@ quarkus.openapi-generator.codegen.gav.com_example_customer_openapi.spec-files=cu
 
 ==== Note
 - You can also have multiple specification files inside the same archive
+  * e-store.jar includes customer-openapi.yaml, billing-openapi.yaml
+  * payment.jar includes payment-openapi.yaml
+  * 3 MP-Rest Clients are created. MP-Rest Clients for customer-openapi.yaml + billing-openapi.yaml in e-store.jar
+    *and* payment-openapi.yaml from payment.jar
+
 - You can have splitted specifications across multiple files inside the same archive, you need to
 tell the extension the spec-files to use
 
