@@ -36,7 +36,7 @@
     <version.com.github.javaparser>3.27.1</version.com.github.javaparser>
     <version.org.assertj>3.27.6</version.org.assertj>
     <version.org.eclipse.microprofile.fault-tolerance>4.1.2</version.org.eclipse.microprofile.fault-tolerance>
-    <version.org.wiremock>3.13.1</version.org.wiremock>
+    <version.org.wiremock>3.13.2</version.org.wiremock>
     <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
     <version.io.swagger.parser>2.1.35</version.io.swagger.parser>
   </properties>
