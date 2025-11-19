@@ -68,7 +68,7 @@ public interface CommonItemConfig {
 
     /**
      * Defines if the methods should return {@link jakarta.ws.rs.core.Response},
-     * {@link org.jboss.resteasy.reactive.RestResponse} or a model. Default is {@code false}.
+     * {@link org.jboss.resteasy.reactive.RestResponse} or a model. By default, it returns the model in the specification.
      */
     @WithName("return-response")
     Optional<String> returnResponse();
@@ -94,7 +94,7 @@ public interface CommonItemConfig {
 
     /**
      * Defines with SmallRye Mutiny enabled if methods should return {@link jakarta.ws.rs.core.Response},
-     * {@link org.jboss.resteasy.reactive.RestResponse} or a model. Default is {@code false}.
+     * {@link org.jboss.resteasy.reactive.RestResponse} or a model. By default, it returns the model in the specification.
      */
     @WithName("mutiny.return-response")
     Optional<String> mutinyReturnResponse();
