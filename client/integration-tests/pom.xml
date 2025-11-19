@@ -114,6 +114,10 @@
     </profile>
     <profile>
       <id>resteasy-reactive</id>
+      <modules>
+        <module>mutiny-return-rest-response</module>
+        <module>return-rest-response</module>
+      </modules>
       <properties>
         <!-- required to pass to the invoker in the `gav` module -->
         <consume.profile>resteasy-reactive</consume.profile>
