@@ -214,6 +214,11 @@ include::./includes/equals-hashcode.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/dynamic-url.adoc[leveloffset=+1, opts=optional]
 
+[[gav-integration]]
+== Specification files from Maven GAV coordinates
+
+include::./includes/use-gav-for-spec.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments

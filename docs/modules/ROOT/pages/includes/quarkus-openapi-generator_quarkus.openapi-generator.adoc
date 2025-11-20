@@ -685,6 +685,30 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include-gavs]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include-gavs[`quarkus.openapi-generator.codegen.include-gavs`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.include-gavs+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Option to specify GAVs for which generation should be executed only. Depending on the GAV Provider default behavior differs:
+
+ - for `io.quarkiverse.openapi.generator.deployment.codegen.YamlOrJsonGAVCoordinateOpenApiSpecInputProvider`, all suitable GAVs will be considered for generation if config value is not given
+ - for `io.quarkiverse.openapi.generator.deployment.codegen.JarOrZipGAVCoordinateOpenApiSpecInputProvider`, only specified GAVs will be considered for generation if config value is available
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INCLUDE_GAVS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_INCLUDE_GAVS+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme[`quarkus.openapi-generator.codegen.default-security-scheme`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.default-security-scheme+++[]
@@ -1404,6 +1428,27 @@ endif::add-copy-button-to-env-var[]
 --
 |boolean
 |`+++false+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files[`quarkus.openapi-generator.codegen.gav."gav-item".spec-files`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".spec-files+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+List of OpenAPI spec files in GAV to be generated
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SPEC_FILES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_GAV__GAV_ITEM__SPEC_FILES+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|`+++openapi.yaml+++`
 
 a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation[`quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation`]##
 ifdef::add-copy-button-to-config-props[]

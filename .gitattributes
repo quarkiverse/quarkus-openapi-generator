@@ -1,0 +1,2 @@
+* text eol=lf
+*.jar -text -eol -working-tree-encoding -merge -diff
