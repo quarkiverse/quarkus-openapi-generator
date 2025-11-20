@@ -75,6 +75,20 @@ public interface GlobalCodegenConfig extends CommonItemConfig {
     Optional<List<String>> excludeGavs();
 
     /**
+     * Option to specify GAVs for which generation should be executed only.
+     *
+     * Depending on the GAV Provider default behavior differs:
+     * <ul>
+     * <li>for {@link io.quarkiverse.openapi.generator.deployment.codegen.YamlOrJsonGAVCoordinateOpenApiSpecInputProvider}, all
+     * suitable GAVs will be considered for generation if config value is not given</li>
+     * <li>for {@link io.quarkiverse.openapi.generator.deployment.codegen.JarOrZipGAVCoordinateOpenApiSpecInputProvider}, only
+     * specified GAVs will be considered for generation if config value is available</li>
+     * </ul>
+     */
+    @WithName("include-gavs")
+    Optional<List<String>> includeGavs();
+
+    /**
      * Create security for the referenced security scheme
      */
     @WithName("default-security-scheme")

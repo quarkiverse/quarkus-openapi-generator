@@ -41,7 +41,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      */
     @SuppressWarnings("unused")
     public boolean genDeprecatedModelAttr(final String pkg, final String classname,
-            final HashMap<String, Object> codegenConfig) {
+                                          final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
     }
@@ -54,14 +54,14 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      */
     @SuppressWarnings("unused")
     public boolean genDeprecatedApiAttr(final String pkg, final String classname,
-            final HashMap<String, Object> codegenConfig) {
+                                        final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
     }
 
     @SuppressWarnings("unused")
     public String parseUri(String uri) {
-        return OpenApiGeneratorOutputPaths.getRelativePath(Path.of(URI.create(uri))).toString();
+        return escapeWindowsPath(OpenApiGeneratorOutputPaths.getRelativePath(Path.of(URI.create(uri))).toString());
     }
 
     @SuppressWarnings("unused")
@@ -136,6 +136,10 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
             }
         }
         return true;
+    }
+
+    private String escapeWindowsPath(String pathAsString) {
+        return pathAsString.replace("\\", "\\\\"); // without it would lead into compile error in generated sources
     }
 
     @Override
