@@ -61,8 +61,14 @@ public interface {classname} {
     {/if}{/for}
         {#if mutiny}
             {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
-                {#if mutiny-return-response}
+                {#if mutiny-return-response == "Response"}
     public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}(
+                {#else if mutiny-return-response == "RestResponse"}
+                    {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
+                    {#else}
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
+                    {/if}
                 {#else}
                     {#if op.returnType == "void"}
     public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}(
@@ -72,8 +78,14 @@ public interface {classname} {
                 {/if}
             {#else}
                 {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Uni"}
-                    {#if mutiny-return-response}
+                    {#if mutiny-return-response == "Response"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+                    {#else if mutiny-return-response == "RestResponse"}
+                        {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
+                        {#else}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
+                        {/if}
                     {#else}
                         {#if op.returnType == "void"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
@@ -83,8 +95,14 @@ public interface {classname} {
                     {/if}
                 {#else}
                    {#if !mutiny-operation-ids}
-                        {#if mutiny-return-response}
+                        {#if mutiny-return-response == "Response"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+                        {#else if mutiny-return-response == "RestResponse"}
+                            {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
+                            {#else}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
+                            {/if}
                         {#else}
                             {#if op.returnType == "void"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
@@ -100,8 +118,14 @@ public interface {classname} {
     public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
                             {/if}
                         {#else}
-                            {#if return-response}
+                            {#if return-response == "Response"}
     public jakarta.ws.rs.core.Response {op.nickname}(
+                            {#else if return-response == "RestResponse"}
+                                {#if op.returnType == "void"}
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}(
+                                {#else}
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}(
+                                {/if}
                             {#else}
                                 {#if op.returnType == "void"}
     public jakarta.ws.rs.core.Response {op.nickname}(
@@ -114,8 +138,14 @@ public interface {classname} {
                 {/if}
             {/if}
         {#else}
-            {#if return-response}
+            {#if return-response == "Response"}
     public jakarta.ws.rs.core.Response {op.nickname}(
+            {#else if return-response == "RestResponse"}
+                {#if op.returnType == "void"}
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}(
+                {#else}
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}(
+                {/if}
             {#else}
                 {#if op.returnType == "void"}
     public jakarta.ws.rs.core.Response {op.nickname}(
