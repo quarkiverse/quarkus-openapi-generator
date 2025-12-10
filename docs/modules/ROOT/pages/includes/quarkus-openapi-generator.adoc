@@ -183,7 +183,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Defines if the methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+Defines if the methods should return `jakarta.ws.rs.core.Response`, `org.jboss.resteasy.reactive.RestResponse` or a model. By default, it returns the model in the specification.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -193,7 +193,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|boolean
+|string
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation[`quarkus.openapi-generator.codegen.enable-security-generation`]##
@@ -267,7 +267,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response`, `org.jboss.resteasy.reactive.RestResponse` or a model. By default, it returns the model in the specification.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -277,7 +277,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY_RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|boolean
+|string
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.mutiny.operation-ids."mutiny-multi-operation-ids"`]##
@@ -290,11 +290,11 @@ endif::add-copy-button-to-config-props[]
 --
 Handles the return type for each operation, depending on the configuration. The following cases are supported:
 
-1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
+1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If `mutiny.return-response` is set to `RestResponse`, the return type will be `io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<returnType>>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
 
-2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
+2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If `mutiny.return-response` is set to `RestResponse`, the return type will be `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<returnType>>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
 
-3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
+3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If `mutiny.return-response` is set to `RestResponse`, the return type will be `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<returnType>>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -906,7 +906,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Defines if the methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+Defines if the methods should return `jakarta.ws.rs.core.Response`, `org.jboss.resteasy.reactive.RestResponse` or a model. By default, it returns the model in the specification.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -916,7 +916,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|boolean
+|string
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation[`quarkus.openapi-generator.codegen.spec."spec-item".enable-security-generation`]##
@@ -990,7 +990,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
+Defines with SmallRye Mutiny enabled if methods should return `jakarta.ws.rs.core.Response`, `org.jboss.resteasy.reactive.RestResponse` or a model. By default, it returns the model in the specification.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -1000,7 +1000,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY_RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|boolean
+|string
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny.operation-ids."mutiny-multi-operation-ids"`]##
@@ -1013,11 +1013,11 @@ endif::add-copy-button-to-config-props[]
 --
 Handles the return type for each operation, depending on the configuration. The following cases are supported:
 
-1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
+1. If `mutiny` is enabled and the operation ID is specified to return `Multi`: - The return type will be wrapped in `io.smallrye.mutiny.Multi`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>`. - If `mutiny.return-response` is set to `RestResponse`, the return type will be `io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<returnType>>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>`. - Otherwise, it will return `io.smallrye.mutiny.Multi<returnType>`.
 
-2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
+2. If `mutiny` is enabled and the operation ID is specified to return `Uni`: - The return type will be wrapped in `io.smallrye.mutiny.Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If `mutiny.return-response` is set to `RestResponse`, the return type will be `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<returnType>>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>`.
 
-3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
+3. If `mutiny` is enabled but no specific operation ID is configured for `Multi` or `Uni`: - The return type defaults to `Uni`. - If `mutiny.return-response` is enabled, the return type will be `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>`. - If `mutiny.return-response` is set to `RestResponse`, the return type will be `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<returnType>>`. - If the operation has a void return type, it will return `io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>`. - Otherwise, it will return `io.smallrye.mutiny.Uni<returnType>``.
 
 
 ifdef::add-copy-button-to-env-var[]
