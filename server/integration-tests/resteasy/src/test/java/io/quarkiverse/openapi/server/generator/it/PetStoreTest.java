@@ -19,7 +19,7 @@ public class PetStoreTest {
         Pet pet = new Pet();
         pet.setName("test");
         pet.setId(1234L);
-        pet.setStatus(Pet.Status.available);
+        pet.setStatus(Pet.Status.AVAILABLE);
 
         given()
                 .when()
