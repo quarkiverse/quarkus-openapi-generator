@@ -380,6 +380,10 @@ Without `x-codegen-type`, the code generator won't know what type to substitute,
 
 In this example, instead of generating a class called `MyMap`, the generator will use `Map<String, String>` directly wherever this schema is referenced.
 
+[NOTE]
+
+  If you want the schema to be generated as `Map<String, Object>` (instead of `Map<String, String>`), set its `x-codegen-type` to `StringObjectMap`.
+
 ==== Invalid Example (Will Fail)
 
 [source,json]
