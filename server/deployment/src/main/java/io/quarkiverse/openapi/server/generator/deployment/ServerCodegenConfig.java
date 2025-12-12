@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.server.generator.deployment;
 
 import java.util.Optional;
 
+import io.quarkus.runtime.annotations.ConfigGroup;
 import io.smallrye.config.WithDefault;
 
 public interface ServerCodegenConfig {
@@ -43,4 +44,21 @@ public interface ServerCodegenConfig {
      */
     @WithDefault("false")
     boolean useBeanValidation();
+
+    Server server();
+
+    @ConfigGroup
+    interface Server {
+
+        /**
+         * The generator to be used for generating the server code.
+         * <p>
+         * Possible values are: <code>҆apicurio</code> or <code>openapitools</code>.
+         * <p>
+         * By default is <code>apicurio</code>.
+         */
+        @WithDefault("apicurio")
+        String use();
+
+    }
 }

@@ -15,6 +15,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + ".reactive";
     String GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + ".builders";
     String CODEGEN_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + ".use-bean-validation";
+    String CODEGEN_SERVER_USE = CODEGEN_TIME_CONFIG_PREFIX + ".server.use";
 
     static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
@@ -38,5 +39,12 @@ public interface CodegenConfig extends ServerCodegenConfig {
 
     static String getUseBeanValidation() {
         return CODEGEN_BEAN_VALIDATION;
+    }
+
+    /**
+     * Indicates if should use 'apicurio' or 'openapitools' generator.
+     */
+    static String getServerUse() {
+        return CODEGEN_SERVER_USE;
     }
 }

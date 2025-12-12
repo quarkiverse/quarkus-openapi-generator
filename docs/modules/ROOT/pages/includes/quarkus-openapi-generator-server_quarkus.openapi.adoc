@@ -133,5 +133,30 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use[`quarkus.openapi.generator.server.use`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.use+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The generator to be used for generating the server code.
+
+Possible values are: `҆apicurio` or `openapitools`.
+
+By default is `apicurio`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`+++apicurio+++`
+
 |===
 

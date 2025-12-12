@@ -1,7 +1,5 @@
-package io.quarkiverse.openapi.server.generator.deployment.codegen;
+package io.quarkiverse.openapi.server.generator.deployment.codegen.apicurio;
 
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getCodegenReactive;
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_PACKAGE;
 
 import java.io.File;
