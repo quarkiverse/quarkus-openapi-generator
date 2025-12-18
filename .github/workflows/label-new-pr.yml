@@ -1,0 +1,30 @@
+name: Label New PRs
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:  
+  issues: write
+
+jobs:
+  add_label:
+    name: Add backport-main-lts label
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.base.ref == 'main' &&
+      !contains(
+        fromJson('["dependabot[bot]", "dependabot-preview[bot]"]'),
+        github.actor
+      )
+    steps:
+      - name: Add backport-main-lts label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['backport-main-lts']
+            })
