@@ -11,7 +11,12 @@ jobs:
   add_label:
     name: Add backport-main-lts label
     runs-on: ubuntu-latest
-    if: github.event.pull_request.base.ref == 'main'
+    if: |
+      github.event.pull_request.base.ref == 'main' &&
+      !contains(
+        fromJson('["dependabot[bot]", "dependabot-preview[bot]"]'),
+        github.actor
+      )
     steps:
       - name: Add backport-main-lts label
         uses: actions/github-script@v7
