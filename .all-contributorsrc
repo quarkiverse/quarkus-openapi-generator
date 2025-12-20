@@ -473,6 +473,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "matheusandre1",
+      "name": "Matheus André",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92062874?v=4",
+      "profile": "https://github.com/matheusandre1",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
