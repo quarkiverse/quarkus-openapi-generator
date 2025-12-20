@@ -143,7 +143,7 @@ endif::add-copy-button-to-config-props[]
 --
 The generator to be used for generating the server code.
 
-Possible values are: `҆apicurio` or `openapitools`.
+Possible values are: `apicurio` or `openapitools`.
 
 By default is `apicurio`.
 

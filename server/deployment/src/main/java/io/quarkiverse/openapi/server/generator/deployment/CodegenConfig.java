@@ -15,6 +15,8 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + ".reactive";
     String GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + ".builders";
     String CODEGEN_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + ".use-bean-validation";
+
+    // all new properties related to server generator must be prefixed with 'server'.
     String CODEGEN_SERVER_USE = CODEGEN_TIME_CONFIG_PREFIX + ".server.use";
 
     static String getBasePackagePropertyName() {

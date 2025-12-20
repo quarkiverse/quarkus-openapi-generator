@@ -16,13 +16,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 
 public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
-
-    private static final String CODEGEN_TYPE = "apicurio";
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioOpenApiServerCodegen.class);
 
@@ -51,8 +50,9 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
 
-        String serverCodegen = config.getOptionalValue(CodegenConfig.getServerUse(), String.class).orElse(CODEGEN_TYPE);
-        if (!serverCodegen.equalsIgnoreCase(CODEGEN_TYPE)) {
+        String serverCodegen = config.getOptionalValue(CodegenConfig.getServerUse(), String.class)
+                .orElse(ServerCodegenConfig.APICURIO);
+        if (!serverCodegen.equalsIgnoreCase(ServerCodegenConfig.APICURIO)) {
             return false;
         }
         log.info("Generating server code using: [" + serverCodegen + "]");

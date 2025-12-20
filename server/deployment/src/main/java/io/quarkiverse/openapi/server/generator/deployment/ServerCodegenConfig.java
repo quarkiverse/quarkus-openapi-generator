@@ -9,6 +9,8 @@ public interface ServerCodegenConfig {
 
     String DEFAULT_PACKAGE = "io.apicurio.api";
     String DEFAULT_DIR = "openapi";
+    String APICURIO = "apicurio";
+    String OPENAPITOOLS = "openapitools";
 
     /**
      * The OpenAPI specification filename.
@@ -53,11 +55,11 @@ public interface ServerCodegenConfig {
         /**
          * The generator to be used for generating the server code.
          * <p>
-         * Possible values are: <code>҆apicurio</code> or <code>openapitools</code>.
+         * Possible values are: <code>apicurio</code> or <code>openapitools</code>.
          * <p>
          * By default is <code>apicurio</code>.
          */
-        @WithDefault("apicurio")
+        @WithDefault(APICURIO)
         String use();
 
     }

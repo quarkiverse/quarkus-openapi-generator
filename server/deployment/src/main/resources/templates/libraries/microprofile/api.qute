@@ -18,7 +18,6 @@ import {imp.import};
   */
 {/if}
 @jakarta.ws.rs.Path("{#if useAnnotatedBasePath.or(false)}{contextPath}{/if}{commonPath}")
-@org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 @jakarta.enterprise.context.ApplicationScoped
 {#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
 {apiAnnotation}
@@ -41,12 +40,6 @@ public interface {classname} {
     {#if op.hasProduces}
     @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
-    @io.quarkiverse.openapi.generator.annotations.GeneratedMethod("{op.operationIdOriginal}")
-    {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == str:fmt("%s.%s", package, classname)}
-    {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
-    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
-    {/if}{/for}
-    {/if}{/for}
         {#if mutiny}
             {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
                 {#if mutiny-return-response == "Response"}
@@ -145,10 +138,6 @@ public interface {classname} {
         {#if additionalRequestArgs && additionalRequestArgs.length > 0}
             {#for arg in additionalRequestArgs}{arg}{#if arg_hasNext}, {/if}{/for}
             {#if (op.allParams || op.hasFormParams)}, {/if}
-        {/if}
-        {#if use-dynamic-url}
-            // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
-            @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
         {/if}
         {#if op.hasFormParams}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}

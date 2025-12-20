@@ -43,30 +43,23 @@ public class OpenAPIToolsGenerator {
         this.configurator.addAdditionalProperty("classes-codegen", new HashMap<>());
         this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", new String[0]);
         this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", FALSE);
-        this.configurator.addAdditionalProperty("initializeEmptyCollections", FALSE);
+        this.configurator.addAdditionalProperty("initializeEmptyCollections", TRUE);
         this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMember", FALSE);
         this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberName", "");
         this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMemberStringValue", "");
         this.configurator.addAdditionalProperty("additionalRequestArgs", new String[0]);
         this.configurator.addAdditionalProperty("classes-codegen", new HashMap<>());
-        this.configurator.addAdditionalProperty("circuit-breaker", new HashMap<>());
-        this.configurator.addAdditionalProperty("configKey", "");
         this.configurator.addAdditionalProperty("datatypeWithEnum", "");
-        this.configurator.addAdditionalProperty("enable-security-generation", TRUE);
         this.configurator.addAdditionalProperty("generate-part-filename", FALSE);
         this.configurator.addAdditionalProperty("mutiny", FALSE);
         this.configurator.addAdditionalProperty("mutiny-operation-ids", new HashMap<>());
         this.configurator.addAdditionalProperty("mutiny-return-response", FALSE);
         this.configurator.addAdditionalProperty("part-filename-value", "");
         this.configurator.addAdditionalProperty("return-response", FALSE);
-        this.configurator.addAdditionalProperty("skipFormModel", TRUE);
-        this.configurator.addAdditionalProperty("templateDir", "");
-        this.configurator.addAdditionalProperty("use-bean-validation", FALSE);
         this.configurator.addAdditionalProperty("use-field-name-in-part-filename", FALSE);
         this.configurator.addAdditionalProperty("verbose", FALSE);
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
         this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
-        this.configurator.addAdditionalProperty("use-dynamic-url", FALSE);
     }
 
     public List<File> generate() {

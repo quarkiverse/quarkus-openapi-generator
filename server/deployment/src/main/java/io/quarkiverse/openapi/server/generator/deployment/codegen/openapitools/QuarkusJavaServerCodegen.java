@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools;
 
+import static io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools.QuarkusJavaServerCodegenConfigurator.USE_BEAN_VALIDATION;
+
 import org.openapitools.codegen.languages.JavaClientCodegen;
 
 public class QuarkusJavaServerCodegen extends JavaClientCodegen {
@@ -26,10 +28,17 @@ public class QuarkusJavaServerCodegen extends JavaClientCodegen {
         this.testFolder = "";
         this.embeddedTemplateDir = "templates";
         this.supportsAdditionalPropertiesWithComposedSchema = false;
+        this.apiNameSuffix = "Resource";
 
-        // should be configurable in the future
-        this.setUseBeanValidation(true);
-        this.setPerformBeanValidation(true);
+        // bean validation
+        boolean useBeanValidation = (boolean) this.additionalProperties
+                .getOrDefault(USE_BEAN_VALIDATION, false);
+        this.setUseBeanValidation(useBeanValidation);
+        this.setPerformBeanValidation(useBeanValidation);
+
+        String basePackage = (String) this.additionalProperties.get(QuarkusJavaServerCodegenConfigurator.BASE_PACKAGE);
+        this.apiPackage = basePackage + ".resources";
+        this.modelPackage = basePackage + ".model";
 
         // replace with Qute templates
         this.applyQute();
