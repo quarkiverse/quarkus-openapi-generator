@@ -44,7 +44,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     }
 
     /**
-     * Indicates if should use 'apicurio' or 'openapitools' generator.
+     * Indicates if it should use 'apicurio' or 'openapitools' generator.
      */
     static String getServerUse() {
         return CODEGEN_SERVER_USE;

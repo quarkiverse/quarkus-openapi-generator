@@ -1,0 +1,10 @@
+= Quarkus - OpenAPI Generator - Server (OpenAPITools)
+
+include::./includes/attributes.adoc[]
+
+:extension-status: preview
+
+
+== Configuration Properties
+
+include::./includes/quarkus-openapi-generator-server_quarkus.openapi.adoc[opts=optional, leveloffset=+1]
