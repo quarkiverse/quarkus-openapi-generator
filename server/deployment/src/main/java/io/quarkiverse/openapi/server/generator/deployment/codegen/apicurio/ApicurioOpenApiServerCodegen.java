@@ -1,4 +1,4 @@
-package io.quarkiverse.openapi.server.generator.deployment.codegen;
+package io.quarkiverse.openapi.server.generator.deployment.codegen.apicurio;
 
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_DIR;
 
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
@@ -48,6 +49,14 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
+
+        String serverCodegen = config.getOptionalValue(CodegenConfig.getServerUse(), String.class)
+                .orElse(ServerCodegenConfig.APICURIO);
+        if (!serverCodegen.equalsIgnoreCase(ServerCodegenConfig.APICURIO)) {
+            return false;
+        }
+        log.info("Generating server code using: [" + serverCodegen + "]");
+
         Optional<String> possibleSpecPropertyName = config.getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class);
         if (possibleSpecPropertyName.isEmpty()) {
             log.warn("The {} property is not present, the code generation will be ignored",
