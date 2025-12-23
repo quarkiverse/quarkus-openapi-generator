@@ -1,0 +1,44 @@
+name: Update Documentation
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  update-docs:
+    name: Update Antora Playbook
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout quarkiverse-docs
+        uses: actions/checkout@v4
+        with:
+          repository: quarkiverse/quarkiverse-docs
+          token: ${{ secrets.QUARKIVERSE_GITHUB_TOKEN }}
+          path: quarkiverse-docs
+
+      - name: Add release tag to antora-playbook.yml
+        uses: mikefarah/yq@v4
+        with:
+          cmd: |
+            TAG="${{ github.event.release.tag_name }}"
+            yq -i '
+              with(
+                .content.sources[] 
+                | select(.url == "https://github.com/quarkiverse/quarkus-openapi-generator.git");
+                .tags += [strenv(TAG)] 
+                | .tags |= unique
+              )
+            ' quarkiverse-docs/antora-playbook.yml
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          path: quarkiverse-docs
+          token: ${{ secrets.QUARKIVERSE_GITHUB_TOKEN }}
+          commit-message: "docs(openapi-generator): add version ${{ github.event.release.tag_name }}"
+          title: "docs(openapi-generator): add version ${{ github.event.release.tag_name }}"
+          body: "Automated PR to add documentation for release ${{ github.event.release.tag_name }} of quarkus-openapi-generator."
+          branch: "docs/openapi-generator-${{ github.event.release.tag_name }}"
+          base: main
