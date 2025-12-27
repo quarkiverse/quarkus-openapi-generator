@@ -14,7 +14,7 @@ jobs:
       - uses: actions/stale@v10.1.1
         with:
           exempt-issue-labels: "pinned"
-          stale-issue-message: "@ricardozanini @hbelmiro This is being labeled as Stale."
-          stale-pr-message: "@ricardozanini @hbelmiro This is being labeled as Stale."
-          close-issue-message: "@ricardozanini @hbelmiro This is being closed due to inactivity."
-          close-pr-message: "@ricardozanini @hbelmiro This is being closed due to inactivity."
+          stale-issue-message: "@ricardozanini @hbelmiro @mcruzdev This is being labeled as Stale."
+          stale-pr-message: "@ricardozanini @hbelmiro @mcruzdev This is being labeled as Stale."
+          close-issue-message: "@ricardozanini @hbelmiro @mcruzdev This is being closed due to inactivity."
+          close-pr-message: "@ricardozanini @hbelmiro @mcruzdev This is being closed due to inactivity."
