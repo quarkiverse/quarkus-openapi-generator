@@ -1,48 +1,7 @@
 {#include readme-header /}
 
-## Requirements
+## Quarkus OpenAPI Generator Client
 
-If you do not have added the `io.quarkus:quarkus-rest-client-jackson` or `io.quarkus:quarkus-rest-client-reactive-jackson` extension in your project, add it first:
+The Codestart adds automatically the `io.quarkus:quarkus-rest-client-jackson` dependency to a generated project, this dependency is required for generating the [REST Client](https://quarkus.io/guides/rest-client) classes. 
 
-Remember, you just need to add one of them, depending on your needs.
-
-### REST Client Jackson:
-
-Quarkus CLI:
-
-```bash
-quarkus ext add io.quarkus:quarkus-rest-client-jackson
-```
-
-Maven:
-```bash
-./mvnw quarkus:add-extension -Dextensions="io.quarkus:quarkus-rest-client-jackson"
-```
-
-Gradle:
-
-```bash
-./gradlew addExtension --extensions="io.quarkus:quarkus-rest-client-jackson"
-```
-
-or
-
-### REST Client Reactive Jackson:
-
-Quarkus CLI:
-
-```bash
-quarkus ext add io.quarkus:quarkus-rest-client-reactive-jackson
-```
-
-Maven:
-
-```bash
-./mvnw quarkus:add-extension -Dextensions="io.quarkus:quarkus-rest-client-reactive-jackson"
-```
-
-Gradle:
-
-```bash
-./gradlew addExtension --extensions="io.quarkus:quarkus-rest-client-reactive-jackson"
-```
+For more information about how to use the Quarkus OpenAPI Generator Client extension, please refer to [Quarkus OpenAPI Generator Client documentation](https://docs.quarkiverse.io/quarkus-openapi-generator/dev/client.html).
