@@ -14,7 +14,7 @@ jobs:
       - uses: actions/stale@v10.1.1
         with:
           exempt-issue-labels: "pinned"
-          stale-issue-message: "@quarkiverse-openapi-generator This is being labeled as Stale."
-          stale-pr-message: "@quarkiverse-openapi-generator This is being labeled as Stale."
-          close-issue-message: "@quarkiverse-openapi-generator This is being closed due to inactivity."
-          close-pr-message: "@quarkiverse-openapi-generator This is being closed due to inactivity."
+          stale-issue-message: "@quarkiverse/quarkiverse-openapi-generator This is being labeled as Stale."
+          stale-pr-message: "@quarkiverse/quarkiverse-openapi-generator This is being labeled as Stale."
+          close-issue-message: "@quarkiverse/quarkiverse-openapi-generator This is being closed due to inactivity."
+          close-pr-message: "@quarkiverse/quarkiverse-openapi-generator This is being closed due to inactivity."
