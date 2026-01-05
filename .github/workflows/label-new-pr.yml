@@ -23,9 +23,16 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            console.log(`Adding label backport-main-lts to ${owner}/${repo}#${issue_number}`);
+
+            const res = await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number,
               labels: ['backport-main-lts']
-            })
+            });
+
+            console.log(`addLabels status: ${res.status}`);
