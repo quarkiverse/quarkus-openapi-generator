@@ -443,6 +443,8 @@ endif::add-copy-button-to-config-props[]
 --
 Which CDI scope annotation (if any) should be placed on the generated API. Defaults to `@jakarta.enterprise.context.ApplicationScoped`.
 
+You can also set to the value `none` to not have a scope annotation at all.
+
 
 ifdef::add-copy-button-to-env-var[]
 Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_API_CDI_SCOPE+++[]
@@ -1207,6 +1209,8 @@ endif::add-copy-button-to-config-props[]
 [.description]
 --
 Which CDI scope annotation (if any) should be placed on the generated API. Defaults to `@jakarta.enterprise.context.ApplicationScoped`.
+
+You can also set to the value `none` to not have a scope annotation at all.
 
 
 ifdef::add-copy-button-to-env-var[]

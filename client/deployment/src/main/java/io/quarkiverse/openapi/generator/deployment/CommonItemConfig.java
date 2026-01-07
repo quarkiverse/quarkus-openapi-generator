@@ -190,6 +190,9 @@ public interface CommonItemConfig {
     /**
      * Which CDI scope annotation (if any) should be placed on the generated API. Defaults to
      * {@code @jakarta.enterprise.context.ApplicationScoped}.
+     * <p>
+     * You can also set to the value {@code none} to not have a scope annotation at all.
+     * </p>
      */
     @WithName("api-cdi-scope")
     @WithDefault("jakarta.enterprise.context.ApplicationScoped")

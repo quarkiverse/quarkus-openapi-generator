@@ -45,4 +45,13 @@ class QuarkusApiCdiScopeOpenApiTests {
                 .content()
                 .contains(ApplicationScoped.class.getName());
     }
+
+    @Test
+    void emptyApiGeneratedCorrectly() {
+        assertThat(ROOT_GEN_SOURCES_PACKAGE.resolve(Path.of("cdi_scope_empty", "api", "HelloResourceApi.java")))
+                .isReadable()
+                .content()
+                .doesNotContain(Singleton.class.getName())
+                .doesNotContain(ApplicationScoped.class.getName());
+    }
 }

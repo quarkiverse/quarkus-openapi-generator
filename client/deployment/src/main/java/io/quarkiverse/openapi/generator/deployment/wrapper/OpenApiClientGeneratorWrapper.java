@@ -195,7 +195,7 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     public OpenApiClientGeneratorWrapper withApiCdiScope(String apiCdiScope) {
-        configurator.addAdditionalProperty("api-cdi-scope", apiCdiScope);
+        configurator.addAdditionalProperty("api-cdi-scope", "none".equalsIgnoreCase(apiCdiScope) ? "" : apiCdiScope);
         return this;
     }
 

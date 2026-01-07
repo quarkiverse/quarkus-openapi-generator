@@ -26,7 +26,7 @@ import {imp.import};
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
 {/if}
-{#if api-cdi-scope}@{api-cdi-scope}{/if}
+{#if api-cdi-scope && ('none' ne api-cdi-scope)}@{api-cdi-scope}{/if}
 {#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
 {apiAnnotation}
 {/for}
