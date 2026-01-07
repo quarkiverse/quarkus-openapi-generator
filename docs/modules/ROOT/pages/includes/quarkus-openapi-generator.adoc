@@ -193,7 +193,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|string
+|boolean
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation[`quarkus.openapi-generator.codegen.enable-security-generation`]##
@@ -277,7 +277,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_MUTINY_RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|string
+|boolean
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.mutiny.operation-ids."mutiny-multi-operation-ids"`]##
@@ -960,7 +960,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|string
+|boolean
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation[`quarkus.openapi-generator.codegen.spec."spec-item".enable-security-generation`]##
@@ -1044,7 +1044,7 @@ ifndef::add-copy-button-to-env-var[]
 Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__MUTINY_RETURN_RESPONSE+++`
 endif::add-copy-button-to-env-var[]
 --
-|string
+|boolean
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny.operation-ids."mutiny-multi-operation-ids"`]##
