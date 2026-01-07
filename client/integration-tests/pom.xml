@@ -12,6 +12,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>additional-properties</module>
+	  <module>api-cdi-scope</module>
     <module>auth-provider</module>
     <module>array-enum</module>
     <module>bean-validation</module>
@@ -37,6 +38,7 @@
     <module>part-filename</module>
     <module>path</module>
     <module>polymorphism</module>
+	  <module>register-rest-client</module>
     <module>return-response</module>
     <module>remove-operationid-prefix</module>
     <module>security</module>

@@ -18,13 +18,15 @@ import {imp.import};
   */
 {/if}
 @jakarta.ws.rs.Path("{#if useAnnotatedBasePath.or(false)}{contextPath}{/if}{commonPath}")
+{#if register-rest-client}
 @org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
+{/if}
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
 {/if}
-@jakarta.enterprise.context.ApplicationScoped
+{#if api-cdi-scope}@{api-cdi-scope}{/if}
 {#for apiAnnotation in additionalApiTypeAnnotations.orEmpty}
 {apiAnnotation}
 {/for}

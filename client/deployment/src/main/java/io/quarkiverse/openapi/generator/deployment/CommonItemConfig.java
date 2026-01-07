@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment;
 import java.util.Map;
 import java.util.Optional;
 
+import io.smallrye.config.WithDefault;
 import io.smallrye.config.WithName;
 
 /*
@@ -177,6 +178,22 @@ public interface CommonItemConfig {
      */
     @WithName("generate-apis")
     Optional<Boolean> generateApis();
+
+    /**
+     * Whether or not the {@code @org.eclipse.microprofile.rest.client.inject.RegisterRestClient} annotation should be present
+     * on an API class. Defaults to {@code true}.
+     */
+    @WithName("register-rest-client")
+    @WithDefault("true")
+    Optional<Boolean> registerRestClient();
+
+    /**
+     * Which CDI scope annotation (if any) should be placed on the generated API. Defaults to
+     * {@code @jakarta.enterprise.context.ApplicationScoped}.
+     */
+    @WithName("api-cdi-scope")
+    @WithDefault("jakarta.enterprise.context.ApplicationScoped")
+    Optional<String> apiCdiScope();
 
     /**
      * Enable the generation of models. If you set this to {@code false}, models will not be generated.

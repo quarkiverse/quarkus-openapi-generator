@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 import org.openapitools.codegen.CodegenConstants;
 import org.openapitools.codegen.DefaultGenerator;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -88,6 +90,7 @@ public abstract class OpenApiClientGeneratorWrapper {
      */
     private void setDefaults() {
         // Set default values directly here
+        this.configurator.addAdditionalProperty("api-cdi-scope", ApplicationScoped.class.getName());
         this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", new String[0]);
         this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", FALSE);
         this.configurator.addAdditionalProperty("initializeEmptyCollections", FALSE);
@@ -105,6 +108,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("mutiny-operation-ids", new HashMap<>());
         this.configurator.addAdditionalProperty("mutiny-return-response", FALSE);
         this.configurator.addAdditionalProperty("part-filename-value", "");
+        this.configurator.addAdditionalProperty("register-rest-client", TRUE);
         this.configurator.addAdditionalProperty("return-response", FALSE);
         this.configurator.addAdditionalProperty("skipFormModel", TRUE);
         this.configurator.addAdditionalProperty("templateDir", "");
@@ -182,6 +186,16 @@ public abstract class OpenApiClientGeneratorWrapper {
         } else {
             this.configurator.addAdditionalProperty("return-response", returnResponse);
         }
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withRegisterRestClient(Boolean registerRestClient) {
+        configurator.addAdditionalProperty("register-rest-client", registerRestClient);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withApiCdiScope(String apiCdiScope) {
+        configurator.addAdditionalProperty("api-cdi-scope", apiCdiScope);
         return this;
     }
 
