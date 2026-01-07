@@ -183,7 +183,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Defines if the methods should return `jakarta.ws.rs.core.Response`, `org.jboss.resteasy.reactive.RestResponse` or a model. By default, it returns the model in the specification.
+Defines if the methods should return `jakarta.ws.rs.core.Response` or a model. Default is `false`.
 
 
 ifdef::add-copy-button-to-env-var[]
