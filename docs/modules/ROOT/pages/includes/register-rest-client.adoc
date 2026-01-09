@@ -1,0 +1,3 @@
+If you are xref:generate-apis[Generating APIs], by default those APIs will have the `@org.eclipse.microprofile.rest.client.inject.RegisterRestClient` annotation on it.
+
+If you don't want it added, then set `quarkus.openapi-generator.codegen.spec.my_spec_yml.register-rest-client=false`.

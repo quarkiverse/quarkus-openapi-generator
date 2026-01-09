@@ -56,6 +56,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         SPEC_FILES("spec-files"),
 
         //global & spec configs
+        API_CDI_SCOPE("api-cdi-scope"),
         SKIP_FORM_MODEL("skip-form-model"),
         MUTINY("mutiny"),
         MUTINY_RETURN_RESPONSE("mutiny.return-response"),
@@ -72,6 +73,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation"),
         CONFIG_KEY("config-key"),
+        REGISTER_REST_CLIENT("register-rest-client"),
         GENERATE_PART_FILENAME("generate-part-filename"),
         PART_FILENAME_VALUE("part-filename-value"),
         USE_FIELD_NAME_IN_PART_FILENAME("use-field-name-in-part-filename"),
