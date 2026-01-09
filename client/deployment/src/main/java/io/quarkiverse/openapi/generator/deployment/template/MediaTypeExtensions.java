@@ -17,24 +17,23 @@ public class MediaTypeExtensions {
      */
     @TemplateExtension
     public static String pascalCase(String mediaType) {
-        if (mediaType == null || mediaType.isBlank()) {
+        if (mediaType == null) {
             return "";
         }
 
-        // Remove optional parameters (like ";charset=UTF-8") and normalize separators to spaces
-        mediaType = mediaType.split(";")[0]
-                .replace("/", " ")
-                .replace("-", " ")
-                .replace("+", " ")
-                .replace(".", " ")
-                .replace("*", " ");
+        // Remove optional parameters (like ";charset=UTF-8")
+        mediaType = mediaType.split(";", 2)[0];
+        if (mediaType.isBlank()) {
+            return "";
+        }
 
-        return Arrays.stream(mediaType.split("\\s+"))
-                .filter(s -> !s.isBlank())
-                .map(word -> word.substring(0, 1)
-                        .toUpperCase()
-                        + word.substring(1)
-                                .toLowerCase())
+        // Normalize non-alphanumeric characters to a space
+        mediaType = mediaType.replaceAll("[^A-Za-z0-9]+", " ");
+
+        return Arrays.stream(mediaType.trim().split("\\s+"))
+                .filter(s -> !s.isEmpty())
+                .map(word -> word.substring(0, 1).toUpperCase()
+                        + word.substring(1).toLowerCase())
                 .collect(joining());
     }
 }
