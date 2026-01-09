@@ -47,8 +47,8 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
                 .addNamespaceResolver(StrNamespaceResolver.INSTANCE)
                 .addValueResolver(
                         ValueResolver.builder()
-                                .appliesTo(ctx -> ctx.getBase() instanceof String && "camelCase".equals(ctx.getName()))
-                                .resolveSync(ctx -> MediaTypeExtensions.camelCase((String) ctx.getBase()))
+                                .appliesTo(ctx -> ctx.getBase() instanceof String && "pascalCase".equals(ctx.getName()))
+                                .resolveSync(ctx -> MediaTypeExtensions.pascalCase((String) ctx.getBase()))
                                 .build())
                 .removeStandaloneLines(true)
                 .strictRendering(true)

@@ -13,10 +13,10 @@ public class MediaTypeExtensions {
 
     /**
      * Converts a media type (e.g. "application/json" or "image/svg+xml")
-     * into CamelCase (e.g. "ApplicationJson" or "ImageSvgXml").
+     * into PascalCase (e.g. "ApplicationJson" or "ImageSvgXml").
      */
     @TemplateExtension
-    public static String camelCase(String mediaType) {
+    public static String pascalCase(String mediaType) {
         if (mediaType == null || mediaType.isBlank()) {
             return "";
         }
