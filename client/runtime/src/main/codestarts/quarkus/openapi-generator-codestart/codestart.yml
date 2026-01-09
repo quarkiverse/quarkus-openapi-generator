@@ -6,3 +6,7 @@ metadata:
   title: OpenAPI Generator Client Codestart
   description: Start to code with the OpenAPI Generator Client extension.
   related-guide-section: https://docs.quarkiverse.io/quarkus-openapi-generator/dev/client.html
+language:
+  base:
+    dependencies:
+      - io.quarkus:quarkus-rest-client-jackson
