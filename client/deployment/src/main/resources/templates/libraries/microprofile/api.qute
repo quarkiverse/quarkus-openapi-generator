@@ -67,75 +67,75 @@ public interface {classname} {
     {#if mutiny}
         {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
             {#if mutiny-return-response == "Response"}
-    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
             {#else if mutiny-return-response == "RestResponse"}
                 {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.pascalCase}(
                 {#else}
-    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.pascalCase}(
                 {/if}
             {#else}
                 {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
                 {#else}
-    public io.smallrye.mutiny.Multi<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Multi<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}{consume.mediaType.pascalCase}(
                 {/if}
             {/if}
         {#else}
             {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Uni"}
                 {#if mutiny-return-response == "Response"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
                 {#else if mutiny-return-response == "RestResponse"}
                     {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.pascalCase}(
                     {#else}
-    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.pascalCase}(
                     {/if}
                 {#else}
                     {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
                     {#else}
-    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}{consume.mediaType.pascalCase}(
                     {/if}
                 {/if}
             {#else}
                {#if !mutiny-operation-ids}
                     {#if mutiny-return-response == "Response"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
                     {#else if mutiny-return-response == "RestResponse"}
                         {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.pascalCase}(
                         {#else}
-    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.pascalCase}(
                         {/if}
                     {#else}
                         {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
                         {#else}
-    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}{consume.mediaType.camelCase}(
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}{consume.mediaType.pascalCase}(
                         {/if}
                     {/if}
                 {#else}
                     {#if mutiny-operation-ids.get(op.operationIdOriginal)}
                         {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.pascalCase}(
                         {#else}
-    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}{consume.mediaType.camelCase}(
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}{consume.mediaType.pascalCase}(
                         {/if}
                     {#else}
                         {#if return-response == "Response"}
-    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.pascalCase}(
                         {#else if return-response == "RestResponse"}
                             {#if op.returnType == "void"}
-    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}{consume.mediaType.camelCase}(
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}{consume.mediaType.pascalCase}(
                             {#else}
-    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}{consume.mediaType.camelCase}(
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}{consume.mediaType.pascalCase}(
                             {/if}
                         {#else}
                             {#if op.returnType == "void"}
-    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.pascalCase}(
                             {#else}
-    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}{consume.mediaType.camelCase}(
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}{consume.mediaType.pascalCase}(
                             {/if}
                         {/if}
                     {/if}
@@ -144,18 +144,18 @@ public interface {classname} {
         {/if}
     {#else}
         {#if return-response == "Response"}
-    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.pascalCase}(
         {#else if return-response == "RestResponse"}
             {#if op.returnType == "void"}
-    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}{consume.mediaType.camelCase}(
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}{consume.mediaType.pascalCase}(
             {#else}
-    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}{consume.mediaType.camelCase}(
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}{consume.mediaType.pascalCase}(
             {/if}
         {#else}
             {#if op.returnType == "void"}
-    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.pascalCase}(
             {#else}
-    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}{consume.mediaType.camelCase}(
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}{consume.mediaType.pascalCase}(
             {/if}
         {/if}
     {/if}
