@@ -747,7 +747,28 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void verifyMethodPerMediaTypeMethodsGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+    void verifySingleMethodForAllMediaTypesGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
+                .withMethodPerMediaType(false);
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1428");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        List<String> updateMethodList = StaticJavaParser.parse(imagesApiFile)
+                .findAll(MethodDeclaration.class).stream()
+                .map(NodeWithSimpleName::getNameAsString)
+                .filter(methodName -> methodName.startsWith("updateImage"))
+                .toList();
+        assertThat(updateMethodList).containsExactly("updateImage");
+    }
+
+    @Test
+    void verifyMethodPerMediaTypeGeneration() throws java.net.URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
                 .withMethodPerMediaType(true);
         final List<File> generatedFiles = generatorWrapper.generate("org.issue1428");
