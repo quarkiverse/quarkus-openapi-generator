@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Image API
+  version: 1.0.0
+  description: API for listing, retrieving, and updating images.
+
+paths:
+  /images:
+    get:
+      summary: List images
+      description: Returns a list of images (typically metadata, not binary data).
+      operationId: listImages
+      tags:
+        - Images
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of entries
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: offset
+          in: query
+          description: Offset for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        "200":
+          description: List of images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImageDto"
+
+  /images/{id}:
+    get:
+      summary: Retrieve image
+      description: Returns the binary data of an image.
+      operationId: getImage
+      tags:
+        - Images
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique image ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Image data
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/gif:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Image not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    put:
+      summary: Update/replace image
+      description: Replaces the image with the provided binary data.
+      operationId: updateImage
+      tags:
+        - Images
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique image ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+          image/png:
+            schema:
+              type: string
+              format: binary
+          image/gif:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "204":
+          description: Successfully updated (no content)
+        "400":
+          description: Invalid request (e.g. incorrect Content-Type)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Image not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    ImageDto:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - contentType
+      properties:
+        id:
+          type: string
+          description: Unique image ID
+          example: "1"
+        filename:
+          type: string
+          description: Original filename (optional)
+          example: "holiday.png"
+        contentType:
+          type: string
+          description: MIME type of the image
+          example: "image/png"
+        sizeBytes:
+          type: integer
+          format: int64
+          description: Size in bytes (optional)
+          example: 345678
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp (optional)
+          example: "2026-01-01T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last modification timestamp (optional)
+          example: "2026-01-01T12:00:00Z"
+
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+      properties:
+        code:
+          type: string
+          description: Application-specific error code (optional)
+          example: "IMAGE_NOT_FOUND"
+        message:
+          type: string
+          description: Error message
+          example: "Image with id 'img_123' not found"
+        details:
+          type: object
+          description: Additional details (optional)
