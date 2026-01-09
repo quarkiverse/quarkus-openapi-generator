@@ -37,6 +37,7 @@ import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
 
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName;
 import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
@@ -306,6 +307,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.GENERATE_APIS, Boolean.class)
                 .ifPresent(generator::withGenerateApis);
+
+        getValues(config, openApiFilePath, ConfigName.REGISTER_REST_CLIENT, Boolean.class)
+                .ifPresent(generator::withRegisterRestClient);
+
+        getValues(config, openApiFilePath, ConfigName.API_CDI_SCOPE, String.class)
+                .ifPresent(generator::withApiCdiScope);
 
         getValues(config, openApiFilePath, CodegenConfig.ConfigName.GENERATE_MODELS, Boolean.class)
                 .ifPresent(generator::withGenerateModels);

@@ -412,6 +412,50 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-register-rest-client]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-register-rest-client[`quarkus.openapi-generator.codegen.register-rest-client`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.register-rest-client+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether or not the `@org.eclipse.microprofile.rest.client.inject.RegisterRestClient` annotation should be present on an API class. Defaults to `true`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_REGISTER_REST_CLIENT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_REGISTER_REST_CLIENT+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope[`quarkus.openapi-generator.codegen.api-cdi-scope`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.api-cdi-scope+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Which CDI scope annotation (if any) should be placed on the generated API. Defaults to `@jakarta.enterprise.context.ApplicationScoped`.
+
+You can also set to the value `none` to not have a scope annotation at all.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_API_CDI_SCOPE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_API_CDI_SCOPE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`+++jakarta.enterprise.context.ApplicationScoped+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models[`quarkus.openapi-generator.codegen.generate-models`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.generate-models+++[]
@@ -1110,6 +1154,50 @@ endif::add-copy-button-to-env-var[]
 --
 |boolean
 |
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-register-rest-client]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-register-rest-client[`quarkus.openapi-generator.codegen.spec."spec-item".register-rest-client`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".register-rest-client+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether or not the `@org.eclipse.microprofile.rest.client.inject.RegisterRestClient` annotation should be present on an API class. Defaults to `true`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REGISTER_REST_CLIENT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__REGISTER_REST_CLIENT+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-cdi-scope[`quarkus.openapi-generator.codegen.spec."spec-item".api-cdi-scope`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".api-cdi-scope+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Which CDI scope annotation (if any) should be placed on the generated API. Defaults to `@jakarta.enterprise.context.ApplicationScoped`.
+
+You can also set to the value `none` to not have a scope annotation at all.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__API_CDI_SCOPE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__API_CDI_SCOPE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`+++jakarta.enterprise.context.ApplicationScoped+++`
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models[`quarkus.openapi-generator.codegen.spec."spec-item".generate-models`]##
 ifdef::add-copy-button-to-config-props[]

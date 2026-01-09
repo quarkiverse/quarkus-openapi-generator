@@ -1,0 +1,5 @@
+If you are xref:generate-apis[Generating APIs], by default those APIs will have the `@jakarta.enterprise.context.ApplicationScoped` annotation on it.
+
+You can change the CDI scope to something else (like `@jakarta.inject.Singleton` for example) by setting `quarkus.openapi-generator.codegen.spec.my_spec_yml.api-cdi-scope=jakarta.inject.Singleton`.
+
+If you don't want any CDI scope set, then set `quarkus.openapi-generator.codegen.spec.my_spec_yml.api-cdi-scope=none`.

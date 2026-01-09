@@ -178,6 +178,16 @@ include::./includes/additional-request-args.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/bean-validation.adoc[leveloffset=+1, opts=optional]
 
+[[customize-cdi-scopes]]
+== Customize CDI Scopes
+
+include::./includes/customize-cdi-scopes.adoc[leveloffset=+1, opts=optional]
+
+[[register-rest-client]]
+== Registering the REST Client
+
+include::./includes/register-rest-client.adoc[leveloffset=+1, opts=optional`]
+
 [[generate-apis]]
 == Generate APIs
 
