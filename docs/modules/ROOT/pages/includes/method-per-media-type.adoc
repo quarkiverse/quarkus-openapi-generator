@@ -1,0 +1,37 @@
+When an operation in the OpenAPI specification defines multiple request body media types for a `POST`, `PUT` or `PATCH`
+operation, the default behavior of the Quarkus OpenAPI Generator is to generate a **single** MicroProfile REST client
+method. This method will then declare all supported media types in one `@jakarta.ws.rs.Consumes` annotation, for example:
+
+[source,java]
+----
+@jakarta.ws.rs.PUT
+@jakarta.ws.rs.Path("/{id}")
+@jakarta.ws.rs.Consumes({"image/jpeg", "image/gif"})
+Response updateImage(String id, File body);
+----
+
+To generate a **separate method per media type**, you can enable per-media-type method generation to create one method
+for each media type defined in the OpenAPI `requestBody`, and each method will have a descriptive suffix derived
+from the media type (e.g. `ImageJpeg`):
+
+[source,java]
+----
+@jakarta.ws.rs.PUT
+@jakarta.ws.rs.Path("/{id}")
+@jakarta.ws.rs.Consumes({"image/jpeg"})
+Response updateImageImageJpeg(String id, File body);
+
+@jakarta.ws.rs.PUT
+@jakarta.ws.rs.Path("/{id}")
+@jakarta.ws.rs.Consumes({"image/gif"})
+Response updateImageImageGif(String id, File body);
+----
+
+== Configuration
+
+Per-media-type method generation can be enabled either globally or per OpenAPI specification. To enable it for a specific OpenAPI document, add the following property to your `application.properties`:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.method-per-media-type=true
+----

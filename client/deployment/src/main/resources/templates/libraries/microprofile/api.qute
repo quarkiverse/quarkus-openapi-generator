@@ -2,7 +2,6 @@ package {package};
 
 import java.util.List;
 import java.util.Map;
-
 {#if use-bean-validation}
 {! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
 import jakarta.validation.Valid;
@@ -11,11 +10,12 @@ import jakarta.validation.Valid;
 {#for imp in imports}
 import {imp.import};
 {/for}
+
 {#if appName}
 /**
-  * {appName}
-  * {#if appDescription}<p>{appDescription}</p>{/if}
-  */
+ * {appName}
+ * {#if appDescription}<p>{appDescription}</p>{/if}
+ */
 {/if}
 @jakarta.ws.rs.Path("{#if useAnnotatedBasePath.or(false)}{contextPath}{/if}{commonPath}")
 {#if register-rest-client}
@@ -33,9 +33,172 @@ import {imp.import};
 {#include suppressWarnings.qute/}
 public interface {classname} {
 
-    {#for op in operations.operation}
-    {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
-     /**
+{#for op in operations.operation}
+{#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
+{#if method-per-media-type
+    && op.hasConsumes
+    && op.consumes.size > 1
+    && (op.httpMethod == "PUT" || op.httpMethod == "POST" || op.httpMethod == "PATCH")}
+{#for consume in op.consumes}
+    /**
+    {#include operationJavaDoc.qute op=op/}
+     */
+    {#if op.hasAuthMethods}
+    {#for auth in op.authMethods}
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    {/for}
+    {#else}
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    {/if}
+    @jakarta.ws.rs.{op.httpMethod}
+    {#if op.subresourceOperation || op.path eq '/'}
+    @jakarta.ws.rs.Path("{op.path}")
+    {/if}
+    @jakarta.ws.rs.Consumes(\{"{consume.mediaType}"\})
+    {#if op.hasProduces}
+    @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
+    {/if}
+    @io.quarkiverse.openapi.generator.annotations.GeneratedMethod("{op.operationIdOriginal}")
+    {#for cbClassConfig in circuit-breaker.orEmpty}{#if cbClassConfig.key == str:fmt("%s.%s", package, classname)}
+    {#for cbMethod in cbClassConfig.value.orEmpty}{#if cbMethod == op.nickname}
+    @org.eclipse.microprofile.faulttolerance.CircuitBreaker
+    {/if}{/for}
+    {/if}{/for}
+    {#if mutiny}
+        {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
+            {#if mutiny-return-response == "Response"}
+    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+            {#else if mutiny-return-response == "RestResponse"}
+                {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.camelCase}(
+                {#else}
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.camelCase}(
+                {/if}
+            {#else}
+                {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+                {#else}
+    public io.smallrye.mutiny.Multi<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}{consume.mediaType.camelCase}(
+                {/if}
+            {/if}
+        {#else}
+            {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Uni"}
+                {#if mutiny-return-response == "Response"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+                {#else if mutiny-return-response == "RestResponse"}
+                    {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.camelCase}(
+                    {#else}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.camelCase}(
+                    {/if}
+                {#else}
+                    {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+                    {#else}
+    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}{consume.mediaType.camelCase}(
+                    {/if}
+                {/if}
+            {#else}
+               {#if !mutiny-operation-ids}
+                    {#if mutiny-return-response == "Response"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+                    {#else if mutiny-return-response == "RestResponse"}
+                        {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}{consume.mediaType.camelCase}(
+                        {#else}
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}{consume.mediaType.camelCase}(
+                        {/if}
+                    {#else}
+                        {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+                        {#else}
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}{consume.mediaType.camelCase}(
+                        {/if}
+                    {/if}
+                {#else}
+                    {#if mutiny-operation-ids.get(op.operationIdOriginal)}
+                        {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}{consume.mediaType.camelCase}(
+                        {#else}
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}{consume.mediaType.camelCase}(
+                        {/if}
+                    {#else}
+                        {#if return-response == "Response"}
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+                        {#else if return-response == "RestResponse"}
+                            {#if op.returnType == "void"}
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}{consume.mediaType.camelCase}(
+                            {#else}
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}{consume.mediaType.camelCase}(
+                            {/if}
+                        {#else}
+                            {#if op.returnType == "void"}
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+                            {#else}
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}{consume.mediaType.camelCase}(
+                            {/if}
+                        {/if}
+                    {/if}
+                {/if}
+            {/if}
+        {/if}
+    {#else}
+        {#if return-response == "Response"}
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+        {#else if return-response == "RestResponse"}
+            {#if op.returnType == "void"}
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}{consume.mediaType.camelCase}(
+            {#else}
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}{consume.mediaType.camelCase}(
+            {/if}
+        {#else}
+            {#if op.returnType == "void"}
+    public jakarta.ws.rs.core.Response {op.nickname}{consume.mediaType.camelCase}(
+            {#else}
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}{consume.mediaType.camelCase}(
+            {/if}
+        {/if}
+    {/if}
+    {#if additionalRequestArgs && additionalRequestArgs.length > 0}
+        {#for arg in additionalRequestArgs}{arg}{#if arg_hasNext}, {/if}{/for}
+        {#if (op.allParams || op.hasFormParams)}, {/if}
+    {/if}
+    {#if is-resteasy-reactive && use-dynamic-url}
+        // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
+        @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
+    {/if}
+    {#if op.hasFormParams}
+        {#if is-resteasy-reactive}
+        @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
+        {#else}
+        @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
+        {/if}
+        {#if use-bean-validation}
+        {#for p in op.pathParams}{#include beanValidationInlineCore.qute param=p/}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
+        {#for p in op.queryParams}{#include beanValidationInlineCore.qute param=p/}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
+        {#for p in op.cookieParams}{#include beanValidationInlineCore.qute param=p/}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
+        {#for p in op.headerParams}{#include beanValidationInlineCore.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},
+        {#for p in op.bodyParams}{#include beanValidationInlineCore.qute param=p/}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{/if}
+        {#else}
+        {#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
+        {#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
+        {#for p in op.cookieParams}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
+        {#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},{/if}
+        {#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
+        {/if}
+    {#else}
+{#for p in op.allParams}
+        {#if use-bean-validation}{#include beanValidationInlineCore.qute param=p/}{/if}{!
+    !}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}
+{/for}{/if}
+    );
+    {#if op.hasFormParams}
+    {#include multipartFormdataPojo.qute param=op/}
+    {/if}
+
+{/for} {! end consume-loop !}
+{#else}
+    /**
     {#include operationJavaDoc.qute op=op/}
      */
     {#if op.hasAuthMethods}
@@ -61,25 +224,42 @@ public interface {classname} {
     @org.eclipse.microprofile.faulttolerance.CircuitBreaker
     {/if}{/for}
     {/if}{/for}
-        {#if mutiny}
-            {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
-                {#if mutiny-return-response == "Response"}
+    {#if mutiny}
+        {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Multi"}
+            {#if mutiny-return-response == "Response"}
     public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}(
+            {#else if mutiny-return-response == "RestResponse"}
+                {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
+                {#else}
+    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
+                {/if}
+            {#else}
+                {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}(
+                {#else}
+    public io.smallrye.mutiny.Multi<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}(
+                {/if}
+            {/if}
+        {#else}
+            {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Uni"}
+                {#if mutiny-return-response == "Response"}
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
                 {#else if mutiny-return-response == "RestResponse"}
                     {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
                     {#else}
-    public io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
+    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
                     {/if}
                 {#else}
                     {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response> {op.nickname}(
+    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
                     {#else}
-    public io.smallrye.mutiny.Multi<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}(
+    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}(
                     {/if}
                 {/if}
             {#else}
-                {#if mutiny-operation-ids.get(op.operationIdOriginal) == "Uni"}
+               {#if !mutiny-operation-ids}
                     {#if mutiny-return-response == "Response"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
                     {#else if mutiny-return-response == "RestResponse"}
@@ -92,79 +272,62 @@ public interface {classname} {
                         {#if op.returnType == "void"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
                         {#else}
-    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}(
+    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
                         {/if}
                     {/if}
                 {#else}
-                   {#if !mutiny-operation-ids}
-                        {#if mutiny-return-response == "Response"}
+                    {#if mutiny-operation-ids.get(op.operationIdOriginal)}
+                        {#if op.returnType == "void"}
     public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
-                        {#else if mutiny-return-response == "RestResponse"}
-                            {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<Void>> {op.nickname}(
-                            {#else}
-    public io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}>> {op.nickname}(
-                            {/if}
                         {#else}
-                            {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
-                            {#else}
     public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
-                            {/if}
                         {/if}
                     {#else}
-                        {#if mutiny-operation-ids.get(op.operationIdOriginal)}
+                        {#if return-response == "Response"}
+    public jakarta.ws.rs.core.Response {op.nickname}(
+                        {#else if return-response == "RestResponse"}
                             {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response> {op.nickname}(
+    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}(
                             {#else}
-    public {#if op.returnType}io.smallrye.mutiny.Uni<{op.returnType}>{#else}io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>{/if} {op.nickname}(
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}(
                             {/if}
                         {#else}
-                            {#if return-response == "Response"}
+                            {#if op.returnType == "void"}
     public jakarta.ws.rs.core.Response {op.nickname}(
-                            {#else if return-response == "RestResponse"}
-                                {#if op.returnType == "void"}
-    public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}(
-                                {#else}
-    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}(
-                                {/if}
                             {#else}
-                                {#if op.returnType == "void"}
-    public jakarta.ws.rs.core.Response {op.nickname}(
-                                {#else}
     public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
-                                {/if}
                             {/if}
                         {/if}
                     {/if}
                 {/if}
             {/if}
-        {#else}
-            {#if return-response == "Response"}
+        {/if}
+    {#else}
+        {#if return-response == "Response"}
     public jakarta.ws.rs.core.Response {op.nickname}(
-            {#else if return-response == "RestResponse"}
-                {#if op.returnType == "void"}
+        {#else if return-response == "RestResponse"}
+            {#if op.returnType == "void"}
     public org.jboss.resteasy.reactive.RestResponse<Void> {op.nickname}(
-                {#else}
-    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}(
-                {/if}
             {#else}
-                {#if op.returnType == "void"}
+    public org.jboss.resteasy.reactive.RestResponse<{#if op.returnType}{op.returnType}{#else}Void{/if}> {op.nickname}(
+            {/if}
+        {#else}
+            {#if op.returnType == "void"}
     public jakarta.ws.rs.core.Response {op.nickname}(
-                {#else}
+            {#else}
     public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
-                {/if}
             {/if}
         {/if}
-        {#if additionalRequestArgs && additionalRequestArgs.length > 0}
-            {#for arg in additionalRequestArgs}{arg}{#if arg_hasNext}, {/if}{/for}
-            {#if (op.allParams || op.hasFormParams)}, {/if}
-        {/if}
-        {#if is-resteasy-reactive && use-dynamic-url}
-            // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
-            @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
-        {/if}
-        {#if op.hasFormParams}
+    {/if}
+    {#if additionalRequestArgs && additionalRequestArgs.length > 0}
+        {#for arg in additionalRequestArgs}{arg}{#if arg_hasNext}, {/if}{/for}
+        {#if (op.allParams || op.hasFormParams)}, {/if}
+    {/if}
+    {#if is-resteasy-reactive && use-dynamic-url}
+        // See https://quarkus.io/version/3.20/guides/rest-client#dynamic-base-urls
+        @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
+    {/if}
+    {#if op.hasFormParams}
         {#if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#else}
@@ -183,17 +346,17 @@ public interface {classname} {
         {#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},{/if}
         {#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
         {/if}
-        {#else}
+    {#else}
 {#for p in op.allParams}
         {#if use-bean-validation}{#include beanValidationInlineCore.qute param=p/}{/if}{!
     !}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}
 {/for}{/if}
     );
     {#if op.hasFormParams}
-
     {#include multipartFormdataPojo.qute param=op/}
     {/if}
 
-    {/if} {! check deprecated !}
-    {/for}
+{/if} {! end method-per-media-type else !}
+{/if} {! check deprecated !}
+{/for}
 }

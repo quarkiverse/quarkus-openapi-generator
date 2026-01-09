@@ -40,6 +40,7 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.Type;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
@@ -743,6 +744,28 @@ public class OpenApiClientGeneratorWrapperTest {
                 throw new RuntimeException(e.getMessage());
             }
         }
+    }
+
+    @Test
+    void verifyMethodPerMediaTypeMethodsGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
+                .withMethodPerMediaType(true);
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1428");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        List<String> updateMethodList = StaticJavaParser.parse(imagesApiFile)
+                .findAll(MethodDeclaration.class).stream()
+                .map(NodeWithSimpleName::getNameAsString)
+                .filter(methodName -> methodName.startsWith("updateImage"))
+                .toList();
+        assertThat(updateMethodList).containsExactlyInAnyOrder("updateImageImageJpeg", "updateImageImagePng",
+                "updateImageImageGif");
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
