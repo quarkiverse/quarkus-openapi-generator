@@ -52,7 +52,7 @@ public class OpenApiClientGeneratorWrapperTest {
     private static List<String> getMethodAnnotationValuesByAnnotationName(MethodDeclaration methodDeclaration,
             String annotationName) {
         AnnotationExpr consumesAnnotation = methodDeclaration.getAnnotationByName(annotationName)
-                .orElseThrow(() -> new AssertionError("@Consumes annotation not found"));
+                .orElseThrow(() -> new AssertionError("@%s annotation not found".formatted(annotationName)));
         assertThat(consumesAnnotation).isInstanceOf(SingleMemberAnnotationExpr.class);
         Expression memberValue = ((SingleMemberAnnotationExpr) consumesAnnotation).getMemberValue();
 
