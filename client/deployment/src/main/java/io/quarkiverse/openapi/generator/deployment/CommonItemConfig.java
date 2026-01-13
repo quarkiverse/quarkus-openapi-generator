@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment;
 import java.util.Map;
 import java.util.Optional;
 
+import io.smallrye.config.WithDefault;
 import io.smallrye.config.WithName;
 
 /*
@@ -67,10 +68,11 @@ public interface CommonItemConfig {
     Optional<String> additionalRequestArgs();
 
     /**
-     * Defines if the methods should return {@link jakarta.ws.rs.core.Response} or a model. Default is {@code false}.
+     * Defines if the methods should return {@link jakarta.ws.rs.core.Response},
+     * {@link org.jboss.resteasy.reactive.RestResponse} or a model. By default, it returns the model in the specification.
      */
     @WithName("return-response")
-    Optional<Boolean> returnResponse();
+    Optional<String> returnResponse();
 
     /**
      * Defines if security support classes should be generated
@@ -92,11 +94,11 @@ public interface CommonItemConfig {
     Optional<Boolean> supportMutiny();
 
     /**
-     * Defines with SmallRye Mutiny enabled if methods should return {@link jakarta.ws.rs.core.Response} or a model. Default is
-     * {@code false}.
+     * Defines with SmallRye Mutiny enabled if methods should return {@link jakarta.ws.rs.core.Response},
+     * {@link org.jboss.resteasy.reactive.RestResponse} or a model. By default, it returns the model in the specification.
      */
     @WithName("mutiny.return-response")
-    Optional<Boolean> mutinyReturnResponse();
+    Optional<String> mutinyReturnResponse();
 
     /**
      * Handles the return type for each operation, depending on the configuration.
@@ -107,6 +109,10 @@ public interface CommonItemConfig {
      * - If {@code mutiny.return-response} is enabled, the return type will be
      * {@link io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>}.
      * - If the operation has a void return type, it will return {@link io.smallrye.mutiny.Multi<jakarta.ws.rs.core.Response>}.
+     * - If {@code mutiny.return-response} is set to {@code RestResponse}, the return type will be
+     * {@link io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<returnType>>}.
+     * - If the operation has a void return type, it will return
+     * {@link io.smallrye.mutiny.Multi<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>}.
      * - Otherwise, it will return {@link io.smallrye.mutiny.Multi<returnType>}.
      * <p>
      * 2. If {@code mutiny} is enabled and the operation ID is specified to return {@code Uni}:
@@ -114,6 +120,10 @@ public interface CommonItemConfig {
      * - If {@code mutiny.return-response} is enabled, the return type will be
      * {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
      * - If the operation has a void return type, it will return {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
+     * - If {@code mutiny.return-response} is set to {@code RestResponse}, the return type will be
+     * {@link io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<returnType>>}.
+     * - If the operation has a void return type, it will return
+     * {@link io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>}.
      * - Otherwise, it will return {@link io.smallrye.mutiny.Uni<returnType>}.
      * <p>
      * 3. If {@code mutiny} is enabled but no specific operation ID is configured for {@code Multi} or {@code Uni}:
@@ -121,6 +131,10 @@ public interface CommonItemConfig {
      * - If {@code mutiny.return-response} is enabled, the return type will be
      * {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
      * - If the operation has a void return type, it will return {@link io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>}.
+     * - If {@code mutiny.return-response} is set to {@code RestResponse}, the return type will be
+     * {@link io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<returnType>>}.
+     * - If the operation has a void return type, it will return
+     * {@link io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<java.lang.Void>>}.
      * - Otherwise, it will return {@link io.smallrye.mutiny.Uni<returnType>}`.
      */
     @WithName("mutiny.operation-ids")
@@ -164,6 +178,25 @@ public interface CommonItemConfig {
      */
     @WithName("generate-apis")
     Optional<Boolean> generateApis();
+
+    /**
+     * Whether or not the {@code @org.eclipse.microprofile.rest.client.inject.RegisterRestClient} annotation should be present
+     * on an API class. Defaults to {@code true}.
+     */
+    @WithName("register-rest-client")
+    @WithDefault("true")
+    Optional<Boolean> registerRestClient();
+
+    /**
+     * Which CDI scope annotation (if any) should be placed on the generated API. Defaults to
+     * {@code @jakarta.enterprise.context.ApplicationScoped}.
+     * <p>
+     * You can also set to the value {@code none} to not have a scope annotation at all.
+     * </p>
+     */
+    @WithName("api-cdi-scope")
+    @WithDefault("jakarta.enterprise.context.ApplicationScoped")
+    Optional<String> apiCdiScope();
 
     /**
      * Enable the generation of models. If you set this to {@code false}, models will not be generated.

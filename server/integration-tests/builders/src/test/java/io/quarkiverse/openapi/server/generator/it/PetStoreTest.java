@@ -12,10 +12,10 @@ public class PetStoreTest {
     @Test
     public void testBeans() {
 
-        Pet pet = new Pet().withName("test").withId(1234L).withStatus(Pet.Status.available);
+        Pet pet = new Pet().withName("test").withId(1234L).withStatus(Pet.Status.AVAILABLE);
 
         Assertions.assertEquals(1234L, pet.getId());
         Assertions.assertEquals("test", pet.getName());
-        Assertions.assertEquals(Pet.Status.available, pet.getStatus());
+        Assertions.assertEquals(Pet.Status.AVAILABLE, pet.getStatus());
     }
 }

@@ -11,10 +11,10 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v10.1.0
+      - uses: actions/stale@v10.1.1
         with:
           exempt-issue-labels: "pinned"
-          stale-issue-message: "@ricardozanini @hbelmiro This is being labeled as Stale."
-          stale-pr-message: "@ricardozanini @hbelmiro This is being labeled as Stale."
-          close-issue-message: "@ricardozanini @hbelmiro This is being closed due to inactivity."
-          close-pr-message: "@ricardozanini @hbelmiro This is being closed due to inactivity."
+          stale-issue-message: "@quarkiverse/quarkiverse-openapi-generator This is being labeled as Stale."
+          stale-pr-message: "@quarkiverse/quarkiverse-openapi-generator This is being labeled as Stale."
+          close-issue-message: "@quarkiverse/quarkiverse-openapi-generator This is being closed due to inactivity."
+          close-pr-message: "@quarkiverse/quarkiverse-openapi-generator This is being closed due to inactivity."
