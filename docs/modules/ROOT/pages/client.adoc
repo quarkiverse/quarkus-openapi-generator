@@ -229,6 +229,11 @@ include::./includes/dynamic-url.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/use-gav-for-spec.adoc[leveloffset=+1, opts=optional]
 
+[[generate-model-for-usage-as-bean-param]]
+== Generate Model for Usage as Bean Param or not
+
+include::./includes/generate-model-for-usage-as-bean-param.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments

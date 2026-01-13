@@ -209,6 +209,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         }
         return o.toString().replace("\n", "\n    ");
     }
-
+    {#if generate-model-for-usage-as-bean-param}
     {#include pojoQueryParam.qute m=m codegen=classes-codegen package=modelPackage/}
+    {/if}
 }

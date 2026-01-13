@@ -1,0 +1,71 @@
+Each Model can be used as a Bean Parameter Model in your REST endpoints.
+This allows you to easily bind request parameters to your Model properties. This feature is enabled by default.
+
+Following is an example OpenAPI specification that defines a `Pageable` schema and uses it as a Bean Parameter in the `searchCustomers` operation:
+[source,yaml]
+----
+...
+  /customers:
+    get:
+      tag:
+        - customer
+      summary: search customers
+      operationId: searchCustomers
+      parameters:
+        - name: pageable
+          in: query
+          schema:
+            $ref: "#/components/schemas/Pageable"
+      responses:
+        '204':
+            $ref: '#/components/responses/NoContentResponse'
+components:
+  schemas:
+    Pageable:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+        page:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+  responses:
+    NoContentResponse:
+      description: successful operation with no content
+----
+results in Java code like this:
+[source,java]
+public interface CustomerClient {
+    @GET
+    @Path("/customers")
+    Response searchCustomers(@BeanParam Pageable.PageableQueryParam pageable);
+}
+----
+
+[source,java]
+public class Pageable {
+    // emmitted fields, getters, setters, etc.
+    // Inner class to be used as Bean Param
+    public static class PageableQueryParam  {
+        @QueryParam("size")
+        private Integer size;
+        @QueryParam("page")
+        private Integer page;
+        @QueryParam("sort")
+        private List<String> sort = null;
+        // emmitted getters and setters, etc.
+    }
+}
+----
+
+You can disable this feature by setting the following property in your configuration:
+[source,properties]
+quarkus.openapi-generator.codegen.spec.generate-model-for-usage-as-bean-param=false
+----
+
+Model specific configuration is not supported. Either all models are generated for usage as Bean Parameters or none.

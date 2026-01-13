@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  title: customer
+  version: '1.0.0'
+  description: ""
+paths:
+  /customers:
+    get:
+      tags:
+        - customer
+      summary: search customers
+      operationId: searchCustomers
+      parameters:
+        - name: pageable
+          in: query
+          schema:
+            $ref: "#/components/schemas/Pageable"
+      responses:
+        '204':
+            $ref: '#/components/responses/NoContentResponse'
+
+components:
+  schemas:
+    Pageable:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+        page:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+  responses:
+    NoContentResponse:
+      description: successful operation with no content
