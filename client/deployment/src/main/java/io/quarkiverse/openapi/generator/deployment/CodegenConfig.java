@@ -87,6 +87,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         GENERATE_MODELS("generate-models"),
         BEAN_VALIDATION("use-bean-validation"),
         SERIALIZABLE_MODEL("serializable-model"),
+        GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM("generate-model-for-usage-as-bean-param"),
         EQUALS_HASHCODE("equals-hashcode"),
         USE_DYNAMIC_URL("use-dynamic-url");
 

@@ -118,6 +118,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
         this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
         this.configurator.addAdditionalProperty("use-dynamic-url", FALSE);
+        this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", TRUE);
     }
 
     /**
@@ -348,6 +349,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withUseDynamicUrl(final Boolean useDynamicUrl) {
         this.configurator.addAdditionalProperty("use-dynamic-url", useDynamicUrl);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withGenerateModelForUsageAsBeanParam(final Boolean generateModelForUsageAsBeanParam) {
+        this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", generateModelForUsageAsBeanParam);
         return this;
     }
 

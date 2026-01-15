@@ -79,4 +79,11 @@ public interface SpecItemConfig extends CommonItemConfig {
     @WithDefault("false")
     Optional<Boolean> useDynamicUrl();
 
+    /**
+     * Whether to generate model classes that can be used as Bean Param in REST endpoints.
+     */
+    @WithName("generate-model-for-usage-as-bean-param")
+    @WithDefault("true")
+    Optional<Boolean> generateModelForUsageAsBeanParam();
+
 }

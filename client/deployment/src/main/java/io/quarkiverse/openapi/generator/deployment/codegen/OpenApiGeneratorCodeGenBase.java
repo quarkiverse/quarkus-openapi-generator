@@ -358,6 +358,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_DYNAMIC_URL, Boolean.class)
                 .ifPresent(generator::withUseDynamicUrl);
 
+        getValues(config, openApiFilePath, ConfigName.GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM, Boolean.class)
+                .ifPresent(generator::withGenerateModelForUsageAsBeanParam);
+
         generator.generate(basePackage);
     }
 
