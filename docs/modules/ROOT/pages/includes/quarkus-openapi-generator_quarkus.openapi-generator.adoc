@@ -1517,6 +1517,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-model-for-usage-as-bean-param]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-model-for-usage-as-bean-param[`quarkus.openapi-generator.codegen.spec."spec-item".generate-model-for-usage-as-bean-param`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".generate-model-for-usage-as-bean-param+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether to generate model classes that can be used as Bean Param in REST endpoints.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files[`quarkus.openapi-generator.codegen.gav."gav-item".spec-files`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".spec-files+++[]
