@@ -14,10 +14,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -35,11 +32,9 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.MemberValuePair;
-import com.github.javaparser.ast.expr.SimpleName;
+import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.Type;
 
 import io.quarkiverse.openapi.generator.annotations.GeneratedClass;
@@ -52,6 +47,23 @@ public class OpenApiClientGeneratorWrapperTest {
     private static Optional<MethodDeclaration> getMethodDeclarationByIdentifier(List<MethodDeclaration> methodDeclarations,
             String methodName) {
         return methodDeclarations.stream().filter(md -> md.getName().getIdentifier().equals(methodName)).findAny();
+    }
+
+    private static List<String> getMethodAnnotationValuesByAnnotationName(MethodDeclaration methodDeclaration,
+            String annotationName) {
+        AnnotationExpr consumesAnnotation = methodDeclaration.getAnnotationByName(annotationName)
+                .orElseThrow(() -> new AssertionError("@%s annotation not found".formatted(annotationName)));
+        assertThat(consumesAnnotation).isInstanceOf(SingleMemberAnnotationExpr.class);
+        Expression memberValue = ((SingleMemberAnnotationExpr) consumesAnnotation).getMemberValue();
+
+        if (memberValue.isArrayInitializerExpr()) {
+            return memberValue.asArrayInitializerExpr().getValues().stream()
+                    .map(Expression::asStringLiteralExpr)
+                    .map(StringLiteralExpr::getValue)
+                    .toList();
+        } else {
+            return List.of(memberValue.asStringLiteralExpr().getValue());
+        }
     }
 
     @Test
@@ -743,6 +755,50 @@ public class OpenApiClientGeneratorWrapperTest {
                 throw new RuntimeException(e.getMessage());
             }
         }
+    }
+
+    @Test
+    void verifySingleMethodForAllMediaTypesGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
+                .withMethodPerMediaType(false);
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1428");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        CompilationUnit cu = StaticJavaParser.parse(imagesApiFile);
+
+        List<MethodDeclaration> updateMethodList = cu.findAll(MethodDeclaration.class,
+                method -> method.getNameAsString().startsWith("updateImage"));
+        assertThat(updateMethodList).hasSize(1);
+
+        List<String> mediaTypes = getMethodAnnotationValuesByAnnotationName(updateMethodList.get(0), "Consumes");
+        assertThat(mediaTypes).containsExactly("image/jpeg", "image/png", "image/gif");
+    }
+
+    @Test
+    void verifyMethodPerMediaTypeGeneration() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
+                .withMethodPerMediaType(true);
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1428");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        List<MethodDeclaration> updateMethodList = StaticJavaParser.parse(imagesApiFile).findAll(MethodDeclaration.class,
+                method -> method.getNameAsString().startsWith("updateImage"));
+        assertThat(updateMethodList)
+                .hasSize(3)
+                .extracting(NodeWithSimpleName::getNameAsString)
+                .containsExactlyInAnyOrder("updateImageImageJpeg", "updateImageImagePng", "updateImageImageGif");
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
