@@ -777,7 +777,7 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(updateMethodList).hasSize(1);
 
         List<String> mediaTypes = getMethodAnnotationValuesByAnnotationName(updateMethodList.get(0), "Consumes");
-        assertThat(mediaTypes).containsExactly("image/jpeg");
+        assertThat(mediaTypes).containsExactly("image/jpeg", "image/png", "image/gif");
     }
 
     @Test

@@ -212,8 +212,8 @@ public interface {classname} {
     {#if op.subresourceOperation || op.path eq '/'}
     @jakarta.ws.rs.Path("{op.path}")
     {/if}
-    {#if op.hasConsumes && !op.consumes.isEmpty}
-    @jakarta.ws.rs.Consumes(\{"{op.consumes[0].mediaType}"\})
+    {#if op.hasConsumes}
+    @jakarta.ws.rs.Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
     {/if}
     {#if op.hasProduces}
     @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
