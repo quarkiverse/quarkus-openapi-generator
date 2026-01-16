@@ -1,6 +1,10 @@
 package io.quarkiverse.openapi.generator.it;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -10,17 +14,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.core.Response;
-
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.TestProfile;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
-@TestProfile(MethodPerMediaTypeProfile.class)
 public class ImagesApiSingleMethodWithMultipleMediaTypesTest {
     static Stream<Class<?>> imagesApiClasses() {
         return Stream.of(
