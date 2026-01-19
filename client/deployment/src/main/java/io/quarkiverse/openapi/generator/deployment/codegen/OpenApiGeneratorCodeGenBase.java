@@ -329,7 +329,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .ifPresent(generator::withSchemaMappings);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.SERIALIZABLE_MODEL, Boolean.class)
-                .ifPresent(generator::withSerialiableModel);
+                .ifPresent(generator::withSerializableModel);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.EQUALS_HASHCODE, Boolean.class)
                 .ifPresent(generator::withEqualsHashcode);
@@ -357,6 +357,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_DYNAMIC_URL, Boolean.class)
                 .ifPresent(generator::withUseDynamicUrl);
+
+        getValues(config, openApiFilePath, ConfigName.GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM, Boolean.class)
+                .ifPresent(generator::withGenerateModelForUsageAsBeanParam);
+
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.METHOD_PER_MEDIA_TYPE, Boolean.class)
+                .ifPresent(generator::withMethodPerMediaType);
 
         generator.generate(basePackage);
     }

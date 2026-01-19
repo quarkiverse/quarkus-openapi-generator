@@ -83,7 +83,8 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         BEAN_VALIDATION("use-bean-validation"),
         SERIALIZABLE_MODEL("serializable-model"),
         EQUALS_HASHCODE("equals-hashcode"),
-        USE_DYNAMIC_URL("use-dynamic-url");
+        USE_DYNAMIC_URL("use-dynamic-url"),
+        METHOD_PER_MEDIA_TYPE("method-per-media-type");
 
         private final String name;
 

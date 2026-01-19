@@ -118,6 +118,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
         this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
         this.configurator.addAdditionalProperty("use-dynamic-url", FALSE);
+        this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", TRUE);
+        this.configurator.addAdditionalProperty("method-per-media-type", FALSE);
     }
 
     /**
@@ -219,8 +221,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withSerialiableModel(final Boolean serialiableModel) {
-        this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, serialiableModel);
+    public OpenApiClientGeneratorWrapper withSerializableModel(final Boolean serializableModel) {
+        this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, serializableModel);
         return this;
     }
 
@@ -348,6 +350,16 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withUseDynamicUrl(final Boolean useDynamicUrl) {
         this.configurator.addAdditionalProperty("use-dynamic-url", useDynamicUrl);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withGenerateModelForUsageAsBeanParam(final Boolean generateModelForUsageAsBeanParam) {
+        this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", generateModelForUsageAsBeanParam);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withMethodPerMediaType(final Boolean methodPerMediaType) {
+        this.configurator.addAdditionalProperty("method-per-media-type", methodPerMediaType);
         return this;
     }
 

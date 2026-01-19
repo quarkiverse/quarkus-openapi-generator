@@ -8,6 +8,7 @@ import org.openapitools.codegen.api.TemplatingExecutor;
 import io.quarkus.qute.Engine;
 import io.quarkus.qute.ReflectionValueResolver;
 import io.quarkus.qute.Template;
+import io.quarkus.qute.ValueResolver;
 
 public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter {
 
@@ -44,6 +45,11 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
                 .addValueResolver(new ReflectionValueResolver())
                 .addNamespaceResolver(OpenApiNamespaceResolver.INSTANCE)
                 .addNamespaceResolver(StrNamespaceResolver.INSTANCE)
+                .addValueResolver(
+                        ValueResolver.builder()
+                                .appliesTo(ctx -> ctx.getBase() instanceof String && "pascalCase".equals(ctx.getName()))
+                                .resolveSync(ctx -> MediaTypeExtensions.pascalCase((String) ctx.getBase()))
+                                .build())
                 .removeStandaloneLines(true)
                 .strictRendering(true)
                 .build();

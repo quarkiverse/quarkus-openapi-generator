@@ -188,6 +188,11 @@ include::./includes/customize-cdi-scopes.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/register-rest-client.adoc[leveloffset=+1, opts=optional`]
 
+[[generate-method-per-media-type]]
+== Generate separate method per media type
+
+include::./includes/method-per-media-type.adoc[leveloffset=+1, opts=optional]
+
 [[generate-apis]]
 == Generate APIs
 
@@ -198,8 +203,8 @@ include::./includes/generate-apis.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/generate-models.adoc[leveloffset=+1, opts=optional]
 
-[[generate-serilazble-models]]
-== Generate Serilazable Models
+[[generate-serializable-models]]
+== Generate Serializable Models
 
 If you need to have the generated models to implement `java.io.Serializable`-interface then set the `serializable-model`
 to true:
