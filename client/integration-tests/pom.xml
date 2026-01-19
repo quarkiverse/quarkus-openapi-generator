@@ -31,6 +31,7 @@
     <module>generation-tests</module>
     <module>include</module>
     <module>initialize-empty-collections</module>
+    <module>method-per-media-type</module>
     <module>multipart-request</module>
     <module>mutiny</module>
     <module>mutiny-return-response</module>
