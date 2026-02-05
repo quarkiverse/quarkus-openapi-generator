@@ -1,0 +1,167 @@
+Add the following dependency to your project's `pom.xml` file:
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.quarkiverse.openapi.generator</groupId>
+  <artifactId>quarkus-openapi-generator-server</artifactId>
+  <version>3.0.0-SNAPSHOT</version>
+</dependency>
+----
+
+By default, the generated resources are annotated with Microprofile OpenAPI annotations, add the `io.quarkus:quarkus-smallrye-openapi` dependency to your project’s `pom.xml` file:
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-openapi</artifactId>
+</dependency>
+----
+
+Note that since this extension has not been yet released, you'll need a local build of the dependency.
+
+You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
+
+WARNING: You probably already have this configuration if you created your application with https://code.quarkus.io/[Code Quarkus]. That said, double-check your configuration not to add another `plugin` entry.
+
+[source,xml]
+----
+<plugin>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-maven-plugin</artifactId>
+  <extensions>true</extensions>
+  <executions>
+    <execution>
+      <goals>
+        <goal>build</goal>
+        <goal>generate-code</goal>
+        <goal>generate-code-tests</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+----
+
+[IMPORTANT]
+====
+To use the Apicurio (used by default) code generator, you need to configure your `application.properties` as follow:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use=apicurio
+----
+====
+
+Now, create the directory `openapi` under your `src/main/resources` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions. You have to define the specification used for code generation with the following property:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.spec=petstore-openapi.json
+----
+
+
+If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi.input-base-dir`.
+IMPORTANT: it is relative to the project base directory. For example, if you have a project called `MyJavaProject` and decide to place them in `MyJavaProject/openapi-definitions`, use the following property:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.input-base-dir=openapi-definitions
+----
+
+If a base package name is not provided, it will be used the default `io.apicurio.api`. You can customize it with the following property:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.base-package=io.petstore
+----
+
+By default, the extension generates non-reactive code. If you would like to change it, you can do it as follows:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use-reactive=true
+----
+
+Run `mvn compile` to generate your classes in `target/generated-sources/jaxrs` path:
+
+[source]
+----
+- io.petstore
+  - beans
+    - Address.java
+    - ApiResponse.java
+    - Category.java
+    - Customer.java
+    - Order.java
+    - Pet.java
+    - Tag.java
+    - User.java
+  - PetResource.java
+  - StoreResource.java
+  - UserResource.java
+
+----
+
+You can reference the generated code in your project, for example:
+
+[source, java]
+----
+package io.petstore;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.petstore.beans.ApiResponse;
+import io.petstore.beans.Pet;
+
+public class PetStoreImpl implements PetResource {
+
+    private static final Map<Long, Pet> PETS = new HashMap<>();
+
+    @Override
+    public Pet updatePet(Pet data) {
+        return PETS.put(data.getId(), data);
+    }
+
+    @Override
+    public Pet addPet(Pet data) {
+        return PETS.put(data.getId(), data);
+    }
+
+    @Override
+    public List<Pet> findPetsByStatus(String status) {
+        return null;
+    }
+
+    @Override
+    public List<Pet> findPetsByTags(List<String> tags) {
+        return null;
+    }
+
+    @Override
+    public Pet getPetById(long petId) {
+        return PETS.get(petId);
+    }
+
+    @Override
+    public void updatePetWithForm(long petId, String name, String status) {
+
+    }
+
+    @Override
+    public void deletePet(String apiKey, long petId) {
+        PETS.remove(petId);
+    }
+
+    @Override
+    public ApiResponse uploadFile(long petId, String additionalMetadata, InputStream data) {
+        return null;
+    }
+}
+----
+
+See the https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/server/integration-tests[integration-tests] module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
+

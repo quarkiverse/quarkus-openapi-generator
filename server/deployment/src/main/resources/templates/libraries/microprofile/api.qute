@@ -1,0 +1,82 @@
+{@java.lang.Boolean use-reactive}
+
+package {package};
+
+{#if use-bean-validation}
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+{/if}
+
+import java.util.List;
+import java.util.Map;
+
+{#for imp in imports}
+import {imp.import};
+{/for}
+{#if appName}
+/**
+  * {appName}
+  * {#if appDescription}<p>{appDescription}</p>{/if}
+  */
+{/if}
+@jakarta.ws.rs.Path("{#if useAnnotatedBasePath.or(false)}{contextPath}{/if}{commonPath}")
+@jakarta.enterprise.context.ApplicationScoped
+public interface {classname} {
+
+    {#for op in operations.operation}
+    {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
+     /**
+    {#include operationJavaDoc.qute op=op/}
+     */
+    @jakarta.ws.rs.{op.httpMethod}
+    {#if op.subresourceOperation || op.path eq '/'}
+    @jakarta.ws.rs.Path("{op.path}")
+    {/if}
+    {#if op.hasConsumes}
+    @jakarta.ws.rs.Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
+    {/if}
+    {#if op.hasProduces}
+    @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
+    {/if}
+        {#if use-reactive}
+            {#if op.returnType == "void"}
+    public io.smallrye.mutiny.Uni<Void> {op.nickname}(
+            {#else}
+    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}(
+            {/if}
+        {#else}
+            {#if op.returnType == "void"}
+    public jakarta.ws.rs.core.Response {op.nickname}(
+            {#else}
+    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
+            {/if}
+        {/if}
+        {#if op.hasFormParams}
+        @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
+        {#if use-bean-validation}
+        {#for p in op.pathParams}{#include beanValidationInlineCore.qute param=p/}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
+        {#for p in op.queryParams}{#include beanValidationInlineCore.qute param=p/}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
+        {#for p in op.cookieParams}{#include beanValidationInlineCore.qute param=p/}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
+        {#for p in op.headerParams}{#include beanValidationInlineCore.qute param=p/}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},
+        {#for p in op.bodyParams}{#include beanValidationInlineCore.qute param=p/}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{/if}
+        {#else}
+        {#for p in op.pathParams}{#include pathParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasQueryParams},{/if}
+        {#for p in op.queryParams}{#include queryParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasCookieParams},{/if}
+        {#for p in op.cookieParams}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasHeaderParams},{/if}
+        {#for p in op.headerParams}{#include headerParams.qute param=p/}{#if p_hasNext}, {/if}{/for}{#if op.hasBodyParam},{/if}
+        {#for p in op.bodyParams}{#include bodyParams.qute param=p/}{#if p_hasNext}, {/if}{/for}
+        {/if}
+        {#else}
+{#for p in op.allParams}
+        {#if use-bean-validation}{#include beanValidationInlineCore.qute param=p/}{/if}{!
+    !}{#include pathParams.qute param=p/}{#include queryParams.qute param=p/}{#include bodyParams.qute param=p/}{#include headerParams.qute param=p/}{#include cookieParams.qute param=p/}{#if p_hasNext}, {/if}
+{/for}{/if}
+    );
+    {#if op.hasFormParams}
+
+    {#include multipartFormdataPojo.qute param=op/}
+    {/if}
+
+    {/if} {! check deprecated !}
+    {/for}
+}

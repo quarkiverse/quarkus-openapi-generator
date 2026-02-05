@@ -1,7 +1,5 @@
-package io.quarkiverse.openapi.server.generator.deployment.codegen;
+package io.quarkiverse.openapi.server.generator.deployment.codegen.apicurio;
 
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getBasePackagePropertyName;
-import static io.quarkiverse.openapi.server.generator.deployment.CodegenConfig.getCodegenReactive;
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_PACKAGE;
 
 import java.io.File;
@@ -113,14 +111,15 @@ public class ApicurioCodegenWrapper {
     }
 
     private String getBasePackage() {
-        return config
-                .getOptionalValue(CodegenConfig.getBasePackagePropertyName(), String.class)
+        return config.getOptionalValue(CodegenConfig.getBasePackagePropertyName(), String.class)
+                .or(() -> config.getOptionalValue(CodegenConfig.getServerBasePackagePropertyName(), String.class))
                 .orElse(DEFAULT_PACKAGE);
     }
 
     private Boolean getReactiveValue() {
         return config
                 .getOptionalValue(CodegenConfig.getCodegenReactive(), Boolean.class)
+                .or(() -> config.getOptionalValue(CodegenConfig.getServerCodegenReactive(), Boolean.class))
                 .orElse(Boolean.FALSE);
     }
 
