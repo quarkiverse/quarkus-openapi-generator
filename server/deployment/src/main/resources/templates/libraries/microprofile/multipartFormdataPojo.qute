@@ -1,22 +1,8 @@
+    {#include suppressWarnings.qute/}
     public static class {op.operationIdCamelCase}MultipartForm {
     {#for p in op.formParams}
         @jakarta.ws.rs.FormParam("{p.baseName}")
     {#if p.isFile || (p.isString && p.dataFormat == 'base64')}
-            {#if generate-part-filename}
-                {#if part-filename-value}
-                    {#if use-field-name-in-part-filename}
-        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}{part-filename-value}")
-                    {#else}
-        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{part-filename-value}")
-                    {/if}
-                {#else}
-                    {#if use-field-name-in-part-filename}
-        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("{p.baseName}File")
-                    {#else}
-        @org.jboss.resteasy.annotations.providers.multipart.PartFilename("file")
-                    {/if}
-                {/if}
-            {/if}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM)
     {#else if p.isPrimitiveType or (p.isArray && p.items.isPrimitiveType)}
         @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.TEXT_PLAIN)

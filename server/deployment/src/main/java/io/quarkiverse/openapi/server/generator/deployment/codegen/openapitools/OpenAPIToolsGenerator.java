@@ -33,23 +33,18 @@ public class OpenAPIToolsGenerator {
         GlobalSettings.setProperty(CodegenConstants.APIS, "");
         GlobalSettings.setProperty(CodegenConstants.MODELS, "");
         GlobalSettings.setProperty(CodegenConstants.SUPPORTING_FILES, "");
-
-        // mut be configured in the future
         GlobalSettings.setProperty("verbose", FALSE.toString());
     }
 
     private void applyDefaults() {
-        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", FALSE);
-        this.configurator.addAdditionalProperty("classes-codegen", new HashMap<>());
         this.configurator.addAdditionalProperty("datatypeWithEnum", "");
+
+        // extension additional properties
+        this.configurator.addAdditionalProperty("additional-properties-as-attribute", FALSE);
+        this.configurator.addAdditionalProperty("classes-codegen", new HashMap<>());
         this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
-        this.configurator.addAdditionalProperty("generate-part-filename", FALSE);
-        this.configurator.addAdditionalProperty("initializeEmptyCollections", TRUE);
-        this.configurator.addAdditionalProperty("part-filename-value", "");
-        this.configurator.addAdditionalProperty("return-response", FALSE);
+        this.configurator.addAdditionalProperty("initialize-empty-collections", TRUE);
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
-        this.configurator.addAdditionalProperty("use-field-name-in-part-filename", FALSE);
-        this.configurator.addAdditionalProperty("verbose", FALSE);
     }
 
     public List<File> generate() {

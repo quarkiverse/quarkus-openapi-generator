@@ -41,7 +41,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
     {/if}
     {#if v.hasValidation || v.required}{#include beanValidation.qute p=v/}{/if}
     {#if v.isContainer}
-    private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{#else if v.isArray && initializeEmptyCollections} = new {#if v.uniqueItems}LinkedHashSet{/if}{#if !v.uniqueItems}ArrayList{/if}<>(){#else if v.isMap && initializeEmptyCollections} = new HashMap<>(){/if};
+    private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{#else if v.isArray && initialize-empty-collections} = new {#if v.uniqueItems}LinkedHashSet{/if}{#if !v.uniqueItems}ArrayList{/if}<>(){#else if v.isMap && initialize-empty-collections} = new HashMap<>(){/if};
     {#else}
     private {v.datatypeWithEnum} {v.name}{#if v.defaultValue} = {v.defaultValue}{/if};
     {/if}
@@ -118,7 +118,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
 
     {/if}
     {/for}
-    {#include pojoAdditionalProperties.qute m=m additionalPropertiesAsAttribute=additionalPropertiesAsAttribute /}
+    {#include pojoAdditionalProperties.qute m=m additionalPropertiesAsAttribute=additional-properties-as-attribute /}
     /**
      * Create a string representation of this pojo.
      **/
@@ -133,7 +133,7 @@ public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if serializabl
         sb.append("    {v.name}: ").append(toIndentedString({v.name})).append("\n");
         {/if}
         {/for}
-        {#if m.isAdditionalPropertiesTrue && additionalPropertiesAsAttribute}sb.append("    additionalProperties: ").append(toIndentedString(this.additionalProperties)).append("\n");{/if}
+        {#if m.isAdditionalPropertiesTrue && additional-properties-as-attribute}sb.append("    additionalProperties: ").append(toIndentedString(this.additionalProperties)).append("\n");{/if}
         sb.append("}");
         return sb.toString();
     }

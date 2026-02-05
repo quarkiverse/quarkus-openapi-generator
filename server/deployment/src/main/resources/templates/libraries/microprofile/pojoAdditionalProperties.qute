@@ -1,4 +1,4 @@
-{#if m.isAdditionalPropertiesTrue && additionalPropertiesAsAttribute}
+{#if m.isAdditionalPropertiesTrue && additional-properties-as-attribute}
     /**
     *   A property that represents the additionalProperties keyword in the OAS document.
     */

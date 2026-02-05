@@ -21,33 +21,40 @@ import io.smallrye.mutiny.Uni;
 public class DefaultPetResource implements PetResource {
 
     private static final Map<Long, Pet> PET_STORE_DB = new ConcurrentHashMap<>();
-    Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     public Uni<Pet> addPet(Pet pet) {
-        long l = random.nextLong();
+        long id = Math.abs(random.nextLong());
+
         Pet createdPet = new Pet()
-                .id(l)
-                .name("Melina")
-                .category(new Category().id(l).name("Dog"))
-                .addTagsItem(new Tag().id(l).name("SMALL"))
+                .id(id)
+                .name(pet != null ? pet.getName() : "Melina")
+                .category(new Category().id(id).name("Dog"))
+                .addTagsItem(new Tag().id(id).name("SMALL"))
                 .photoUrls(List.of("https://picsum.photos/id/237/200/300"))
                 .status(Pet.StatusEnum.AVAILABLE);
 
-        return Uni.createFrom().item(PET_STORE_DB.put(l, createdPet));
+        PET_STORE_DB.put(id, createdPet);
+        return Uni.createFrom().item(createdPet);
     }
 
     @Override
     public Uni<Void> deletePet(Long petId, String apiKey) {
+        if (petId != null) {
+            PET_STORE_DB.remove(petId);
+        }
         return Uni.createFrom().voidItem();
     }
 
     @Override
     public Uni<List<Pet>> findPetsByStatus(String status) {
+        Pet.StatusEnum statusEnum = Pet.StatusEnum.fromString(status);
+
         List<Pet> pets = new ArrayList<>();
-        for (Map.Entry<Long, Pet> entry : PET_STORE_DB.entrySet()) {
-            if (entry.getValue().getStatus() == Pet.StatusEnum.fromString(status)) {
-                pets.add(entry.getValue());
+        for (Pet pet : PET_STORE_DB.values()) {
+            if (statusEnum.equals(pet.getStatus())) {
+                pets.add(pet);
             }
         }
         return Uni.createFrom().item(pets);
@@ -55,11 +62,17 @@ public class DefaultPetResource implements PetResource {
 
     @Override
     public Uni<List<Pet>> findPetsByTags(List<String> tags) {
-        Set<String> allTags = new HashSet<>(tags);
+        if (tags == null || tags.isEmpty()) {
+            return Uni.createFrom().item(List.of());
+        }
+
+        Set<String> tagSet = new HashSet<>(tags);
         List<Pet> pets = new ArrayList<>();
-        for (Map.Entry<Long, Pet> entry : PET_STORE_DB.entrySet()) {
-            if (entry.getValue().getTags().stream().anyMatch(t -> allTags.contains(t.getName()))) {
-                pets.add(entry.getValue());
+
+        for (Pet pet : PET_STORE_DB.values()) {
+            if (pet.getTags() != null &&
+                    pet.getTags().stream().anyMatch(t -> tagSet.contains(t.getName()))) {
+                pets.add(pet);
             }
         }
         return Uni.createFrom().item(pets);
@@ -67,23 +80,42 @@ public class DefaultPetResource implements PetResource {
 
     @Override
     public Uni<Pet> getPetById(Long petId) {
-        return Uni.createFrom().item(PET_STORE_DB.get(petId));
+        return Uni.createFrom().item(petId != null ? PET_STORE_DB.get(petId) : null);
     }
 
     @Override
     public Uni<Pet> updatePet(Pet pet) {
-        return Uni.createFrom().item(PET_STORE_DB.compute(pet.getId(), (aLong, pet1) -> pet));
+        if (pet == null || pet.getId() == null) {
+            return Uni.createFrom().item((Pet) null);
+        }
+
+        return Uni.createFrom().item(
+                PET_STORE_DB.computeIfPresent(pet.getId(), (id, existing) -> pet)
+        );
     }
 
     @Override
     public Uni<Void> updatePetWithForm(Long petId, String name, String status) {
-        PET_STORE_DB.compute(petId, (aLong, pet) -> pet.status(Pet.StatusEnum.fromString(status)).name(name));
+        if (petId == null) {
+            return Uni.createFrom().voidItem();
+        }
+
+        Pet.StatusEnum statusEnum = Pet.StatusEnum.fromString(status);
+        PET_STORE_DB.computeIfPresent(petId, (id, pet) -> {
+            pet.status(statusEnum);
+            if (name != null) {
+                pet.name(name);
+            }
+            return pet;
+        });
+
         return Uni.createFrom().voidItem();
     }
 
     @Override
     public Uni<ModelApiResponse> uploadFile(Long petId, String additionalMetadata, File body) {
-        Log.info("Ignoring the file: {}" + body);
-        return Uni.createFrom().item(new ModelApiResponse().code(200).message("Success").type("SUCCESS"));
+        Log.infof("Ignoring the file: %s", body);
+        return Uni.createFrom()
+                .item(new ModelApiResponse().code(200).message("Success").type("SUCCESS"));
     }
 }
