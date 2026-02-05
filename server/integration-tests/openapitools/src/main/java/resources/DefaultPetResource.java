@@ -90,8 +90,7 @@ public class DefaultPetResource implements PetResource {
         }
 
         return Uni.createFrom().item(
-                PET_STORE_DB.computeIfPresent(pet.getId(), (id, existing) -> pet)
-        );
+                PET_STORE_DB.computeIfPresent(pet.getId(), (id, existing) -> pet));
     }
 
     @Override
