@@ -1,0 +1,3 @@
+{#for annon in additionalModelTypeAnnotations.orEmpty}
+{annon}
+{/for}

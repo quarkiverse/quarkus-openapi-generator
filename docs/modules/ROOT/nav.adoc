@@ -1,3 +1,5 @@
 * xref:client.adoc[Client Generator]
 * xref:server.adoc[Server Generator]
+    - xref:apicurio.adoc[Apicurio Tool]
+    - xref:openapitools.adoc[OpenAPITools Tool]
 * xref:moqu.adoc[Moqu Wiremock Generator]

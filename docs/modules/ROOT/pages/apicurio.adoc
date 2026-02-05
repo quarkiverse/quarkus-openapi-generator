@@ -1,0 +1,541 @@
+= Quarkus - OpenAPI Generator - Server with Apicurio
+
+include::./includes/attributes.adoc[]
+
+This documentation helps you to use Quarkus OpenAPI Generator Server with the Apicurio code generator.
+To see how to use with OpenAPITools, please see the xref:openapitools.adoc[OpenAPITools] documentation.
+
+:extension-status: preview
+
+[[getting-started]]
+== Getting Started
+
+include::./includes/server-apicurio-getting-started.adoc[leveloffset=+1, opts=optional]
+
+[[codegen-extensions]]
+== Codegen Extensions
+
+Apicurio Codegen Extensions use https://spec.openapis.org/oas/v3.0.3.html#specification-extensions/[OpenAPI specification extensions] to allow customization of the generated source code based on your API contract.
+
+=== `x-codegen`
+
+The `x-codegen` extension can be defined at the root level of the OpenAPI document.
+
+It is applied globally and allows you to customize the generated bean classes by:
+- Adding annotations to all generated beans.
+- Controlling date/time formatting.
+- Configuring the application context root.
+
+=== `x-codegen.bean-annotations`
+
+Adding annotations to generated bean classes:
+
+[source,json]
+----
+{
+  "x-codegen": {
+    "bean-annotations": [
+      "@lombok.ToString", // (1)
+      {
+        "annotation": "@lombok.EqualsAndHashCode", // (2)
+        "excludeEnums": true
+      }
+    ]
+  }
+}
+----
+
+1. Adds the `@lombok.ToString` annotation to all generated bean classes.
+2. Adds the `@lombok.EqualsAndHashCode` annotation to all generated bean classes, except for Java enums (when excludeEnums is set to `true`).
+
+=== `x-codegen.contextRoot`
+
+Additionally, you can configure the application context root using the `x-codegen.contextRoot` property.
+
+This property defines a base path that will be automatically prefixed to all generated JAX-RS resource classes.
+
+For example, if you set the context root to `/apis/studio/v1`, all generated resource paths will include this prefix.
+
+[source,json]
+----
+{
+  "x-codegen": {
+    "contextRoot": "/apis/studio/v1",
+    "bean-annotations": []
+  }
+}
+----
+
+Corresponding JAX-RS code:
+
+[source,java]
+----
+@Path("/apis/studio/v1/users")
+public class UserResource {}
+----
+
+[NOTE]
+
+    You can use the xref:x-codegen-contextRoot[x-codegen-contextRoot] property to apply a context root prefix to a specific JAX-RS resource instead of using the global one.
+
+=== `x-codegen.suppress-date-time-formatting`
+
+By default, Apicurio Codegen generates properties of type `string` with the format `date-time` as shown below:
+
+[source,java]
+----
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+@JsonProperty("shipDate")
+private Date shipDate;
+----
+
+If you want to disable this behavior, you can use the `x-codegen.suppress-date-time-formatting` property to remove the `@JsonFormat` annotation from generated fields.
+
+[source,json]
+----
+{
+  "x-codegen": {
+    "suppress-date-time-formatting": true
+  }
+}
+----
+
+The following extensions modify the behavior of the code generation in specific parts of the OpenAPI document.
+
+=== x-codegen-package
+
+The `x-codegen-package` extension allows you to define the package where a generated class should be placed. This extension is applicable to components of type `schema`.
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| `components.schemas.<SchemaName>.x-codegen-package`
+|===
+
+.Example usage:
+[source,json]
+----
+{
+  "components": {
+    "schemas": {
+      "ArtifactState": {
+        "description": "Describes the state of an artifact or artifact version. The following states\nare possible:\n\n* ENABLED\n* DISABLED\n* DEPRECATED\n",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "DEPRECATED"
+        ],
+        "type": "string",
+        "x-codegen-package": "io.apicurio.registry.types"
+      }
+    }
+  }
+}
+----
+
+This configuration generates the `ArtifactState` class in the package `io.apicurio.registry.types`:
+
+[source,java]
+----
+package io.apicurio.registry.types;
+
+public enum ArtifactState {
+    ENABLED, DISABLED, DEPRECATED
+}
+----
+
+=== x-codegen-async
+
+The `x-codegen-async` extension allows you to define whether a generated method should return asynchronously (e.g., wrapped in `CompletionStage`). This extension can be used on any HTTP operation (`get`, `post`, etc.).
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| `paths.<path>.<operation>.x-codegen-async`
+|===
+
+.Example usage:
+[source,json]
+----
+"/cart/ids": {
+  "get": {
+    "summary": "Get a cart by ID",
+    "operationId": "getCartByID",
+    "description": "Get a cart resource by ID",
+    "tags": [
+      "Cart"
+    ],
+    "x-codegen-async": true
+  }
+}
+----
+
+This configuration generates the following asynchronous JAX-RS method:
+
+[source,java]
+----
+@Path("/cart/ids")
+@GET
+@Produces("application/json")
+CompletionStage<String> getCartByID();
+----
+
+=== x-codegen-returnType
+
+The `x-codegen-returnType` extension allows you to explicitly define the return type of a generated method, overriding the type inferred from the schema. This is useful for advanced use cases, such as returning reactive types, server-sent events (SSE), or custom wrappers.
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| `paths.<path>.<operation>.responses.<statusCode>.content.<mediaType>.x-codegen-returnType`
+|===
+
+.Example usage:
+[source,json]
+----
+"responses": {
+  "200": {
+    "description": "A continuous stream of cart IDs",
+    "content": {
+      "text/event-stream": {
+        "schema": {
+          "type": "string"
+        },
+        "x-codegen-returnType": "io.smallrye.mutiny.Multi<String>",
+      }
+    }
+  }
+}
+----
+
+This configuration generates the following method using the specified return type (`Multi<String>` from Mutiny):
+
+[source,java]
+----
+import io.smallrye.mutiny.Multi;
+
+/* omitted for simplicity */
+@Produces("text/event-stream")
+Multi<String> getCartIds();
+----
+
+=== x-codegen-annotations
+
+The `x-codegen-annotations` extension allows you to add annotations to the generated code. This extension is supported in two specific contexts:
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| - `components.schemas.<SchemaName>.x-codegen-annotations` (adds annotations at the class level) +
+- `paths.<path>.<operation>.parameters[].x-codegen-annotations` (adds annotations to method parameters)
+|===
+
+.Example on a schema (class-level annotation):
+[source,json]
+----
+"MyQuarkusBean": {
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "x-codegen-annotations": [
+    "io.quarkus.runtime.annotations.RegisterForReflection"
+  ]
+}
+----
+
+This results in the following class-level annotation:
+
+[source,java]
+----
+@RegisterForReflection
+public class MyQuarkusBean {
+    private String name;
+    private String description;
+}
+----
+
+.Example on a method parameter:
+[source,json]
+----
+"parameters": [
+  {
+    "name": "beerId",
+    "in": "path",
+    "required": true,
+    "description": "Unique ID of a beer.",
+    "schema": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "x-codegen-annotations": [
+      "@jakarta.validation.constraints.Positive(message = \"The beerId must be a natural number!\")"
+    ]
+  }
+]
+----
+
+This adds the annotation to the generated method parameter:
+
+[source,java]
+----
+public Response deleteBeer(
+    @Positive(message = "The beerId must be a natural number!") int beerId
+);
+----
+
+[[x-codegen-contextRoot]]
+=== x-codegen-contextRoot
+
+The `x-codegen-contextRoot` extension allows you to define a base path (context root) that is prepended to all generated endpoint paths.
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| `x-codegen-contextRoot` should be placed at the **root level** of the OpenAPI document (next to `info`, `paths`, etc.)
+|===
+
+.Example usage:
+[source,json]
+----
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Context Root Sample API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/widgets": {
+      "get": {
+        "operationId": "getWidgets",
+        "summary": "Get widgets",
+        "responses": {
+          "200": {
+            "description": "Returns the list of widgets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-codegen-contextRoot": "/api/v3"
+}
+----
+
+This configuration prepends `/api/v3` to all paths, resulting in:
+
+[source,java]
+----
+@Path("/api/v3/widgets")
+public interface WidgetsResource {
+
+    @Operation(summary = "Get widgets", operationId = "getWidgets")
+    @GET
+    @Produces("application/json")
+    List<String> getWidgets();
+}
+----
+
+=== x-codegen-formatPattern
+
+The `x-codegen-formatPattern` extension allows you to customize the date/time format pattern used for serialization and deserialization of date fields.
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| `components.schemas.<SchemaName>.properties.<propertyName>.x-codegen-formatPattern`
+|===
+
+.Example usage:
+[source,json]
+----
+"VersionMetaData": {
+  "type": "object",
+  "properties": {
+    "createdOn": {
+      "type": "string",
+      "format": "date-time",
+      "x-codegen-formatPattern": "yyyy-MM-dd'T'HH:mm:ss"
+    }
+  }
+}
+----
+
+This generates the following annotated field:
+
+[source,java]
+----
+@JsonFormat(
+    shape = Shape.STRING,
+    pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
+    timezone = "UTC"
+)
+@JsonProperty("createdOn")
+private Date createdOn;
+----
+
+=== x-codegen-inline / x-codegen-inlined
+
+The `x-codegen-inline` (or `x-codegen-inlined`) extension indicates that a schema should be inlined directly into the property where it is referenced, rather than generating a separate Java class.
+
+This is useful for simplifying the generated model when the referenced schema is small or generic, such as maps or simple value types.
+
+[cols="1,3",options="header"]
+|===
+| Where to use
+| `components.schemas.<SchemaName>.x-codegen-inline` +
+`components.schemas.<SchemaName>.x-codegen-inlined`
+|===
+
+Both `x-codegen-inline` and `x-codegen-inlined` are aliases and behave the same way.
+
+.Example usage:
+[source,json]
+----
+"MyMap": {
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "x-codegen-type": "StringMap",
+  "x-codegen-inline": true
+}
+----
+
+When another schema references `MyMap`, it will be inlined as `Map<String, String>` instead of generating a separate `MyMap` Java class.
+
+.Example result (inlined):
+[source,java]
+----
+@JsonProperty("mymap")
+private Map<String, String> mymap;
+----
+
+If the extension was not present, the field would instead be generated with a custom type:
+
+[source,java]
+----
+@JsonProperty("mymap")
+private MyMap mymap;
+----
+
+=== `x-codegen-type`
+
+The `x-codegen-type` extension is used to override the type of a generated bean class. It is especially important when combined with `x-codegen-inline`.
+
+==== Why use `x-codegen-type`?
+
+When using `x-codegen-inline: true`, the code generator will not generate a Java class for the given schema. However, in order to correctly reference the type in generated code, it still needs to know the Java type to use in place of the schema.
+
+Without `x-codegen-type`, the code generator won't know what type to substitute, and this will result in an error during code generation.
+
+==== Example
+
+[source,json]
+----
+"MyMap": {
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "x-codegen-type": "StringMap",
+  "x-codegen-inline": true
+}
+----
+
+In this example, instead of generating a class called `MyMap`, the generator will use `Map<String, String>` directly wherever this schema is referenced.
+
+[NOTE]
+
+  If you want the schema to be generated as `Map<String, Object>` (instead of `Map<String, String>`), set its `x-codegen-type` to `StringObjectMap`.
+
+==== Invalid Example (Will Fail)
+
+[source,json]
+----
+"MyMap": {
+  "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
+  "x-codegen-inline": true
+}
+----
+
+Since `x-codegen-type` is missing, the generator has no information about the Java type to use and will throw an error.
+
+=== x-codegen-extendsClass
+
+This extension allows the generated Java class to extend a custom base class.
+
+==== Usage
+
+You must define the fully qualified class name in the OpenAPI schema using the `x-codegen-extendsClass` property.
+
+==== Example OpenAPI Specification
+
+[source,json]
+----
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Schema Extends API",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "MySchema": {
+        "type": "object",
+        "x-codegen-type": "bean",
+        "x-codegen-extendsClass": "io.quarkus.openapi.generator.server.AbstractSchema",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+----
+
+==== Example Base Class
+
+[source,java]
+----
+package io.quarkus.openapi.generator.server;
+
+public class AbstractSchema {
+}
+----
+
+==== Resulting Generated Class
+
+[source,java]
+----
+public class MySchema extends AbstractSchema {
+    /* omitted for simplicity */
+}
+----
+
+== Configuration Properties
+
+include::./includes/quarkus-openapi-generator-server.adoc[opts=optional, leveloffset=+1]
