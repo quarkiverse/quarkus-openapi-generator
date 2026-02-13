@@ -39,6 +39,8 @@
     <version.org.wiremock>3.13.2</version.org.wiremock>
     <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
     <version.io.swagger.parser>2.1.37</version.io.swagger.parser>
+    <version.org.openapitools>7.17.0</version.org.openapitools>
+    <version.com.github.javaparser>3.25.9</version.com.github.javaparser>
   </properties>
   <dependencyManagement>
     <dependencies>
