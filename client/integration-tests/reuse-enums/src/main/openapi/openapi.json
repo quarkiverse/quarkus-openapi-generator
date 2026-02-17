@@ -1,0 +1,189 @@
+{
+  "openapi": "3.1.0",
+  "components": {
+    "schemas": {
+      "MeterUserRole": {
+        "type": "string",
+        "enum": [
+          "owner",
+          "admin",
+          "operator",
+          "user",
+          "proxy",
+          "shareholder",
+          "ocpp_integrator"
+        ]
+      },
+      "MeterUserRolesResponse": {
+        "type": "object",
+        "required": [
+          "userId",
+          "roles"
+        ],
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "User identifier"
+          },
+          "roles": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/MeterUserRole"
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "version": "1.8.6-SNAPSHOT",
+    "title": "Quarkus Core Service API"
+  },
+  "tags": [
+    {
+      "name": "Meter Controller",
+      "description": "return meter details/list"
+    },
+    {
+      "name": "Meter Charging Controller",
+      "description": "process scraped/observed values of meters, explicitly starting/stopping charging"
+    },
+    {
+      "name": "Ocpp 16 Charger Controller",
+      "description": "similar to Charging Controller but meter is identified by charger ID + connector"
+    },
+    {
+      "name": "Din Charging Controller",
+      "description": "similar to Charging Controller but meter is identified by DIN - optimized for Tesla"
+    },
+    {
+      "name": "User Credit Controller",
+      "description": "checks credit status with regards to particular user"
+    },
+    {
+      "name": "Authorization Controller",
+      "description": "gives informative response about charging-related authorization"
+    },
+    {
+      "name": "Zzz Pub Sub Payloads",
+      "description": "just documentation of pub/sub exchanged payloads, topic is right after the 'pub-sub-payloads/ part"
+    },
+    {
+      "name": "Web brands management",
+      "description": "Internal API for brand configuration and role evaluation"
+    },
+    {
+      "name": "Charging payments inspection",
+      "description": "for owners to inspect finished chargings and related payments"
+    },
+    {
+      "name": "Management groups",
+      "description": "Internal API for management role configuration"
+    },
+    {
+      "name": "User management",
+      "description": "Internal API for user management"
+    },
+    {
+      "name": "User Lookup API",
+      "description": "Internal API for looking up users by API key"
+    }
+  ],
+  "paths": {
+    "/internal/mgmt-group/{groupId}/evaluate-meter-roles": {
+      "get": {
+        "summary": "Collect and evaluate meter-user roles for the given management group.",
+        "description": "Collect means: traverse up.Evaluate means: MGROUP_* roles are mapped to their meter-user roles counterparts AND only the 'closest' MGROUP_OWNER from the closest group is evaluated as meter `owner`, other further-distance owners are degraded to just `admin`.",
+        "tags": [
+          "Management groups"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users and meteruser roles retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeterUserRolesResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Group does not exist"
+          }
+        }
+      }
+    },
+    "/internal/user/{userId}/meter-roles/evaluate/meter/{meterId}": {
+      "get": {
+        "summary": "Evaluate meter roles of the given user for the given meter",
+        "description": "Returns the evaluated role set (including mgmt roles) this user has for the specified meter.",
+        "tags": [
+          "User management"
+        ],
+        "parameters": [
+          {
+            "name": "meterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/components/schemas/MeterUserRole"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Auto generated value"
+    },
+    {
+      "url": "http://0.0.0.0:8080",
+      "description": "Auto generated value"
+    }
+  ]
+}
