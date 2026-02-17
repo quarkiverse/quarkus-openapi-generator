@@ -28,18 +28,21 @@ import org.openapitools.codegen.config.GlobalSettings;
  * This is the same as calling the Maven plugin or the CLI.
  * We are wrapping into a class to generate code that meet our requirements.
  *
- * @see <a href="https://openapi-generator.tech/docs/generators/java">OpenAPI Generator Client for Java</a>
+ * @see <a href="https://openapi-generator.tech/docs/generators/java">OpenAPI
+ *      Generator Client for Java</a>
  */
 public abstract class OpenApiClientGeneratorWrapper {
 
     public static final String VERBOSE = "verbose";
     /**
-     * Security scheme for which to apply security constraints even if the OpenAPI definition has no security definition
+     * Security scheme for which to apply security constraints even if the OpenAPI
+     * definition has no security definition
      */
     public static final String DEFAULT_SECURITY_SCHEME = "defaultSecurityScheme";
     public static final String SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE = "supportsAdditionalPropertiesWithComposedSchema";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
-    private static final Map<String, String> defaultTypeMappings = Map.of("date", "LocalDate", "DateTime", "OffsetDateTime");
+    private static final Map<String, String> defaultTypeMappings = Map.of("date", "LocalDate", "DateTime",
+            "OffsetDateTime");
     private static final Map<String, String> defaultImportMappings = Map.of("LocalDate", "java.time.LocalDate",
             "OffsetDateTime", "java.time.OffsetDateTime");
     private final QuarkusCodegenConfigurator configurator;
@@ -49,7 +52,8 @@ public abstract class OpenApiClientGeneratorWrapper {
     private String apiPackage = "";
     private String modelPackage = "";
 
-    OpenApiClientGeneratorWrapper(final QuarkusCodegenConfigurator configurator, final Path specFilePath, final Path outputDir,
+    OpenApiClientGeneratorWrapper(final QuarkusCodegenConfigurator configurator, final Path specFilePath,
+            final Path outputDir,
             final boolean verbose, final boolean validateSpec) {
 
         // do not generate docs nor tests
@@ -66,7 +70,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         GlobalSettings.setProperty(ONCE_LOGGER, verbose ? FALSE.toString() : TRUE.toString());
 
         this.configurator = configurator;
-        // toUri() for the input first to ensure consistent path names which became an issue with the 3.1.0 spec-parser
+        // toUri() for the input first to ensure consistent path names which became an
+        // issue with the 3.1.0 spec-parser
         this.configurator.setInputSpec(specFilePath.toUri().toString());
         this.configurator.setOutputDir(outputDir.toString());
         this.configurator.addAdditionalProperty(QUARKUS_GENERATOR_NAME,
@@ -82,11 +87,15 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     /**
-     * A few properties from the "with*" methods must be injected in the Qute context by default since we turned strict model
+     * A few properties from the "with*" methods must be injected in the Qute
+     * context by default since we turned strict model
      * rendering.
-     * This way we avoid side effects in the model such as "NOT_FOUND" strings printed everywhere.
+     * This way we avoid side effects in the model such as "NOT_FOUND" strings
+     * printed everywhere.
      *
-     * @see <a href="https://quarkus.io/guides/qute-reference#configuration-reference">Qute - Configuration Reference</a>
+     * @see <a href=
+     *      "https://quarkus.io/guides/qute-reference#configuration-reference">Qute
+     *      - Configuration Reference</a>
      */
     private void setDefaults() {
         // Set default values directly here
@@ -125,7 +134,8 @@ public abstract class OpenApiClientGeneratorWrapper {
     /**
      * Adds the circuit breaker configuration to the generator.
      *
-     * @param config a map of class names and their methods that should be configured with circuit breaker
+     * @param config a map of class names and their methods that should be
+     *        configured with circuit breaker
      * @return this wrapper
      */
     public OpenApiClientGeneratorWrapper withCircuitBreakerConfig(final Map<String, List<String>> config) {
@@ -167,9 +177,11 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     /**
-     * Sets the global 'skipFormModel' setting. If not set this setting will default to true.
+     * Sets the global 'skipFormModel' setting. If not set this setting will default
+     * to true.
      *
-     * @param skipFormModel whether to skip the generation of models for form parameters
+     * @param skipFormModel whether to skip the generation of models for form
+     *        parameters
      * @return this wrapper
      */
     public OpenApiClientGeneratorWrapper withSkipFormModelConfig(final String skipFormModel) {
@@ -232,12 +244,15 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     /**
-     * Sets the global 'additionalModelTypeAnnotations' setting. If not set this setting will default to empty.
+     * Sets the global 'additionalModelTypeAnnotations' setting. If not set this
+     * setting will default to empty.
      *
-     * @param additionalModelTypeAnnotations the list of extra additional annotations to be included in a model
+     * @param additionalModelTypeAnnotations the list of extra additional
+     *        annotations to be included in a model
      * @return this wrapper
      */
-    public OpenApiClientGeneratorWrapper withAdditionalModelTypeAnnotationsConfig(final String additionalModelTypeAnnotations) {
+    public OpenApiClientGeneratorWrapper withAdditionalModelTypeAnnotationsConfig(
+            final String additionalModelTypeAnnotations) {
         if (additionalModelTypeAnnotations != null) {
             this.configurator.addAdditionalProperty(ADDITIONAL_MODEL_TYPE_ANNOTATIONS, additionalModelTypeAnnotations);
         }
@@ -246,7 +261,8 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withAdditionalEnumTypeUnexpectedMemberConfig(
             final Boolean additionalEnumTypeUnexpectedMember) {
-        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMember", additionalEnumTypeUnexpectedMember);
+        this.configurator.addAdditionalProperty("additionalEnumTypeUnexpectedMember",
+                additionalEnumTypeUnexpectedMember);
         return this;
     }
 
@@ -265,14 +281,18 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     /**
-     * Sets the global 'additionalApiTypeAnnotations' setting. If not set this setting will default to empty.
+     * Sets the global 'additionalApiTypeAnnotations' setting. If not set this
+     * setting will default to empty.
      *
-     * @param additionalApiTypeAnnotations the list of extra additional annotations to be included in an api
+     * @param additionalApiTypeAnnotations the list of extra additional annotations
+     *        to be included in an api
      * @return this wrapper
      */
-    public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(final String additionalApiTypeAnnotations) {
+    public OpenApiClientGeneratorWrapper withAdditionalApiTypeAnnotationsConfig(
+            final String additionalApiTypeAnnotations) {
         Optional.ofNullable(additionalApiTypeAnnotations).ifPresent(cfg -> {
-            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations", additionalApiTypeAnnotations.split(";"));
+            this.configurator.addAdditionalProperty("additionalApiTypeAnnotations",
+                    additionalApiTypeAnnotations.split(";"));
         });
         return this;
     }
@@ -298,7 +318,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withUseFieldNameInPartFilenameConfig(final Boolean useFieldNameInPartFilename) {
+    public OpenApiClientGeneratorWrapper withUseFieldNameInPartFilenameConfig(
+            final Boolean useFieldNameInPartFilename) {
         this.configurator.addAdditionalProperty("use-field-name-in-part-filename", useFieldNameInPartFilename);
         return this;
     }
@@ -333,7 +354,8 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefixDelimiter(final String removeOperationIdPrefixDelimiter) {
+    public OpenApiClientGeneratorWrapper withRemoveOperationIdPrefixDelimiter(
+            final String removeOperationIdPrefixDelimiter) {
         this.configurator.addAdditionalProperty("removeOperationIdPrefixDelimiter", removeOperationIdPrefixDelimiter);
         return this;
     }
@@ -353,8 +375,10 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
-    public OpenApiClientGeneratorWrapper withGenerateModelForUsageAsBeanParam(final Boolean generateModelForUsageAsBeanParam) {
-        this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", generateModelForUsageAsBeanParam);
+    public OpenApiClientGeneratorWrapper withGenerateModelForUsageAsBeanParam(
+            final Boolean generateModelForUsageAsBeanParam) {
+        this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param",
+                generateModelForUsageAsBeanParam);
         return this;
     }
 
@@ -364,7 +388,8 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     /**
-     * Main entrypoint, or where to generate the files based on the given base package.
+     * Main entrypoint, or where to generate the files based on the given base
+     * package.
      *
      * @param basePackage Java package name, e.g. org.acme
      * @return a list of generated files
@@ -399,11 +424,13 @@ public abstract class OpenApiClientGeneratorWrapper {
     }
 
     public void withAdditionalPropertiesAsAttribute(final Boolean enable) {
-        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute", Optional.ofNullable(enable).orElse(FALSE));
+        this.configurator.addAdditionalProperty("additionalPropertiesAsAttribute",
+                Optional.ofNullable(enable).orElse(FALSE));
     }
 
     public void withInitializeEmptyCollections(final Boolean enable) {
-        this.configurator.addAdditionalProperty("initializeEmptyCollections", Optional.ofNullable(enable).orElse(FALSE));
+        this.configurator.addAdditionalProperty("initializeEmptyCollections",
+                Optional.ofNullable(enable).orElse(FALSE));
     }
 
     public static String transformToSafeConfigKey(String input) {
