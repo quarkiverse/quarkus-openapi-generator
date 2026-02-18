@@ -84,7 +84,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-_This property is deprecated: `quarkus.openapi.generator.server.<tool>.use-builder` instead._
+_This property is deprecated: `quarkus.openapi.generator.server.<tool>.use-builders` instead._
 
 Whether it must generate builders for properties.
 

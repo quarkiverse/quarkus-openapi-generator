@@ -43,7 +43,7 @@ public interface ServerCodegenConfig {
      * Whether it must generate builders for properties.
      * <p>
      *
-     * @deprecated {@code quarkus.openapi.generator.server.<tool>.use-builder} instead.
+     * @deprecated {@code quarkus.openapi.generator.server.<tool>.use-builders} instead.
      */
     @Deprecated(forRemoval = true)
     Optional<Boolean> builders();

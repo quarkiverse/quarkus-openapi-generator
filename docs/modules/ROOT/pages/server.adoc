@@ -6,7 +6,7 @@ include::./includes/attributes.adoc[]
 
 Quarkus' extension for generation of server Stubs based on OpenAPI specification files.
 
-This extension has support for two code generation tools:
+This server extension has support for two code generation tools:
 
 * xref::apicurio.adoc[Apicurio]
 * xref::openapitools.adoc[OpenAPITools]

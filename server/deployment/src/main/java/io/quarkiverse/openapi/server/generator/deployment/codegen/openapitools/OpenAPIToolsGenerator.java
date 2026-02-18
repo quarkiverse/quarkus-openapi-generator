@@ -38,7 +38,7 @@ public class OpenAPIToolsGenerator {
 
     private void applyDefaults() {
         this.configurator.addAdditionalProperty("datatypeWithEnum", "");
-
+        this.configurator.addAdditionalProperty("dateLibrary", "java8");
         // extension additional properties
         this.configurator.addAdditionalProperty("additional-properties-as-attribute", FALSE);
         this.configurator.addAdditionalProperty("classes-codegen", new HashMap<>());

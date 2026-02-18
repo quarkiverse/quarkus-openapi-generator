@@ -10,7 +10,7 @@ public class QuarkusJavaServerCodegen extends JavaClientCodegen {
 
     public QuarkusJavaServerCodegen() {
         this.setSerializationLibrary(SERIALIZATION_LIBRARY_JACKSON);
-        this.setTemplateDir("templates");
+        this.setTemplateDir("server-templates");
     }
 
     @Override

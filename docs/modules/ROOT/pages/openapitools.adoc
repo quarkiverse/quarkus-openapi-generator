@@ -64,7 +64,7 @@ quarkus.openapi.generator.server.spec=petstore-openapi.json
 You can see the `petstore-openapi.json` file through this https://raw.githubusercontent.com/quarkiverse/quarkus-openapi-generator/refs/heads/main/server/integration-tests/reactive/src/main/resources/openapi/petstore-openapi.json[link].
 ====
 
-If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi.input-base-dir`.
+If you want to change the directory where OpenAPI files must be found, use the property `quarkus.openapi.server.input-base-dir`.
 
 [IMPORTANT]
 ====
@@ -90,12 +90,12 @@ By default, the extension generates non-reactive code. If you would like to chan
 quarkus.openapi.generator.server.use-reactive=true
 ----
 
-Run `mvn compile` to generate your classes in `target/generated-sources/jaxrs` path:
+Run `mvn compile` to generate your classes in `target/generated-sources/quarkus-openapi-generator-server` path:
 
 [source]
 ----
 - io.petstore
-  - beans
+  - model
     - Address.java
     - ApiResponse.java
     - Category.java
@@ -104,10 +104,10 @@ Run `mvn compile` to generate your classes in `target/generated-sources/jaxrs` p
     - Pet.java
     - Tag.java
     - User.java
-  - PetResource.java
-  - StoreResource.java
-  - UserResource.java
-
+  - resources
+    - PetResource.java
+    - StoreResource.java
+    - UserResource.java
 ----
 
 You can reference the generated code in your project, for example:

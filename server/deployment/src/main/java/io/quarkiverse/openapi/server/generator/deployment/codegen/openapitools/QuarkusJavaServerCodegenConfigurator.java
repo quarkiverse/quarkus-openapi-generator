@@ -9,7 +9,7 @@ public class QuarkusJavaServerCodegenConfigurator extends CodegenConfigurator {
 
     public static final String BASE_PACKAGE = "base-package";
     public static final String USE_BEAN_VALIDATION = "use-bean-validation";
-    public static final String GENERATE_BUILDERS = "use-builder";
+    public static final String GENERATE_BUILDERS = "use-builders";
     public static final String USE_REACTIVE = "use-reactive";
 
     public QuarkusJavaServerCodegenConfigurator() {

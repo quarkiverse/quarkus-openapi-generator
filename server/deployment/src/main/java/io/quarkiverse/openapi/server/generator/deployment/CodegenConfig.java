@@ -23,7 +23,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_SPEC = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".spec";
     String CODEGEN_SERVER_INPUT_BASE_DIR = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".input-base-dir";
     String CODEGEN_SERVER_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-reactive";
-    String CODEGEN_SERVER_GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-builder";
+    String CODEGEN_SERVER_GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-builders";
     String CODEGEN_SERVER_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-bean-validation";
 
     static String getBasePackagePropertyName() {

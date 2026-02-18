@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.eclipse.microprofile.config.Config;
 import org.jboss.logging.Logger;
@@ -74,10 +75,17 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
     }
 
     private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        return config.getOptionalValue(CodegenConfig.getInputBaseDirPropertyName(), String.class).map(baseDir -> {
+        return config.getOptionalValue(CodegenConfig.getInputBaseDirPropertyName(), String.class)
+                .map(resolveInputBaseDir(sourceDir))
+                .or(() -> config.getOptionalValue(CodegenConfig.getServerInputBaseDirPropertyName(), String.class)
+                        .map(resolveInputBaseDir(sourceDir)));
+    }
+
+    private static Function<String, String> resolveInputBaseDir(Path sourceDir) {
+        return baseDir -> {
             int srcIndex = sourceDir.toString().lastIndexOf("src");
             return srcIndex < 0 ? null : Path.of(sourceDir.toString().substring(0, srcIndex), baseDir).toString();
-        });
+        };
     }
 
     private boolean beanValidation(CodeGenContext context) {
