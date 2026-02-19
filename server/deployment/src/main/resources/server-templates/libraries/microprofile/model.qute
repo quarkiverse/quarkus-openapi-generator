@@ -1,0 +1,21 @@
+package {package};
+
+{#if use-bean-validation}
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+{/if}
+
+{#for imp in imports}
+import {imp.import};
+{/for}
+{#if serializableModel}
+
+import java.io.Serializable;
+import java.util.Set;
+{/if}
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+{#for m in models}
+{#if m.model.isEnum}{#include enumOuterClass.qute e=m.model/}
+{#else}{#include pojo.qute m=m.model codegen=classes-codegen package=modelPackage/}{/if}
+{/for}

@@ -1,0 +1,3 @@
+{#if use-bean-validation}
+{#include beanValidationCore.qute p=p/}
+{/if}

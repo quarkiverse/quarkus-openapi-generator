@@ -1,0 +1,34 @@
+    {#include additionalEnumTypeAnnotations.qute e=e /}public enum {e.enumName} {
+        {#if e.allowableValues}
+        {#for v in e.allowableValues.enumVars}{v.name}({#if eq e.isNumeric}{v.value}{#else}{#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if}.valueOf({v.value}){/if}){#if v_hasNext}, {#else};{/if}{/for}
+        {/if}
+
+        // caching enum access
+        private static final java.util.EnumSet<{e.enumName}> values = java.util.EnumSet.allOf({e.enumName}.class);
+
+        {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value;
+
+        {e.enumName} ({#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} v) {
+            value = v;
+        }
+
+        @com.fasterxml.jackson.annotation.JsonValue
+        public {#if e.isContainer}{e.items.dataType}{#else}{e.dataType}{/if} value() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        @com.fasterxml.jackson.annotation.JsonCreator
+        public static {e.enumName} fromString(String v) {
+            for ({#if e.enumName}{e.enumName}{#else}{e.classname}{/if} b : values) {
+                if (String.valueOf(b.value).equalsIgnoreCase(v)) {
+                    return b;
+                }
+            }
+            {#if e.isNullable}return null;{#else}throw new IllegalArgumentException("Unexpected value '" + v + "'");{/if}
+        }
+    }

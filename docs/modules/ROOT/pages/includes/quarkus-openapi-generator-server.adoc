@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-spec[`quarkus.openapi.generator.spec`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-spec[[.line-through]#`quarkus.openapi.generator.spec`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.spec+++[]
 endif::add-copy-button-to-config-props[]
@@ -15,6 +15,8 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
+_This property is deprecated: Use `quarkus.openapi.generator.server.<tool>.spec` instead._
+
 The OpenAPI specification filename.
 
 
@@ -28,7 +30,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir[`quarkus.openapi.generator.input-base-dir`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir[[.line-through]#`quarkus.openapi.generator.input-base-dir`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.input-base-dir+++[]
 endif::add-copy-button-to-config-props[]
@@ -36,6 +38,8 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
+_This property is deprecated: Use `quarkus.openapi.generator.server.<tool>.input-base-dir` instead._
+
 The input base dir where the OpenAPI specification is.
 
 
@@ -47,9 +51,9 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_INPUT_BASE_DIR+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`+++src/main/resources/openapi+++`
+|
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-reactive[`quarkus.openapi.generator.reactive`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-reactive[[.line-through]#`quarkus.openapi.generator.reactive`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.reactive+++[]
 endif::add-copy-button-to-config-props[]
@@ -57,6 +61,8 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
+_This property is deprecated: Use `quarkus.openapi.generator.server.<tool>.use-reactive` instead._
+
 Whether it must generate with reactive code.
 
 
@@ -68,9 +74,9 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_REACTIVE+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`+++false+++`
+|
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-builders]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-builders[`quarkus.openapi.generator.builders`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-builders]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-builders[[.line-through]#`quarkus.openapi.generator.builders`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.builders+++[]
 endif::add-copy-button-to-config-props[]
@@ -78,6 +84,8 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
+_This property is deprecated: `quarkus.openapi.generator.server.<tool>.use-builders` instead._
+
 Whether it must generate builders for properties.
 
 
@@ -89,9 +97,9 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_BUILDERS+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean
-|`+++false+++`
+|
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-base-package[`quarkus.openapi.generator.base-package`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-base-package[[.line-through]#`quarkus.openapi.generator.base-package`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.base-package+++[]
 endif::add-copy-button-to-config-props[]
@@ -99,6 +107,8 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
+_This property is deprecated: Use `quarkus.openapi.generator.server.<tool>.base-package` instead._
+
 The base package to be used to generated sources.
 
 
@@ -110,11 +120,164 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_BASE_PACKAGE+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`+++io.apicurio.api+++`
+|
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation[`quarkus.openapi.generator.use-bean-validation`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation[[.line-through]#`quarkus.openapi.generator.use-bean-validation`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.use-bean-validation+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+_This property is deprecated: Use `quarkus.openapi.generator.server.<tool>.use-bean-validation` instead._
+
+Whether it must generate resources and beans using bean validation (JSR-303).
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_USE_BEAN_VALIDATION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_USE_BEAN_VALIDATION+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use[`quarkus.openapi.generator.server.use`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.use+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The generator to be used for generating the server code.
+
+Possible values are: `apicurio` or `openapitools`.
+
+By default, is `apicurio`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`+++apicurio+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-spec[`quarkus.openapi.generator.server.spec`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.spec+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The OpenAPI specification filename.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_SPEC+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_SPEC+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-input-base-dir[`quarkus.openapi.generator.server.input-base-dir`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.input-base-dir+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The input base dir where the OpenAPI specification is.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_INPUT_BASE_DIR+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_INPUT_BASE_DIR+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`+++src/main/resources/openapi+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-reactive[`quarkus.openapi.generator.server.use-reactive`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.use-reactive+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether it must generate with reactive code.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_REACTIVE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_REACTIVE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-builder]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-builder[`quarkus.openapi.generator.server.use-builder`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.use-builder+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether it must generate builders for properties.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_BUILDER+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_BUILDER+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-base-package[`quarkus.openapi.generator.server.base-package`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.base-package+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The base package to be used to generated sources.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_BASE_PACKAGE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_BASE_PACKAGE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|`+++org.acme+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-bean-validation[`quarkus.openapi.generator.server.use-bean-validation`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.use-bean-validation+++[]
 endif::add-copy-button-to-config-props[]
 
 
@@ -124,10 +287,10 @@ Whether it must generate resources and beans using bean validation (JSR-303).
 
 
 ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_USE_BEAN_VALIDATION+++[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_BEAN_VALIDATION+++[]
 endif::add-copy-button-to-env-var[]
 ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_USE_BEAN_VALIDATION+++`
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_BEAN_VALIDATION+++`
 endif::add-copy-button-to-env-var[]
 --
 |boolean

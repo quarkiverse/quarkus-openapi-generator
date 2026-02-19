@@ -12,14 +12,46 @@
     <name>Quarkus - OpenAPI Generator - Server - Deployment</name>
 
     <dependencies>
-        <!-- Quarkus -->
+        <!-- quarkus -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-core-deployment</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-qute-deployment</artifactId>
+        </dependency>
+
+        <!-- runtime dependency -->
+        <dependency>
             <groupId>io.quarkiverse.openapi.generator</groupId>
             <artifactId>quarkus-openapi-generator-server</artifactId>
+        </dependency>
+        
+        <!-- openapitools -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator</artifactId>
+            <version>${version.org.openapitools}</version>        
+      </dependency>
+
+      <!-- apicurio -->
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-codegen</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-core</artifactId>
+            <version>${version.com.github.javaparser}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

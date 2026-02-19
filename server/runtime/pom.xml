@@ -15,12 +15,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.apicurio</groupId>
-            <artifactId>apicurio-codegen</artifactId>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-core</artifactId>
+            <artifactId>quarkus-qute</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>

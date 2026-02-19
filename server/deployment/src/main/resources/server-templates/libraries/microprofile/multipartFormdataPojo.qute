@@ -1,0 +1,13 @@
+    {#include suppressWarnings.qute/}
+    public static class {op.operationIdCamelCase}MultipartForm {
+    {#for p in op.formParams}
+        @jakarta.ws.rs.FormParam("{p.baseName}")
+    {#if p.isFile || (p.isString && p.dataFormat == 'base64')}
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM)
+    {#else if p.isPrimitiveType or (p.isArray && p.items.isPrimitiveType)}
+        @org.jboss.resteasy.annotations.providers.multipart.PartType(jakarta.ws.rs.core.MediaType.TEXT_PLAIN)
+    {#else}
+    {/if}
+        public {p.dataType} {p.paramName};
+    {/for}
+    }
