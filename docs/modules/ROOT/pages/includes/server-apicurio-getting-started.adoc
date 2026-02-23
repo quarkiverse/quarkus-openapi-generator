@@ -1,4 +1,3 @@
-
 Add the following dependency to your project's `pom.xml` file:
 
 [source,xml]
@@ -44,11 +43,21 @@ WARNING: You probably already have this configuration if you created your applic
 </plugin>
 ----
 
+[IMPORTANT]
+====
+To use the Apicurio (used by default) code generator, you need to configure your `application.properties` as follow:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use=apicurio
+----
+====
+
 Now, create the directory `openapi` under your `src/main/resources` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions. You have to define the specification used for code generation with the following property:
 
 [source,properties]
 ----
-quarkus.openapi.generator.spec=petstore-openapi.json
+quarkus.openapi.generator.server.spec=petstore-openapi.json
 ----
 
 
@@ -57,21 +66,21 @@ IMPORTANT: it is relative to the project base directory. For example, if you hav
 
 [source,properties]
 ----
-quarkus.openapi.generator.input-base-dir=openapi-definitions
+quarkus.openapi.generator.server.input-base-dir=openapi-definitions
 ----
 
 If a base package name is not provided, it will be used the default `io.apicurio.api`. You can customize it with the following property:
 
 [source,properties]
 ----
-quarkus.openapi.generator.base-package=io.petstore
+quarkus.openapi.generator.server.base-package=io.petstore
 ----
 
 By default, the extension generates non-reactive code. If you would like to change it, you can do it as follows:
 
 [source,properties]
 ----
-quarkus.openapi.generator.reactive=true
+quarkus.openapi.generator.server.use-reactive=true
 ----
 
 Run `mvn compile` to generate your classes in `target/generated-sources/jaxrs` path:
@@ -155,3 +164,4 @@ public class PetStoreImpl implements PetResource {
 ----
 
 See the https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/server/integration-tests[integration-tests] module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
+
