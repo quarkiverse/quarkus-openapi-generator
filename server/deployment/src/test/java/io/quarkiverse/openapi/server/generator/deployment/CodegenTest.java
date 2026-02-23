@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import io.quarkiverse.openapi.server.generator.deployment.codegen.ApicurioOpenApiServerCodegen;
+import io.quarkiverse.openapi.server.generator.deployment.codegen.apicurio.ApicurioOpenApiServerCodegen;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 
