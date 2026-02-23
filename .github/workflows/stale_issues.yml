@@ -11,7 +11,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v10.1.1
+      - uses: actions/stale@v10.2.0
         with:
           exempt-issue-labels: "pinned"
           stale-issue-message: "@quarkiverse/quarkiverse-openapi-generator This is being labeled as Stale."
