@@ -1,0 +1,20 @@
+     {#if op.summary}
+     * {op.summary}
+     *
+     {/if}
+     {#if op.notes}
+     * {op.notes}
+     *
+     {/if}
+     {#for p in op.pathParams}
+     * @param {p.paramName} {p.description}
+     {/for}
+     {#for p in op.queryParams}
+     * @param {p.paramName} {p.description}
+     {/for}
+     {#for p in op.bodyParams}
+     * @param {p.paramName} {p.description}
+     {/for}
+     {#for p in op.headerParams}
+     * @param {p.paramName} {p.description}
+     {/for}

@@ -1,0 +1,130 @@
+    {#if m.description}
+    /**
+      * {m.description}
+     **/
+    {/if}
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
+    {#include additionalModelTypeAnnotations.qute m=m/}
+    public static class {m.classname}QueryParam {#if m.parent}extends {m.parent}{/if}{#if serializableModel} implements java.io.Serializable{/if} {
+
+        {#for v in m.vars}
+        {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
+        {#if v.isEnum}
+        {#if v.isContainer && v.mostInnerItems}
+        {#include enumClass.qute e=v/}
+        {#else if !v.isContainer}
+
+        {#include enumClass.qute e=v/}{/if}
+        {/if}
+        {#if m.description}
+        /**
+          * {m.description}
+         **/
+        {/if}
+        {#if !v.isEnum}
+        @jakarta.ws.rs.QueryParam("{v.name}")
+        {/if}
+        {#if v.hasValidation}
+        {#include beanValidation.qute p=v/}
+        {/if}
+        {#if v.isContainer}
+        private {v.datatypeWithEnum} {v.name}{#if v.required && v.defaultValue} = {v.defaultValue}{#else} = null{/if};
+        {#else}
+        private {v.datatypeWithEnum} {v.name}{#if v.defaultValue} = {v.defaultValue}{/if};
+        {/if}
+        {/if}
+        {/for}
+
+        {#for v in m.vars}
+        {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
+        /**
+        {#if v.description}
+        * {v.description}
+        {#else}
+        * Get {v.name}
+        {/if}
+        {#if v.minimum}
+        * minimum: {v.minimum}
+        {/if}
+        {#if v.maximum}
+        * maximum: {v.maximum}
+        {/if}
+        * @return {v.name}
+        **/
+        @com.fasterxml.jackson.annotation.JsonProperty("{v.baseName}")
+        {#for ext in v.vendorExtensions.x-extra-annotation.orEmpty}
+        {ext}
+        {/for}
+        {#if v.hasValidation}
+        {#include beanValidation.qute p=v/}
+        {/if}
+        {#if v.isEnum && v.isContainer}public {v.datatypeWithEnum} {v.getter}(){
+            return {v.name};
+        }{#else if v.isEnum && !v.isArray && !v.isMap}public {v.datatypeWithEnum} {v.getter}() {
+            return {v.name};
+        }{#else if !v.isEnum && !v.isArray && !v.isMap}public {v.datatype} {v.getter}() {
+            return {v.name};
+        }{#else if !v.isEnum && (v.isArray || v.isMap)}public {v.datatype} {v.getter}() {
+            return {v.name};
+        }{#else if !v.isEnum}public {v.datatype} {v.getter}() {
+            return {v.name};
+        }{/if}
+
+        {#if !v.isReadOnly}
+        /**
+         * Set {v.name}
+         **/
+        @com.fasterxml.jackson.annotation.JsonProperty("{v.baseName}")
+        public void {v.setter}({v.datatypeWithEnum} {v.name}) {
+            this.{v.name} = {v.name};
+        }
+
+        public {m.classname}QueryParam {v.name}({v.datatypeWithEnum} {v.name}) {
+            this.{v.name} = {v.name};
+            return this;
+        }
+        {#if v.isArray}
+        public {m.classname}QueryParam add{v.nameInPascalCase}Item({v.items.datatypeWithEnum} {v.name}Item) {
+            this.{v.name}.add({v.name}Item);
+            return this;
+        }
+        {/if}
+        {#if v.isMap}
+        public {m.classname}QueryParam put{v.nameInPascalCase}Item(String mapKey, {v.items.datatypeWithEnum} {v.name}Item) {
+            this.{v.name}.put(mapKey, {v.name}Item);
+            return this;
+        }
+        {/if}
+        {/if}
+
+        {/if}
+        {/for}
+        /**
+         * Create a string representation of this pojo.
+         **/
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("class {m.classname}QueryParam {\n");
+            {#if m.parent}
+            sb.append("    ").append(toIndentedString(super.toString())).append("\n");{/if}
+            {#for v in m.vars}
+            {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
+            sb.append("    {v.name}: ").append(toIndentedString({v.name})).append("\n");
+            {/if}
+            {/for}
+            sb.append("}");
+            return sb.toString();
+        }
+
+        /**
+         * Convert the given object to string with each line indented by 4 spaces
+         * (except the first line).
+         */
+        private static String toIndentedString(Object o) {
+            if (o == null) {
+                return "null";
+            }
+            return o.toString().replace("\n", "\n    ");
+        }
+    }
