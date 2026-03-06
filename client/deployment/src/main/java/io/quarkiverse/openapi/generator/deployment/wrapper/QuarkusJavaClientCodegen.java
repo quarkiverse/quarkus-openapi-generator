@@ -16,12 +16,16 @@ import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
+import org.openapitools.codegen.model.ModelMap;
+import org.openapitools.codegen.model.OperationsMap;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.servers.Server;
 
@@ -33,7 +37,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     private static final String AUTH_PACKAGE = "auth";
     /*
-     * Default server URL (the first one in the OpenAPI spec file servers definition.
+     * Default server URL (the first one in the OpenAPI spec file servers
+     * definition.
      */
     private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
 
@@ -140,15 +145,100 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (verbose) {
             super.postProcess();
         }
-
     }
 
     @Override
-    public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
-        super.postProcessModelProperty(model, property);
-        if ("set".equals(property.containerType)) {
-            model.imports.add("Arrays");
+    public OperationsMap postProcessOperationsWithModels(OperationsMap objs, List<ModelMap> allModels) {
+        OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
+
+        Map<String, Object> operations = (Map<String, Object>) result.get("operations");
+        List<org.openapitools.codegen.CodegenOperation> os = (List<org.openapitools.codegen.CodegenOperation>) operations
+                .get("operation");
+
+        for (org.openapitools.codegen.CodegenOperation op : os) {
+            // Fix for https://github.com/quarkiverse/quarkus-openapi-generator/issues/773
+            if (op.returnBaseType != null && "String".equals(op.returnBaseType) && op.returnContainer != null
+                    && ("Set".equals(op.returnContainer) || "List".equals(op.returnContainer))) {
+                String commonPath = (String) result.get("commonPath");
+                String path = op.path;
+                if (commonPath != null && path != null) {
+                    if (path.startsWith("/")) {
+                        path = commonPath + path;
+                    } else {
+                        path = commonPath + "/" + path;
+                    }
+                } else if (commonPath != null) {
+                    path = commonPath;
+                }
+                // Handle double slashes if any
+                if (path != null) {
+                    path = path.replaceAll("//", "/");
+                }
+
+                Operation openApiOperation = findOperation(path, op.httpMethod);
+                if (openApiOperation == null && path != null && path.endsWith("/")) {
+                    String pathNoSlash = path.substring(0, path.length() - 1);
+                    openApiOperation = findOperation(pathNoSlash, op.httpMethod);
+                }
+
+                if (openApiOperation != null) {
+                    if (openApiOperation.getResponses() != null && openApiOperation.getResponses().get("200") != null
+                            && openApiOperation.getResponses().get("200").getContent() != null && openApiOperation
+                                    .getResponses().get("200").getContent().get("application/json") != null) {
+                        Schema<?> responseSchema = openApiOperation.getResponses().get("200").getContent()
+                                .get("application/json").getSchema();
+
+                        if (responseSchema instanceof ArraySchema) {
+                            Schema<?> items = ((ArraySchema) responseSchema).getItems();
+                            if (items.getEnum() != null && items.get$ref() == null) {
+                                String matchedModel = findMatchingEnumModel(items.getEnum());
+                                if (matchedModel != null) {
+                                    op.returnBaseType = matchedModel;
+                                    op.returnType = op.returnContainer + "<" + matchedModel + ">";
+                                    op.imports.add(matchedModel);
+
+                                    // Add to file-level imports
+                                    List<Map<String, String>> imports = (List<Map<String, String>>) result
+                                            .get("imports");
+                                    Map<String, String> importMap = new java.util.HashMap<>();
+                                    importMap.put("import", modelPackage() + "." + matchedModel);
+                                    imports.add(importMap);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+        return result;
+    }
+
+    private Operation findOperation(String path, String httpMethod) {
+        if (this.openAPI == null)
+            return null;
+        io.swagger.v3.oas.models.PathItem pathItem = this.openAPI.getPaths().get(path);
+        if (pathItem == null)
+            return null;
+        try {
+            io.swagger.v3.oas.models.PathItem.HttpMethod method = io.swagger.v3.oas.models.PathItem.HttpMethod
+                    .valueOf(httpMethod.toUpperCase());
+            return pathItem.readOperationsMap().get(method);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private String findMatchingEnumModel(List<?> enumValues) {
+        if (this.openAPI != null && this.openAPI.getComponents() != null
+                && this.openAPI.getComponents().getSchemas() != null) {
+            for (Map.Entry<String, Schema> entry : this.openAPI.getComponents().getSchemas().entrySet()) {
+                Schema s = entry.getValue();
+                if (s.getEnum() != null && s.getEnum().equals(enumValues)) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -159,11 +249,15 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     @Override
-    public CodegenProperty fromProperty(String name, Schema p, boolean required, boolean schemaIsFromAdditionalProperties) {
+    public CodegenProperty fromProperty(String name, Schema p, boolean required,
+            boolean schemaIsFromAdditionalProperties) {
         if (p != null && p.getType() != null) {
-            // Property is a `type: object` without `additionalProperties: true`, without `properties`, but has `default` values set!
-            // In this peculiar situation, the template will try to initialize a Java Object with such values, and it will fail to compile.
-            // See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1185 for more context.
+            // Property is a `type: object` without `additionalProperties: true`, without
+            // `properties`, but has `default` values set!
+            // In this peculiar situation, the template will try to initialize a Java Object
+            // with such values, and it will fail to compile.
+            // See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1185 for
+            // more context.
             if ("object".equals(p.getType()) && p.getDefault() != null && p.getAdditionalProperties() == null
                     && p.getItems() == null) {
                 p.setAdditionalProperties(true);
@@ -245,9 +339,11 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     private void configureAdditionalPropertiesAsAttribute() {
-        String property = GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE);
+        String property = GlobalSettings
+                .getProperty(OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE);
         if (Boolean.parseBoolean(property)) {
             this.supportsAdditionalPropertiesWithComposedSchema = true;
         }
     }
+
 }
