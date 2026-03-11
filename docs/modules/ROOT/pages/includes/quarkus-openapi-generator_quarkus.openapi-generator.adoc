@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-form-model[`quarkus.openapi-generator.codegen.skip-form-model`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-form-model[`+++quarkus.openapi-generator.codegen.skip-form-model+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.skip-form-model+++[]
 endif::add-copy-button-to-config-props[]
@@ -28,7 +28,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-type-mappings-type-mappings[`quarkus.openapi-generator.codegen.type-mappings."type-mappings"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-type-mappings-type-mappings[`+++quarkus.openapi-generator.codegen.type-mappings."type-mappings"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.type-mappings."type-mappings"+++[]
 endif::add-copy-button-to-config-props[]
@@ -49,7 +49,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-import-mappings-import-mappings[`quarkus.openapi-generator.codegen.import-mappings."import-mappings"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-import-mappings-import-mappings[`+++quarkus.openapi-generator.codegen.import-mappings."import-mappings"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.import-mappings."import-mappings"+++[]
 endif::add-copy-button-to-config-props[]
@@ -70,7 +70,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-schema-mappings-schema-mappings[`quarkus.openapi-generator.codegen.schema-mappings."schema-mappings"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-schema-mappings-schema-mappings[`+++quarkus.openapi-generator.codegen.schema-mappings."schema-mappings"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.schema-mappings."schema-mappings"+++[]
 endif::add-copy-button-to-config-props[]
@@ -91,7 +91,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-model-type-annotations[`quarkus.openapi-generator.codegen.additional-model-type-annotations`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-model-type-annotations[`+++quarkus.openapi-generator.codegen.additional-model-type-annotations+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.additional-model-type-annotations+++[]
 endif::add-copy-button-to-config-props[]
@@ -112,7 +112,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-enum-type-unexpected-member[`quarkus.openapi-generator.codegen.additional-enum-type-unexpected-member`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-enum-type-unexpected-member[`+++quarkus.openapi-generator.codegen.additional-enum-type-unexpected-member+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.additional-enum-type-unexpected-member+++[]
 endif::add-copy-button-to-config-props[]
@@ -133,7 +133,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-api-type-annotations[`quarkus.openapi-generator.codegen.additional-api-type-annotations`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-api-type-annotations[`+++quarkus.openapi-generator.codegen.additional-api-type-annotations+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.additional-api-type-annotations+++[]
 endif::add-copy-button-to-config-props[]
@@ -154,7 +154,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-request-args[`quarkus.openapi-generator.codegen.additional-request-args`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-request-args[`+++quarkus.openapi-generator.codegen.additional-request-args+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.additional-request-args+++[]
 endif::add-copy-button-to-config-props[]
@@ -175,7 +175,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-return-response[`quarkus.openapi-generator.codegen.return-response`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-return-response[`+++quarkus.openapi-generator.codegen.return-response+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.return-response+++[]
 endif::add-copy-button-to-config-props[]
@@ -196,7 +196,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation[`quarkus.openapi-generator.codegen.enable-security-generation`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-enable-security-generation[`+++quarkus.openapi-generator.codegen.enable-security-generation+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.enable-security-generation+++[]
 endif::add-copy-button-to-config-props[]
@@ -217,7 +217,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-open-api-normalizer-normalizer[`quarkus.openapi-generator.codegen.open-api-normalizer."normalizer"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-open-api-normalizer-normalizer[`+++quarkus.openapi-generator.codegen.open-api-normalizer."normalizer"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.open-api-normalizer."normalizer"+++[]
 endif::add-copy-button-to-config-props[]
@@ -238,7 +238,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny[`quarkus.openapi-generator.codegen.mutiny`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny[`+++quarkus.openapi-generator.codegen.mutiny+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.mutiny+++[]
 endif::add-copy-button-to-config-props[]
@@ -259,7 +259,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-return-response[`quarkus.openapi-generator.codegen.mutiny.return-response`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-return-response[`+++quarkus.openapi-generator.codegen.mutiny.return-response+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.mutiny.return-response+++[]
 endif::add-copy-button-to-config-props[]
@@ -280,7 +280,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.mutiny.operation-ids."mutiny-multi-operation-ids"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny-operation-ids-mutiny-multi-operation-ids[`+++quarkus.openapi-generator.codegen.mutiny.operation-ids."mutiny-multi-operation-ids"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.mutiny.operation-ids."mutiny-multi-operation-ids"+++[]
 endif::add-copy-button-to-config-props[]
@@ -307,7 +307,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-part-filename[`quarkus.openapi-generator.codegen.generate-part-filename`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-part-filename[`+++quarkus.openapi-generator.codegen.generate-part-filename+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.generate-part-filename+++[]
 endif::add-copy-button-to-config-props[]
@@ -328,7 +328,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-part-filename-value[`quarkus.openapi-generator.codegen.part-filename-value`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-part-filename-value[`+++quarkus.openapi-generator.codegen.part-filename-value+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.part-filename-value+++[]
 endif::add-copy-button-to-config-props[]
@@ -349,7 +349,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-field-name-in-part-filename[`quarkus.openapi-generator.codegen.use-field-name-in-part-filename`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-field-name-in-part-filename[`+++quarkus.openapi-generator.codegen.use-field-name-in-part-filename+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.use-field-name-in-part-filename+++[]
 endif::add-copy-button-to-config-props[]
@@ -370,7 +370,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-bean-validation[`quarkus.openapi-generator.codegen.use-bean-validation`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-bean-validation[`+++quarkus.openapi-generator.codegen.use-bean-validation+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.use-bean-validation+++[]
 endif::add-copy-button-to-config-props[]
@@ -391,7 +391,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-apis[`quarkus.openapi-generator.codegen.generate-apis`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-apis[`+++quarkus.openapi-generator.codegen.generate-apis+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.generate-apis+++[]
 endif::add-copy-button-to-config-props[]
@@ -412,7 +412,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-register-rest-client]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-register-rest-client[`quarkus.openapi-generator.codegen.register-rest-client`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-register-rest-client]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-register-rest-client[`+++quarkus.openapi-generator.codegen.register-rest-client+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.register-rest-client+++[]
 endif::add-copy-button-to-config-props[]
@@ -433,7 +433,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope[`quarkus.openapi-generator.codegen.api-cdi-scope`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope[`+++quarkus.openapi-generator.codegen.api-cdi-scope+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.api-cdi-scope+++[]
 endif::add-copy-button-to-config-props[]
@@ -456,7 +456,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++jakarta.enterprise.context.ApplicationScoped+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models[`quarkus.openapi-generator.codegen.generate-models`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-generate-models[`+++quarkus.openapi-generator.codegen.generate-models+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.generate-models+++[]
 endif::add-copy-button-to-config-props[]
@@ -477,7 +477,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-equals-hashcode[`quarkus.openapi-generator.codegen.equals-hashcode`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-equals-hashcode[`+++quarkus.openapi-generator.codegen.equals-hashcode+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.equals-hashcode+++[]
 endif::add-copy-button-to-config-props[]
@@ -498,7 +498,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-properties-as-attribute[`quarkus.openapi-generator.codegen.additional-properties-as-attribute`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-additional-properties-as-attribute[`+++quarkus.openapi-generator.codegen.additional-properties-as-attribute+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.additional-properties-as-attribute+++[]
 endif::add-copy-button-to-config-props[]
@@ -519,7 +519,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-initialize-empty-collections[`quarkus.openapi-generator.codegen.initialize-empty-collections`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-initialize-empty-collections[`+++quarkus.openapi-generator.codegen.initialize-empty-collections+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.initialize-empty-collections+++[]
 endif::add-copy-button-to-config-props[]
@@ -540,7 +540,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`quarkus.openapi-generator.codegen.verbose`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`+++quarkus.openapi-generator.codegen.verbose+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.verbose+++[]
 endif::add-copy-button-to-config-props[]
@@ -561,7 +561,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir[`quarkus.openapi-generator.codegen.input-base-dir`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-input-base-dir[`+++quarkus.openapi-generator.codegen.input-base-dir+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.input-base-dir+++[]
 endif::add-copy-button-to-config-props[]
@@ -582,7 +582,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-scanning]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-scanning[`quarkus.openapi-generator.codegen.gav-scanning`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-scanning]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-scanning[`+++quarkus.openapi-generator.codegen.gav-scanning+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.gav-scanning+++[]
 endif::add-copy-button-to-config-props[]
@@ -603,7 +603,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir[`quarkus.openapi-generator.codegen.template-base-dir`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-template-base-dir[`+++quarkus.openapi-generator.codegen.template-base-dir+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.template-base-dir+++[]
 endif::add-copy-button-to-config-props[]
@@ -624,7 +624,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-validatespec]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-validatespec[`quarkus.openapi-generator.codegen.validateSpec`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-validatespec]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-validatespec[`+++quarkus.openapi-generator.codegen.validateSpec+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.validateSpec+++[]
 endif::add-copy-button-to-config-props[]
@@ -645,7 +645,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include[`quarkus.openapi-generator.codegen.include`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include[`+++quarkus.openapi-generator.codegen.include+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.include+++[]
 endif::add-copy-button-to-config-props[]
@@ -666,7 +666,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude[`quarkus.openapi-generator.codegen.exclude`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude[`+++quarkus.openapi-generator.codegen.exclude+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.exclude+++[]
 endif::add-copy-button-to-config-props[]
@@ -687,7 +687,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-artifact-id-filter]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-artifact-id-filter[`quarkus.openapi-generator.codegen.artifact-id-filter`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-artifact-id-filter]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-artifact-id-filter[`+++quarkus.openapi-generator.codegen.artifact-id-filter+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.artifact-id-filter+++[]
 endif::add-copy-button-to-config-props[]
@@ -708,7 +708,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++.*openapi.*+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude-gavs]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude-gavs[`quarkus.openapi-generator.codegen.exclude-gavs`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude-gavs]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-exclude-gavs[`+++quarkus.openapi-generator.codegen.exclude-gavs+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.exclude-gavs+++[]
 endif::add-copy-button-to-config-props[]
@@ -729,7 +729,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include-gavs]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include-gavs[`quarkus.openapi-generator.codegen.include-gavs`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-include-gavs]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-include-gavs[`+++quarkus.openapi-generator.codegen.include-gavs+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.include-gavs+++[]
 endif::add-copy-button-to-config-props[]
@@ -753,7 +753,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme[`quarkus.openapi-generator.codegen.default-security-scheme`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-default-security-scheme[`+++quarkus.openapi-generator.codegen.default-security-scheme+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.default-security-scheme+++[]
 endif::add-copy-button-to-config-props[]
@@ -774,7 +774,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model[`quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model[`+++quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model+++[]
 endif::add-copy-button-to-config-props[]
@@ -795,7 +795,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-type-mappings-type-mappings[`quarkus.openapi-generator.codegen.spec."spec-item".type-mappings."type-mappings"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-type-mappings-type-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-type-mappings-type-mappings[`+++quarkus.openapi-generator.codegen.spec."spec-item".type-mappings."type-mappings"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".type-mappings."type-mappings"+++[]
 endif::add-copy-button-to-config-props[]
@@ -816,7 +816,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-import-mappings-import-mappings[`quarkus.openapi-generator.codegen.spec."spec-item".import-mappings."import-mappings"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-import-mappings-import-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-import-mappings-import-mappings[`+++quarkus.openapi-generator.codegen.spec."spec-item".import-mappings."import-mappings"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".import-mappings."import-mappings"+++[]
 endif::add-copy-button-to-config-props[]
@@ -837,7 +837,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-schema-mappings-schema-mappings[`quarkus.openapi-generator.codegen.spec."spec-item".schema-mappings."schema-mappings"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-schema-mappings-schema-mappings]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-schema-mappings-schema-mappings[`+++quarkus.openapi-generator.codegen.spec."spec-item".schema-mappings."schema-mappings"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".schema-mappings."schema-mappings"+++[]
 endif::add-copy-button-to-config-props[]
@@ -858,7 +858,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-model-type-annotations[`quarkus.openapi-generator.codegen.spec."spec-item".additional-model-type-annotations`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-model-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-model-type-annotations[`+++quarkus.openapi-generator.codegen.spec."spec-item".additional-model-type-annotations+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".additional-model-type-annotations+++[]
 endif::add-copy-button-to-config-props[]
@@ -879,7 +879,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-enum-type-unexpected-member[`quarkus.openapi-generator.codegen.spec."spec-item".additional-enum-type-unexpected-member`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-enum-type-unexpected-member]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-enum-type-unexpected-member[`+++quarkus.openapi-generator.codegen.spec."spec-item".additional-enum-type-unexpected-member+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".additional-enum-type-unexpected-member+++[]
 endif::add-copy-button-to-config-props[]
@@ -900,7 +900,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-api-type-annotations[`quarkus.openapi-generator.codegen.spec."spec-item".additional-api-type-annotations`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-api-type-annotations]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-api-type-annotations[`+++quarkus.openapi-generator.codegen.spec."spec-item".additional-api-type-annotations+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".additional-api-type-annotations+++[]
 endif::add-copy-button-to-config-props[]
@@ -921,7 +921,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-request-args[`quarkus.openapi-generator.codegen.spec."spec-item".additional-request-args`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-request-args]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-request-args[`+++quarkus.openapi-generator.codegen.spec."spec-item".additional-request-args+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".additional-request-args+++[]
 endif::add-copy-button-to-config-props[]
@@ -942,7 +942,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-return-response[`quarkus.openapi-generator.codegen.spec."spec-item".return-response`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-return-response[`+++quarkus.openapi-generator.codegen.spec."spec-item".return-response+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".return-response+++[]
 endif::add-copy-button-to-config-props[]
@@ -963,7 +963,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation[`quarkus.openapi-generator.codegen.spec."spec-item".enable-security-generation`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-enable-security-generation[`+++quarkus.openapi-generator.codegen.spec."spec-item".enable-security-generation+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".enable-security-generation+++[]
 endif::add-copy-button-to-config-props[]
@@ -984,7 +984,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-open-api-normalizer-normalizer[`quarkus.openapi-generator.codegen.spec."spec-item".open-api-normalizer."normalizer"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-open-api-normalizer-normalizer]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-open-api-normalizer-normalizer[`+++quarkus.openapi-generator.codegen.spec."spec-item".open-api-normalizer."normalizer"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".open-api-normalizer."normalizer"+++[]
 endif::add-copy-button-to-config-props[]
@@ -1005,7 +1005,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny[`+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny+++[]
 endif::add-copy-button-to-config-props[]
@@ -1026,7 +1026,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-return-response[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny.return-response`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-return-response]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-return-response[`+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny.return-response+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny.return-response+++[]
 endif::add-copy-button-to-config-props[]
@@ -1047,7 +1047,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids[`quarkus.openapi-generator.codegen.spec."spec-item".mutiny.operation-ids."mutiny-multi-operation-ids"`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny-operation-ids-mutiny-multi-operation-ids[`+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny.operation-ids."mutiny-multi-operation-ids"+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny.operation-ids."mutiny-multi-operation-ids"+++[]
 endif::add-copy-button-to-config-props[]
@@ -1074,7 +1074,7 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-part-filename[`quarkus.openapi-generator.codegen.spec."spec-item".generate-part-filename`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-part-filename[`+++quarkus.openapi-generator.codegen.spec."spec-item".generate-part-filename+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".generate-part-filename+++[]
 endif::add-copy-button-to-config-props[]
@@ -1095,7 +1095,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-part-filename-value[`quarkus.openapi-generator.codegen.spec."spec-item".part-filename-value`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-part-filename-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-part-filename-value[`+++quarkus.openapi-generator.codegen.spec."spec-item".part-filename-value+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".part-filename-value+++[]
 endif::add-copy-button-to-config-props[]
@@ -1116,7 +1116,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-field-name-in-part-filename[`quarkus.openapi-generator.codegen.spec."spec-item".use-field-name-in-part-filename`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-field-name-in-part-filename]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-field-name-in-part-filename[`+++quarkus.openapi-generator.codegen.spec."spec-item".use-field-name-in-part-filename+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".use-field-name-in-part-filename+++[]
 endif::add-copy-button-to-config-props[]
@@ -1137,7 +1137,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-bean-validation[`quarkus.openapi-generator.codegen.spec."spec-item".use-bean-validation`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-bean-validation[`+++quarkus.openapi-generator.codegen.spec."spec-item".use-bean-validation+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".use-bean-validation+++[]
 endif::add-copy-button-to-config-props[]
@@ -1158,7 +1158,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-apis[`quarkus.openapi-generator.codegen.spec."spec-item".generate-apis`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-apis]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-apis[`+++quarkus.openapi-generator.codegen.spec."spec-item".generate-apis+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".generate-apis+++[]
 endif::add-copy-button-to-config-props[]
@@ -1179,7 +1179,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-register-rest-client]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-register-rest-client[`quarkus.openapi-generator.codegen.spec."spec-item".register-rest-client`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-register-rest-client]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-register-rest-client[`+++quarkus.openapi-generator.codegen.spec."spec-item".register-rest-client+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".register-rest-client+++[]
 endif::add-copy-button-to-config-props[]
@@ -1200,7 +1200,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-cdi-scope[`quarkus.openapi-generator.codegen.spec."spec-item".api-cdi-scope`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-cdi-scope[`+++quarkus.openapi-generator.codegen.spec."spec-item".api-cdi-scope+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".api-cdi-scope+++[]
 endif::add-copy-button-to-config-props[]
@@ -1223,7 +1223,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++jakarta.enterprise.context.ApplicationScoped+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models[`quarkus.openapi-generator.codegen.spec."spec-item".generate-models`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-models[`+++quarkus.openapi-generator.codegen.spec."spec-item".generate-models+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".generate-models+++[]
 endif::add-copy-button-to-config-props[]
@@ -1244,7 +1244,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-equals-hashcode[`quarkus.openapi-generator.codegen.spec."spec-item".equals-hashcode`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-equals-hashcode]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-equals-hashcode[`+++quarkus.openapi-generator.codegen.spec."spec-item".equals-hashcode+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".equals-hashcode+++[]
 endif::add-copy-button-to-config-props[]
@@ -1265,7 +1265,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-properties-as-attribute[`quarkus.openapi-generator.codegen.spec."spec-item".additional-properties-as-attribute`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-properties-as-attribute]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-additional-properties-as-attribute[`+++quarkus.openapi-generator.codegen.spec."spec-item".additional-properties-as-attribute+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".additional-properties-as-attribute+++[]
 endif::add-copy-button-to-config-props[]
@@ -1286,7 +1286,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-initialize-empty-collections[`quarkus.openapi-generator.codegen.spec."spec-item".initialize-empty-collections`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-initialize-empty-collections]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-initialize-empty-collections[`+++quarkus.openapi-generator.codegen.spec."spec-item".initialize-empty-collections+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".initialize-empty-collections+++[]
 endif::add-copy-button-to-config-props[]
@@ -1307,7 +1307,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package[`quarkus.openapi-generator.codegen.spec."spec-item".base-package`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package[`+++quarkus.openapi-generator.codegen.spec."spec-item".base-package+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".base-package+++[]
 endif::add-copy-button-to-config-props[]
@@ -1328,7 +1328,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-config-key]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-config-key[`quarkus.openapi-generator.codegen.spec."spec-item".config-key`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-config-key]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-config-key[`+++quarkus.openapi-generator.codegen.spec."spec-item".config-key+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".config-key+++[]
 endif::add-copy-button-to-config-props[]
@@ -1349,7 +1349,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-name-suffix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-name-suffix[`quarkus.openapi-generator.codegen.spec."spec-item".api-name-suffix`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-name-suffix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-api-name-suffix[`+++quarkus.openapi-generator.codegen.spec."spec-item".api-name-suffix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".api-name-suffix+++[]
 endif::add-copy-button-to-config-props[]
@@ -1370,7 +1370,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-suffix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-suffix[`quarkus.openapi-generator.codegen.spec."spec-item".model-name-suffix`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-suffix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-suffix[`+++quarkus.openapi-generator.codegen.spec."spec-item".model-name-suffix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".model-name-suffix+++[]
 endif::add-copy-button-to-config-props[]
@@ -1391,7 +1391,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-prefix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-prefix[`quarkus.openapi-generator.codegen.spec."spec-item".model-name-prefix`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-prefix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-model-name-prefix[`+++quarkus.openapi-generator.codegen.spec."spec-item".model-name-prefix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".model-name-prefix+++[]
 endif::add-copy-button-to-config-props[]
@@ -1412,7 +1412,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix[`quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix[`+++quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix+++[]
 endif::add-copy-button-to-config-props[]
@@ -1433,7 +1433,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-delimiter]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-delimiter[`quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-delimiter`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-delimiter]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-delimiter[`+++quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-delimiter+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-delimiter+++[]
 endif::add-copy-button-to-config-props[]
@@ -1454,7 +1454,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-count]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-count[`quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-count`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-count]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-remove-operation-id-prefix-count[`+++quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-count+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".remove-operation-id-prefix-count+++[]
 endif::add-copy-button-to-config-props[]
@@ -1475,7 +1475,7 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-serializable-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-serializable-model[`quarkus.openapi-generator.codegen.spec."spec-item".serializable-model`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-serializable-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-serializable-model[`+++quarkus.openapi-generator.codegen.spec."spec-item".serializable-model+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".serializable-model+++[]
 endif::add-copy-button-to-config-props[]
@@ -1496,7 +1496,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-dynamic-url]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-dynamic-url[`quarkus.openapi-generator.codegen.spec."spec-item".use-dynamic-url`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-dynamic-url]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-dynamic-url[`+++quarkus.openapi-generator.codegen.spec."spec-item".use-dynamic-url+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".use-dynamic-url+++[]
 endif::add-copy-button-to-config-props[]
@@ -1517,7 +1517,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-model-for-usage-as-bean-param]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-model-for-usage-as-bean-param[`quarkus.openapi-generator.codegen.spec."spec-item".generate-model-for-usage-as-bean-param`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-model-for-usage-as-bean-param]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-generate-model-for-usage-as-bean-param[`+++quarkus.openapi-generator.codegen.spec."spec-item".generate-model-for-usage-as-bean-param+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".generate-model-for-usage-as-bean-param+++[]
 endif::add-copy-button-to-config-props[]
@@ -1538,7 +1538,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files[`quarkus.openapi-generator.codegen.gav."gav-item".spec-files`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-gav-gav-item-spec-files[`+++quarkus.openapi-generator.codegen.gav."gav-item".spec-files+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.gav."gav-item".spec-files+++[]
 endif::add-copy-button-to-config-props[]
@@ -1559,7 +1559,7 @@ endif::add-copy-button-to-env-var[]
 |list of string
 |`+++openapi.yaml+++`
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation[`quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-token-propagation[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".token-propagation+++[]
 endif::add-copy-button-to-config-props[]
@@ -1584,7 +1584,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name[`quarkus.openapi-generator."item-configs".auth."auth-configs".header-name`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-header-name[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".header-name+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".header-name+++[]
 endif::add-copy-button-to-config-props[]
@@ -1609,7 +1609,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-username]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-username[`quarkus.openapi-generator."item-configs".auth."auth-configs".username`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-username]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-username[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".username+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".username+++[]
 endif::add-copy-button-to-config-props[]
@@ -1634,7 +1634,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-password]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-password[`quarkus.openapi-generator."item-configs".auth."auth-configs".password`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-password]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-password[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".password+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".password+++[]
 endif::add-copy-button-to-config-props[]
@@ -1661,7 +1661,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-bearer-token]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-bearer-token[`quarkus.openapi-generator."item-configs".auth."auth-configs".bearer-token`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-bearer-token]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-bearer-token[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".bearer-token+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".bearer-token+++[]
 endif::add-copy-button-to-config-props[]
@@ -1688,7 +1688,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-api-key]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-api-key[`quarkus.openapi-generator."item-configs".auth."auth-configs".api-key`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-api-key]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-api-key[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".api-key+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".api-key+++[]
 endif::add-copy-button-to-config-props[]
@@ -1715,7 +1715,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-use-authorization-header-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-use-authorization-header-value[`quarkus.openapi-generator."item-configs".auth."auth-configs".use-authorization-header-value`]##
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-use-authorization-header-value]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-use-authorization-header-value[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".use-authorization-header-value+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".use-authorization-header-value+++[]
 endif::add-copy-button-to-config-props[]
