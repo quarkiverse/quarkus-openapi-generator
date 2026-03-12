@@ -579,20 +579,6 @@ Where `UploadFileMultipartBody` is a generated class with each multipart field a
 
 NOTE: This feature requires `apicurio-codegen` version `1.2.9.Final` or later.
 
-== Error Handling
-
-When Apicurio fails to generate code from an OpenAPI specification, it writes a `PROJECT_GENERATION_FAILED.txt` file into the output instead of throwing an exception directly.
-The Quarkus extension detects this file and throws a `CodeGenException` with the full error details, so build failures are immediately visible with a descriptive message rather than being silently ignored.
-
-If code generation fails, the build will report an error similar to:
-
-[source]
-----
-Code generation failed: <error details from Apicurio>
-----
-
-Common causes include invalid or unsupported constructs in the OpenAPI specification. Review the error message and correct the specification accordingly.
-
 == Configuration Properties
 
 include::./includes/quarkus-openapi-generator-server.adoc[opts=optional, leveloffset=+1]
