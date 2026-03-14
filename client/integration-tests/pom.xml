@@ -120,7 +120,8 @@
       <modules>
         <module>mutiny-return-rest-response</module>
         <module>return-rest-response</module>
-      </modules>
+          <module>reuse-enums</module>
+    </modules>
       <properties>
         <!-- required to pass to the invoker in the `gav` module -->
         <consume.profile>resteasy-reactive</consume.profile>

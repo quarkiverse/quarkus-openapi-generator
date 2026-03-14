@@ -34,6 +34,13 @@ import {imp.import};
 public interface {classname} {
 
 {#for op in operations.operation}
+    // DEBUG: operationId = {op.operationId}
+    // DEBUG: returnType = {op.returnType}
+    // DEBUG: returnBaseType = {op.returnBaseType}
+    // DEBUG: returnContainer = {op.returnContainer}
+    {#if op.imports}
+    // DEBUG: imports = {op.imports}
+    {/if}
 {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
 {#if method-per-media-type
     && op.hasConsumes
