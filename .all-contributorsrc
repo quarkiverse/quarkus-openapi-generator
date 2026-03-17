@@ -378,6 +378,119 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "marko-bekhta",
+      "name": "Marko Bekhta",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4004823?v=4",
+      "profile": "https://github.com/marko-bekhta",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "andybarilla",
+      "name": "Andy Barilla",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5983808?v=4",
+      "profile": "https://kranzilla.com/",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
+    },
+    {
+      "login": "yuhaibohotmail",
+      "name": "yuhaibohotmail",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48646226?v=4",
+      "profile": "https://github.com/yuhaibohotmail",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "JPSantistebanQ",
+      "name": "Juan Piero Santisteban Quiroz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49204973?v=4",
+      "profile": "https://jpsantistebanq.github.io/portfolio",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "joschi",
+      "name": "Jochen Schalanda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43951?v=4",
+      "profile": "https://github.com/joschi",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "dellamas",
+      "name": "Luis Fabrício De Llamas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80655200?v=4",
+      "profile": "https://dev.to/dellamas",
+      "contributions": [
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "jghagemann",
+      "name": "João Guilherme Hagemann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42047435?v=4",
+      "profile": "https://github.com/jghagemann",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "omatheusmesmo",
+      "name": "Matheus Oliveira da Silva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/99829531?v=4",
+      "profile": "https://github.com/omatheusmesmo",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cmoine-swi",
+      "name": "Christophe Moine",
+      "avatar_url": "https://avatars.githubusercontent.com/u/180930830?v=4",
+      "profile": "https://github.com/cmoine-swi",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "CodeSimcoe",
+      "name": "Clément de Tastes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110094118?v=4",
+      "profile": "https://github.com/CodeSimcoe",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "matheusandre1",
+      "name": "Matheus André",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92062874?v=4",
+      "profile": "https://github.com/matheusandre1",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "nh2297",
+      "name": "Nico Hinrichs",
+      "avatar_url": "https://avatars.githubusercontent.com/u/208935727?v=4",
+      "profile": "https://github.com/nh2297",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
