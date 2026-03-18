@@ -1,0 +1,61 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Array-Only Ref Multipart API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/upload/items": {
+      "post": {
+        "summary": "Upload with array-only ref field",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/TestObject"
+                    },
+                    "description": "Array of object references (no direct ref)"
+                  },
+                  "amounts": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "format": "decimal"
+                    },
+                    "description": "Array of BigDecimal values"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TestObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.server.generator.deployment;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -13,15 +14,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+
 import io.quarkiverse.openapi.server.generator.deployment.codegen.apicurio.ApicurioOpenApiServerCodegen;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 
 public class CodegenTest {
 
-    private final static Path WORK_DIR = Path.of("target/generated-test-sources");
-    private final static Path INPUT_DIR = Path.of("src/test/resources");
-    private final static String OUT_DIR = "target/generated-test-sources";
+    private static final Path WORK_DIR = Path.of("target/generated-test-sources");
+    private static final Path INPUT_DIR = Path.of("src/test/resources");
+    private static final String OUT_DIR = "target/generated-test-sources";
 
     @BeforeAll
     public static void setup() throws IOException {
@@ -62,6 +68,15 @@ public class CodegenTest {
     }
 
     @Test
+    void testDuplicateOperationIdThrowsCodeGenException() {
+        Config config = MockConfigUtils.getTestConfig("duplicate-operation-id.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "duplicate-operation-id"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        Assertions.assertThrows(CodeGenException.class, () -> apicurioOpenApiServerCodegen.trigger(codeGenContext));
+    }
+
+    @Test
     public void shouldGenerateAnErrorWhenInputDirIsNotExist() {
         Config config = MockConfigUtils.getTestConfig("doesNotExistDir.application.properties");
         CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "inputDir"), WORK_DIR,
@@ -69,6 +84,81 @@ public class CodegenTest {
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
 
         Assertions.assertThrows(CodeGenException.class, () -> apicurioOpenApiServerCodegen.trigger(codeGenContext));
+    }
+
+    /**
+     * Tests that a simple multipart/form-data request body with a binary file field generates
+     * the correct JAX-RS resource with {@code @RestForm} and {@code FileUpload} parameter.
+     */
+    @Test
+    void testMultipartFormContent() throws CodeGenException, IOException {
+        Config config = MockConfigUtils.getTestConfig("multipart-form-content.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "multipart-form-content"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        Path generatedFile = Path.of("target/generated-test-sources/multipart-form-content/io/example/api/FilesResource.java");
+        assertTrue(Files.exists(generatedFile));
+
+        CompilationUnit cu = StaticJavaParser.parse(generatedFile.toFile());
+        MethodDeclaration postMethod = cu.findAll(MethodDeclaration.class).stream()
+                .filter(method -> method.getAnnotationByName("POST").isPresent())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No @POST method found"));
+
+        assertThat(postMethod.getAnnotationByName("Consumes"))
+                .isPresent()
+                .hasValueSatisfying(annotation -> assertThat(annotation.toString()).contains("MULTIPART_FORM_DATA"));
+
+        Parameter fileParam = postMethod.getParameters().stream()
+                .filter(parameter -> parameter.getAnnotationByName("RestForm").isPresent())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No @RestForm parameter found"));
+        assertThat(fileParam.getTypeAsString()).isEqualTo("FileUpload");
+    }
+
+    /**
+     * Tests that a multipart/form-data spec where all fields are arrays containing object
+     * references generates correct {@code List<T>} parameters.
+     */
+    @Test
+    void testMultipartArrayOnlyRef() throws CodeGenException, IOException {
+        Config config = MockConfigUtils.getTestConfig("multipart-array-only-ref.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "multipart-array-only-ref"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        Path generatedFile = Path
+                .of("target/generated-test-sources/multipart-array-only-ref/io/example/api/UploadResource.java");
+        assertTrue(Files.exists(generatedFile));
+
+        CompilationUnit cu = StaticJavaParser.parse(generatedFile.toFile());
+        MethodDeclaration postMethod = cu.findAll(MethodDeclaration.class).stream()
+                .filter(method -> method.getAnnotationByName("POST").isPresent())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No @POST method found"));
+
+        assertThat(postMethod.getAnnotationByName("Consumes"))
+                .isPresent()
+                .hasValueSatisfying(annotation -> assertThat(annotation.toString()).contains("MULTIPART_FORM_DATA"));
+
+        Parameter itemsParam = postMethod.getParameters().stream()
+                .filter(parameter -> parameter.getAnnotationByName("RestForm")
+                        .map(annotation -> annotation.toString().contains("\"items\""))
+                        .orElse(false))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No @RestForm(\"items\") parameter found"));
+        assertThat(itemsParam.getTypeAsString()).startsWith("List<");
+
+        Parameter amountsParam = postMethod.getParameters().stream()
+                .filter(parameter -> parameter.getAnnotationByName("RestForm")
+                        .map(annotation -> annotation.toString().contains("\"amounts\""))
+                        .orElse(false))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No @RestForm(\"amounts\") parameter found"));
+        assertThat(amountsParam.getTypeAsString()).startsWith("List<");
     }
 
 }
