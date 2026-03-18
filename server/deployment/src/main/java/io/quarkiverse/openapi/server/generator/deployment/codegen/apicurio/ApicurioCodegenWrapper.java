@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -91,11 +92,12 @@ public class ApicurioCodegenWrapper {
         log.info("Code successfully generated.");
     }
 
-    private void unzip(File fromZipFile, File toOutputDir) throws IOException {
+    private void unzip(File fromZipFile, File toOutputDir) throws IOException, CodeGenException {
         try (java.util.zip.ZipFile zipFile = new ZipFile(fromZipFile)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
+                assertGenerationSucceeded(zipFile, entry);
                 File entryDestination = new File(toOutputDir, entry.getName());
                 if (entry.isDirectory()) {
                     entryDestination.mkdirs();
@@ -107,6 +109,17 @@ public class ApicurioCodegenWrapper {
                     }
                 }
             }
+        }
+    }
+
+    private void assertGenerationSucceeded(ZipFile zipFile, ZipEntry entry) throws IOException, CodeGenException {
+        if (entry.getName().equals("PROJECT_GENERATION_FAILED.txt")) {
+            String errorMessage;
+            try (InputStream in = zipFile.getInputStream(entry)) {
+                errorMessage = IOUtils.toString(in, StandardCharsets.UTF_8);
+            }
+            log.error("Code generation failed: {}", errorMessage);
+            throw new CodeGenException("Code generation failed: " + errorMessage);
         }
     }
 

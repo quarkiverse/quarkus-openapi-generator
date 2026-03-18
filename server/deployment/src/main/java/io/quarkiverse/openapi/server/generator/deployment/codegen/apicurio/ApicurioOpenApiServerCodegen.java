@@ -114,12 +114,7 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         // Apicurio only supports JSON => convert yaml to JSON
         final File jsonSpec = specPropertyName.endsWith("json") ? openApiResource
                 : convertToJSON(openApiResource.toPath());
-        try {
-            apicurioCodegenWrapper.generate(jsonSpec.toPath());
-        } catch (CodeGenException e) {
-            log.warn("Exception found processing specification with name: {}",
-                    openApiResource.getAbsolutePath());
-        }
+        apicurioCodegenWrapper.generate(jsonSpec.toPath());
         return true;
     }
 
