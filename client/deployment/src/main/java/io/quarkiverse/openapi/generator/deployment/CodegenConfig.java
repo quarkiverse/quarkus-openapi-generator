@@ -45,6 +45,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         EXCLUDE_GAVS("exclude-gavs"),
         VALIDATE_SPEC("validateSpec"),
         DEFAULT_SECURITY_SCHEME("default-security-scheme"),
+        SKIP_IF_UNCHANGED("skip-if-unchanged"),
 
         //spec configs only
         BASE_PACKAGE("base-package"),
