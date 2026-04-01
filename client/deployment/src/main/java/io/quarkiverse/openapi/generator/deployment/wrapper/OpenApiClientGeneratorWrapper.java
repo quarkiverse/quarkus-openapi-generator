@@ -363,6 +363,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withNameMappings(final Map<String, String> nameMappings) {
+        nameMappings.forEach(configurator::addNameMapping);
+        return this;
+    }
+
     /**
      * Main entrypoint, or where to generate the files based on the given base package.
      *

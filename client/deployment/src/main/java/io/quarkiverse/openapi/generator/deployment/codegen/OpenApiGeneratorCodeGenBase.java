@@ -364,6 +364,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.METHOD_PER_MEDIA_TYPE, Boolean.class)
                 .ifPresent(generator::withMethodPerMediaType);
 
+        getValues(smallRyeConfig, openApiFilePath, ConfigName.NAME_MAPPINGS, String.class, String.class)
+                .ifPresent(generator::withNameMappings);
+
         generator.generate(basePackage);
     }
 
