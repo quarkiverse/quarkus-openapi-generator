@@ -1,0 +1,33 @@
+In case of property name conflict (specially due to properties that start with underscore and
+in normalization process are generated without it), or only for convenience, it is possible to rename
+all properties that match a given name into another one when generated in an object.
+
+For this purpose use the configuration property `quarkus.openapi-generator.codegen.spec."spec-item".name-mappings."property-name"`.
+
+For example:
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.name-mappings.changeme=newnname
+----
+
+With the above configuration, given the folling model:
+
+[source,yaml]
+----
+    Animal:
+      properties:
+        changeme:
+          type: string
+        type:
+          type: string
+      type: object
+----
+
+The generated code will be:
+
+[source,java]
+----
+/* omitted */
+private String newname;
+/* omitted */
+----

@@ -1195,5 +1195,25 @@ endif::add-copy-button-to-env-var[]
 |int
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-spec-spec-item-name-mappings-property-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-spec-spec-item-name-mappings-property-name[`quarkus.spec."spec-item".name-mappings."property-name"`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.spec."spec-item".name-mappings."property-name"++[]
+endif::add-copy-button-to-config-props[]
+
+[.description]
+--
+When generating code for properties that equal the "property-name" value, the property will be renamed to the given
+string value on the generated objects.
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SPEC__SPEC_ITEM__NAME_MAPPINGS__PROPERTY_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SPEC__SPEC_ITEM__NAME_MAPPINGS__PROPERTY_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
 |===
 

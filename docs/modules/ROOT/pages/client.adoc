@@ -239,6 +239,11 @@ include::./includes/use-gav-for-spec.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/generate-model-for-usage-as-bean-param.adoc[leveloffset=+1, opts=optional]
 
+[[name-mappings]]
+== Change generated property name
+
+include::./includes/name-mappings.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments
