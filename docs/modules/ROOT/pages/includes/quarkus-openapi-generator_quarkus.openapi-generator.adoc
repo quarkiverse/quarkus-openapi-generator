@@ -750,6 +750,27 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-if-unchanged]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-skip-if-unchanged[`+++quarkus.openapi-generator.codegen.skip-if-unchanged+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.skip-if-unchanged+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether to skip code generation if spec or configuration has not changed
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SKIP_IF_UNCHANGED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SKIP_IF_UNCHANGED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model[`+++quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model+++[]

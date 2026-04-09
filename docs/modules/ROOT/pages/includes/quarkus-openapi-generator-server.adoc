@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-spec[[.line-through]#`quarkus.openapi.generator.spec`#]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-spec[[.line-through]#`+++quarkus.openapi.generator.spec+++`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.spec+++[]
 endif::add-copy-button-to-config-props[]
@@ -30,7 +30,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir[[.line-through]#`quarkus.openapi.generator.input-base-dir`#]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-input-base-dir[[.line-through]#`+++quarkus.openapi.generator.input-base-dir+++`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.input-base-dir+++[]
 endif::add-copy-button-to-config-props[]
@@ -53,7 +53,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-reactive[[.line-through]#`quarkus.openapi.generator.reactive`#]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-reactive[[.line-through]#`+++quarkus.openapi.generator.reactive+++`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.reactive+++[]
 endif::add-copy-button-to-config-props[]
@@ -76,7 +76,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-builders]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-builders[[.line-through]#`quarkus.openapi.generator.builders`#]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-builders]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-builders[[.line-through]#`+++quarkus.openapi.generator.builders+++`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.builders+++[]
 endif::add-copy-button-to-config-props[]
@@ -84,7 +84,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-_This property is deprecated: Use `quarkus.openapi.generator.server.<tool>.use-builders` instead._
+_This property is deprecated: `quarkus.openapi.generator.server.<tool>.use-builders` instead._
 
 Whether it must generate builders for properties.
 
@@ -99,7 +99,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-base-package[[.line-through]#`quarkus.openapi.generator.base-package`#]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-base-package[[.line-through]#`+++quarkus.openapi.generator.base-package+++`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.base-package+++[]
 endif::add-copy-button-to-config-props[]
@@ -122,7 +122,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation[[.line-through]#`quarkus.openapi.generator.use-bean-validation`#]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-use-bean-validation[[.line-through]#`+++quarkus.openapi.generator.use-bean-validation+++`#]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.use-bean-validation+++[]
 endif::add-copy-button-to-config-props[]
@@ -145,7 +145,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use[`quarkus.openapi.generator.server.use`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use[`+++quarkus.openapi.generator.server.use+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.use+++[]
 endif::add-copy-button-to-config-props[]
@@ -170,7 +170,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++apicurio+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-spec[`quarkus.openapi.generator.server.spec`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-spec]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-spec[`+++quarkus.openapi.generator.server.spec+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.spec+++[]
 endif::add-copy-button-to-config-props[]
@@ -191,7 +191,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-input-base-dir[`quarkus.openapi.generator.server.input-base-dir`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-input-base-dir]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-input-base-dir[`+++quarkus.openapi.generator.server.input-base-dir+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.input-base-dir+++[]
 endif::add-copy-button-to-config-props[]
@@ -212,7 +212,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++src/main/resources/openapi+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-reactive[`quarkus.openapi.generator.server.use-reactive`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-reactive]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-reactive[`+++quarkus.openapi.generator.server.use-reactive+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.use-reactive+++[]
 endif::add-copy-button-to-config-props[]
@@ -233,7 +233,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-builder]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-builder[`quarkus.openapi.generator.server.use-builder`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-builder]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-builder[`+++quarkus.openapi.generator.server.use-builder+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.use-builder+++[]
 endif::add-copy-button-to-config-props[]
@@ -254,7 +254,7 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-base-package[`quarkus.openapi.generator.server.base-package`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-base-package]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-base-package[`+++quarkus.openapi.generator.server.base-package+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.base-package+++[]
 endif::add-copy-button-to-config-props[]
@@ -275,7 +275,7 @@ endif::add-copy-button-to-env-var[]
 |string
 |`+++org.acme+++`
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-bean-validation[`quarkus.openapi.generator.server.use-bean-validation`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-bean-validation]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-bean-validation[`+++quarkus.openapi.generator.server.use-bean-validation+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.use-bean-validation+++[]
 endif::add-copy-button-to-config-props[]
