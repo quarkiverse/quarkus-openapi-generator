@@ -94,4 +94,10 @@ public interface GlobalCodegenConfig extends CommonItemConfig {
     @WithName("default-security-scheme")
     Optional<String> defaultSecuritySchema();
 
+    /**
+     * Whether to skip code generation if spec or configuration has not changed
+     */
+    @WithName("skip-if-unchanged")
+    @WithDefault("false")
+    Optional<Boolean> skipIfUnchanged();
 }
