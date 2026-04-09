@@ -18,19 +18,13 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.name == 'Build Website'
     permissions:
-      pull-requests: write # Required to update PR status comment
+      actions: read
+      pull-requests: write
     steps:
       - name: Download PR Artifact
         uses: actions/download-artifact@v8
         with:
           name: site
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-
-      - name: Download PR ID Artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: pr-id
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
@@ -50,7 +44,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pr-number: ${{ steps.pr.outputs.id }}
           body: |
-            🚀 PR Preview ${{ github.sha }} has been successfully built and deployed to https://quarkiverse-flow-pr-${{ steps.pr.outputs.id }}-preview.surge.sh
+            🚀 PR Preview ${{ github.sha }} has been successfully built and deployed to https://quarkiverse-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
 
             <img width="300" src="https://user-images.githubusercontent.com/507615/90250366-88233900-de6e-11ea-95a5-84f0762ffd39.png">
           body-marker: <!-- Preview status comment marker -->
