@@ -17,7 +17,7 @@ jobs:
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.name == 'Build Website' &&
-      github.event.workflow_run.head_branch == 'main'
+      github.event.workflow_run.pull_requests[0].base.ref == 'main'
     permissions:
       actions: read
       pull-requests: write
