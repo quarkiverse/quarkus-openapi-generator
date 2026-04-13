@@ -119,6 +119,48 @@ include::{examples-dir}/server/DefaultPetResource.java[tag=content]
 
 See the https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/server/integration-tests[integration-tests] module for more information of how to use this extension. Please be advised that the extension is on experimental, early development stage.
 
+== `x-smallrye-profile-<profileName>`
+
+You can add [SmallRye profile-specific vendor extensions](https://github.com/smallrye/smallrye-open-api?tab=readme-ov-file#x-smallrye-profile-profilename) directly to an OpenAPI operation, and the OpenAPITools server generator will propagate them to the generated resource method.
+
+You must add the dependency below to your project, as the `org.eclipse.microprofile.openapi.annotations.*` annotations are required at compile time. Without it, the generated code will not compile:
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-openapi</artifactId>
+</dependency>
+----
+
+When one or more `x-smallrye-profile-<profileName>` entries are present on an operation, the generated method is annotated with `@org.eclipse.microprofile.openapi.annotations.extensions.Extensions` and one `@Extension` entry per matching vendor extension.
+
+Example:
+
+[source,yaml]
+----
+paths:
+  /pet/findByTags:
+    get:
+      operationId: findPetsByTags
+      x-smallrye-profile-admin: ""
+      x-smallrye-profile-order: ""
+      x-smallrye-profile-user: ""
+----
+
+This generates an annotation similar to:
+
+[source,java]
+----
+@org.eclipse.microprofile.openapi.annotations.extensions.Extensions({
+    @org.eclipse.microprofile.openapi.annotations.extensions.Extension(name = "x-smallrye-profile-admin", value = ""),
+    @org.eclipse.microprofile.openapi.annotations.extensions.Extension(name = "x-smallrye-profile-order", value = ""),
+    @org.eclipse.microprofile.openapi.annotations.extensions.Extension(name = "x-smallrye-profile-user", value = "")
+})
+----
+
+The generated entries are sorted by profile name to keep the output deterministic.
+
 == Configuration Properties
 
 include::./includes/quarkus-openapi-generator-server.adoc[opts=optional, leveloffset=+1]
