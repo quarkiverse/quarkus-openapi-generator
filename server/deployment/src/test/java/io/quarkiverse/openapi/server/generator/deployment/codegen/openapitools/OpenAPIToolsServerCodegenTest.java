@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
+import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.body.MethodDeclaration;
 
 class OpenAPIToolsServerCodegenTest {
 
@@ -127,6 +129,67 @@ class OpenAPIToolsServerCodegenTest {
         // assert
         Assertions.assertThat(allResourcesWithMutiny).isNotEmpty();
 
+    }
+
+    @Test
+    @DisplayName("Should generate SmallRye profile extensions on resource methods")
+    void should_generate_smallrye_profile_extensions() throws IOException, ParseException {
+
+        // arrange
+        Path path = findOpenAPIPath("acme.json");
+
+        OpenAPIToolsGenerator openAPIToolsGenerator = new OpenAPIToolsGenerator(
+                new QuarkusJavaServerCodegenConfigurator()
+                        .withInputBaseDir(path.toString())
+                        .withOutputDir(Files.createTempDirectory("").toString())
+                        .withBasePackage("org.acme"));
+
+        // act
+        List<File> files = openAPIToolsGenerator.generate();
+
+        File petResource = files.stream()
+                .filter(file -> file.getName().equals("PetResource.java"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("PetResource.java was not generated"));
+
+        CompilationUnit cu = JavaParser.parse(petResource);
+
+        MethodDeclaration taggedMethod = cu.getTypes().stream()
+                .flatMap(type -> type.getMembers().stream())
+                .filter(member -> member instanceof MethodDeclaration)
+                .map(member -> (MethodDeclaration) member)
+                .filter(method -> method.getName().equals("findPetsByTags"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("findPetsByTags method was not generated"));
+
+        MethodDeclaration untaggedMethod = cu.getTypes().stream()
+                .flatMap(type -> type.getMembers().stream())
+                .filter(member -> member instanceof MethodDeclaration)
+                .map(member -> (MethodDeclaration) member)
+                .filter(method -> method.getName().equals("getPetById"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("getPetById method was not generated"));
+
+        // assert
+        Assertions.assertThat(taggedMethod.getAnnotations().stream()
+                .map(Object::toString)
+                .filter(annotation -> annotation.contains("Extensions"))
+                .findFirst())
+                .isPresent()
+                .hasValueSatisfying(annotation -> {
+                    Assertions.assertThat(annotation)
+                            .contains("@org.eclipse.microprofile.openapi.annotations.extensions.Extensions");
+                    Assertions.assertThat(annotation)
+                            .contains("@org.eclipse.microprofile.openapi.annotations.extensions.Extension");
+                    Assertions.assertThat(annotation).contains("name = \"x-smallrye-profile-admin\"");
+                    Assertions.assertThat(annotation).contains("name = \"x-smallrye-profile-order\"");
+                    Assertions.assertThat(annotation).contains("name = \"x-smallrye-profile-user\"");
+                    Assertions.assertThat(annotation).contains("value = \"\"");
+                });
+
+        Assertions.assertThat(untaggedMethod.getAnnotations().stream()
+                .map(Object::toString)
+                .anyMatch(annotation -> annotation.contains("Extensions"))).isFalse();
     }
 
     private Path findOpenAPIPath(String specFileName) {
