@@ -2,48 +2,61 @@ name: Surge.sh Preview
 
 on:
   workflow_run:
-    workflows: ["Build Website"]
+    workflows: [ "Build Website" ]
     types:
       - completed
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   preview:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    if: |
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.name == 'Build Website' &&
+      github.event.workflow_run.pull_requests[0].base.ref == 'main'
+    permissions:
+      actions: read
+      pull-requests: write
     steps:
       - name: Download PR Artifact
-        uses: dawidd6/action-download-artifact@v20
+        uses: actions/download-artifact@v8
         with:
-          workflow: ${{ github.event.workflow_run.workflow_id }}
-          workflow_conclusion: success
           name: site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
       - name: Store PR id as variable
         id: pr
         run: |
-          echo "id=$(<pr-id.txt)" >> $GITHUB_OUTPUT 
-          rm -f pr-id.txt
+          echo "id=$(<pr-id.txt)" >> $GITHUB_OUTPUT
+
       - name: Publishing to surge for preview
         id: deploy
-        run: npx surge ./ --domain https://quarkus-openapi-generator-preview-pr-${{  steps.pr.outputs.id }}.surge.sh --token ${{ secrets.SURGE_LOCAL_TOKEN }}
+        run: npx surge ./ --domain https://quarkiverse-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+
       - name: Update PR status comment on success
-        uses: actions-cool/maintain-one-comment@v3.3.0
+        uses: quarkusio/action-helpers@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          action: maintain-one-comment
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ steps.pr.outputs.id }}
           body: |
-            🎊 PR Preview ${{ github.sha }} has been successfully built and deployed. See the documentation preview: https://quarkus-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
-            <!-- Sticky Pull Request Comment -->
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          number: ${{ steps.pr.outputs.id }}
-          emojis: 'heart'
+            🚀 PR Preview ${{ github.sha }} has been successfully built and deployed to https://quarkiverse-openapi-generator-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
+
+            <img width="300" src="https://user-images.githubusercontent.com/507615/90250366-88233900-de6e-11ea-95a5-84f0762ffd39.png">
+          body-marker: <!-- Preview status comment marker -->
       - name: Update PR status comment on failure
+        uses: quarkusio/action-helpers@main
         if: ${{ failure() }}
-        uses: actions-cool/maintain-one-comment@v3.3.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          action: maintain-one-comment
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ steps.pr.outputs.id }}
           body: |
             😭 Deploy PR Preview failed.
             <img width="300" src="https://user-images.githubusercontent.com/507615/90250824-4e066700-de6f-11ea-8230-600ecc3d6a6b.png">
-            <!-- Sticky Pull Request Comment -->
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          number: ${{ steps.pr.outputs.id }}
-          emojis: 'confused'
+          body-marker: <!-- Preview status comment marker -->

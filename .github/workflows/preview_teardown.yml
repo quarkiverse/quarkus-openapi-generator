@@ -1,24 +1,36 @@
-name: Surge.sh Preview Teardown
+name: Surge.sh Teardown
 
 on:
   pull_request_target:
-    paths:
-      - '*.adoc'
     types: [closed]
+    branches:
+      - main
 
 jobs:
-  preview-teardown:
+  preview:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Teardown surge preview
         id: deploy
-        run: npx surge teardown https://quarkus-openapi-generator-preview-pr-${{ github.event.number }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
-      - name: Update PR status comment
-        uses: actions-cool/maintain-one-comment@v3.3.0
+        run: npx surge teardown https://quarkiverse-openapi-generator-preview-pr-${{ github.event.number }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+      - name: Update PR status comment on success
+        uses: quarkusio/action-helpers@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          action: maintain-one-comment
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ github.event.number }}
           body: |
             🙈 The PR is closed and the preview is expired.
-            <!-- Sticky Pull Request Comment -->
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          number: ${{ github.event.number }}
+          body-marker: <!-- Preview status comment marker -->
+      - name: Update PR status comment on failure
+        uses: quarkusio/action-helpers@main
+        if: ${{ failure() }}
+        with:
+          action: maintain-one-comment
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ github.event.number }}
+          body: |
+            😭 Failed to teardown preview for this PR. Please check the workflow logs.
+          body-marker: <!-- Preview status comment marker -->
