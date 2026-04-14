@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: "Multipart ClientMultipartForm API"
+  description: An API that uses ClientMultipartForm for multipart/form-data requests
+  version: 1.0.0
+
+servers:
+  - url: "http://my.endpoint.com/api/v1"
+
+paths:
+  /multipart:
+    post:
+      tags:
+        - Multipart
+      description: Upload multipart data using ClientMultipartForm
+      operationId: sendMultipartData
+      requestBody:
+        required: true
+        description: Multipart form data
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: A file to upload
+                fileName:
+                  type: string
+                  description: The name of the file
+                metadata:
+                  $ref: '#/components/schemas/Metadata'
+      responses:
+        "200":
+          description: "Data uploaded successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        "400":
+          description: "Invalid data supplied"
+
+  /simple-multipart:
+    post:
+      tags:
+        - Multipart
+      description: Upload simple multipart data
+      operationId: sendSimpleMultipart
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+      responses:
+        "204":
+          description: "Data uploaded"
+
+components:
+  schemas:
+    Metadata:
+      type: object
+      properties:
+        author:
+          type: string
+          description: Author name
+          example: John Doe
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the file
+          example: ["document", "important"]
+
+

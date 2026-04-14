@@ -58,7 +58,7 @@ public interface MultipartService {
 }
 ----
 
-When using RESTEasy Reactive, the `jakarta.ws.rs.BeanParam` annotation is added in front of the multipart parameter:
+When using RESTEasy Reactive, the `jakarta.ws.rs.BeanParam` annotation is added in front of the multipart parameter by default:
 
 [source,java]
 ----
@@ -74,10 +74,30 @@ public interface MultipartService {
 }
 ----
 
+If you prefer to build the multipart body programmatically, enable the `resteasy-reactive-client-form` property for the spec. In that mode the generated method accepts `org.jboss.resteasy.reactive.client.api.ClientMultipartForm` instead of a generated multipart POJO.
+
+[source,java]
+----
+@Path("/echo")
+@RegisterRestClient(baseUri="http://my.endpoint.com/api/v1", configKey="multipart-requests_yml")
+public interface MultipartService {
+
+  @POST
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.TEXT_PLAIN)
+  String sendMultipartData(ClientMultipartForm dataParts);
+
+}
+----
+
 See https://quarkus.io/guides/rest-client-multipart[Quarkus - Using the REST Client with Multipart] and
 the https://docs.jboss.org/resteasy/docs/4.7.5.Final/userguide/html_single/index.html[RESTEasy JAX-RS specifications] for more details.
 
-WARNING: `MultipartForm`  is deprecated when using RESTEasy Reactive.
+[IMPORTANT]
+====
+* `MultipartForm` is deprecated when using RESTEasy Reactive.
+* The `ClientMultipartForm` option is only available for RESTEasy Reactive clients and must be enabled explicitly with `resteasy-reactive-client-form=true`.
+====
 
 `baseURI` value of `RegisterRestClient` annotation is extracted from the `servers` section of the file, if present. If not, it will be left empty and it is expected you set up the uri to be used in your configuration.
 
@@ -89,7 +109,7 @@ the `skip-form-model` property corresponding to your spec in the `application.pr
 quarkus.openapi-generator.codegen.spec.my_multipart_requests_yml.skip-form-model=false
 ----
 
-See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/multipart-request[multipart-request] for an example of how to use this feature.
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/multipart-request[multipart-request] for an example of how to use this feature with generated multipart POJOs, and https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/client/integration-tests/multipart-client-form[multipart-client-form] for an example using `ClientMultipartForm`.
 
 In case the default `PartFilename` annotation is not required, its generation can be disabled by setting the `generate-part-filename` property (globally or corresponding to your spec) in the `application.properties` to `false`, e.g.:
 
