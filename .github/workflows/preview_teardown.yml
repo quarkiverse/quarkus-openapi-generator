@@ -3,6 +3,8 @@ name: Surge.sh Teardown
 on:
   pull_request_target:
     types: [closed]
+    branches-ignore:
+      - main-lts
 
 jobs:
   preview:
