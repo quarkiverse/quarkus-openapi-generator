@@ -16,6 +16,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_COUNT;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_DELIMITER;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.RESTEASY_REACTIVE_CLIENT_FORM;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
@@ -386,6 +387,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         getValues(config, openApiFilePath, ConfigName.GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM, Boolean.class)
                 .ifPresent(generator::withGenerateModelForUsageAsBeanParam);
+
+        getValues(config, openApiFilePath, RESTEASY_REACTIVE_CLIENT_FORM, Boolean.class)
+                .ifPresent(generator::withResteasyReactiveClientForm);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.METHOD_PER_MEDIA_TYPE, Boolean.class)
                 .ifPresent(generator::withMethodPerMediaType);

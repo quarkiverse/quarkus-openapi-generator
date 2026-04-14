@@ -388,6 +388,64 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyReactiveMultipartFormStillUsesBeanParamByDefault() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapperReactive("multipart-openapi.yml").withSkipFormModelConfig("false")
+                .generate("org.acme");
+        assertThat(generatedFiles).isNotEmpty();
+
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
+        assertThat(file).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> multipartPostMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("postUserProfileData")).findAny();
+        assertThat(multipartPostMethod).isPresent();
+
+        List<Parameter> parameters = multipartPostMethod.orElseThrow().getParameters();
+        assertThat(parameters).hasSize(1);
+
+        Parameter param = parameters.get(0);
+        assertThat(param.getTypeAsString()).isEqualTo("PostUserProfileDataMultipartForm");
+        assertThat(param.getNameAsString()).isEqualTo("multipartForm");
+        assertThat(param.getAnnotationByName("BeanParam")).isPresent();
+        assertThat(compilationUnit.findAll(ClassOrInterfaceDeclaration.class).stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny()).isNotEmpty();
+    }
+
+    @Test
+    void verifyReactiveMultipartFormCanUseClientMultipartForm() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapperReactive("multipart-openapi.yml")
+                .withSkipFormModelConfig("false")
+                .withResteasyReactiveClientForm(true)
+                .generate("org.acme");
+        assertThat(generatedFiles).isNotEmpty();
+
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
+        assertThat(file).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> multipartPostMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("postUserProfileData")).findAny();
+        assertThat(multipartPostMethod).isPresent();
+
+        List<Parameter> parameters = multipartPostMethod.orElseThrow().getParameters();
+        assertThat(parameters).hasSize(1);
+
+        Parameter param = parameters.get(0);
+        assertThat(param.getTypeAsString()).isEqualTo("org.jboss.resteasy.reactive.client.api.ClientMultipartForm");
+        assertThat(param.getNameAsString()).isEqualTo("dataParts");
+        assertThat(param.getAnnotations()).isEmpty();
+        assertThat(compilationUnit.findAll(ClassOrInterfaceDeclaration.class).stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny()).isEmpty();
+    }
+
+    @Test
     void verifyMultipartPojoGeneratedAndFieldsHaveAnnotations() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml").withSkipFormModelConfig("false")
                 .generate("org.acme");
