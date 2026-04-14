@@ -1,0 +1,125 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Animals - OpenAPI 3.0",
+    "version": "1.0.5"
+  },
+  "servers": [
+    {
+      "url": "/api/v3"
+    }
+  ],
+  "tags": [
+    {
+      "name": "primate",
+      "description": "Everything about Primates"
+    }
+  ],
+  "paths": {
+    "/primate/{id}": {
+      "get": {
+        "tags": [
+          "primate"
+        ],
+        "summary": "Find primate by ID",
+        "description": "Returns a single primate",
+        "operationId": "getPrimateById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of primate to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Primate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Primate not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Animal":{
+        "type": "object",
+        "properties": {
+          "born": {
+            "type": "string",
+            "description": "Dated Base extension.",
+            "format": "date-time"
+          },
+          "deceased": {
+            "type": "string",
+            "description": "Dated Base extension.",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "animal"
+        }
+      },
+      "Mammal": {
+        "type": "object",
+        "allOf": [{
+          "$ref": "#/components/schemas/Animal"
+        }],
+        "properties": {
+          "gender": {
+            "type": "string",
+            "enum": [
+              "female",
+              "male"
+            ]
+          }
+        },
+        "xml": {
+          "name": "mammal"
+        }
+      },
+      "Primate": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Mammal"
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "jane doe"
+          }
+        },
+        "xml": {
+          "name": "primate"
+        }
+      }
+    }
+  }
+}

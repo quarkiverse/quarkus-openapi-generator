@@ -55,6 +55,7 @@
     <module>override-credential-provider</module>
     <module>jsonproperty-getter-and-setter</module>
     <module>suppress-warnings</module>
+    <module>name-mapping</module>
   </modules>
   <dependencyManagement>
     <dependencies>
