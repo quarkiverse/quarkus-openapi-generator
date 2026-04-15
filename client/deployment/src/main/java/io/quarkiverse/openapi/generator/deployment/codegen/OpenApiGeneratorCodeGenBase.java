@@ -231,7 +231,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         var skipGenerationFeature = new SkipGenerationSupport();
         String fingerprint = skipGenerationFeature.computeFingerprint(options);
         if (skipGenerationFeature.shouldSkipGeneration(options, fingerprint)) {
-            LOGGER.info("Skipping code generation as the OpenAPI spec file and configuration haven't changed since the last generation.");
+            LOGGER.info(
+                    "Skipping code generation as the OpenAPI spec file and configuration haven't changed since the last generation.");
             return;
         }
 

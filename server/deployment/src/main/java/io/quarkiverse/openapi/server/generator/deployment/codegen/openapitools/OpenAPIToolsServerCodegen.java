@@ -91,7 +91,8 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
         var skipGenerationSupport = new SkipGenerationSupport();
         String fingerprint = skipGenerationSupport.computeFingerprint(options);
         if (skipGenerationSupport.shouldSkipGeneration(options, fingerprint)) {
-            LOGGER.info("Skipping code generation as the OpenAPI spec file and configuration haven't changed since the last generation.");
+            LOGGER.info(
+                    "Skipping code generation as the OpenAPI spec file and configuration haven't changed since the last generation.");
             return;
         }
 
