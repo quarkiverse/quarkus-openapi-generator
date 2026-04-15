@@ -168,7 +168,9 @@ public interface {classname} {
         @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
     {/if}
     {#if op.hasFormParams}
-        {#if is-resteasy-reactive}
+        {#if is-resteasy-reactive && is-resteasy-reactive-client-form}
+        org.jboss.resteasy.reactive.client.api.ClientMultipartForm dataParts{#if op.hasPathParams},{/if}
+        {#else if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#else}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
@@ -193,7 +195,9 @@ public interface {classname} {
 {/for}{/if}
     );
     {#if op.hasFormParams}
+        {#if !(is-resteasy-reactive && is-resteasy-reactive-client-form)}
     {#include multipartFormdataPojo.qute param=op/}
+        {/if}
     {/if}
 
 {/for} {! end consume-loop !}
@@ -328,7 +332,9 @@ public interface {classname} {
         @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
     {/if}
     {#if op.hasFormParams}
-        {#if is-resteasy-reactive}
+        {#if is-resteasy-reactive && is-resteasy-reactive-client-form}
+        org.jboss.resteasy.reactive.client.api.ClientMultipartForm dataParts{#if op.hasPathParams},{/if}
+        {#else if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#else}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
@@ -353,7 +359,9 @@ public interface {classname} {
 {/for}{/if}
     );
     {#if op.hasFormParams}
+        {#if !(is-resteasy-reactive && is-resteasy-reactive-client-form)}
     {#include multipartFormdataPojo.qute param=op/}
+        {/if}
     {/if}
 
 {/if} {! end method-per-media-type else !}

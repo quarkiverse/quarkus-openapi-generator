@@ -433,6 +433,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++true+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-resteasy-reactive-client-form]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-resteasy-reactive-client-form[`+++quarkus.openapi-generator.codegen.resteasy-reactive-client-form+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.resteasy-reactive-client-form+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Use `org.jboss.resteasy.reactive.client.api.ClientMultipartForm` for multipart request bodies when generating RESTEasy Reactive clients. This skips the generated multipart POJO and lets you build the multipart payload programmatically.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_RESTEASY_REACTIVE_CLIENT_FORM+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_RESTEASY_REACTIVE_CLIENT_FORM+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-api-cdi-scope[`+++quarkus.openapi-generator.codegen.api-cdi-scope+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.api-cdi-scope+++[]
@@ -1702,4 +1723,3 @@ endif::add-copy-button-to-env-var[]
 |
 
 |===
-
