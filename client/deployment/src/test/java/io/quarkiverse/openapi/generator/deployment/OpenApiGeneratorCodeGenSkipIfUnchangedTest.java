@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.generator.deployment;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import io.quarkiverse.openapi.generator.common.OpenApiGeneratorOptions;
 import io.quarkiverse.openapi.generator.deployment.codegen.OpenApiGeneratorCodeGenBase;
 import io.smallrye.config.SmallRyeConfig;
 import io.smallrye.config.SmallRyeConfigBuilder;
@@ -50,8 +52,10 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
         Config config = config(Map.of(CONFIG_PROPERTY, "true"));
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
+                getSanitizedFileName(spec),
                 outDir,
                 tempDir.resolve("templates"),
                 false);
@@ -74,8 +78,10 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
         Config config = config(Map.of(CONFIG_PROPERTY, "false"));
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
+                getSanitizedFileName(spec),
                 outDir,
                 tempDir.resolve("templates"),
                 false);
@@ -98,8 +104,10 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
         Config config = config(Map.of(CONFIG_PROPERTY, "true"));
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
+                getSanitizedFileName(spec),
                 outDir,
                 tempDir.resolve("templates"),
                 false);
@@ -128,8 +136,10 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
                 "quarkus.openapi-generator.codegen.spec.petstore.additional-api-type-annotations", "@org.test.Foo"));
 
         OpenApiGeneratorOptions firstOptions = new OpenApiGeneratorOptions(
+                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 firstConfig,
                 spec,
+                getSanitizedFileName(spec),
                 outDir,
                 tempDir.resolve("templates"),
                 false);
@@ -142,8 +152,10 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
                 "quarkus.openapi-generator.codegen.spec.another.additional-api-type-annotations", "@org.test.Foo"));
 
         OpenApiGeneratorOptions secondOptions = new OpenApiGeneratorOptions(
+                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 secondConfig,
                 spec,
+                getSanitizedFileName(spec),
                 outDir,
                 tempDir.resolve("templates"),
                 false);

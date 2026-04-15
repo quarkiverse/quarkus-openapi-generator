@@ -14,10 +14,13 @@ import java.util.function.Function;
 import org.eclipse.microprofile.config.Config;
 import org.jboss.logging.Logger;
 
+import io.quarkiverse.openapi.generator.common.OpenApiGeneratorOptions;
+import io.quarkiverse.openapi.generator.common.SkipGenerationSupport;
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.smallrye.config.common.utils.StringUtil;
 
 public class OpenAPIToolsServerCodegen implements CodeGenProvider {
 
@@ -54,7 +57,16 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
                 .withOutputDir(
                         outputDir.toAbsolutePath().toString());
 
-        generate(configurator);
+        OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                context.config(),
+                openAPIFile.toPath(),
+                StringUtil.replaceNonAlphanumericByUnderscores(openAPIFile.getName()),
+                outputDir.toAbsolutePath(),
+                null,
+                reactive(context));
+
+        generate(configurator, options);
 
         return true;
     }
@@ -66,8 +78,28 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
         return serverCodegen.equalsIgnoreCase(OPENAPITOOLS);
     }
 
-    private void generate(QuarkusJavaServerCodegenConfigurator configurator) {
-        OpenAPIToolsGenerator generator = new OpenAPIToolsGenerator(configurator);
+    private void generate(QuarkusJavaServerCodegenConfigurator configurator, OpenApiGeneratorOptions options) {
+        boolean skipIfUnchanged = options.config()
+                .getOptionalValue(CodegenConfig.getServerSkipIfUnchanged(), Boolean.class)
+                .orElse(false);
+
+        if (!skipIfUnchanged) {
+            doGenerate(new OpenAPIToolsGenerator(configurator));
+            return;
+        }
+
+        var skipGenerationSupport = new SkipGenerationSupport();
+        String fingerprint = skipGenerationSupport.computeFingerprint(options);
+        if (skipGenerationSupport.shouldSkipGeneration(options, fingerprint)) {
+            LOGGER.info("Skipping code generation as the OpenAPI spec file and configuration haven't changed since the last generation.");
+            return;
+        }
+
+        doGenerate(new OpenAPIToolsGenerator(configurator));
+        skipGenerationSupport.persistFingerprint(options, fingerprint);
+    }
+
+    protected void doGenerate(OpenAPIToolsGenerator generator) {
         List<File> generatedFiles = generator.generate();
         for (File generatedFile : generatedFiles) {
             LOGGER.info("Generated file: " + generatedFile);
