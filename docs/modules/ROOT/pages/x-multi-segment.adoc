@@ -48,6 +48,15 @@ paths:
 ----
 <1> Enables multi-segment matching for the `ref` parameter
 
+[[generated-client-behavior]]
+== Generated Client Behavior
+
+Generated clients keep the method name, parameter order, and Java type unchanged.
+
+For ordinary string path parameters, the generator adds `@io.quarkiverse.openapi.generator.annotations.EncodedPathParam` so values are safely encoded before the request is sent. For parameters marked with `x-multi-segment: true`, the generator adds `@io.quarkiverse.openapi.generator.annotations.MultiSegmentPathParam` instead, which preserves slashes while still encoding reserved characters.
+
+This means existing single-segment parameters continue to behave as before, while only the opt-in multi-segment parameters change their runtime path handling.
+
 [[behavior]]
 == Behavior
 
