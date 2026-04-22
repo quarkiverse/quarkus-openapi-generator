@@ -1,0 +1,234 @@
+= Multi-Segment Path Parameters
+
+include::./includes/attributes.adoc[]
+
+:extension-status: preview
+
+This page describes support for the `x-multi-segment` vendor extension, which enables path parameters to match multiple URL segments.
+
+[[overview]]
+== Overview
+
+By default, path parameters in OpenAPI specifications match only a single URL segment (the part between slashes). The `x-multi-segment` vendor extension allows path parameters to match multiple segments, which is useful for APIs that accept file paths, Git references, or other hierarchical identifiers.
+
+For example, without `x-multi-segment`, the parameter `{ref}` in `/repos/{owner}/{ref}` would only match single-segment values like `main`. With `x-multi-segment: true`, the same parameter can match multi-segment values like `heads/feature/my-branch`.
+
+[[why-opt-in]]
+=== Why Opt-In?
+
+Multi-segment matching is disabled by default for security reasons:
+
+* **Path traversal protection**: Without explicit opt-in, path parameters are restricted to single segments, preventing unintended path traversal attacks.
+* **Explicit intent**: The `x-multi-segment` extension makes it clear which parameters are expected to contain slashes, improving API specification clarity.
+* **Backward compatibility**: Existing specifications continue to work without modification.
+
+[[usage]]
+== Usage
+
+Add the `x-multi-segment: true` extension to any path parameter in your OpenAPI specification:
+
+[source,yaml]
+----
+paths:
+  /repos/{owner}/{ref}:
+    get:
+      operationId: getRepoRef
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ref
+          in: path
+          required: true
+          schema:
+            type: string
+          x-multi-segment: true  # <1>
+----
+<1> Enables multi-segment matching for the `ref` parameter
+
+[[behavior]]
+== Behavior
+
+[[single-segment-default]]
+=== Single-Segment (Default)
+
+Without `x-multi-segment`, path parameters match only a single URL segment:
+
+[source,yaml]
+----
+paths:
+  /users/{username}:
+    get:
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+----
+
+This parameter will match:
+
+* `GET /users/alice` → `username = "alice"`
+* `GET /users/bob` → `username = "bob"`
+
+This parameter will NOT match:
+
+* `GET /users/alice/profile` → No match (extra segment)
+
+[[multi-segment-enabled]]
+=== Multi-Segment Enabled
+
+With `x-multi-segment: true`, path parameters can match multiple segments:
+
+[source,yaml]
+----
+paths:
+  /files/{path}:
+    get:
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+          x-multi-segment: true
+----
+
+This parameter will match:
+
+* `GET /files/README.md` → `path = "README.md"`
+* `GET /files/src/main/java/Main.java` → `path = "src/main/java/Main.java"`
+* `GET /files/docs/guide/setup.adoc` → `path = "docs/guide/setup.adoc"`
+
+[[examples]]
+== Examples
+
+[[github-api-references]]
+=== GitHub API References
+
+The GitHub API uses multi-segment parameters for Git references:
+
+[source,yaml]
+----
+paths:
+  /repos/{owner}/{ref}:
+    get:
+      summary: Get a Git reference
+      operationId: getRepoRef
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ref
+          in: path
+          required: true
+          schema:
+            type: string
+          x-multi-segment: true
+      responses:
+        '200':
+          description: Reference found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitReference'
+----
+
+This allows calls like:
+
+* `GET /repos/quarkusio/heads/main`
+* `GET /repos/quarkusio/heads/feature/new-api`
+* `GET /repos/quarkusio/tags/1.0.0`
+
+[[file-paths]]
+=== File Paths
+
+APIs that serve files or documents often need multi-segment path parameters:
+
+[source,yaml]
+----
+paths:
+  /docs/{owner}/{repo}/{ref}/{path}:
+    get:
+      summary: Get a documentation file
+      operationId: getDocFile
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: repo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ref
+          in: path
+          required: true
+          schema:
+            type: string
+          x-multi-segment: true
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+          x-multi-segment: true
+      responses:
+        '200':
+          description: File content
+          content:
+            text/plain:
+              schema:
+                type: string
+----
+
+This allows calls like:
+
+* `GET /docs/quarkusio/quarkus/main/README.md`
+* `GET /docs/quarkusio/quarkus/heads/2.x/docs/src/main/asciidoc/getting-started.adoc`
+
+[[limitations]]
+== Limitations
+
+The `x-multi-segment` extension has the following limitations:
+
+* **Path parameters only**: The extension only applies to parameters with `in: path`. It is ignored for query, header, cookie, or body parameters.
+* **Client-side only**: Currently, this extension is only supported for client code generation. Server-side support may be added in future releases.
+* **No validation**: The extension does not validate the structure of multi-segment values. Your application code should validate the parameter value if needed.
+
+[[security-considerations]]
+== Security Considerations
+
+When using `x-multi-segment`, be aware of the following security considerations:
+
+* **Path traversal**: Always validate multi-segment parameters to prevent path traversal attacks. For example, reject values containing `..` segments.
+* **Authorization**: Ensure that your authorization logic properly checks access to resources identified by multi-segment paths.
+* **Input validation**: Consider validating the format and structure of multi-segment values based on your API's requirements.
+
+Example validation in your application code:
+
+[source,java]
+----
+// Reject path traversal attempts
+if (path.contains("..")) {
+    throw new IllegalArgumentException("Invalid path: path traversal detected");
+}
+
+// Validate expected format (e.g., Git references)
+if (!ref.matches("^(heads|tags)/[a-zA-Z0-9/_-]+$")) {
+    throw new IllegalArgumentException("Invalid ref format");
+}
+----
+
+[[see-also]]
+== See Also
+
+* xref:client.adoc[Client Generator]
+* xref:server.adoc[Server Generator]
