@@ -116,6 +116,19 @@ public interface ServerCodegenConfig {
         Optional<Boolean> useBeanValidation();
 
         /**
+         * Whether the generated server methods should use {@code org.jboss.resteasy.reactive.RestResponse<T>}
+         * as the return type for single-response endpoints.
+         * When enabled, methods return {@code RestResponse<Model>} (or {@code Uni<RestResponse<Model>>} in
+         * reactive mode), allowing implementors to control the HTTP response status code (e.g. 201 Created).
+         * Streaming endpoints are out of scope for this flag.
+         * This property only applies when using the {@code openapitools} code generator
+         * (i.e. when {@code quarkus.openapi.generator.server.use} is set to {@code openapitools}).
+         * By default this is {@code false}, preserving backward-compatible return types.
+         */
+        @WithDefault("false")
+        Optional<Boolean> useRestResponse();
+
+        /**
          * Whether to skip generation when the persisted fingerprint of the OpenAPI specification
          * and relevant generation configuration matches the previous run.
          */
