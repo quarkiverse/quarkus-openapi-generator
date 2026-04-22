@@ -11,6 +11,7 @@ public class QuarkusJavaServerCodegenConfigurator extends CodegenConfigurator {
     public static final String USE_BEAN_VALIDATION = "use-bean-validation";
     public static final String GENERATE_BUILDERS = "use-builders";
     public static final String USE_REACTIVE = "use-reactive";
+    public static final String USE_REST_RESPONSE = "use-rest-response";
 
     public QuarkusJavaServerCodegenConfigurator() {
         this.setGeneratorName(QuarkusJavaServerCodegen.CODEGEN_NAME);
@@ -21,6 +22,7 @@ public class QuarkusJavaServerCodegenConfigurator extends CodegenConfigurator {
         this.addAdditionalProperty(BASE_PACKAGE, "org.acme");
         this.addAdditionalProperty(GENERATE_BUILDERS, Boolean.FALSE);
         this.addAdditionalProperty(USE_REACTIVE, Boolean.FALSE);
+        this.addAdditionalProperty(USE_REST_RESPONSE, Boolean.FALSE);
     }
 
     public QuarkusJavaServerCodegenConfigurator withInputBaseDir(String inputSpec) {
@@ -50,6 +52,11 @@ public class QuarkusJavaServerCodegenConfigurator extends CodegenConfigurator {
 
     public QuarkusJavaServerCodegenConfigurator withGenerateBuilders(boolean generateBuilders) {
         this.addAdditionalProperty(GENERATE_BUILDERS, generateBuilders);
+        return this;
+    }
+
+    public QuarkusJavaServerCodegenConfigurator withRestResponse(boolean useRestResponse) {
+        this.addAdditionalProperty(USE_REST_RESPONSE, useRestResponse);
         return this;
     }
 }

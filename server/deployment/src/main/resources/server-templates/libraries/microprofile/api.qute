@@ -43,19 +43,7 @@ public interface {classname} {
     {/for}
     })
     {/if}
-    {#if use-reactive}
-            {#if op.returnType == "void"}
-    public io.smallrye.mutiny.Uni<Void> {op.nickname}(
-            {#else}
-    public io.smallrye.mutiny.Uni<{#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if}> {op.nickname}(
-            {/if}
-        {#else}
-            {#if op.returnType == "void"}
-    public jakarta.ws.rs.core.Response {op.nickname}(
-            {#else}
-    public {#if op.returnType}{op.returnType}{#else}jakarta.ws.rs.core.Response{/if} {op.nickname}(
-            {/if}
-        {/if}
+    public {openapi:getMapReturnType(op.returnType, use-reactive, use-rest-response, op.vendorExtensions)} {op.nickname}(
         {#if op.hasFormParams}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#if use-bean-validation}

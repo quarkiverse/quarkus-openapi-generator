@@ -22,4 +22,62 @@ class OpenApiNamespaceResolverTest {
         Assertions.assertThat(result)
                 .containsExactly("admin", "order", "user");
     }
+
+    @Test
+    void should_return_reactive_rest_response_type() {
+        Map<String, Object> vendorExtensions = new LinkedHashMap<>();
+        vendorExtensions.put("x-use-rest-response", Boolean.TRUE);
+
+        String result = OpenApiNamespaceResolver.INSTANCE.getMapReturnType(
+                "com.example.MyObject",
+                Boolean.TRUE,
+                Boolean.FALSE,
+                vendorExtensions);
+
+        Assertions.assertThat(result)
+                .isEqualTo("io.smallrye.mutiny.Uni<org.jboss.resteasy.reactive.RestResponse<com.example.MyObject>>");
+    }
+
+    @Test
+    void should_return_response_type_for_void_operations_without_reactive() {
+        Map<String, Object> vendorExtensions = new LinkedHashMap<>();
+
+        String result = OpenApiNamespaceResolver.INSTANCE.getMapReturnType(
+                "void",
+                Boolean.FALSE,
+                Boolean.FALSE,
+                vendorExtensions);
+
+        Assertions.assertThat(result)
+                .isEqualTo("jakarta.ws.rs.core.Response");
+    }
+
+    @Test
+    void should_return_response_type_for_Void_wrapper_operations_with_reactive() {
+        Map<String, Object> vendorExtensions = new LinkedHashMap<>();
+
+        String result = OpenApiNamespaceResolver.INSTANCE.getMapReturnType(
+                "Void",
+                Boolean.TRUE,
+                Boolean.FALSE,
+                vendorExtensions);
+
+        Assertions.assertThat(result)
+                .isEqualTo("io.smallrye.mutiny.Uni<jakarta.ws.rs.core.Response>");
+    }
+
+    @Test
+    void should_return_fully_qualified_rest_response_type_from_vendor_extensions() {
+        Map<String, Object> vendorExtensions = new LinkedHashMap<>();
+        vendorExtensions.put("x-return-type", "org.jboss.resteasy.reactive.RestResponse");
+
+        String result = OpenApiNamespaceResolver.INSTANCE.getMapReturnType(
+                "com.example.MyObject",
+                Boolean.FALSE,
+                Boolean.FALSE,
+                vendorExtensions);
+
+        Assertions.assertThat(result)
+                .isEqualTo("org.jboss.resteasy.reactive.RestResponse<com.example.MyObject>");
+    }
 }
