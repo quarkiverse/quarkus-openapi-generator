@@ -271,7 +271,6 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public org.openapitools.codegen.model.OperationsMap postProcessOperationsWithModels(
             org.openapitools.codegen.model.OperationsMap objs, List<org.openapitools.codegen.model.ModelMap> allModels) {
         org.openapitools.codegen.model.OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
