@@ -22,6 +22,13 @@ public @interface OperationMarker {
 
     String method();
 
+    /**
+     * Array of path parameter names that can match across slashes (multi-segment).
+     * Only parameters listed here will use (.*) regex. All others use ([^/]*) for security.
+     * Corresponds to OpenAPI x-multi-segment vendor extension.
+     */
+    String[] multiSegmentParams() default {};
+
     @Target(METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     @interface OperationMarkers {
