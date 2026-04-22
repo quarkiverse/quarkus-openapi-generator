@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -12,6 +13,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.openapitools.codegen.CodegenModel;
+import org.openapitools.codegen.CodegenOperation;
+import org.openapitools.codegen.CodegenParameter;
 import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -23,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
@@ -249,5 +253,50 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (Boolean.parseBoolean(property)) {
             this.supportsAdditionalPropertiesWithComposedSchema = true;
         }
+    }
+
+    @Override
+    public CodegenParameter fromParameter(Parameter parameter, Set<String> imports) {
+        CodegenParameter codegenParameter = super.fromParameter(parameter, imports);
+
+        // Preserve x-multi-segment vendor extension
+        if (parameter.getExtensions() != null) {
+            Object multiSegmentValue = parameter.getExtensions().get("x-multi-segment");
+            if (multiSegmentValue != null) {
+                codegenParameter.vendorExtensions.put("x-multi-segment", multiSegmentValue);
+            }
+        }
+
+        return codegenParameter;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public org.openapitools.codegen.model.OperationsMap postProcessOperationsWithModels(
+            org.openapitools.codegen.model.OperationsMap objs, List<org.openapitools.codegen.model.ModelMap> allModels) {
+        org.openapitools.codegen.model.OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
+
+        org.openapitools.codegen.model.OperationMap ops = result.getOperations();
+        if (ops != null) {
+            List<CodegenOperation> operations = ops.getOperation();
+            if (operations != null) {
+                for (CodegenOperation operation : operations) {
+                    // Build list of multi-segment parameter names
+                    List<String> multiSegmentParamNames = new ArrayList<>();
+                    if (operation.pathParams != null) {
+                        for (CodegenParameter param : operation.pathParams) {
+                            Object multiSegmentFlag = param.vendorExtensions.get("x-multi-segment");
+                            if (Boolean.TRUE.equals(multiSegmentFlag)) {
+                                multiSegmentParamNames.add(param.baseName);
+                            }
+                        }
+                    }
+                    // Add to operation vendor extensions for template access
+                    operation.vendorExtensions.put("x-multi-segment-params", multiSegmentParamNames);
+                }
+            }
+        }
+
+        return result;
     }
 }
