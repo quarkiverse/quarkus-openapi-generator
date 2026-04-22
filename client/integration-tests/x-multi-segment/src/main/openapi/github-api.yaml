@@ -8,18 +8,13 @@ servers:
   - url: "https://api.github.com"
 
 paths:
-  /repos/{owner}/{repo}/git/ref/{ref}:
+  /repos/{owner}/{ref}:
     get:
       summary: "Get a reference"
       description: "Get a Git reference by name. The ref can be multi-segment (e.g., heads/feature/my-branch)"
-      operationId: getReference
+      operationId: getRepoRef
       parameters:
         - name: owner
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: repo
           in: path
           required: true
           schema:

@@ -21,11 +21,10 @@ public class MultiSegmentResource {
     }
 
     @GET
-    @Path("/repos/{owner}/{repo}/git/ref/{ref:.+}")
+    @Path("/repos/{owner}/{ref:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getReference(
+    public Response getRepoRef(
             @PathParam("owner") String owner,
-            @PathParam("repo") String repo,
             @PathParam("ref") String ref,
             @HeaderParam("Authorization") String authHeader) {
 
@@ -36,8 +35,8 @@ public class MultiSegmentResource {
 
         // Return mock response
         String response = String.format(
-                "{\"ref\":\"refs/%s\",\"url\":\"https://api.github.com/repos/%s/%s/git/refs/%s\",\"object\":{\"type\":\"commit\",\"sha\":\"abc123\",\"url\":\"https://api.github.com/repos/%s/%s/git/commits/abc123\"}}",
-                ref, owner, repo, ref, owner, repo);
+                "{\"ref\":\"refs/%s\",\"url\":\"https://api.github.com/repos/%s/git/refs/%s\",\"object\":{\"type\":\"commit\",\"sha\":\"abc123\",\"url\":\"https://api.github.com/repos/%s/git/commits/abc123\"}}",
+                ref, owner, ref, owner);
 
         return Response.ok(response).build();
     }

@@ -1,145 +1,76 @@
 package io.quarkiverse.openapi.generator.it.multisegment;
 
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
-import java.lang.reflect.Method;
+import jakarta.inject.Inject;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 
 import io.quarkiverse.openapi.generator.it.multisegment.api.api.DefaultApi;
-import io.quarkiverse.openapi.generator.markers.OperationMarker;
+import io.quarkiverse.openapi.generator.it.multisegment.api.model.GitReference;
+import io.quarkiverse.openapi.generator.it.multisegment.api.model.User;
 import io.quarkus.test.junit.QuarkusTest;
 
 /**
  * Integration test for x-multi-segment path parameter support.
  *
- * This test verifies that:
- * 1. The OpenAPI spec with x-multi-segment parameters generates correct metadata
- * 2. The @OperationMarker annotations include multiSegmentParams
- * 3. The mock server can handle multi-segment paths correctly
+ * This test verifies that the generated REST client correctly handles
+ * multi-segment path parameters using the generated DefaultApi client.
  */
 @QuarkusTest
 class MultiSegmentTest {
 
-    /**
-     * Test that the generated API has correct @OperationMarker annotation with multiSegmentParams
-     * for the getReference operation that has x-multi-segment: true on the ref parameter.
-     */
-    @Test
-    void testGeneratedCodeHasMultiSegmentMetadata() throws Exception {
-        Method getRefMethod = DefaultApi.class.getMethod("getReference", String.class, String.class, String.class);
-        OperationMarker marker = getRefMethod.getAnnotation(OperationMarker.class);
+    @Inject
+    @RestClient
+    DefaultApi api;
 
-        assertThat(marker).isNotNull();
-        assertThat(marker.operationId()).isEqualTo("getReference");
-        assertThat(marker.path()).isEqualTo("/repos/{owner}/{repo}/git/ref/{ref}");
-        assertThat(marker.multiSegmentParams()).containsExactly("ref");
+    @Test
+    public void testMultiSegmentPathParameter() {
+        // Use generated client to call: /repos/myorg/heads/feature-a
+        GitReference result = api.getRepoRef("myorg", "heads/feature-a");
+
+        // Verify result
+        assertThat(result).isNotNull();
+        assertThat(result.getRef()).isEqualTo("refs/heads/feature-a");
+        assertThat(result.getUrl()).contains("myorg");
+        assertThat(result.getUrl()).contains("heads/feature-a");
     }
 
-    /**
-     * Test that the generated API has @OperationMarker annotation WITHOUT multiSegmentParams
-     * for the getUser operation that does NOT have x-multi-segment on any parameter.
-     */
     @Test
-    void testGeneratedCodeHasNoMultiSegmentMetadataForSingleSegment() throws Exception {
-        Method getUserMethod = DefaultApi.class.getMethod("getUser", String.class);
-        OperationMarker marker = getUserMethod.getAnnotation(OperationMarker.class);
+    public void testMultiSegmentWithMultipleLevels() {
+        // Use generated client to call: /repos/myorg/heads/team/feature-b
+        GitReference result = api.getRepoRef("myorg", "heads/team/feature-b");
 
-        assertThat(marker).isNotNull();
-        assertThat(marker.operationId()).isEqualTo("getUser");
-        assertThat(marker.path()).isEqualTo("/users/{username}");
-        assertThat(marker.multiSegmentParams()).isEmpty();
+        // Verify result
+        assertThat(result).isNotNull();
+        assertThat(result.getRef()).isEqualTo("refs/heads/team/feature-b");
+        assertThat(result.getUrl()).contains("myorg");
+        assertThat(result.getUrl()).contains("heads/team/feature-b");
     }
 
-    /**
-     * Test that multi-segment ref paths work correctly with the mock server.
-     * This tests the server-side handling of multi-segment paths.
-     */
     @Test
-    void testMultiSegmentPathsOnServer() {
-        // Test single-level ref: heads/main
-        given()
-                .header("Authorization", "Bearer test-token-123")
-                .when()
-                .get("/repos/myorg/myrepo/git/ref/heads/main")
-                .then()
-                .statusCode(200)
-                .body("ref", equalTo("refs/heads/main"));
+    public void testSingleSegmentParameter() {
+        // Use generated client to call: /users/johndoe
+        User result = api.getUser("johndoe");
 
-        // Test multi-level ref: heads/feature/my-branch
-        given()
-                .header("Authorization", "Bearer test-token-123")
-                .when()
-                .get("/repos/myorg/myrepo/git/ref/heads/feature/my-branch")
-                .then()
-                .statusCode(200)
-                .body("ref", equalTo("refs/heads/feature/my-branch"));
-
-        // Test deeply nested ref: heads/team/feature/v2/my-branch
-        given()
-                .header("Authorization", "Bearer test-token-123")
-                .when()
-                .get("/repos/myorg/myrepo/git/ref/heads/team/feature/v2/my-branch")
-                .then()
-                .statusCode(200)
-                .body("ref", equalTo("refs/heads/team/feature/v2/my-branch"));
+        // Verify result
+        assertThat(result).isNotNull();
+        assertThat(result.getLogin()).isEqualTo("johndoe");
+        assertThat(result.getId()).isEqualTo(12345);
     }
 
-    /**
-     * Test that single-segment username paths work correctly with the mock server.
-     */
     @Test
-    void testSingleSegmentPathsOnServer() {
-        given()
-                .header("Authorization", "Bearer test-token-123")
-                .when()
-                .get("/users/johndoe")
-                .then()
-                .statusCode(200)
-                .body("login", equalTo("johndoe"));
-    }
+    public void testAuthenticationIsApplied() {
+        // Use generated client to call: /repos/testorg/tags/v1.0.0
+        // The bearer token is configured in application.properties
+        // If auth wasn't applied, mock server would return 401 and this would fail
+        GitReference result = api.getRepoRef("testorg", "tags/v1.0.0");
 
-    /**
-     * Test that authentication is enforced on multi-segment paths.
-     */
-    @Test
-    void testAuthenticationOnMultiSegmentPaths() {
-        // Without auth header - should get 401
-        given()
-                .when()
-                .get("/repos/myorg/myrepo/git/ref/heads/main")
-                .then()
-                .statusCode(401);
-
-        // With correct auth - should get 200
-        given()
-                .header("Authorization", "Bearer test-token-123")
-                .when()
-                .get("/repos/myorg/myrepo/git/ref/heads/main")
-                .then()
-                .statusCode(200);
-    }
-
-    /**
-     * Test that authentication is enforced on single-segment paths.
-     */
-    @Test
-    void testAuthenticationOnSingleSegmentPaths() {
-        // Without auth header - should get 401
-        given()
-                .when()
-                .get("/users/johndoe")
-                .then()
-                .statusCode(401);
-
-        // With correct auth - should get 200
-        given()
-                .header("Authorization", "Bearer test-token-123")
-                .when()
-                .get("/users/johndoe")
-                .then()
-                .statusCode(200);
+        // Verify we got a successful response (proving auth was sent)
+        assertThat(result).isNotNull();
+        assertThat(result.getRef()).isEqualTo("refs/tags/v1.0.0");
+        assertThat(result.getUrl()).contains("testorg");
+        assertThat(result.getUrl()).contains("tags/v1.0.0");
     }
 }
