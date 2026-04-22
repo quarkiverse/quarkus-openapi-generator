@@ -1,4 +1,4 @@
-= Multi-Segment Path Parameters
+= Quarkus - OpenAPI Generator - Multi-Segment Path Parameters
 
 include::./includes/attributes.adoc[]
 
@@ -145,55 +145,6 @@ This allows calls like:
 * `GET /repos/quarkusio/heads/feature/new-api`
 * `GET /repos/quarkusio/tags/1.0.0`
 
-[[file-paths]]
-=== File Paths
-
-APIs that serve files or documents often need multi-segment path parameters:
-
-[source,yaml]
-----
-paths:
-  /docs/{owner}/{repo}/{ref}/{path}:
-    get:
-      summary: Get a documentation file
-      operationId: getDocFile
-      parameters:
-        - name: owner
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: repo
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: ref
-          in: path
-          required: true
-          schema:
-            type: string
-          x-multi-segment: true
-        - name: path
-          in: path
-          required: true
-          schema:
-            type: string
-          x-multi-segment: true
-      responses:
-        '200':
-          description: File content
-          content:
-            text/plain:
-              schema:
-                type: string
-----
-
-This allows calls like:
-
-* `GET /docs/quarkusio/quarkus/main/README.md`
-* `GET /docs/quarkusio/quarkus/heads/2.x/docs/src/main/asciidoc/getting-started.adoc`
-
 [[limitations]]
 == Limitations
 
@@ -231,4 +182,3 @@ if (!ref.matches("^(heads|tags)/[a-zA-Z0-9/_-]+$")) {
 == See Also
 
 * xref:client.adoc[Client Generator]
-* xref:server.adoc[Server Generator]
