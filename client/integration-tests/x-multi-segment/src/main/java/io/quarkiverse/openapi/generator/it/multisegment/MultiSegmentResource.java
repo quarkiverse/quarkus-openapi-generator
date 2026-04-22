@@ -14,13 +14,6 @@ public class MultiSegmentResource {
     private static final String EXPECTED_TOKEN = "Bearer test-token-123";
 
     @GET
-    @Path("/health")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String health() {
-        return "OK";
-    }
-
-    @GET
     @Path("/repos/{owner}/{ref:.+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRepoRef(
