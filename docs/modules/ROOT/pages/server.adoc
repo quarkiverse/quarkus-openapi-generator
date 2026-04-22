@@ -44,7 +44,7 @@ The following table compares the Apicurio and OpenAPITools code generators.
 
 | Fine-grained control per operation
 | Yes (`x-codegen-async`, `x-codegen-returnType`)
-| Not supported
+| Yes (`x-use-rest-response`, `x-return-type`) for RestResponse support. `x-return-type` must use the fully qualified class name.
 
 | Fine-grained control per schema
 | Yes (`x-codegen-package`, `x-codegen-annotations`, `x-codegen-extendsClass`, etc.)
@@ -65,7 +65,7 @@ The `apicurio` allows you to use `CompletionStage` or `Uni`.
 
 | Custom return types
 | Yes (`x-codegen-returnType`)
-| Only `Multi` or model class (`public Pet createPet(Pet request)`.
+| `RestResponse` or model class. `RestResponse` allows full control over status codes and headers (e.g., `public org.jboss.resteasy.reactive.RestResponse<Pet> createPet(Pet request)`). Per-operation via `x-use-rest-response` or `x-return-type` vendor extensions. Use the fully qualified class name with `x-return-type`.
 
 | Context root configuration
 | Via OpenAPI (`x-codegen.contextRoot`)

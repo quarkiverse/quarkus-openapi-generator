@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.ws.rs.core.Response;
+
 import org.acme.model.Category;
 import org.acme.model.ModelApiResponse;
 import org.acme.model.Pet;
@@ -40,11 +42,11 @@ public class DefaultPetResource implements PetResource {
     }
 
     @Override
-    public Uni<Void> deletePet(Long petId, String apiKey) {
+    public Uni<Response> deletePet(Long petId, String apiKey) {
         if (petId != null) {
             PET_STORE_DB.remove(petId);
         }
-        return Uni.createFrom().voidItem();
+        return Uni.createFrom().item(Response.noContent().build());
     }
 
     @Override
@@ -70,8 +72,7 @@ public class DefaultPetResource implements PetResource {
         List<Pet> pets = new ArrayList<>();
 
         for (Pet pet : PET_STORE_DB.values()) {
-            if (pet.getTags() != null &&
-                    pet.getTags().stream().anyMatch(t -> tagSet.contains(t.getName()))) {
+            if (pet.getTags() != null && pet.getTags().stream().anyMatch(t -> tagSet.contains(t.getName()))) {
                 pets.add(pet);
             }
         }
@@ -94,9 +95,9 @@ public class DefaultPetResource implements PetResource {
     }
 
     @Override
-    public Uni<Void> updatePetWithForm(Long petId, String name, String status) {
+    public Uni<Response> updatePetWithForm(Long petId, String name, String status) {
         if (petId == null) {
-            return Uni.createFrom().voidItem();
+            return Uni.createFrom().item(Response.noContent().build());
         }
 
         Pet.StatusEnum statusEnum = Pet.StatusEnum.fromString(status);
@@ -108,7 +109,7 @@ public class DefaultPetResource implements PetResource {
             return pet;
         });
 
-        return Uni.createFrom().voidItem();
+        return Uni.createFrom().item(Response.noContent().build());
     }
 
     @Override
