@@ -27,33 +27,59 @@ SOFTWARE.
 */
 package io.quarkiverse.openapi.generator.providers;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UrlPatternMatcher {
 
-    // For each pattern {keyName} replaces it with ([^/]*)
-    private static final Pattern LEVEL_ONE_PATTERN = Pattern.compile("\\{([^/]+?)}");
-    // Replaces each {keyName} with ([^/]*) to match single path segments only
-    // This prevents path parameters from matching across slashes, which would
-    // cause authentication credentials to be sent to unintended endpoints
-    private static final String REPLACES_WITH = "([^/]*)";
+    // For each pattern {keyName} replaces it with ([^/]*) or (.*)
+    private static final Pattern LEVEL_ONE_PATTERN = Pattern.compile("\\{([^/]+?)\\}");
     private static final String URL_QUERY_STRING_REGEX = "(?:\\?.*?)?$";
 
     private final Pattern pattern;
 
-    public UrlPatternMatcher(String uriTemplate) {
+    /**
+     * Creates a URL pattern matcher with per-parameter segment control.
+     *
+     * @param uriTemplate The URI template with {param} placeholders
+     * @param multiSegmentParams Set of parameter names that can match across slashes.
+     *        Parameters in this set use (.*?) regex.
+     *        All other parameters use ([^/]*) for security.
+     */
+    public UrlPatternMatcher(String uriTemplate, Set<String> multiSegmentParams) {
+        Set<String> multiSegParams = multiSegmentParams != null ? multiSegmentParams : Set.of();
+
         StringBuilder patternBuilder = new StringBuilder();
         Matcher m = LEVEL_ONE_PATTERN.matcher(uriTemplate);
         int end = 0;
+
         while (m.find()) {
-            // In each loop, find next pattern in URI that is "{keyName}"
-            // If found,append the substring to patternBuilder.
-            patternBuilder.append(Pattern.quote(uriTemplate.substring(end, m.start()))).append(REPLACES_WITH);
+            // Extract parameter name from {paramName}
+            String paramName = m.group(1);
+
+            // Choose regex based on whether this param is multi-segment
+            String replacement;
+            if (multiSegParams.contains(paramName)) {
+                replacement = "(.*)"; // Multi-segment: matches across slashes (greedy)
+            } else {
+                replacement = "([^/]*)"; // Single-segment: secure default
+            }
+
+            patternBuilder.append(Pattern.quote(uriTemplate.substring(end, m.start())))
+                    .append(replacement);
             end = m.end();
         }
+
         patternBuilder.append(Pattern.quote(uriTemplate.substring(end)));
         this.pattern = Pattern.compile(patternBuilder + URL_QUERY_STRING_REGEX);
+    }
+
+    /**
+     * Backwards compatibility: existing callers get secure single-segment behavior.
+     */
+    public UrlPatternMatcher(String uriTemplate) {
+        this(uriTemplate, Set.of());
     }
 
     /**
