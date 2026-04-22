@@ -40,15 +40,22 @@ class UrlPatternMatcherTest {
                 Arguments.of("/{id}/{foo}/{id2}", "/1/2/3"),
                 Arguments.of("/v2/pets/{id}", "/v2/pets/1"),
                 Arguments.of("/pets/{pet-id}/types/{type-id}", "/pets/1/types/2"),
-                Arguments.of("/repos/{ref}", "/repos/prefixed/cool.sw"),
-                Arguments.of("/repos/{ref}/pepe", "/repos/prefixed/cool.sw/pepe"),
+                // Note: Multi-segment path parameters (e.g., Git refs like "heads/feature-a")
+                // are not currently supported. These were removed as they represented
+                // the security vulnerability fixed in this commit.
+                // Future work: Add proper support for x-multi-segment extension
                 Arguments.of("pepe/pepa/pepu", "pepe/pepa/pepu"));
     }
 
     private static Stream<Arguments> providePathsThatNotMatch() {
         return Stream.of(
                 Arguments.of("/pets/{id}", "/pes/1"),
-                Arguments.of("/{id}/pepe", "/1/2/pep"));
+                Arguments.of("/{id}/pepe", "/1/2/pep"),
+                // Security: path parameters should NOT match across slashes
+                // This test demonstrates CVE-2025-XXXXX authentication bypass
+                Arguments.of("/repos/{ref}", "/repos/owner/repo"),
+                Arguments.of("/api/{version}", "/api/v1/users"),
+                Arguments.of("/items/{id}", "/items/123/edit"));
     }
 
 }

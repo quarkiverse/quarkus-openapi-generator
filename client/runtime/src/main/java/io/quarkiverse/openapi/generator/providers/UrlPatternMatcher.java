@@ -32,10 +32,12 @@ import java.util.regex.Pattern;
 
 public class UrlPatternMatcher {
 
-    // For each pattern {keyName} replaces it with (.*)
-    private static final Pattern LEVEL_ONE_PATTERN = Pattern.compile("\\{([^/]+?)\\}");
-    // Replaces each {keyName} with (.*)
-    private static final String REPLACES_WITH = "(.*)";
+    // For each pattern {keyName} replaces it with ([^/]*)
+    private static final Pattern LEVEL_ONE_PATTERN = Pattern.compile("\\{([^/]+?)}");
+    // Replaces each {keyName} with ([^/]*) to match single path segments only
+    // This prevents path parameters from matching across slashes, which would
+    // cause authentication credentials to be sent to unintended endpoints
+    private static final String REPLACES_WITH = "([^/]*)";
     private static final String URL_QUERY_STRING_REGEX = "(?:\\?.*?)?$";
 
     private final Pattern pattern;
@@ -50,7 +52,7 @@ public class UrlPatternMatcher {
             patternBuilder.append(Pattern.quote(uriTemplate.substring(end, m.start()))).append(REPLACES_WITH);
             end = m.end();
         }
-        patternBuilder.append(Pattern.quote(uriTemplate.substring(end, uriTemplate.length())));
+        patternBuilder.append(Pattern.quote(uriTemplate.substring(end)));
         this.pattern = Pattern.compile(patternBuilder + URL_QUERY_STRING_REGEX);
     }
 
