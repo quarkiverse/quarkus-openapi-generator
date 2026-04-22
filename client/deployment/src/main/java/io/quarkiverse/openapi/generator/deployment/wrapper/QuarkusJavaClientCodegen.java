@@ -19,6 +19,9 @@ import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
+import org.openapitools.codegen.model.ModelMap;
+import org.openapitools.codegen.model.OperationMap;
+import org.openapitools.codegen.model.OperationsMap;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
@@ -26,7 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
@@ -40,6 +42,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
      * Default server URL (the first one in the OpenAPI spec file servers definition.
      */
     private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
+    private static final String X_MULTI_SEGMENT = "x-multi-segment";
+    private static final String X_MULTI_SEGMENT_PARAMS = "x-multi-segment-params";
 
     public QuarkusJavaClientCodegen() {
         // immutable properties
@@ -256,26 +260,10 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     @Override
-    public CodegenParameter fromParameter(Parameter parameter, Set<String> imports) {
-        CodegenParameter codegenParameter = super.fromParameter(parameter, imports);
+    public OperationsMap postProcessOperationsWithModels(OperationsMap objs, List<ModelMap> allModels) {
+        OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
 
-        // Preserve x-multi-segment vendor extension
-        if (parameter.getExtensions() != null) {
-            Object multiSegmentValue = parameter.getExtensions().get("x-multi-segment");
-            if (multiSegmentValue != null) {
-                codegenParameter.vendorExtensions.put("x-multi-segment", multiSegmentValue);
-            }
-        }
-
-        return codegenParameter;
-    }
-
-    @Override
-    public org.openapitools.codegen.model.OperationsMap postProcessOperationsWithModels(
-            org.openapitools.codegen.model.OperationsMap objs, List<org.openapitools.codegen.model.ModelMap> allModels) {
-        org.openapitools.codegen.model.OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
-
-        org.openapitools.codegen.model.OperationMap ops = result.getOperations();
+        OperationMap ops = result.getOperations();
         if (ops != null) {
             List<CodegenOperation> operations = ops.getOperation();
             if (operations != null) {
@@ -284,14 +272,14 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                     List<String> multiSegmentParamNames = new ArrayList<>();
                     if (operation.pathParams != null) {
                         for (CodegenParameter param : operation.pathParams) {
-                            Object multiSegmentFlag = param.vendorExtensions.get("x-multi-segment");
+                            Object multiSegmentFlag = param.vendorExtensions.get(X_MULTI_SEGMENT);
                             if (Boolean.TRUE.equals(multiSegmentFlag)) {
                                 multiSegmentParamNames.add(param.baseName);
                             }
                         }
                     }
                     // Add to operation vendor extensions for template access
-                    operation.vendorExtensions.put("x-multi-segment-params", multiSegmentParamNames);
+                    operation.vendorExtensions.put(X_MULTI_SEGMENT_PARAMS, multiSegmentParamNames);
                 }
             }
         }
