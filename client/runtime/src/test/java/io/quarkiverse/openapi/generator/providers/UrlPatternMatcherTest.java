@@ -42,9 +42,8 @@ class UrlPatternMatcherTest {
                 Arguments.of("/v2/pets/{id}", "/v2/pets/1"),
                 Arguments.of("/pets/{pet-id}/types/{type-id}", "/pets/1/types/2"),
                 // Note: Multi-segment path parameters (e.g., Git refs like "heads/feature-a")
-                // are not currently supported. These were removed as they represented
-                // the security vulnerability fixed in this commit.
-                // Future work: Add proper support for x-multi-segment extension
+                // can be enabled via the x-multi-segment extension per parameter.
+                // See verifyMultiSegmentMatching tests for examples.
                 Arguments.of("pepe/pepa/pepu", "pepe/pepa/pepu"));
     }
 

@@ -44,7 +44,7 @@ public class UrlPatternMatcher {
      *
      * @param uriTemplate The URI template with {param} placeholders
      * @param multiSegmentParams Set of parameter names that can match across slashes.
-     *        Parameters in this set use (.*?) regex.
+     *        Parameters in this set use (.*) regex.
      *        All other parameters use ([^/]*) for security.
      */
     public UrlPatternMatcher(String uriTemplate, Set<String> multiSegmentParams) {
