@@ -25,6 +25,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-reactive";
     String CODEGEN_SERVER_GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-builders";
     String CODEGEN_SERVER_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-bean-validation";
+    String CODEGEN_SERVER_USE_REST_RESPONSE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-rest-response";
 
     static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
@@ -73,6 +74,10 @@ public interface CodegenConfig extends ServerCodegenConfig {
 
     static String getServerUseBeanValidation() {
         return CODEGEN_SERVER_BEAN_VALIDATION;
+    }
+
+    static String getServerUseRestResponse() {
+        return CODEGEN_SERVER_USE_REST_RESPONSE;
     }
 
     /**

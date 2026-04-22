@@ -1,0 +1,62 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RestResponse Vendor Extension API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/standard": {
+      "get": {
+        "operationId": "standard",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/special": {
+      "get": {
+        "operationId": "special",
+        "x-codegen-use-rest-response": true,
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-type": {
+      "get": {
+        "operationId": "returnTypeExt",
+        "x-codegen-returnType": "RestResponse",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

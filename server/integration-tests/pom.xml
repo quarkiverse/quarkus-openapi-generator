@@ -19,6 +19,9 @@
         <module>codestarts</module>
         <module>builders</module>
         <module>openapitools</module>
+        <module>rest-response</module>
+        <module>rest-response-reactive</module>
+        <module>rest-response-vendor-extension</module>
     </modules>
 
 </project>

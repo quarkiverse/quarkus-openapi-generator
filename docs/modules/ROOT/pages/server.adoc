@@ -65,7 +65,7 @@ The `apicurio` allows you to use `CompletionStage` or `Uni`.
 
 | Custom return types
 | Yes (`x-codegen-returnType`)
-| Only `Multi` or model class (`public Pet createPet(Pet request)`.
+| `RestResponse` or model class. `RestResponse` allows full control over status codes and headers (e.g., `public RestResponse<Pet> createPet(Pet request)`).
 
 | Context root configuration
 | Via OpenAPI (`x-codegen.contextRoot`)

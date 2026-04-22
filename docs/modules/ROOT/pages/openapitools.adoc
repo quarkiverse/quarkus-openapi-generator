@@ -90,6 +90,47 @@ By default, the extension generates non-reactive code. If you would like to chan
 quarkus.openapi.generator.server.use-reactive=true
 ----
 
+== Returning Response Objects
+
+By default, the generator uses the model class or `void` as the return type for operations. If you need more control over the response, such as setting custom headers or status codes (e.g., `201 Created`), you can enable the use of `org.jboss.resteasy.reactive.RestResponse`:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use-rest-response=true
+----
+
+You can also configure this at the operation level by using one of the following vendor extensions:
+* `x-codegen-returnType: RestResponse`
+* `x-codegen-use-rest-response: true`
+
+[source,yaml]
+----
+paths:
+  /pet:
+    post:
+      operationId: createPet
+      x-codegen-returnType: RestResponse
+      # Alternatively:
+      # x-codegen-use-rest-response: true
+      responses:
+        "201":
+          description: Created
+----
+
+When enabled globally or at the operation level, the generated methods will look like this:
+
+[source,java]
+----
+public RestResponse<Pet> createPet(Pet request);
+----
+
+If you combine it with `use-reactive=true`, the return type will be:
+
+[source,java]
+----
+public Uni<RestResponse<Pet>> createPet(Pet request);
+----
+
 Run `mvn compile` to generate your classes in `target/generated-sources/quarkus-openapi-generator-server` path:
 
 [source]

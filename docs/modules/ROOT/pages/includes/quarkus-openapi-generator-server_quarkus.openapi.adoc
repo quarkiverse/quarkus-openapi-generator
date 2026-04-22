@@ -296,5 +296,30 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-rest-response]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-use-rest-response[`+++quarkus.openapi.generator.server.use-rest-response+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.use-rest-response+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether the generated server methods should use `org.jboss.resteasy.reactive.RestResponse<T>` as the return type.
+
+When enabled, methods return `RestResponse<Model>` (or `Uni<RestResponse<Model>>` in reactive mode), allowing implementors to control the HTTP response status code (e.g. 201 Created).
+
+By default this is `false`, preserving backward-compatible return types.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_REST_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_USE_REST_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 |===
 
