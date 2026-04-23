@@ -1,0 +1,60 @@
+name: Update Version Matrix
+
+on:
+  workflow_dispatch:
+    inputs:
+      project-version:
+        description: 'Project version to add/update in README matrix (for example: 2.15.0 or 2.15.0-lts)'
+        required: true
+        type: string
+      quarkus-version:
+        description: 'Quarkus version to associate with the project version (for example: 3.33.1)'
+        required: true
+        type: string
+
+jobs:
+  update-version-matrix:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Ensure script is executable
+        run: chmod +x .github/update-version-matrix.sh
+
+      - name: Generate README version matrix entry
+        run: .github/update-version-matrix.sh "${{ inputs.project-version }}" "${{ inputs.quarkus-version }}"
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request with updated matrix
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "docs: update README version matrix"
+          title: "docs: update README version matrix"
+          body: |
+            Automated update of the README version matrix.
+
+            - Project version: `${{ inputs.project-version }}`
+            - Quarkus version: `${{ inputs.quarkus-version }}`
+
+            The workflow infers whether the release is `LTS` or `Normal` from the project version suffix.
+          branch: "automation/update-version-matrix-${{ inputs.project-version }}"
+          delete-branch: true
+          add-paths: |
+            README.md
