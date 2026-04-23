@@ -1,0 +1,100 @@
+openapi: "3.0.0"
+info:
+  title: "GitHub API (Simplified)"
+  description: "Simplified GitHub API for testing x-multi-segment path parameters"
+  version: "1.0.0"
+
+servers:
+  - url: "https://api.github.com"
+
+paths:
+  /repos/{owner}/{ref}:
+    get:
+      summary: "Get a reference"
+      description: "Get a Git reference by name. The ref can be multi-segment (e.g., heads/feature/my-branch)"
+      operationId: getRepoRef
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ref
+          in: path
+          required: true
+          schema:
+            type: string
+          x-multi-segment: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GitReference'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+
+  /users/{username}:
+    get:
+      summary: "Get a user"
+      description: "Get a user by username. This is a single-segment parameter (no x-multi-segment)"
+      operationId: getUser
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+      security:
+        - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: token
+
+  schemas:
+    GitReference:
+      type: object
+      properties:
+        ref:
+          type: string
+        url:
+          type: string
+        object:
+          type: object
+          properties:
+            type:
+              type: string
+            sha:
+              type: string
+            url:
+              type: string
+
+    User:
+      type: object
+      properties:
+        login:
+          type: string
+        id:
+          type: integer
+        url:
+          type: string
