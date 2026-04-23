@@ -441,7 +441,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Use `org.jboss.resteasy.reactive.client.api.ClientMultipartForm` for multipart request bodies when generating RESTEasy Reactive clients. This skips the generated multipart POJO and lets you build the multipart payload programmatically.
+Use `org.jboss.resteasy.reactive.client.api.ClientMultipartForm` for multipart request bodies when generating RESTEasy Reactive clients. This avoids generating a multipart form POJO and lets callers build multipart payloads programmatically.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -1226,7 +1226,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Use `org.jboss.resteasy.reactive.client.api.ClientMultipartForm` for multipart request bodies when generating RESTEasy Reactive clients. This skips the generated multipart POJO and lets you build the multipart payload programmatically.
+Use `org.jboss.resteasy.reactive.client.api.ClientMultipartForm` for multipart request bodies when generating RESTEasy Reactive clients. This avoids generating a multipart form POJO and lets callers build multipart payloads programmatically.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -1744,3 +1744,4 @@ endif::add-copy-button-to-env-var[]
 |
 
 |===
+
