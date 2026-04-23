@@ -1,3 +1,4 @@
 * xref:client.adoc[Client Generator]
+    - xref:x-multi-segment.adoc[Multi-Segment Path Parameters]
 * xref:server.adoc[Server Generator]
 * xref:moqu.adoc[Moqu Wiremock Generator]

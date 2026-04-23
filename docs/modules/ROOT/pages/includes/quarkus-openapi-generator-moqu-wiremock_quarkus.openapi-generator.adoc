@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-moqu-wiremock_quarkus-openapi-generator-moqu-resource-dir]] [.property-path]##link:#quarkus-openapi-generator-moqu-wiremock_quarkus-openapi-generator-moqu-resource-dir[`quarkus.openapi-generator.moqu.resource-dir`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-moqu-wiremock_quarkus-openapi-generator-moqu-resource-dir]] [.property-path]##link:#quarkus-openapi-generator-moqu-wiremock_quarkus-openapi-generator-moqu-resource-dir[`+++quarkus.openapi-generator.moqu.resource-dir+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.moqu.resource-dir+++[]
 endif::add-copy-button-to-config-props[]
