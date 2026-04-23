@@ -42,11 +42,12 @@ You can learn more in [Quarkus OpenAPI Generator Documentation](http://docs.quar
 ## Version Matrix
 
 <!-- VERSION-MATRIX:START -->
-The project keeps normal releases and `-lts` releases aligned with specific Quarkus LTS streams.
+The project keeps normal releases and `-lts` releases aligned with specific Quarkus streams.
 
 | Project version | Type | Quarkus version |
 |---|---|---|
 | 2.17.0 | Normal | 3.34.5 |
+| 2.16.0-lts | LTS | 3.33.1 |
 | 2.16.0 | Normal | 3.34.2 |
 | 2.15.0-lts | LTS | 3.33.1 |
 | 2.15.0 | Normal | 3.32.2 |
@@ -57,6 +58,7 @@ The project keeps normal releases and `-lts` releases aligned with specific Quar
 | 2.12.1-lts | LTS | 3.20.2.2 |
 | 2.12.1 | Normal | 3.26.1 |
 
+The matrix above is maintained via workflow dispatch using the informed project version and Quarkus version.
 <!-- VERSION-MATRIX:END -->
 
 ## Contributors ✨
