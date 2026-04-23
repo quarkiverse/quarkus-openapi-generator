@@ -39,6 +39,26 @@ You can learn more in [Quarkus OpenAPI Generator Documentation](http://docs.quar
 > [!TIP]
 > If you want to improve the docs, please feel free to contribute editing the docs in [Docs](https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/docs/modules/ROOT). But first, read [this page](CONTRIBUTING.md).
 
+## Version Matrix
+
+<!-- VERSION-MATRIX:START -->
+The project keeps normal releases and `-lts` releases aligned with specific Quarkus LTS streams.
+
+| Project version | Type | Quarkus version |
+|---|---|---|
+| 2.17.0 | Normal | 3.34.5 |
+| 2.16.0 | Normal | 3.34.2 |
+| 2.15.0-lts | LTS | 3.33.1 |
+| 2.15.0 | Normal | 3.32.2 |
+| 2.14.0-lts | LTS | 3.27.2 |
+| 2.14.0 | Normal | 3.30.6 |
+| 2.13.0-lts | LTS | 3.20.3 |
+| 2.13.0 | Normal | 3.28.4 |
+| 2.12.1-lts | LTS | 3.20.2.2 |
+| 2.12.1 | Normal | 3.26.1 |
+
+<!-- VERSION-MATRIX:END -->
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
