@@ -39,6 +39,28 @@ You can learn more in [Quarkus OpenAPI Generator Documentation](http://docs.quar
 > [!TIP]
 > If you want to improve the docs, please feel free to contribute editing the docs in [Docs](https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/docs/modules/ROOT). But first, read [this page](CONTRIBUTING.md).
 
+## Version Matrix
+
+<!-- VERSION-MATRIX:START -->
+The project keeps normal releases and `-lts` releases aligned with specific Quarkus streams.
+
+| Project version | Type | Quarkus version |
+|---|---|---|
+| 2.17.0 | Normal | 3.34.5 |
+| 2.16.0-lts | LTS | 3.33.1 |
+| 2.16.0 | Normal | 3.34.2 |
+| 2.15.0-lts | LTS | 3.33.1 |
+| 2.15.0 | Normal | 3.32.2 |
+| 2.14.0-lts | LTS | 3.27.2 |
+| 2.14.0 | Normal | 3.30.6 |
+| 2.13.0-lts | LTS | 3.20.3 |
+| 2.13.0 | Normal | 3.28.4 |
+| 2.12.1-lts | LTS | 3.20.2.2 |
+| 2.12.1 | Normal | 3.26.1 |
+
+The matrix above is maintained via workflow dispatch using the informed project version and Quarkus version.
+<!-- VERSION-MATRIX:END -->
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -112,7 +134,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/cmoine-swi"><img src="https://avatars.githubusercontent.com/u/180930830?v=4?s=100" width="100px;" alt="Christophe Moine"/><br /><sub><b>Christophe Moine</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=cmoine-swi" title="Code">💻</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/CodeSimcoe"><img src="https://avatars.githubusercontent.com/u/110094118?v=4?s=100" width="100px;" alt="Clément de Tastes"/><br /><sub><b>Clément de Tastes</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=CodeSimcoe" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/CodeSimcoe"><img src="https://avatars.githubusercontent.com/u/110094118?v=4?s=100" width="100px;" alt="Clément de Tastes"/><br /><sub><b>Clément de Tastes</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=CodeSimcoe" title="Documentation">📖</a> <a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=CodeSimcoe" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/matheusandre1"><img src="https://avatars.githubusercontent.com/u/92062874?v=4?s=100" width="100px;" alt="Matheus André"/><br /><sub><b>Matheus André</b></sub></a><br /><a href="#infra-matheusandre1" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nh2297"><img src="https://avatars.githubusercontent.com/u/208935727?v=4?s=100" width="100px;" alt="Nico Hinrichs"/><br /><sub><b>Nico Hinrichs</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-openapi-generator/commits?author=nh2297" title="Documentation">📖</a></td>
     </tr>

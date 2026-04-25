@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -12,11 +13,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.openapitools.codegen.CodegenModel;
+import org.openapitools.codegen.CodegenOperation;
+import org.openapitools.codegen.CodegenParameter;
 import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.config.GlobalSettings;
 import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.model.ModelMap;
+import org.openapitools.codegen.model.OperationMap;
 import org.openapitools.codegen.model.OperationsMap;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
@@ -41,6 +45,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
      * definition.
      */
     private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
+    private static final String X_MULTI_SEGMENT = "x-multi-segment";
+    private static final String X_MULTI_SEGMENT_PARAMS = "x-multi-segment-params";
 
     public QuarkusJavaClientCodegen() {
         // immutable properties
@@ -346,4 +352,31 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         }
     }
 
+    @Override
+    public OperationsMap postProcessOperationsWithModels(OperationsMap objs, List<ModelMap> allModels) {
+        OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
+
+        OperationMap ops = result.getOperations();
+        if (ops != null) {
+            List<CodegenOperation> operations = ops.getOperation();
+            if (operations != null) {
+                for (CodegenOperation operation : operations) {
+                    // Build list of multi-segment parameter names
+                    List<String> multiSegmentParamNames = new ArrayList<>();
+                    if (operation.pathParams != null) {
+                        for (CodegenParameter param : operation.pathParams) {
+                            Object multiSegmentFlag = param.vendorExtensions.get(X_MULTI_SEGMENT);
+                            if (Boolean.TRUE.equals(multiSegmentFlag)) {
+                                multiSegmentParamNames.add(param.baseName);
+                            }
+                        }
+                    }
+                    // Add to operation vendor extensions for template access
+                    operation.vendorExtensions.put(X_MULTI_SEGMENT_PARAMS, multiSegmentParamNames);
+                }
+            }
+        }
+
+        return result;
+    }
 }

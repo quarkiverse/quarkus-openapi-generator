@@ -16,13 +16,17 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_COUNT;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_DELIMITER;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.RESTEASY_REACTIVE_CLIENT_FORM;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -205,8 +209,31 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return Capability.REST_CLIENT_REACTIVE_JACKSON;
     }
 
-    // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
     protected void generate(OpenApiGeneratorOptions options) {
+        Config config = options.config();
+        Path openApiFilePath = options.openApiFilePath();
+
+        boolean skipIfUnchanged = getValues(
+                config,
+                openApiFilePath,
+                CodegenConfig.ConfigName.SKIP_IF_UNCHANGED,
+                Boolean.class).orElse(false);
+
+        if (!skipIfUnchanged) {
+            doGenerate(options);
+            return;
+        }
+
+        String fingerprint = computeFingerprint(options);
+        if (shouldSkipGeneration(options, fingerprint)) {
+            return;
+        }
+
+        doGenerate(options);
+        persistFingerprint(options, fingerprint);
+    }
+
+    protected void doGenerate(OpenApiGeneratorOptions options) {
         Config config = options.config();
         Path openApiFilePath = options.openApiFilePath();
         Path outDir = options.outDir();
@@ -361,6 +388,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(config, openApiFilePath, ConfigName.GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM, Boolean.class)
                 .ifPresent(generator::withGenerateModelForUsageAsBeanParam);
 
+        getValues(config, openApiFilePath, RESTEASY_REACTIVE_CLIENT_FORM, Boolean.class)
+                .ifPresent(generator::withResteasyReactiveClientForm);
+
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.METHOD_PER_MEDIA_TYPE, Boolean.class)
                 .ifPresent(generator::withMethodPerMediaType);
 
@@ -502,5 +532,102 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         Optional<String> possibleConfigKey = getConfigKeyValue(config, openApiFilePath);
         return possibleConfigKey.flatMap(s -> getValuesByConfigKey(config, configName, kClass, vClass, s));
 
+    }
+
+    private Path resolveChecksumFile(Path outDir, Path openApiFilePath) {
+        return outDir.resolve(".quarkus-openapi-generator")
+                .resolve(getSanitizedFileName(openApiFilePath) + ".sha256");
+    }
+
+    private String computeFingerprint(OpenApiGeneratorOptions options) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            updateDigestWithFile(digest, options.openApiFilePath());
+            updateDigestWithString(digest, "reactive=" + options.isRestEasyReactive());
+            updateDigestWithString(digest, "generator=" + getClass().getName());
+            updateDigestWithString(digest, "quarkusVersion=" + Version.getVersion());
+
+            addRelevantConfig(digest, options.config());
+
+            Path templateDir = options.templateDir();
+            if (templateDir != null && Files.isDirectory(templateDir)) {
+                try (Stream<Path> paths = Files.walk(templateDir).sorted()) {
+                    for (Path path : paths.filter(Files::isRegularFile).toList()) {
+                        updateDigestWithString(digest, "template:" + templateDir.relativize(path));
+                        updateDigestWithFile(digest, path);
+                    }
+                }
+            }
+
+            return HexFormat.of().formatHex(digest.digest());
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to compute fingerprint for " + options.openApiFilePath(), e);
+        }
+    }
+
+    private void updateDigestWithString(MessageDigest digest, String value) {
+        digest.update(value.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private void updateDigestWithFile(MessageDigest digest, Path file) throws IOException {
+        digest.update(Files.readAllBytes(file));
+    }
+
+    // Includes configuration in the fingerprint so changes force regeneration
+    private void addRelevantConfig(MessageDigest digest, Config config) {
+        String prefix = "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX + ".";
+
+        StreamSupport.stream(config.getPropertyNames().spliterator(), false)
+                .filter(propertyName -> propertyName.startsWith(prefix))
+                .sorted()
+                .forEach(propertyName -> config.getOptionalValue(propertyName, String.class)
+                        .ifPresent(value -> updateDigestWithString(digest, propertyName + "=" + value)));
+    }
+
+    private boolean shouldSkipGeneration(OpenApiGeneratorOptions options, String fingerprint) {
+        Path checksumFile = resolveChecksumFile(options.outDir(), options.openApiFilePath());
+
+        if (!Files.exists(checksumFile)) {
+            return false;
+        }
+
+        if (!hasGeneratedFiles(options)) {
+            return false;
+        }
+
+        try {
+            String previous = Files.readString(checksumFile);
+            return previous.equals(fingerprint);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    // Store a checksum based on spec and configuration,
+    // in order to avoid regenerating code when the latter hasn't changed
+    private void persistFingerprint(OpenApiGeneratorOptions options, String fingerprint) {
+        Path checksumFile = resolveChecksumFile(options.outDir(), options.openApiFilePath());
+
+        try {
+            Files.createDirectories(checksumFile.getParent());
+            Files.writeString(checksumFile, fingerprint);
+        } catch (IOException e) {
+            String message = "Unable to persist OpenAPI generation fingerprint for " + options.openApiFilePath();
+            throw new RuntimeException(message, e);
+        }
+    }
+
+    private boolean hasGeneratedFiles(OpenApiGeneratorOptions options) {
+        Path outDir = options.outDir();
+        if (!Files.isDirectory(outDir)) {
+            return false;
+        }
+
+        try (Stream<Path> paths = Files.walk(outDir)) {
+            return paths.anyMatch(path -> Files.isRegularFile(path) && path.toString().endsWith(".java"));
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

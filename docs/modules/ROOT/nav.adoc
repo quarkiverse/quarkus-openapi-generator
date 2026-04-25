@@ -1,4 +1,5 @@
 * xref:client.adoc[Client Generator]
+    - xref:x-multi-segment.adoc[Multi-Segment Path Parameters]
 * xref:server.adoc[Server Generator]
     - xref:apicurio.adoc[Apicurio Tool]
     - xref:openapitools.adoc[OpenAPITools Tool]

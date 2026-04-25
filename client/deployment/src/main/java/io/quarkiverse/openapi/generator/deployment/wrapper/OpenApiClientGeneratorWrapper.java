@@ -126,6 +126,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("verbose", FALSE);
         this.configurator.addAdditionalProperty(CodegenConstants.SERIALIZABLE_MODEL, FALSE);
         this.configurator.addAdditionalProperty("equals-hashcode", TRUE);
+        this.configurator.addAdditionalProperty("is-resteasy-reactive-client-form", FALSE);
         this.configurator.addAdditionalProperty("use-dynamic-url", FALSE);
         this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", TRUE);
         this.configurator.addAdditionalProperty("method-per-media-type", FALSE);
@@ -384,6 +385,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withMethodPerMediaType(final Boolean methodPerMediaType) {
         this.configurator.addAdditionalProperty("method-per-media-type", methodPerMediaType);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withResteasyReactiveClientForm(final Boolean resteasyReactiveClientForm) {
+        this.configurator.addAdditionalProperty("is-resteasy-reactive-client-form", resteasyReactiveClientForm);
         return this;
     }
 
