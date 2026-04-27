@@ -5,6 +5,7 @@ import static io.quarkus.bootstrap.classloading.QuarkusClassLoader.isClassPresen
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.Dependent;
@@ -73,8 +74,19 @@ public class GeneratorProcessor {
     private static List<OperationAuthInfo> getOperations(Map<String, List<AnnotationInstance>> operationsBySpec,
             String openApiSpecId, String name) {
         return operationsBySpec.getOrDefault(openApiSpecId + "_" + name, List.of()).stream()
-                .map(op -> OperationAuthInfo.builder().withPath(op.value("path").asString())
-                        .withId(op.value("operationId").asString()).withMethod(op.value("method").asString()).build())
+                .map(op -> {
+                    // Extract multi-segment params array from annotation (defaults to empty)
+                    String[] multiSegParams = op.value("multiSegmentParams") != null
+                            ? op.value("multiSegmentParams").asStringArray()
+                            : new String[0];
+
+                    return OperationAuthInfo.builder()
+                            .withPath(op.value("path").asString())
+                            .withId(op.value("operationId").asString())
+                            .withMethod(op.value("method").asString())
+                            .withMultiSegmentParams(Set.of(multiSegParams))
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
