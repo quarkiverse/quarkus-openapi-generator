@@ -66,6 +66,8 @@ For Basic HTTP Authentication, these are the supported configurations:
 
 Authentication, these are the supported configurations:
 
+NOTE: The `security_scheme_name` portion is a placeholder for the actual security scheme name used in your OpenAPI spec. If your application builds the name dynamically, make sure the resolved value is a concrete, sanitized config key and not the literal text `<security_scheme_name>`.
+
 [%autowidth]
 |===
 |Description |Property Key |Example
