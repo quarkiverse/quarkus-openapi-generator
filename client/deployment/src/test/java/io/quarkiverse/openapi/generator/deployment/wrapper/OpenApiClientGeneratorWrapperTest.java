@@ -859,6 +859,23 @@ public class OpenApiClientGeneratorWrapperTest {
                 .containsExactlyInAnyOrder("updateImageImageJpeg", "updateImageImagePng", "updateImageImageGif");
     }
 
+    @Test
+    void verifyXClassExtraAnnotationGeneration() throws URISyntaxException, FileNotFoundException {
+        final List<File> generatedFiles = createGeneratorWrapper("x-class-extra-annotation-openapi.json")
+                .generate("org.classExtraAnnotation");
+        final Optional<File> modelFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("HelloModel.java")).findFirst();
+        assertThat(modelFile).isPresent();
+
+        final CompilationUnit cu = StaticJavaParser.parse(modelFile.orElseThrow());
+
+        List<ClassOrInterfaceDeclaration> types = cu.findAll(ClassOrInterfaceDeclaration.class);
+
+        assertThat(types).hasSize(2);
+        assertThat(types.get(0).getAnnotations().stream().map(AnnotationExpr::getName).map(Name::asString))
+                .contains("AnAnnotation");
+    }
+
     private List<File> generateRestClientFiles() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json").withCircuitBreakerConfig(
                 Map.of("org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeMethodGet")));
