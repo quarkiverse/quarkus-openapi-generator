@@ -52,7 +52,7 @@ The following table compares the Apicurio and OpenAPITools code generators.
 
 | Add annotations to generated beans
 | Yes (`x-codegen.bean-annotations`, `x-codegen-annotations`)
-| Not supported
+| Yes (`x-class-extra-annotation`)
 
 | Add annotations to method parameters
 | Yes (`paths.*.parameters[].x-codegen-annotations`)

@@ -1,0 +1,15 @@
+Only the following vendor extension are supported:
+
+|===
+|Extension name |Description |Applicable for |Default value
+
+|x-discriminator-value
+|Used with model inheritance to specify value for discriminator that identifies current model
+|MODEL
+|
+
+|x-class-extra-annotation
+|List of custom annotations to be added to model
+|MODEL
+|null
+|===
