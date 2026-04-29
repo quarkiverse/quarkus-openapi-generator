@@ -325,7 +325,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             if (openApiOperation != null) {
                 if (openApiOperation.getResponses() != null && openApiOperation.getResponses().get("200") != null
                         && openApiOperation.getResponses().get("200").getContent() != null && openApiOperation
-                        .getResponses().get("200").getContent().get("application/json") != null) {
+                                .getResponses().get("200").getContent().get("application/json") != null) {
                     Schema<?> responseSchema = openApiOperation.getResponses().get("200").getContent()
                             .get("application/json").getSchema();
 
