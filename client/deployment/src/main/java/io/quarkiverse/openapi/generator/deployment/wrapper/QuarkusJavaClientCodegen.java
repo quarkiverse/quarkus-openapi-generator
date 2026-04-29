@@ -29,6 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.servers.Server;
@@ -153,80 +155,14 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         }
     }
 
-    @Override
-    public OperationsMap postProcessOperationsWithModels(OperationsMap objs, List<ModelMap> allModels) {
-        OperationsMap result = super.postProcessOperationsWithModels(objs, allModels);
-
-        Map<String, Object> operations = (Map<String, Object>) result.get("operations");
-        List<org.openapitools.codegen.CodegenOperation> os = (List<org.openapitools.codegen.CodegenOperation>) operations
-                .get("operation");
-
-        for (org.openapitools.codegen.CodegenOperation op : os) {
-            // Fix for https://github.com/quarkiverse/quarkus-openapi-generator/issues/773
-            if (op.returnBaseType != null && "String".equals(op.returnBaseType) && op.returnContainer != null
-                    && ("Set".equals(op.returnContainer) || "List".equals(op.returnContainer))) {
-                String commonPath = (String) result.get("commonPath");
-                String path = op.path;
-                if (commonPath != null && path != null) {
-                    if (path.startsWith("/")) {
-                        path = commonPath + path;
-                    } else {
-                        path = commonPath + "/" + path;
-                    }
-                } else if (commonPath != null) {
-                    path = commonPath;
-                }
-                // Handle double slashes if any
-                if (path != null) {
-                    path = path.replaceAll("//", "/");
-                }
-
-                Operation openApiOperation = findOperation(path, op.httpMethod);
-                if (openApiOperation == null && path != null && path.endsWith("/")) {
-                    String pathNoSlash = path.substring(0, path.length() - 1);
-                    openApiOperation = findOperation(pathNoSlash, op.httpMethod);
-                }
-
-                if (openApiOperation != null) {
-                    if (openApiOperation.getResponses() != null && openApiOperation.getResponses().get("200") != null
-                            && openApiOperation.getResponses().get("200").getContent() != null && openApiOperation
-                                    .getResponses().get("200").getContent().get("application/json") != null) {
-                        Schema<?> responseSchema = openApiOperation.getResponses().get("200").getContent()
-                                .get("application/json").getSchema();
-
-                        if (responseSchema instanceof ArraySchema) {
-                            Schema<?> items = ((ArraySchema) responseSchema).getItems();
-                            if (items.getEnum() != null && items.get$ref() == null) {
-                                String matchedModel = findMatchingEnumModel(items.getEnum());
-                                if (matchedModel != null) {
-                                    op.returnBaseType = matchedModel;
-                                    op.returnType = op.returnContainer + "<" + matchedModel + ">";
-                                    op.imports.add(matchedModel);
-
-                                    // Add to file-level imports
-                                    List<Map<String, String>> imports = (List<Map<String, String>>) result
-                                            .get("imports");
-                                    Map<String, String> importMap = new java.util.HashMap<>();
-                                    importMap.put("import", modelPackage() + "." + matchedModel);
-                                    imports.add(importMap);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     private Operation findOperation(String path, String httpMethod) {
         if (this.openAPI == null)
             return null;
-        io.swagger.v3.oas.models.PathItem pathItem = this.openAPI.getPaths().get(path);
+        PathItem pathItem = this.openAPI.getPaths().get(path);
         if (pathItem == null)
             return null;
         try {
-            io.swagger.v3.oas.models.PathItem.HttpMethod method = io.swagger.v3.oas.models.PathItem.HttpMethod
+            HttpMethod method = HttpMethod
                     .valueOf(httpMethod.toUpperCase());
             return pathItem.readOperationsMap().get(method);
         } catch (IllegalArgumentException e) {
@@ -361,22 +297,89 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             List<CodegenOperation> operations = ops.getOperation();
             if (operations != null) {
                 for (CodegenOperation operation : operations) {
-                    // Build list of multi-segment parameter names
-                    List<String> multiSegmentParamNames = new ArrayList<>();
-                    if (operation.pathParams != null) {
-                        for (CodegenParameter param : operation.pathParams) {
-                            Object multiSegmentFlag = param.vendorExtensions.get(X_MULTI_SEGMENT);
-                            if (Boolean.TRUE.equals(multiSegmentFlag)) {
-                                multiSegmentParamNames.add(param.baseName);
-                            }
-                        }
-                    }
-                    // Add to operation vendor extensions for template access
-                    operation.vendorExtensions.put(X_MULTI_SEGMENT_PARAMS, multiSegmentParamNames);
+                    handleMultiSegmentParams(operation);
+
+                    handleReturnType(operation, result);
                 }
             }
         }
 
         return result;
+    }
+
+    private void handleReturnType(CodegenOperation operation, OperationsMap result) {
+
+        if ("String".equals(operation.returnBaseType)
+                && ("Set".equals(operation.returnContainer) || "List".equals(operation.returnContainer))) {
+            String commonPath = (String) result.get("commonPath");
+            String path = getPath(operation, commonPath);
+
+            Operation openApiOperation = findOperation(path, operation.httpMethod);
+            if (openApiOperation == null && path != null && path.endsWith("/")) {
+                String pathNoSlash = path.substring(0, path.length() - 1);
+                openApiOperation = findOperation(pathNoSlash, operation.httpMethod);
+            }
+
+            if (openApiOperation != null) {
+                if (openApiOperation.getResponses() != null && openApiOperation.getResponses().get("200") != null
+                        && openApiOperation.getResponses().get("200").getContent() != null && openApiOperation
+                                .getResponses().get("200").getContent().get("application/json") != null) {
+                    Schema<?> responseSchema = openApiOperation.getResponses().get("200").getContent()
+                            .get("application/json").getSchema();
+
+                    if (responseSchema instanceof ArraySchema) {
+                        Schema<?> items = responseSchema.getItems();
+                        if (items.getEnum() != null && items.get$ref() == null) {
+                            String matchedModel = findMatchingEnumModel(items.getEnum());
+                            if (matchedModel != null) {
+                                operation.returnBaseType = matchedModel;
+                                operation.returnType = operation.returnContainer + "<" + matchedModel + ">";
+                                operation.imports.add(matchedModel);
+
+                                // Add to file-level imports
+                                List<Map<String, String>> imports = (List<Map<String, String>>) result
+                                        .get("imports");
+                                Map<String, String> importMap = new java.util.HashMap<>();
+                                importMap.put("import", modelPackage() + "." + matchedModel);
+                                imports.add(importMap);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static String getPath(CodegenOperation operation, String commonPath) {
+        String path = operation.path;
+        if (commonPath != null && path != null) {
+            if (path.startsWith("/")) {
+                path = commonPath + path;
+            } else {
+                path = commonPath + "/" + path;
+            }
+        } else if (commonPath != null) {
+            path = commonPath;
+        }
+        // Handle double slashes if any
+        if (path != null) {
+            path = path.replaceAll("//", "/");
+        }
+        return path;
+    }
+
+    private static void handleMultiSegmentParams(CodegenOperation operation) {
+        // Build list of multi-segment parameter names
+        List<String> multiSegmentParamNames = new ArrayList<>();
+        if (operation.pathParams != null) {
+            for (CodegenParameter param : operation.pathParams) {
+                Object multiSegmentFlag = param.vendorExtensions.get(X_MULTI_SEGMENT);
+                if (Boolean.TRUE.equals(multiSegmentFlag)) {
+                    multiSegmentParamNames.add(param.baseName);
+                }
+            }
+        }
+        // Add to operation vendor extensions for template access
+        operation.vendorExtensions.put(X_MULTI_SEGMENT_PARAMS, multiSegmentParamNames);
     }
 }
