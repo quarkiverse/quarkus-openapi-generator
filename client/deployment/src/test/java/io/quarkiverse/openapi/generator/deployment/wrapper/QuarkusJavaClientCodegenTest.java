@@ -20,6 +20,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.Expression;
@@ -75,6 +76,7 @@ class QuarkusJavaClientCodegenTest {
                 .findFirst();
         assertThat(getRepoRefMethod).isPresent();
         verifyOperationMarkerMultiSegmentParams(getRepoRefMethod.orElseThrow(), List.of("ref"));
+        verifyPathParamAnnotations(getRepoRefMethod.orElseThrow(), "ref", true);
 
         // Verify getDocFile operation has multiSegmentParams={"ref", "path"}
         Optional<MethodDeclaration> getDocFileMethod = methodDeclarations.stream()
@@ -82,6 +84,8 @@ class QuarkusJavaClientCodegenTest {
                 .findFirst();
         assertThat(getDocFileMethod).isPresent();
         verifyOperationMarkerMultiSegmentParams(getDocFileMethod.orElseThrow(), List.of("ref", "path"));
+        verifyPathParamAnnotations(getDocFileMethod.orElseThrow(), "ref", true);
+        verifyPathParamAnnotations(getDocFileMethod.orElseThrow(), "path", true);
 
         // Verify getById operation has no multiSegmentParams attribute
         Optional<MethodDeclaration> getByIdMethod = methodDeclarations.stream()
@@ -89,6 +93,27 @@ class QuarkusJavaClientCodegenTest {
                 .findFirst();
         assertThat(getByIdMethod).isPresent();
         verifyOperationMarkerNoMultiSegmentParams(getByIdMethod.orElseThrow());
+        verifyPathParamAnnotations(getByIdMethod.orElseThrow(), "id", false);
+    }
+
+    private void verifyPathParamAnnotations(MethodDeclaration method, String paramName, boolean multiSegment) {
+        Parameter parameter = method.getParameters().stream()
+                .filter(p -> p.getAnnotationByName("PathParam").isPresent()
+                        && p.getAnnotationByName("GeneratedParam").isPresent()
+                        && p.getAnnotationByName("GeneratedParam").get().isSingleMemberAnnotationExpr()
+                        && p.getAnnotationByName("GeneratedParam").get().asSingleMemberAnnotationExpr().getMemberValue()
+                                .asStringLiteralExpr().getValue().equals(paramName))
+                .findFirst()
+                .orElseThrow(
+                        () -> new AssertionError("Path parameter " + paramName + " not found on " + method.getNameAsString()));
+
+        if (multiSegment) {
+            assertThat(parameter.getAnnotationByName("MultiSegmentPathParam")).isPresent();
+            assertThat(parameter.getAnnotationByName("EncodedPathParam")).isNotPresent();
+        } else {
+            assertThat(parameter.getAnnotationByName("EncodedPathParam")).isPresent();
+            assertThat(parameter.getAnnotationByName("MultiSegmentPathParam")).isNotPresent();
+        }
     }
 
     private void verifyOperationMarkerMultiSegmentParams(MethodDeclaration method, List<String> expectedParams) {
