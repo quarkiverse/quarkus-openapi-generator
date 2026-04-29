@@ -27,6 +27,7 @@ import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.quarkiverse.openapi.generator.deployment.template.MediaTypeExtensions;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -43,8 +44,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     private static final String AUTH_PACKAGE = "auth";
     /*
-     * Default server URL (the first one in the OpenAPI spec file servers
-     * definition.
+     * Default server URL (the first one in the OpenAPI spec file servers definition.
      */
     private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
     private static final String X_MULTI_SEGMENT = "x-multi-segment";
@@ -155,32 +155,12 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         }
     }
 
-    private Operation findOperation(String path, String httpMethod) {
-        if (this.openAPI == null)
-            return null;
-        PathItem pathItem = this.openAPI.getPaths().get(path);
-        if (pathItem == null)
-            return null;
-        try {
-            HttpMethod method = HttpMethod
-                    .valueOf(httpMethod.toUpperCase());
-            return pathItem.readOperationsMap().get(method);
-        } catch (IllegalArgumentException e) {
-            return null;
+    @Override
+    public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+        super.postProcessModelProperty(model, property);
+        if ("set".equals(property.containerType)) {
+            model.imports.add("Arrays");
         }
-    }
-
-    private String findMatchingEnumModel(List<?> enumValues) {
-        if (this.openAPI != null && this.openAPI.getComponents() != null
-                && this.openAPI.getComponents().getSchemas() != null) {
-            for (Map.Entry<String, Schema> entry : this.openAPI.getComponents().getSchemas().entrySet()) {
-                Schema s = entry.getValue();
-                if (s.getEnum() != null && s.getEnum().equals(enumValues)) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return null;
     }
 
     @Override
@@ -191,15 +171,11 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     @Override
-    public CodegenProperty fromProperty(String name, Schema p, boolean required,
-            boolean schemaIsFromAdditionalProperties) {
+    public CodegenProperty fromProperty(String name, Schema p, boolean required, boolean schemaIsFromAdditionalProperties) {
         if (p != null && p.getType() != null) {
-            // Property is a `type: object` without `additionalProperties: true`, without
-            // `properties`, but has `default` values set!
-            // In this peculiar situation, the template will try to initialize a Java Object
-            // with such values, and it will fail to compile.
-            // See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1185 for
-            // more context.
+            // Property is a `type: object` without `additionalProperties: true`, without `properties`, but has `default` values set!
+            // In this peculiar situation, the template will try to initialize a Java Object with such values, and it will fail to compile.
+            // See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1185 for more context.
             if ("object".equals(p.getType()) && p.getDefault() != null && p.getAdditionalProperties() == null
                     && p.getItems() == null) {
                 p.setAdditionalProperties(true);
@@ -281,8 +257,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     private void configureAdditionalPropertiesAsAttribute() {
-        String property = GlobalSettings
-                .getProperty(OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE);
+        String property = GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE);
         if (Boolean.parseBoolean(property)) {
             this.supportsAdditionalPropertiesWithComposedSchema = true;
         }
@@ -298,13 +273,40 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             if (operations != null) {
                 for (CodegenOperation operation : operations) {
                     handleMultiSegmentParams(operation);
-
                     handleReturnType(operation, result);
                 }
             }
         }
 
         return result;
+    }
+
+    private Operation findOperation(String path, String httpMethod) {
+        if (this.openAPI == null)
+            return null;
+        PathItem pathItem = this.openAPI.getPaths().get(path);
+        if (pathItem == null)
+            return null;
+        try {
+            HttpMethod method = HttpMethod
+                    .valueOf(httpMethod.toUpperCase());
+            return pathItem.readOperationsMap().get(method);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private String findMatchingEnumModel(List<?> enumValues) {
+        if (this.openAPI != null && this.openAPI.getComponents() != null
+                && this.openAPI.getComponents().getSchemas() != null) {
+            for (Map.Entry<String, Schema> entry : this.openAPI.getComponents().getSchemas().entrySet()) {
+                Schema s = entry.getValue();
+                if (s.getEnum() != null && s.getEnum().equals(enumValues)) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return null;
     }
 
     private void handleReturnType(CodegenOperation operation, OperationsMap result) {
@@ -323,7 +325,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             if (openApiOperation != null) {
                 if (openApiOperation.getResponses() != null && openApiOperation.getResponses().get("200") != null
                         && openApiOperation.getResponses().get("200").getContent() != null && openApiOperation
-                                .getResponses().get("200").getContent().get("application/json") != null) {
+                        .getResponses().get("200").getContent().get("application/json") != null) {
                     Schema<?> responseSchema = openApiOperation.getResponses().get("200").getContent()
                             .get("application/json").getSchema();
 
