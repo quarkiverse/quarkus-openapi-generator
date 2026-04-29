@@ -52,6 +52,11 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
 
+        if (sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()))) {
+            // skip when generate-code-tests
+            return false;
+        }
+
         String serverCodegen = config.getOptionalValue(CodegenConfig.getServerUse(), String.class)
                 .orElse(ServerCodegenConfig.APICURIO);
         if (!serverCodegen.equalsIgnoreCase(ServerCodegenConfig.APICURIO)) {
@@ -71,10 +76,16 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
         String relativeInputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config).orElse(null);
         if (relativeInputBaseDir != null) {
-            return Files.exists(Path.of(relativeInputBaseDir).resolve(specPropertyName));
+            return Files.exists(Path.of(relativeInputBaseDir).resolve(specPropertyName)) ||
+                    isGeneratedSources(sourceDir);
         } else {
-            return Files.exists(sourceDir.resolve(DEFAULT_DIR).resolve(specPropertyName));
+            return Files.exists(sourceDir.resolve(DEFAULT_DIR).resolve(specPropertyName)) ||
+                    isGeneratedSources(sourceDir);
         }
+    }
+
+    private static boolean isGeneratedSources(Path sourceDir) {
+        return sourceDir.getFileName().toString().endsWith("generated-test-sources");
     }
 
     @Override
