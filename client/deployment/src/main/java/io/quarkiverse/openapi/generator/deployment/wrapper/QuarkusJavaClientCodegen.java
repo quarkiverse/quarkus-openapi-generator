@@ -27,6 +27,7 @@ import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.quarkiverse.openapi.generator.deployment.template.MediaTypeExtensions;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.servers.Server;
@@ -268,6 +269,10 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             List<CodegenOperation> operations = ops.getOperation();
             if (operations != null) {
                 for (CodegenOperation operation : operations) {
+                    if ((Boolean) this.additionalProperties.getOrDefault("method-per-media-type", false)) {
+                        operation.consumes = MediaTypeExtensions.deduplicateByMediaType(operation.consumes);
+                    }
+
                     // Build list of multi-segment parameter names
                     List<String> multiSegmentParamNames = new ArrayList<>();
                     if (operation.pathParams != null) {

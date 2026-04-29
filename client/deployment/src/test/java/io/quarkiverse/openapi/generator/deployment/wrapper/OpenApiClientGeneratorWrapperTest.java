@@ -14,7 +14,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +35,13 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.SimpleName;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.Type;
@@ -843,6 +852,27 @@ public class OpenApiClientGeneratorWrapperTest {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
                 .withMethodPerMediaType(true);
         final List<File> generatedFiles = generatorWrapper.generate("org.issue1428");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        List<MethodDeclaration> updateMethodList = StaticJavaParser.parse(imagesApiFile).findAll(MethodDeclaration.class,
+                method -> method.getNameAsString().startsWith("updateImage"));
+        assertThat(updateMethodList)
+                .hasSize(3)
+                .extracting(NodeWithSimpleName::getNameAsString)
+                .containsExactlyInAnyOrder("updateImageImageJpeg", "updateImageImagePng", "updateImageImageGif");
+    }
+
+    @Test
+    void verifyMediaTypesDeduplication() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1519.yaml")
+                .withMethodPerMediaType(true);
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1519");
 
         assertThat(generatedFiles).isNotEmpty();
         File imagesApiFile = generatedFiles.stream()
