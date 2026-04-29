@@ -34,6 +34,8 @@ import {imp.import};
 public interface {classname} {
 
 {#for op in operations.operation}
+    {#if op.imports}
+    {/if}
 {#if !op.isDeprecated || openapi:genDeprecatedApiAttr(package, classname, classes-codegen)}
 {#if method-per-media-type
     && op.hasConsumes
