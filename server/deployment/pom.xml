@@ -12,6 +12,13 @@
     <name>Quarkus - OpenAPI Generator - Server - Deployment</name>
 
     <dependencies>
+        <!-- own -->
+        <dependency>
+            <groupId>io.quarkiverse.openapi.generator</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- quarkus -->
         <dependency>
             <groupId>io.quarkus</groupId>

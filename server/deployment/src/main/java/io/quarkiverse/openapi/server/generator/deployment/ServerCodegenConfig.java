@@ -115,5 +115,10 @@ public interface ServerCodegenConfig {
         @WithDefault("false")
         Optional<Boolean> useBeanValidation();
 
+        /**
+         * Whether to skip generation if the generated sources are unchanged.
+         */
+        @WithDefault("false")
+        Optional<Boolean> skipIfUnchanged();
     }
 }
