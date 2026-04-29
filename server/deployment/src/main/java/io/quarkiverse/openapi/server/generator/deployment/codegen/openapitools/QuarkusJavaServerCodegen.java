@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools;
 
 import static io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools.QuarkusJavaServerCodegenConfigurator.USE_BEAN_VALIDATION;
+import static io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools.QuarkusJavaServerCodegenConfigurator.USE_REST_RESPONSE;
 
 import org.openapitools.codegen.languages.JavaClientCodegen;
 
@@ -36,6 +37,11 @@ public class QuarkusJavaServerCodegen extends JavaClientCodegen {
         this.setUseBeanValidation(useBeanValidation);
         this.setPerformBeanValidation(useBeanValidation);
 
+        // rest response
+        boolean useRestResponse = (boolean) this.additionalProperties
+                .getOrDefault(USE_REST_RESPONSE, false);
+        this.additionalProperties.put("use-rest-response", useRestResponse);
+
         String basePackage = (String) this.additionalProperties.get(QuarkusJavaServerCodegenConfigurator.BASE_PACKAGE);
         this.apiPackage = basePackage + ".resources";
         this.modelPackage = basePackage + ".model";
@@ -53,4 +59,5 @@ public class QuarkusJavaServerCodegen extends JavaClientCodegen {
         this.modelTemplateFiles.clear();
         this.modelTemplateFiles.put("model.qute", ".java");
     }
+
 }

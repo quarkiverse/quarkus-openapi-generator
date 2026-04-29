@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
@@ -29,6 +30,12 @@ import io.quarkus.qute.NamespaceResolver;
 public class OpenApiNamespaceResolver implements NamespaceResolver {
     static final OpenApiNamespaceResolver INSTANCE = new OpenApiNamespaceResolver();
     private static final String GENERATE_DEPRECATED_PROP = "generateDeprecated";
+    private static final String VOID_TYPE = "void";
+    private static final String RESPONSE_TYPE = "jakarta.ws.rs.core.Response";
+    private static final String REST_RESPONSE_TYPE = "org.jboss.resteasy.reactive.RestResponse";
+    private static final String MUTINY_UNI_TYPE = "io.smallrye.mutiny.Uni";
+    private static final String CODEGEN_USE_REST_RESPONSE = "x-codegen-use-rest-response";
+    private static final String CODEGEN_RETURN_TYPE = "x-codegen-returnType";
 
     private OpenApiNamespaceResolver() {
     }
@@ -90,6 +97,49 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
         return Collections.emptyList();
     }
 
+    /**
+     * Computes the final Java return type for an operation based on the operation return type,
+     * reactive/rest-response flags and vendor extensions.
+     */
+    @SuppressWarnings("unused")
+    public String getMapReturnType(final String opReturnType, final Boolean useReactiveConfig,
+            final Boolean useRestResponseConfig, final Map<String, Object> codegenConfig) {
+        final Map<String, Object> safeCodegenConfig = codegenConfig == null ? Map.of() : codegenConfig;
+        final boolean useReactive = Boolean.TRUE.equals(useReactiveConfig);
+        final String returnResponseTypeConfig = stringValue(safeCodegenConfig.get(CODEGEN_RETURN_TYPE));
+        final boolean useRestResponse = Boolean.TRUE.equals(useRestResponseConfig)
+                || isTrue(safeCodegenConfig.get(CODEGEN_USE_REST_RESPONSE))
+                || REST_RESPONSE_TYPE.equals(returnResponseTypeConfig);
+        final boolean hasReturnType = hasReturnType(opReturnType);
+        final String responsePayloadType = hasReturnType ? opReturnType : "Void";
+
+        if (useReactive) {
+            if (useRestResponse) {
+                return MUTINY_UNI_TYPE + "<" + REST_RESPONSE_TYPE + "<" + responsePayloadType + ">>";
+            }
+            if (RESPONSE_TYPE.equals(returnResponseTypeConfig)) {
+                return MUTINY_UNI_TYPE + "<" + RESPONSE_TYPE + ">";
+            }
+            if (!returnResponseTypeConfig.isBlank()) {
+                return MUTINY_UNI_TYPE + "<" + returnResponseTypeConfig + ">";
+            }
+            return hasReturnType ? MUTINY_UNI_TYPE + "<" + opReturnType + ">"
+                    : MUTINY_UNI_TYPE + "<" + RESPONSE_TYPE
+                            + ">";
+        }
+
+        if (useRestResponse) {
+            return REST_RESPONSE_TYPE + "<" + responsePayloadType + ">";
+        }
+        if (RESPONSE_TYPE.equals(returnResponseTypeConfig)) {
+            return RESPONSE_TYPE;
+        }
+        if (!returnResponseTypeConfig.isBlank()) {
+            return returnResponseTypeConfig;
+        }
+        return hasReturnType ? opReturnType : RESPONSE_TYPE;
+    }
+
     @Override
     public CompletionStage<Object> resolve(EvalContext context) {
         try {
@@ -136,6 +186,18 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
             }
         }
         return true;
+    }
+
+    private boolean hasReturnType(String opReturnType) {
+        return opReturnType != null && !opReturnType.isBlank() && !VOID_TYPE.equals(opReturnType);
+    }
+
+    private boolean isTrue(Object value) {
+        return Boolean.TRUE.equals(value) || Boolean.parseBoolean(String.valueOf(value));
+    }
+
+    private String stringValue(Object value) {
+        return value == null ? "" : String.valueOf(value);
     }
 
     private String escapeWindowsPath(String pathAsString) {

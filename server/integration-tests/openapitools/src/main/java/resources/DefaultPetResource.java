@@ -14,6 +14,7 @@ import org.acme.model.ModelApiResponse;
 import org.acme.model.Pet;
 import org.acme.model.Tag;
 import org.acme.resources.PetResource;
+import org.jboss.resteasy.reactive.RestResponse;
 
 import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
@@ -24,7 +25,7 @@ public class DefaultPetResource implements PetResource {
     private final Random random = new Random();
 
     @Override
-    public Uni<Pet> addPet(Pet pet) {
+    public Uni<RestResponse<Pet>> addPet(Pet pet) {
         long id = Math.abs(random.nextLong());
 
         Pet createdPet = new Pet()
@@ -36,19 +37,19 @@ public class DefaultPetResource implements PetResource {
                 .status(Pet.StatusEnum.AVAILABLE);
 
         PET_STORE_DB.put(id, createdPet);
-        return Uni.createFrom().item(createdPet);
+        return Uni.createFrom().item(RestResponse.ok(createdPet));
     }
 
     @Override
-    public Uni<Void> deletePet(Long petId, String apiKey) {
+    public Uni<RestResponse<Void>> deletePet(Long petId, String apiKey) {
         if (petId != null) {
             PET_STORE_DB.remove(petId);
         }
-        return Uni.createFrom().voidItem();
+        return Uni.createFrom().item(RestResponse.noContent());
     }
 
     @Override
-    public Uni<List<Pet>> findPetsByStatus(String status) {
+    public Uni<RestResponse<List<Pet>>> findPetsByStatus(String status) {
         Pet.StatusEnum statusEnum = Pet.StatusEnum.fromString(status);
 
         List<Pet> pets = new ArrayList<>();
@@ -57,13 +58,13 @@ public class DefaultPetResource implements PetResource {
                 pets.add(pet);
             }
         }
-        return Uni.createFrom().item(pets);
+        return Uni.createFrom().item(RestResponse.ok(pets));
     }
 
     @Override
-    public Uni<List<Pet>> findPetsByTags(List<String> tags) {
+    public Uni<RestResponse<List<Pet>>> findPetsByTags(List<String> tags) {
         if (tags == null || tags.isEmpty()) {
-            return Uni.createFrom().item(List.of());
+            return Uni.createFrom().item(RestResponse.ok(List.of()));
         }
 
         Set<String> tagSet = new HashSet<>(tags);
@@ -75,28 +76,28 @@ public class DefaultPetResource implements PetResource {
                 pets.add(pet);
             }
         }
-        return Uni.createFrom().item(pets);
+        return Uni.createFrom().item(RestResponse.ok(pets));
     }
 
     @Override
-    public Uni<Pet> getPetById(Long petId) {
-        return Uni.createFrom().item(petId != null ? PET_STORE_DB.get(petId) : null);
+    public Uni<RestResponse<Pet>> getPetById(Long petId) {
+        return Uni.createFrom().item(RestResponse.ok(petId != null ? PET_STORE_DB.get(petId) : null));
     }
 
     @Override
-    public Uni<Pet> updatePet(Pet pet) {
+    public Uni<RestResponse<Pet>> updatePet(Pet pet) {
         if (pet == null || pet.getId() == null) {
-            return Uni.createFrom().item((Pet) null);
+            return Uni.createFrom().item(RestResponse.ok(null));
         }
 
-        return Uni.createFrom().item(
-                PET_STORE_DB.computeIfPresent(pet.getId(), (id, existing) -> pet));
+        return Uni.createFrom().item(RestResponse.ok(
+                PET_STORE_DB.computeIfPresent(pet.getId(), (id, existing) -> pet)));
     }
 
     @Override
-    public Uni<Void> updatePetWithForm(Long petId, String name, String status) {
+    public Uni<RestResponse<Void>> updatePetWithForm(Long petId, String name, String status) {
         if (petId == null) {
-            return Uni.createFrom().voidItem();
+            return Uni.createFrom().item(RestResponse.noContent());
         }
 
         Pet.StatusEnum statusEnum = Pet.StatusEnum.fromString(status);
@@ -108,13 +109,13 @@ public class DefaultPetResource implements PetResource {
             return pet;
         });
 
-        return Uni.createFrom().voidItem();
+        return Uni.createFrom().item(RestResponse.noContent());
     }
 
     @Override
-    public Uni<ModelApiResponse> uploadFile(Long petId, String additionalMetadata, File body) {
+    public Uni<RestResponse<ModelApiResponse>> uploadFile(Long petId, String additionalMetadata, File body) {
         Log.infof("Ignoring the file: %s", body);
         return Uni.createFrom()
-                .item(new ModelApiResponse().code(200).message("Success").type("SUCCESS"));
+                .item(RestResponse.ok(new ModelApiResponse().code(200).message("Success").type("SUCCESS")));
     }
 }

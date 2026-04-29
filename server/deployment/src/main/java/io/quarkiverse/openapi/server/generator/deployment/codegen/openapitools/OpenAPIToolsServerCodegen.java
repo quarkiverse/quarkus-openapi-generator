@@ -50,6 +50,7 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
                 .withGenerateBuilders(generateBuilders(context))
                 .withBeanValidation(beanValidation(context))
                 .withReactive(reactive(context))
+                .withRestResponse(restResponse(context))
                 .withInputBaseDir(openAPIFile.toString())
                 .withOutputDir(
                         outputDir.toAbsolutePath().toString());
@@ -96,7 +97,7 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
                 .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
                 .anyMatch(Capability.HIBERNATE_VALIDATOR::equals);
 
-        if (!hibernateValidatorCapabilityIsPresent) {
+        if (beanValidation && !hibernateValidatorCapabilityIsPresent) {
             throw new IllegalStateException(
                     "The extension io.quarkus:quarkus-hibernate-validator is required when the property " +
                             "quarkus.openapi.generator.server.bean-validation is set to true.");
@@ -125,6 +126,11 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
 
     private boolean reactive(CodeGenContext context) {
         return context.config().getOptionalValue(CodegenConfig.getServerCodegenReactive(), Boolean.class)
+                .orElse(false);
+    }
+
+    private boolean restResponse(CodeGenContext context) {
+        return context.config().getOptionalValue(CodegenConfig.getServerUseRestResponse(), Boolean.class)
                 .orElse(false);
     }
 

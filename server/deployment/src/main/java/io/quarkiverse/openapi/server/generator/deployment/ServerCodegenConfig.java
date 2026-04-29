@@ -115,5 +115,18 @@ public interface ServerCodegenConfig {
         @WithDefault("false")
         Optional<Boolean> useBeanValidation();
 
+        /**
+         * Whether the generated server methods should use {@code org.jboss.resteasy.reactive.RestResponse<T>}
+         * as the return type for single-response endpoints.
+         * <p>
+         * When enabled, methods return {@code RestResponse<Model>} (or {@code Uni<RestResponse<Model>>} in
+         * reactive mode), allowing implementors to control the HTTP response status code (e.g. 201 Created).
+         * Streaming endpoints are out of scope for this flag.
+         * <p>
+         * By default this is {@code false}, preserving backward-compatible return types.
+         */
+        @WithDefault("false")
+        Optional<Boolean> useRestResponse();
+
     }
 }
