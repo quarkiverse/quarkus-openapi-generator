@@ -7,7 +7,7 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-moqu-wiremock_quarkus-resource-dir]] [.property-path]##link:#quarkus-openapi-generator-moqu-wiremock_quarkus-resource-dir[`quarkus.resource-dir`]##
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-moqu-wiremock_quarkus-resource-dir]] [.property-path]##link:#quarkus-openapi-generator-moqu-wiremock_quarkus-resource-dir[`+++quarkus.resource-dir+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.resource-dir+++[]
 endif::add-copy-button-to-config-props[]
@@ -15,7 +15,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-Path to the Moqu (relative to the project).
+Path to the Moqu OpenAPI files, relative to the `src/main/resources` directory.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -26,7 +26,7 @@ Environment variable: `+++QUARKUS_RESOURCE_DIR+++`
 endif::add-copy-button-to-env-var[]
 --
 |string
-|`openapi`
+|`+++openapi+++`
 
 |===
 
