@@ -76,16 +76,10 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
         String relativeInputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config).orElse(null);
         if (relativeInputBaseDir != null) {
-            return Files.exists(Path.of(relativeInputBaseDir).resolve(specPropertyName)) ||
-                    isGeneratedSources(sourceDir);
+            return Files.exists(Path.of(relativeInputBaseDir).resolve(specPropertyName));
         } else {
-            return Files.exists(sourceDir.resolve(DEFAULT_DIR).resolve(specPropertyName)) ||
-                    isGeneratedSources(sourceDir);
+            return Files.exists(sourceDir.resolve(DEFAULT_DIR).resolve(specPropertyName));
         }
-    }
-
-    private static boolean isGeneratedSources(Path sourceDir) {
-        return sourceDir.getFileName().toString().endsWith("generated-test-sources");
     }
 
     @Override
