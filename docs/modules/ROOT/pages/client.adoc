@@ -257,6 +257,10 @@ These are the known limitations of this pre-release version:
 
 We will work in the next few releases to address these use cases, until there please provide feedback for the current state of this extension. We also love contributions icon:heart[1x,role=red].
 
+=== Supported vendor extensions
+
+include::./includes/supported-vendor-extensions.adoc[opts=optional, leveloffset=+1]
+
 == Configuration Properties
 
 include::./includes/quarkus-openapi-generator_quarkus.openapi-generator.adoc[opts=optional, leveloffset=+1]
