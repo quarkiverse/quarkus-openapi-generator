@@ -229,6 +229,25 @@ include::./includes/equals-hashcode.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/dynamic-url.adoc[leveloffset=+1, opts=optional]
 
+[[multi-segment-path-params]]
+== Multi-segment path parameters
+
+Generated clients support the `x-multi-segment` vendor extension for path parameters that may contain slashes.
+
+When a parameter is marked with `x-multi-segment: true`, the generated client keeps the Java parameter type and method shape unchanged, but switches the runtime encoding behavior so the value can span multiple URL segments. Ordinary string path parameters continue to be encoded safely by default.
+
+See xref:x-multi-segment.adoc[Multi-Segment Path Parameters] for examples, limitations, and security considerations.
+
+[[gav-integration]]
+== Specification files from Maven GAV coordinates
+
+include::./includes/use-gav-for-spec.adoc[leveloffset=+1, opts=optional]
+
+[[generate-model-for-usage-as-bean-param]]
+== Generate Model for Usage as Bean Param or not
+
+include::./includes/generate-model-for-usage-as-bean-param.adoc[leveloffset=+1, opts=optional]
+
 == Known Limitations
 
 === Supported Arguments
