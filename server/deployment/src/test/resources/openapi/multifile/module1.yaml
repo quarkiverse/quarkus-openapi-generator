@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: Module1 API
+  version: 1.0.0
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: './common/common-spec.yaml#/components/schemas/CommonPet'
+components:
+  schemas:
+    LocalPet:
+      type: object
+      properties:
+        id:
+          type: integer

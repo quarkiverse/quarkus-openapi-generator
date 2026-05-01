@@ -1,0 +1,11 @@
+openapi: 3.0.3
+info:
+  title: Common Spec
+  version: 1.0.0
+components:
+  schemas:
+    CommonPet:
+      type: object
+      properties:
+        name:
+          type: string

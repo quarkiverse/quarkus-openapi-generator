@@ -21,6 +21,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_USE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use";
     String CODEGEN_SERVER_BASE_PACKAGE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".base-package";
     String CODEGEN_SERVER_SPEC = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".spec";
+    String CODEGEN_SERVER_SPEC_PREFIX = CODEGEN_SERVER_SPEC + ".";
     String CODEGEN_SERVER_INPUT_BASE_DIR = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".input-base-dir";
     String CODEGEN_SERVER_REACTIVE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-reactive";
     String CODEGEN_SERVER_GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-builders";
@@ -28,6 +29,8 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_USE_REST_RESPONSE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-rest-response";
     String CODEGEN_SERVER_SKIP_IF_UNCHANGED = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".skip-if-unchanged";
     String CODEGEN_SERVER_OPERATION_IDS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".operation-ids";
+    String CODEGEN_SERVER_INCLUDE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".include";
+    String CODEGEN_SERVER_EXCLUDE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".exclude";
 
     static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
@@ -60,6 +63,10 @@ public interface CodegenConfig extends ServerCodegenConfig {
 
     static String getServerSpecPropertyName() {
         return CODEGEN_SERVER_SPEC;
+    }
+
+    static String getServerSpecPrefix() {
+        return CODEGEN_SERVER_SPEC_PREFIX;
     }
 
     static String getServerInputBaseDirPropertyName() {
@@ -95,5 +102,13 @@ public interface CodegenConfig extends ServerCodegenConfig {
 
     static String getServerOperationIds() {
         return CODEGEN_SERVER_OPERATION_IDS;
+    }
+
+    static String getServerInclude() {
+        return CODEGEN_SERVER_INCLUDE;
+    }
+
+    static String getServerExclude() {
+        return CODEGEN_SERVER_EXCLUDE;
     }
 }

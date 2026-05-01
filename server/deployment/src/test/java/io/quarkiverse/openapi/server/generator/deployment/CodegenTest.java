@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.Config;
@@ -89,6 +90,33 @@ public class CodegenTest {
     }
 
     @Test
+    public void testMultiFileYamlRefs() throws CodeGenException, IOException {
+        Config config = MockConfigUtils.getTestConfig("multifile.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "multifile"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        try (Stream<Path> files = Files.walk(Path.of("target/generated-test-sources/multifile"))) {
+            assertTrue(files.anyMatch(path -> path.toString().endsWith(".java")));
+        }
+    }
+
+    @Test
+    public void testMultipleSpecsWithDifferentBasePackages() throws CodeGenException {
+        Config config = MockConfigUtils.getTestConfig("apicurio-multispec.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "apicurio-multispec"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        assertTrue(Files.exists(
+                Path.of("target/generated-test-sources/apicurio-multispec/org/acme/petstore/beans/Pet.java")));
+        assertTrue(Files.exists(
+                Path.of("target/generated-test-sources/apicurio-multispec/org/acme/animal/beans/Animal.java")));
+    }
+
+    @Test
     public void shouldGenerateAnErrorWhenInputDirIsNotExist() throws IOException {
         Config config = MockConfigUtils.getTestConfig("doesNotExistDir.application.properties");
         CodeGenContext codeGenContext = new CodeGenContext(null, outDir("inputDir"), WORK_DIR,
@@ -96,6 +124,20 @@ public class CodegenTest {
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
 
         Assertions.assertThrows(CodeGenException.class, () -> apicurioOpenApiServerCodegen.trigger(codeGenContext));
+    }
+
+    @Test
+    public void testAutoDiscoveryForUnconfiguredSpec() throws CodeGenException, IOException {
+        Config config = MockConfigUtils.getTestConfig("apicurio-autodiscover.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "autodiscover"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        assertTrue(Files.exists(
+                Path.of("target/generated-test-sources/autodiscover/org/acme/petstore/beans/Pet.java")));
+        assertTrue(Files.exists(
+                Path.of("target/generated-test-sources/autodiscover/org/acme/AnimalsResource.java")));
     }
 
     /**

@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.server.generator.deployment;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -135,6 +136,20 @@ public interface ServerCodegenConfig {
          */
         @WithDefault("false")
         Optional<Boolean> skipIfUnchanged();
+
+        /**
+         * List of OpenAPI file names to include for code generation.
+         * When set, only the listed files are processed by the auto-discovery mechanism.
+         */
+        Optional<List<String>> include();
+
+        /**
+         * List of OpenAPI file names to exclude from code generation.
+         * When set, the listed files are skipped by the auto-discovery mechanism.
+         * This is useful for excluding shared reference files (e.g., {@code common-spec.yaml})
+         * that are not standalone specifications.
+         */
+        Optional<List<String>> exclude();
 
         /**
          * The map of operations to be configured, where the key is the operationId defined in the OpenAPI specification and the

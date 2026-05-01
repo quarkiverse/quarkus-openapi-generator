@@ -15,35 +15,32 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
-import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.apicurio.hub.api.codegen.JaxRsProjectSettings;
 import io.apicurio.hub.api.codegen.OpenApi2JaxRs;
-import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.server.generator.deployment.codegen.ServerCodegenSpec;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 
 public class ApicurioCodegenWrapper {
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioCodegenWrapper.class);
 
-    private final Config config;
     private final File outdir;
     private final JaxRsProjectSettings projectSettings;
 
-    public ApicurioCodegenWrapper(Config config, File outdir) {
-        this(config, outdir, defaultProjectSettings());
+    public ApicurioCodegenWrapper(File outdir, ServerCodegenSpec spec) {
+        this(outdir, defaultProjectSettings(), spec);
     }
 
-    public ApicurioCodegenWrapper(Config config, File outdir, JaxRsProjectSettings projectSettings) {
-        this.config = config;
+    public ApicurioCodegenWrapper(File outdir, JaxRsProjectSettings projectSettings, ServerCodegenSpec spec) {
         this.outdir = outdir;
         this.projectSettings = projectSettings;
-        this.projectSettings.setJavaPackage(getBasePackage());
-        this.projectSettings.setReactive(getReactiveValue());
-        this.projectSettings.setUseJsr303(getUseBeanValidation());
-        this.projectSettings.setGenerateBuilders(getGenerateBuilders());
+        this.projectSettings.setJavaPackage(spec.basePackage());
+        this.projectSettings.setReactive(spec.reactive());
+        this.projectSettings.setUseJsr303(spec.beanValidation());
+        this.projectSettings.setGenerateBuilders(spec.builders());
     }
 
     public void generate(Path openApiResource) throws CodeGenException {
@@ -126,29 +123,6 @@ public class ApicurioCodegenWrapper {
             log.error("Code generation failed: {}", errorMessage);
             throw new CodeGenException("Code generation failed: " + errorMessage);
         }
-    }
-
-    private String getBasePackage() {
-        return config.getOptionalValue(CodegenConfig.getBasePackagePropertyName(), String.class)
-                .or(() -> config.getOptionalValue(CodegenConfig.getServerBasePackagePropertyName(), String.class))
-                .orElse(DEFAULT_PACKAGE);
-    }
-
-    private Boolean getReactiveValue() {
-        return config
-                .getOptionalValue(CodegenConfig.getCodegenReactive(), Boolean.class)
-                .or(() -> config.getOptionalValue(CodegenConfig.getServerCodegenReactive(), Boolean.class))
-                .orElse(Boolean.FALSE);
-    }
-
-    private Boolean getUseBeanValidation() {
-        return config.getOptionalValue(CodegenConfig.getUseBeanValidation(), Boolean.class)
-                .orElse(Boolean.FALSE);
-    }
-
-    private Boolean getGenerateBuilders() {
-        return config.getOptionalValue(CodegenConfig.getGenerateBuilders(), Boolean.class)
-                .orElse(Boolean.FALSE);
     }
 
     private static JaxRsProjectSettings defaultProjectSettings() {
