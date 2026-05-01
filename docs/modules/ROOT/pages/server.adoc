@@ -88,12 +88,12 @@ The `apicurio` allows you to use `CompletionStage` or `Uni`.
 | Not supported
 
 | Package customization
-| Per schema via `x-codegen-package` or `quarkus.openapi.generator.server.base-package`
-| Global base package via `quarkus.openapi.generator.server.base-package`
+| Per schema via `x-codegen-package`, globally via `quarkus.openapi.generator.server.base-package`, or per configured spec via `quarkus.openapi.generator.server.spec.<id>.base-package`
+| Globally via `quarkus.openapi.generator.server.base-package` or per configured spec via `quarkus.openapi.generator.server.spec.<id>.base-package`
 
 | OpenAPI spec location
-| `src/main/resources/openapi` (configurable via `quarkus.openapi.generator.server.input-base-dir`)
-| `src/main/resources/openapi` (configurable via `quarkus.openapi.generator.server.input-base-dir`)
+| `src/main/resources/openapi` (configurable via `quarkus.openapi.generator.server.input-base-dir` or `quarkus.openapi.generator.server.spec.<id>.input-base-dir`)
+| `src/main/resources/openapi` (configurable via `quarkus.openapi.generator.server.input-base-dir` or `quarkus.openapi.generator.server.spec.<id>.input-base-dir`)
 
 | Supported OpenAPI formats
 | JSON, YAML, YML
@@ -111,6 +111,15 @@ The `apicurio` allows you to use `CompletionStage` or `Uni`.
 | Preview
 | Experimental / early development
 |===
+
+Both generators support multi-file OpenAPI documents with relative `$ref` entries. Keep the referenced files under the same input base directory as the entry spec so they can be resolved during generation.
+
+You can also generate multiple server stubs in a single project by configuring one block per spec under `quarkus.openapi.generator.server.spec.<id>.*`. The `<id>` can either be the sanitized relative file name, such as `petstore_openapi_json`, or an alias when you also set `quarkus.openapi.generator.server.spec.<id>.spec=<file>`.
+
+[NOTE]
+====
+When using per-spec configuration (`quarkus.openapi.generator.server.spec.<id>.*`), any OpenAPI specification files found in the input base directory that are not explicitly configured will be automatically discovered and generated using default values (e.g., `base-package=org.acme`, `use-builders=true`). To exclude files from auto-discovery (such as shared reference files like `common-spec.yaml`), use the `quarkus.openapi.generator.server.exclude` property.
+====
 
 
 == Configuration Properties

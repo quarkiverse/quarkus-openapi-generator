@@ -52,12 +52,19 @@ quarkus.openapi.generator.server.use=openapitools
 ----
 ====
 
-Now, create the directory `openapi` under your `src/main/resources` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions. You have to define the specification used for code generation with the following property:
+Now, create the directory `openapi` under your `src/main/resources` path and add the OpenAPI spec files there. We support JSON, YAML and YML extensions.
+
+All OpenAPI specification files found in the input base directory are automatically discovered and generated. You can explicitly configure a spec with the following property:
 
 [source,properties]
 ----
 quarkus.openapi.generator.server.spec=petstore-openapi.json
 ----
+
+[TIP]
+====
+If no explicit specification is configured, the extension generates code for all OpenAPI files in the input base directory using default values. When using per-spec configuration (`quarkus.openapi.generator.server.spec.<id>.*`), any unconfigured spec files are also auto-discovered and generated with defaults.
+====
 
 [NOTE]
 ====
@@ -82,6 +89,64 @@ If a base package name is not provided, it will be used the default `org.acme`. 
 ----
 quarkus.openapi.generator.server.base-package=io.petstore
 ----
+
+== Multi-file specifications
+
+OpenAPITools can generate from entry specs that use relative `$ref` values across multiple YAML or JSON files. Place the full spec tree under the configured input base directory and point the generator at the entry document.
+
+For example:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use=openapitools
+quarkus.openapi.generator.server.input-base-dir=src/main/resources/openapi
+quarkus.openapi.generator.server.spec=module1.yaml
+----
+
+If `module1.yaml` contains `$ref: './common/common-spec.yaml#/components/schemas/CommonPet'`, the referenced file is resolved automatically as long as `common/common-spec.yaml` is present under the same base directory.
+
+== Multiple generated servers
+
+You can generate more than one server stub in the same build by configuring one block per spec:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use=openapitools
+quarkus.openapi.generator.server.spec.petstore_openapi_json.base-package=org.acme.api.petstore
+quarkus.openapi.generator.server.spec.simple_server_yaml.base-package=org.acme.api.animals
+----
+
+The identifier after `server.spec.` may also be an alias when you want to point explicitly to a file or override its input directory:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.use=openapitools
+quarkus.openapi.generator.server.spec.petstore.spec=petstore-openapi.json
+quarkus.openapi.generator.server.spec.petstore.base-package=org.acme.api.petstore
+quarkus.openapi.generator.server.spec.animals.input-base-dir=src/main/resources/other-openapi
+quarkus.openapi.generator.server.spec.animals.spec=animals.yaml
+quarkus.openapi.generator.server.spec.animals.base-package=org.acme.api.animals
+----
+
+Properties defined under `quarkus.openapi.generator.server.spec.<id>.*` override the global `server.*` values for that specific generated server.
+
+== Filtering auto-discovered specifications
+
+When using per-spec configuration or when no specification is explicitly configured, the extension auto-discovers all OpenAPI files in the input base directory. You can filter which files are processed using the `include` and `exclude` properties:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.include=petstore-openapi.json,simple-server.yaml
+----
+
+or
+
+[source,properties]
+----
+quarkus.openapi.generator.server.exclude=common-spec.yaml,shared-models.yaml
+----
+
+The `include` and `exclude` properties match against file names only (not full paths). When `include` is set, only the listed files are processed. When `exclude` is set, the listed files are skipped. Both can be used together.
 
 By default, the extension generates non-reactive code. If you would like to change it, you can do it as follows:
 

@@ -338,6 +338,48 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-include]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-include[`+++quarkus.openapi.generator.server.include+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.include+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+List of OpenAPI file names to include for code generation. When set, only the listed files are processed by the auto-discovery mechanism.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_INCLUDE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_INCLUDE+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-exclude]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-exclude[`+++quarkus.openapi.generator.server.exclude+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.exclude+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+List of OpenAPI file names to exclude from code generation. When set, the listed files are skipped by the auto-discovery mechanism. This is useful for excluding shared reference files (e.g., `common-spec.yaml`) that are not standalone specifications.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_EXCLUDE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_EXCLUDE+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-operation-ids-operation-ids-return-type]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-operation-ids-operation-ids-return-type[`+++quarkus.openapi.generator.server.operation-ids."operation-ids".return-type+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.operation-ids."operation-ids".return-type+++[]

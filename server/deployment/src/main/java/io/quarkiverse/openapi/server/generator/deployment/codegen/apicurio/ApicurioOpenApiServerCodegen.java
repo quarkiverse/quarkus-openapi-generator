@@ -1,7 +1,5 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen.apicurio;
 
-import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_DIR;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,8 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
@@ -19,18 +17,25 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig;
+import io.quarkiverse.openapi.server.generator.deployment.codegen.ServerCodegenConfigResolver;
+import io.quarkiverse.openapi.server.generator.deployment.codegen.ServerCodegenSpec;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.core.models.ParseOptions;
+import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioOpenApiServerCodegen.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final ServerCodegenConfigResolver configResolver = new ServerCodegenConfigResolver();
 
     @Override
     public String providerId() {
@@ -45,15 +50,6 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
     @Override
     public String inputDirectory() {
         return "resources";
-    }
-
-    private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        return config.getOptionalValue(CodegenConfig.getInputBaseDirPropertyName(), String.class)
-                .or(() -> config.getOptionalValue(CodegenConfig.getServerInputBaseDirPropertyName(), String.class))
-                .map(baseDir -> {
-                    int srcIndex = sourceDir.toString().lastIndexOf("src");
-                    return srcIndex < 0 ? null : Path.of(sourceDir.toString().substring(0, srcIndex), baseDir).toString();
-                });
     }
 
     @Override
@@ -71,94 +67,59 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         }
         log.info("Generating server code using: [{}]", serverCodegen);
 
-        String specPropertyName = config.getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class)
-                .or(() -> config.getOptionalValue(CodegenConfig.getServerSpecPropertyName(), String.class))
-                .orElse(null);
-
-        if (specPropertyName == null) {
-            log.warn("The {} property is not present, the code generation will be ignored",
-                    CodegenConfig.getSpecPropertyName());
-            return false;
-        }
-
-        String relativeInputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config).orElse(null);
-        if (relativeInputBaseDir != null) {
-            return Files.exists(Path.of(relativeInputBaseDir).resolve(specPropertyName));
-        } else {
-            return Files.exists(sourceDir.resolve(DEFAULT_DIR).resolve(specPropertyName));
-        }
+        return configResolver.hasConfiguration(sourceDir, config);
     }
 
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         Config config = context.config();
-        final Path openApiDir = Path.of(getInputBaseDirRelativeToModule(context.inputDir(), config)
-                .orElse(context.inputDir().resolve(DEFAULT_DIR).toString()));
+        Path outDir = context.outDir();
+        List<ServerCodegenSpec> specs = configResolver.resolveSpecs(context.inputDir(), config);
+        for (ServerCodegenSpec spec : specs) {
+            File openApiResource = spec.specPath().toFile();
+            validateOpenApiResource(openApiResource);
 
-        validateOpenApiDir(context, openApiDir);
+            String specFileName = openApiResource.getName();
+            if (Arrays.stream(this.inputExtensions()).noneMatch(specFileName::endsWith)) {
+                throw new CodeGenException(
+                        "Specification file must have one of the following extensions: " + Arrays.toString(
+                                this.inputExtensions()));
+            }
 
-        final Path outDir = context.outDir();
-        final ApicurioCodegenWrapper apicurioCodegenWrapper = new ApicurioCodegenWrapper(
-                config, outDir.toFile());
-        final String specPropertyName = config
-                .getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class)
-                .or(() -> config.getOptionalValue(CodegenConfig.getServerSpecPropertyName(), String.class))
-                .orElseThrow();
+            File jsonSpec = specFileName.endsWith("json") ? openApiResource : resolveToJSON(openApiResource.toPath());
 
-        final File openApiResource = new File(openApiDir.toFile(), specPropertyName);
-        if (!openApiResource.exists()) {
-            throw new CodeGenException(
-                    "Specification file not found: " + openApiResource.getAbsolutePath());
+            String originalSpecName = specFileName.replaceAll("\\.(yaml|yml)$", ".json");
+            try {
+                Path originalSpecPath = outDir.resolve(originalSpecName);
+                Files.createDirectories(originalSpecPath.getParent());
+                Files.copy(jsonSpec.toPath(), originalSpecPath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new CodeGenException("Error copying original spec to output directory", e);
+            }
+
+            Map<String, String> returnTypes = collectReturnTypes(config);
+            final Path specToUse;
+            if (returnTypes.isEmpty()) {
+                specToUse = jsonSpec.toPath();
+            } else {
+                String modifiedSpecName = originalSpecName.replace(".json", "-modified.json");
+                specToUse = injectReturnTypes(jsonSpec.toPath(), returnTypes, outDir.resolve(modifiedSpecName));
+            }
+
+            new ApicurioCodegenWrapper(outDir.toFile(), spec).generate(specToUse);
         }
-        if (!openApiResource.isFile()) {
-            throw new CodeGenException(
-                    "Specification file is not a file: " + openApiResource.getAbsolutePath());
-        }
-        if (!openApiResource.canRead()) {
-            throw new CodeGenException(
-                    "Specification file is not readable: " + openApiResource.getAbsolutePath());
-        }
-        if (Arrays.stream(this.inputExtensions()).noneMatch(specPropertyName::endsWith)) {
-            throw new CodeGenException(
-                    "Specification file must have one of the following extensions: " + Arrays.toString(
-                            this.inputExtensions()));
-        }
-
-        // Apicurio only supports JSON => convert YAML to JSON
-        final File jsonSpec = specPropertyName.endsWith("json") ? openApiResource
-                : convertToJSON(openApiResource.toPath());
-
-        // Copy original (JSON) spec to output directory
-        final String originalSpecName = specPropertyName.replaceAll("\\.(yaml|yml)$", ".json");
-        try {
-            Files.copy(jsonSpec.toPath(), outDir.resolve(originalSpecName), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new CodeGenException("Error copying original spec to output directory", e);
-        }
-
-        final Map<String, String> returnTypes = collectReturnTypes(config);
-        final Path specToUse;
-        if (returnTypes.isEmpty()) {
-            specToUse = jsonSpec.toPath();
-        } else {
-            final String modifiedSpecName = originalSpecName.replace(".json", "-modified.json");
-            specToUse = injectReturnTypes(jsonSpec.toPath(), returnTypes, outDir.resolve(modifiedSpecName));
-        }
-
-        apicurioCodegenWrapper.generate(specToUse);
         return true;
     }
 
-    private static void validateOpenApiDir(CodeGenContext context, Path openApiDir) throws CodeGenException {
-        if (!Files.exists(openApiDir)) {
-            throw new CodeGenException(
-                    "The OpenAPI input base directory does not exist. Please create the directory at " + context.inputDir());
+    private static void validateOpenApiResource(File openApiResource) throws CodeGenException {
+        if (!openApiResource.exists()) {
+            throw new CodeGenException("Specification file not found: " + openApiResource.getAbsolutePath());
         }
-
-        if (!Files.isDirectory(openApiDir)) {
-            throw new CodeGenException(
-                    "The OpenAPI input base directory is not a directory. Please create the directory at "
-                            + context.inputDir());
+        if (!openApiResource.isFile()) {
+            throw new CodeGenException("Specification file is not a file: " + openApiResource.getAbsolutePath());
+        }
+        if (!openApiResource.canRead()) {
+            throw new CodeGenException("Specification file is not readable: " + openApiResource.getAbsolutePath());
         }
     }
 
@@ -213,17 +174,46 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         }
     }
 
-    private File convertToJSON(Path yamlPath) throws CodeGenException {
+    private File resolveToJSON(Path specPath) throws CodeGenException {
         try {
-            ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-            Object obj = yamlReader.readValue(yamlPath.toFile(), Object.class);
-            ObjectMapper jsonWriter = new ObjectMapper();
-            File jsonFile = File.createTempFile(yamlPath.toFile().getName(), ".json");
+            SwaggerParseResult parseResult = parseAndResolve(specPath);
+            OpenAPI openAPI = parseResult.getOpenAPI();
+            if (openAPI == null) {
+                throw new CodeGenException("Error parsing OpenAPI spec: " + parseMessages(parseResult));
+            }
+
+            File jsonFile = Files.createTempFile(specPath.getFileName().toString(), ".json").toFile();
             jsonFile.deleteOnExit();
-            jsonWriter.writeValue(jsonFile, obj);
+            Json.mapper().writeValue(jsonFile, openAPI);
             return jsonFile;
         } catch (Exception e) {
-            throw new CodeGenException("Error converting YAML to JSON", e);
+            throw new CodeGenException("Error resolving OpenAPI spec to JSON", e);
         }
+    }
+
+    private SwaggerParseResult parseAndResolve(Path specPath) throws CodeGenException {
+        ParseOptions options = new ParseOptions();
+        options.setResolve(true);
+        options.setResolveFully(true);
+        options.setResolveCombinators(true);
+
+        SwaggerParseResult parseResult = new OpenAPIV3Parser()
+                .readLocation(specPath.toUri().toString(), null, options);
+
+        if (parseResult == null) {
+            throw new CodeGenException("OpenAPI parser returned no result for: " + specPath);
+        }
+        if (parseResult.getMessages() != null && !parseResult.getMessages().isEmpty()) {
+            log.warn("OpenAPI parse warnings for {}: {}", specPath, String.join("; ", parseResult.getMessages()));
+        }
+        return parseResult;
+    }
+
+    private static String parseMessages(SwaggerParseResult parseResult) {
+        List<String> messages = parseResult.getMessages();
+        if (messages == null || messages.isEmpty()) {
+            return "Unknown parsing error";
+        }
+        return String.join("; ", messages);
     }
 }
