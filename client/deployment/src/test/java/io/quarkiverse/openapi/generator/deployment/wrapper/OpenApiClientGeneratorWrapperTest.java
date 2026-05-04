@@ -39,6 +39,7 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
@@ -798,6 +799,45 @@ public class OpenApiClientGeneratorWrapperTest {
                 throw new RuntimeException(e.getMessage());
             }
         }
+    }
+
+    @Test
+    void verifyPathParamsAreEncoded() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapper("issue-38.yaml")
+                .withEnabledSecurityGeneration(false)
+                .generate("org.issue38");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("ConnectorClustersAgentApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        boolean foundRegisterProvider = compilationUnit.findAll(AnnotationExpr.class).stream()
+                .filter(annotation -> annotation.getName().getIdentifier().equals("RegisterProvider"))
+                .anyMatch(annotation -> {
+                    if (annotation instanceof SingleMemberAnnotationExpr singleMemberAnnotationExpr) {
+                        return singleMemberAnnotationExpr.getMemberValue().isClassExpr()
+                                && singleMemberAnnotationExpr.getMemberValue().asClassExpr().getType().asString()
+                                        .equals("PathParamEncodingParamConverterProvider");
+                    }
+                    if (annotation instanceof NormalAnnotationExpr normalAnnotationExpr) {
+                        return normalAnnotationExpr.getPairs().stream()
+                                .filter(pair -> pair.getNameAsString().equals("value"))
+                                .map(MemberValuePair::getValue)
+                                .anyMatch(value -> value.isClassExpr()
+                                        && value.asClassExpr().getType().asString()
+                                                .equals("PathParamEncodingParamConverterProvider"));
+                    }
+                    return false;
+                });
+        assertThat(foundRegisterProvider).isTrue();
+
+        boolean foundEncodedPathParam = compilationUnit.findAll(MethodDeclaration.class).stream()
+                .flatMap(method -> method.getParameters().stream())
+                .anyMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
+                        && parameter.getAnnotationByName("EncodedPathParam").isPresent());
+        assertThat(foundEncodedPathParam).isTrue();
     }
 
     @Test

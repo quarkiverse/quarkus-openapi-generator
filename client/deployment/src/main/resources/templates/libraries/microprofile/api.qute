@@ -2,6 +2,7 @@ package {package};
 
 import java.util.List;
 import java.util.Map;
+import io.quarkiverse.openapi.generator.providers.PathParamEncodingParamConverterProvider;
 {#if use-bean-validation}
 {! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import {imp.import};
 @org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 {/if}
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
+@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(PathParamEncodingParamConverterProvider.class)
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
