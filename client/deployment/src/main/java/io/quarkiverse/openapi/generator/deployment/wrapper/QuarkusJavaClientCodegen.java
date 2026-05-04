@@ -27,6 +27,7 @@ import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.quarkiverse.openapi.generator.deployment.template.MediaTypeExtensions;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -271,6 +272,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             List<CodegenOperation> operations = ops.getOperation();
             if (operations != null) {
                 for (CodegenOperation operation : operations) {
+                    handleDuplicateByMediaType(operation);
                     handleMultiSegmentParams(operation);
                     handleReturnType(operation, result);
                 }
@@ -278,6 +280,12 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         }
 
         return result;
+    }
+
+    private void handleDuplicateByMediaType(CodegenOperation operation) {
+        if ((Boolean) this.additionalProperties.getOrDefault("method-per-media-type", false)) {
+            operation.consumes = MediaTypeExtensions.deduplicateByMediaType(operation.consumes);
+        }
     }
 
     private Operation findOperation(String path, String httpMethod) {
@@ -369,7 +377,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         return path;
     }
 
-    private static void handleMultiSegmentParams(CodegenOperation operation) {
+    private void handleMultiSegmentParams(CodegenOperation operation) {
         // Build list of multi-segment parameter names
         List<String> multiSegmentParamNames = new ArrayList<>();
         if (operation.pathParams != null) {
