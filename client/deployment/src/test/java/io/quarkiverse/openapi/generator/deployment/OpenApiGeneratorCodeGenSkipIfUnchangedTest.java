@@ -53,7 +53,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
                 getClass(),
-                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
                 getSanitizedFileName(spec),
@@ -80,7 +80,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
                 getClass(),
-                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
                 getSanitizedFileName(spec),
@@ -107,7 +107,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
                 getClass(),
-                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
                 getSanitizedFileName(spec),
@@ -140,7 +140,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
 
         OpenApiGeneratorOptions firstOptions = new OpenApiGeneratorOptions(
                 getClass(),
-                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 firstConfig,
                 spec,
                 getSanitizedFileName(spec),
@@ -157,7 +157,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
 
         OpenApiGeneratorOptions secondOptions = new OpenApiGeneratorOptions(
                 getClass(),
-                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 secondConfig,
                 spec,
                 getSanitizedFileName(spec),
