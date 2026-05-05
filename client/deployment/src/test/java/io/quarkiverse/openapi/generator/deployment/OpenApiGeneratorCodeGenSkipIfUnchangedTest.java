@@ -52,6 +52,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
         Config config = config(Map.of(CONFIG_PROPERTY, "true"));
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                getClass(),
                 CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
@@ -78,6 +79,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
         Config config = config(Map.of(CONFIG_PROPERTY, "false"));
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                getClass(),
                 CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
@@ -104,6 +106,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
         Config config = config(Map.of(CONFIG_PROPERTY, "true"));
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                getClass(),
                 CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 config,
                 spec,
@@ -136,6 +139,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
                 "quarkus.openapi-generator.codegen.spec.petstore.additional-api-type-annotations", "@org.test.Foo"));
 
         OpenApiGeneratorOptions firstOptions = new OpenApiGeneratorOptions(
+                getClass(),
                 CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 firstConfig,
                 spec,
@@ -152,6 +156,7 @@ class OpenApiGeneratorCodeGenSkipIfUnchangedTest {
                 "quarkus.openapi-generator.codegen.spec.another.additional-api-type-annotations", "@org.test.Foo"));
 
         OpenApiGeneratorOptions secondOptions = new OpenApiGeneratorOptions(
+                getClass(),
                 CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 secondConfig,
                 spec,
