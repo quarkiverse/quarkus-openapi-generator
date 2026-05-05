@@ -99,7 +99,8 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                         }
                     }
                     OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
-                            CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                            getClass(),
+                            "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                             this.mergeConfig(context, inputModel),
                             openApiFilePath,
                             getSanitizedFileName(openApiFilePath),

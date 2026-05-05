@@ -161,7 +161,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                     }
 
                     OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
-                            CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                            getClass(),
+                            "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                             context.config(),
                             openApiPath,
                             getSanitizedFileName(openApiPath),

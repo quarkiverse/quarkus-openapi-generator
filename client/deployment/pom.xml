@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
       <groupId>io.quarkiverse.openapi.generator</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>quarkus-openapi-generator-common</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- Forces swagger-parser version to avoid conflict with Quarkus.

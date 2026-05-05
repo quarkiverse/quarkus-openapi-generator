@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import org.eclipse.microprofile.config.Config;
 
 public record OpenApiGeneratorOptions(
+        Class<?> generatorClass,
         String codegenConfigPrefix,
         Config config,
         Path openApiFilePath,

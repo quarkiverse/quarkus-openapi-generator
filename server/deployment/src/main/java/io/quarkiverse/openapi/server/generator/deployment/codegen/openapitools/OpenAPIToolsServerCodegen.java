@@ -58,6 +58,7 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
                         outputDir.toAbsolutePath().toString());
 
         OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                getClass(),
                 CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                 context.config(),
                 openAPIFile.toPath(),

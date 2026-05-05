@@ -20,7 +20,7 @@ public class SkipGenerationSupport {
 
             updateDigestWithFile(digest, options.openApiFilePath());
             updateDigestWithString(digest, "reactive=" + options.isRestEasyReactive());
-            updateDigestWithString(digest, "generator=" + getClass().getName());
+            updateDigestWithString(digest, "generator=" + options.generatorClass());
             updateDigestWithString(digest, "quarkusVersion=" + Version.getVersion());
 
             addRelevantConfig(digest, options.config(), options.codegenConfigPrefix());
@@ -91,10 +91,8 @@ public class SkipGenerationSupport {
 
     // Includes configuration in the fingerprint so changes force regeneration
     private void addRelevantConfig(MessageDigest digest, Config config, String codegenConfigPrefix) {
-        String prefix = "quarkus." + codegenConfigPrefix + ".";
-
         StreamSupport.stream(config.getPropertyNames().spliterator(), false)
-                .filter(propertyName -> propertyName.startsWith(prefix))
+                .filter(propertyName -> propertyName.startsWith(codegenConfigPrefix))
                 .sorted()
                 .forEach(propertyName -> config.getOptionalValue(propertyName, String.class)
                         .ifPresent(value -> updateDigestWithString(digest, propertyName + "=" + value)));
