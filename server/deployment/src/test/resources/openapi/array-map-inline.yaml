@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: array map inline api
+  version: "1.0.0"
+paths:
+  /api-lists:
+    post:
+      tags:
+        - ApiLists
+      operationId: createApiLists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiLists'
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    ApiList:
+      type: object
+      properties:
+        id:
+          type: string
+    ApiLists:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/ApiList'
+      x-codegen-inline: true
+      x-codegen-type: ArrayMap

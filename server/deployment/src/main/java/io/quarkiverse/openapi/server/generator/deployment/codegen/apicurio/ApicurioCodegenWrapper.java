@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.apicurio.hub.api.codegen.JaxRsProjectSettings;
-import io.apicurio.hub.api.codegen.OpenApi2JaxRs;
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 
@@ -65,7 +64,7 @@ public class ApicurioCodegenWrapper {
 
         try (FileOutputStream fos = new FileOutputStream(zipFile);
                 FileInputStream openApiStream = new FileInputStream(openApiFile)) {
-            OpenApi2JaxRs generator = new OpenApi2JaxRs();
+            ArrayMapAwareOpenApi2JaxRs generator = new ArrayMapAwareOpenApi2JaxRs();
             generator.setSettings(projectSettings);
             generator.setUpdateOnly(true);
             generator.setOpenApiDocument(openApiStream);

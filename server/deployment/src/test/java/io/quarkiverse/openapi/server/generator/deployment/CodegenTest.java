@@ -161,4 +161,37 @@ public class CodegenTest {
         assertThat(amountsParam.getTypeAsString()).startsWith("List<");
     }
 
+    /**
+     * Tests that an inline map schema with array values generates a {@code Map<String, List<ApiList>>}
+     * type instead of dropping the bean entirely.
+     */
+    @Test
+    void testArrayMapInline() throws CodeGenException, IOException {
+        Config config = MockConfigUtils.getTestConfig("array-map-inline.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "array-map-inline"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        Path generatedResource = Path.of("target/generated-test-sources/array-map-inline/io/example/api/ApiResource.java");
+        assertTrue(Files.exists(generatedResource));
+        assertTrue(
+                Files.notExists(Path.of("target/generated-test-sources/array-map-inline/io/example/api/beans/ApiLists.java")));
+
+        CompilationUnit cu = StaticJavaParser.parse(generatedResource.toFile());
+        MethodDeclaration postMethod = cu.findAll(MethodDeclaration.class).stream()
+                .filter(method -> method.getAnnotationByName("POST").isPresent())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No @POST method found"));
+
+        Parameter mapParam = postMethod.getParameters().stream()
+                .filter(parameter -> parameter.getTypeAsString().contains("Map")
+                        && parameter.getTypeAsString().contains("List")
+                        && parameter.getTypeAsString().contains("ApiList"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No Map<String, List<ApiList>> parameter found"));
+
+        assertThat(mapParam.getTypeAsString()).contains("Map").contains("List").contains("ApiList");
+    }
+
 }

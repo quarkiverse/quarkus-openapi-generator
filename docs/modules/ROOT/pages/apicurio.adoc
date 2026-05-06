@@ -463,6 +463,8 @@ In this example, instead of generating a class called `MyMap`, the generator wil
 
   If you want the schema to be generated as `Map<String, Object>` (instead of `Map<String, String>`), set its `x-codegen-type` to `StringObjectMap`.
 
+  If you want the schema to be generated as `Map<String, List<ApiList>>`, set its `x-codegen-type` to `ArrayMap`.
+
 ==== Invalid Example (Will Fail)
 
 [source,json]
