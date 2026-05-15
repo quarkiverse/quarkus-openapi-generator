@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -34,6 +35,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
@@ -316,6 +318,18 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         return null;
     }
 
+    private static boolean is2xxResponseCode(String statusCode) {
+        if (statusCode == null) {
+            return false;
+        }
+        try {
+            int code = Integer.parseInt(statusCode);
+            return code >= 200 && code <= 299;
+        } catch (NumberFormatException e) {
+            return "2XX".equalsIgnoreCase(statusCode);
+        }
+    }
+
     private void handleReturnType(CodegenOperation operation, OperationsMap result) {
 
         if ("String".equals(operation.returnBaseType)
@@ -329,13 +343,18 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                 openApiOperation = findOperation(pathNoSlash, operation.httpMethod);
             }
 
-            if (openApiOperation != null) {
-                if (openApiOperation.getResponses() != null && openApiOperation.getResponses().get("200") != null
-                        && openApiOperation.getResponses().get("200").getContent() != null && openApiOperation
-                                .getResponses().get("200").getContent().get("application/json") != null) {
-                    Schema<?> responseSchema = openApiOperation.getResponses().get("200").getContent()
-                            .get("application/json").getSchema();
-
+            if (openApiOperation != null && openApiOperation.getResponses() != null) {
+                for (Map.Entry<String, ApiResponse> responseEntry : openApiOperation.getResponses().entrySet()) {
+                    String statusCode = responseEntry.getKey();
+                    if (!is2xxResponseCode(statusCode)) {
+                        continue;
+                    }
+                    ApiResponse apiResponse = responseEntry.getValue();
+                    if (apiResponse.getContent() == null
+                            || apiResponse.getContent().get("application/json") == null) {
+                        continue;
+                    }
+                    Schema<?> responseSchema = apiResponse.getContent().get("application/json").getSchema();
                     if (responseSchema instanceof ArraySchema) {
                         Schema<?> items = responseSchema.getItems();
                         if (items.getEnum() != null && items.get$ref() == null) {
@@ -348,9 +367,14 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                                 // Add to file-level imports
                                 List<Map<String, String>> imports = (List<Map<String, String>>) result
                                         .get("imports");
-                                Map<String, String> importMap = new java.util.HashMap<>();
-                                importMap.put("import", modelPackage() + "." + matchedModel);
-                                imports.add(importMap);
+                                String modelImport = modelPackage() + "." + matchedModel;
+                                boolean alreadyImported = imports.stream()
+                                        .anyMatch(importEntry -> modelImport.equals(importEntry.get("import")));
+                                if (!alreadyImported) {
+                                    Map<String, String> importMap = new HashMap<>();
+                                    importMap.put("import", modelImport);
+                                    imports.add(importMap);
+                                }
                             }
                         }
                     }
