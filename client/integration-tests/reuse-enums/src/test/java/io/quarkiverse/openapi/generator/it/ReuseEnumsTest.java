@@ -28,4 +28,12 @@ class ReuseEnumsTest {
         Uni<Set<MeterUserRole>> result = api.internalUserUserIdMeterRolesEvaluateMeterMeterIdGet(1L, 1L);
         assertThat(result).isNotNull();
     }
+
+    @Test
+    void verifyReturnTypeWith2xxWildcard() {
+        // Verifies that 2XX wildcard response codes are handled the same as numeric 200-299
+        // This line will fail to compile if the return type is not properly resolved to Uni<Set<MeterUserRole>>
+        Uni<Set<MeterUserRole>> result = api.internalUserUserIdMeterRolesEvaluateMeterMeterIdWildcardGet(1L, 1L);
+        assertThat(result).isNotNull();
+    }
 }

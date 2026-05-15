@@ -130,6 +130,52 @@
         }
       }
     },
+    "/internal/user/{userId}/meter-roles/evaluate/meter/{meterId}/wildcard": {
+      "get": {
+        "summary": "Evaluate meter roles using 2XX wildcard response",
+        "description": "Returns the evaluated role set using a wildcard 2XX response code.",
+        "operationId": "internalUserUserIdMeterRolesEvaluateMeterMeterIdWildcardGet",
+        "tags": [
+          "User management"
+        ],
+        "parameters": [
+          {
+            "name": "meterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "2XX": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/components/schemas/MeterUserRole"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/internal/user/{userId}/meter-roles/evaluate/meter/{meterId}": {
       "get": {
         "summary": "Evaluate meter roles of the given user for the given meter",
