@@ -14,7 +14,7 @@ public class QuarkusJavaServerCodegenConfigurator extends CodegenConfigurator {
 
     public QuarkusJavaServerCodegenConfigurator() {
         this.setGeneratorName(QuarkusJavaServerCodegen.CODEGEN_NAME);
-        this.setTemplatingEngineName("qute");
+        this.setTemplatingEngineName("server.qute");
         this.setLibrary(JavaClientCodegen.MICROPROFILE);
 
         this.addAdditionalProperty(USE_BEAN_VALIDATION, Boolean.FALSE);

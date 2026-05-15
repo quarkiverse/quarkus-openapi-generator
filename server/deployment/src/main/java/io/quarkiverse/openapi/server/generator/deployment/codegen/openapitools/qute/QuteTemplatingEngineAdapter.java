@@ -11,7 +11,8 @@ import io.quarkus.qute.Template;
 
 public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter {
 
-    private static final String IDENTIFIER = "qute";
+    private static final String IDENTIFIER = "server.qute";
+    private static final String QUTE_EXTENSION = "qute";
     private static final String[] DEFAULT_TEMPLATES = {
             "additionalEnumTypeAnnotations.qute",
             "additionalModelTypeAnnotations.qute",
@@ -51,7 +52,7 @@ public class QuteTemplatingEngineAdapter extends AbstractTemplatingEngineAdapter
 
     @Override
     public String[] getFileExtensions() {
-        return new String[] { IDENTIFIER };
+        return new String[] { QUTE_EXTENSION };
     }
 
     @Override
