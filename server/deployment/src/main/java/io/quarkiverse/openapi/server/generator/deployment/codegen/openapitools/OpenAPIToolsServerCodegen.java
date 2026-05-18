@@ -79,7 +79,7 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
         return serverCodegen.equalsIgnoreCase(OPENAPITOOLS);
     }
 
-    private void generate(QuarkusJavaServerCodegenConfigurator configurator, OpenApiGeneratorOptions options) {
+    protected void generate(QuarkusJavaServerCodegenConfigurator configurator, OpenApiGeneratorOptions options) {
         boolean skipIfUnchanged = options.config()
                 .getOptionalValue(CodegenConfig.getServerSkipIfUnchanged(), Boolean.class)
                 .orElse(false);
