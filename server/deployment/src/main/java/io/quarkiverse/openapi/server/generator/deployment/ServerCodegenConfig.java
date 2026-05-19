@@ -115,5 +115,11 @@ public interface ServerCodegenConfig {
         @WithDefault("false")
         Optional<Boolean> useBeanValidation();
 
+        /**
+         * Whether to skip generation when the persisted fingerprint of the OpenAPI specification
+         * and relevant generation configuration matches the previous run.
+         */
+        @WithDefault("false")
+        Optional<Boolean> skipIfUnchanged();
     }
 }

@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.codegen;
 
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.channels.Channels;
@@ -19,7 +21,8 @@ import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
+import io.quarkiverse.openapi.generator.common.OpenApiGeneratorOptions;
+import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.smallrye.config.SmallRyeConfigBuilder;
@@ -68,22 +71,41 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                     throw new CodeGenException("SpecInputModel from provider " + provider + " is null");
                 }
                 try {
-                    final Path openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
-                    Files.createDirectories(openApiFilePath.getParent());
-                    try (ReadableByteChannel inChannel = Channels.newChannel(inputModel.getInputStream());
-                            FileChannel outChannel = FileChannel.open(openApiFilePath, StandardOpenOption.WRITE,
-                                    StandardOpenOption.CREATE)) {
-                        outChannel.transferFrom(inChannel, 0, Integer.MAX_VALUE);
-                        LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
+                    final Path openApiFilePath;
+                    if (inputModel instanceof ZippedSpecInputModel zippedSpecInputModel) {
+                        final Path pathToExtract = Paths.get(outDir.toString(), inputModel.getFileName());
+                        if (!Files.exists(pathToExtract)) {
+                            // only extract GAV at first iteration. if exists reuse it
+                            Files.createDirectories(pathToExtract);
+                            extractZip(inputModel.getInputStream(), pathToExtract);
+                        }
+                        openApiFilePath = Paths.get(pathToExtract.toString(), zippedSpecInputModel.getRootFileOfSpec());
+                        if (!Files.exists(openApiFilePath)) {
+                            throw new CodeGenException(
+                                    String.format("Could not locate openAPI specification file %s in extracted content",
+                                            openApiFilePath));
+                        }
+                    } else {
+                        openApiFilePath = Paths.get(outDir.toString(), inputModel.getFileName());
+                        Files.createDirectories(openApiFilePath.getParent());
+                        try (ReadableByteChannel inChannel = Channels.newChannel(inputModel.getInputStream());
+                                FileChannel outChannel = FileChannel.open(openApiFilePath, StandardOpenOption.WRITE,
+                                        StandardOpenOption.CREATE)) {
+                            outChannel.transferFrom(inChannel, 0, Integer.MAX_VALUE);
+                            LOGGER.debug("Saved OpenAPI spec input model in {}", openApiFilePath);
+                        }
+                    }
+                    OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                            getClass(),
+                            "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                            this.mergeConfig(context, inputModel),
+                            openApiFilePath,
+                            getSanitizedFileName(openApiFilePath),
+                            outDir,
+                            context.workDir().resolve("classes").resolve("templates"),
+                            isRestEasyReactive);
 
-                        OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
-                                this.mergeConfig(context, inputModel),
-                                openApiFilePath,
-                                outDir,
-                                context.workDir().resolve("classes").resolve("templates"),
-                                isRestEasyReactive);
-
-                        this.generate(options);
+                    this.generate(options);
                         generated = true;
                     }
                 } catch (IOException e) {
