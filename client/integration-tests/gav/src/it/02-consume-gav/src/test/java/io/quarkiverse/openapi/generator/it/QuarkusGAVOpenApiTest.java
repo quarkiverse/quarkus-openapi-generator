@@ -6,20 +6,28 @@ import java.io.Serializable;
 
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 class QuarkusGAVOpenApiTest {
-    @Test
-    void echo1IsBeingGenerated() {
+    @ParameterizedTest
+    @ValueSource(strings = {"io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo1",
+          "io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_splitted_echo_echo_yaml",
+          "io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_selfcontained_echo_echo1_yaml"})
+    void echo1IsBeingGenerated(String packageName) {
         assertThatCode(
-                () -> Class.forName(
-                        "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo1.api.DefaultApi"))
-                .doesNotThrowAnyException();
+              () -> Class.forName(
+                    "org.openapi.quarkus." + packageName + ".api.DefaultApi"))
+              .doesNotThrowAnyException();
     }
 
-    @Test
-    void echoModelIsBeingGeneratedWithSerializableInterface() {
+    @ParameterizedTest
+    @ValueSource(strings = {"io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo1",
+          "io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_selfcontained_echo_echo1_yaml"})
+    void echoModelIsBeingGeneratedWithSerializableInterface(String packageName) {
         assertThatCode(() -> {
             Class<?> apiClass = Class.forName(
-                    "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo1.model.Echo");
+                  "org.openapi.quarkus." + packageName + ".model.Echo");
             assertThat(apiClass.getInterfaces()).contains(Serializable.class);
         }).doesNotThrowAnyException();
     }
@@ -27,16 +35,16 @@ class QuarkusGAVOpenApiTest {
     @Test
     void echo2IsBeingNotGenerated() {
         assertThatCode(
-                () -> Class.forName(
-                        "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo2.api.DefaultApi"))
-                .isInstanceOf(ClassNotFoundException.class);
+              () -> Class.forName(
+                    "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_echo2.api.DefaultApi"))
+              .isInstanceOf(ClassNotFoundException.class);
     }
 
     @Test
     void otherIsBeingNotGenerated() {
         assertThatCode(
-                () -> Class.forName(
-                        "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_other.api.DefaultApi"))
-                .isInstanceOf(ClassNotFoundException.class);
+              () -> Class.forName(
+                    "org.openapi.quarkus.io_quarkiverse_openapi_generator_quarkus_openapi_generator_gav_source_other.api.DefaultApi"))
+              .isInstanceOf(ClassNotFoundException.class);
     }
 }

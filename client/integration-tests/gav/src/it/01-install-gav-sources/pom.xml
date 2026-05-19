@@ -31,7 +31,7 @@
                             <groupId>io.quarkiverse.openapi.generator</groupId>
                             <artifactId>quarkus-openapi-generator-gav-source-echo1</artifactId>
                             <version>${tested.version}</version>
-                            <file>${project.basedir}/src/main/openapi/echo1.yaml</file>
+                            <file>${project.basedir}/src/main/openapi/echo.yaml</file>
                             <packaging>yaml</packaging>
                         </configuration>
                     </execution>
@@ -43,7 +43,7 @@
                             <groupId>io.quarkiverse.openapi.generator</groupId>
                             <artifactId>quarkus-openapi-generator-gav-source-echo2</artifactId>
                             <version>${tested.version}</version>
-                            <file>${project.basedir}/src/main/openapi/echo2.yaml</file>
+                            <file>${project.basedir}/src/main/openapi/echo.yaml</file>
                             <packaging>yaml</packaging>
                         </configuration>
                     </execution>
@@ -55,8 +55,32 @@
                             <groupId>io.quarkiverse.openapi.generator</groupId>
                             <artifactId>quarkus-openapi-generator-gav-source-other</artifactId>
                             <version>${tested.version}</version>
-                            <file>${project.basedir}/src/main/openapi/other.yaml</file>
+                            <file>${project.basedir}/src/main/openapi/echo.yaml</file>
                             <packaging>yaml</packaging>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-selfcontained-echo-jar</id>
+                        <phase>package</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <groupId>io.quarkiverse.openapi.generator</groupId>
+                            <artifactId>quarkus-openapi-generator-gav-source-selfcontained-echo</artifactId>
+                            <version>${tested.version}</version>
+                            <file>${project.basedir}/src/main/openapi/selfcontained-echo.jar</file>
+                            <packaging>jar</packaging>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-splitted-echo-jar</id>
+                        <phase>package</phase>
+                        <goals><goal>install-file</goal></goals>
+                        <configuration>
+                            <groupId>io.quarkiverse.openapi.generator</groupId>
+                            <artifactId>quarkus-openapi-generator-gav-source-splitted-echo</artifactId>
+                            <version>${tested.version}</version>
+                            <file>${project.basedir}/src/main/openapi/splitted-echo.jar</file>
+                            <packaging>jar</packaging>
                         </configuration>
                     </execution>
                 </executions>
