@@ -120,8 +120,8 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                             e);
                 }
             }
-        }
-        return generated;
+        }return generated;
+
     }
 
     private Config mergeConfig(CodeGenContext context, SpecInputModel inputModel) {
