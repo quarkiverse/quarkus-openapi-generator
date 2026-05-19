@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment.codegen;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.getSanitizedFileName;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.ConfigSource;
@@ -106,8 +109,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
                             isRestEasyReactive);
 
                     this.generate(options);
-                        generated = true;
-                    }
+                    generated = true;
                 } catch (IOException e) {
                     throw new UncheckedIOException("Failed to save InputStream from provider " + provider + " into location ",
                             e);
@@ -123,6 +125,39 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
         return new SmallRyeConfigBuilder()
                 .withSources(inputModel.getConfigSource())
                 .withSources(sources).build();
+    }
+
+    private void extractZip(InputStream inputStream, Path outputDir) throws IOException {
+        // Open the JAR/ZIP file as a ZipInputStream
+        try (ZipInputStream zipInputStream = new ZipInputStream(inputStream)) {
+            ZipEntry entry;
+            // Iterate through each entry in the ZIP
+            while ((entry = zipInputStream.getNextEntry()) != null) {
+                String entryName = entry.getName();
+                Path entryPath = outputDir.resolve(entryName);
+                if (entry.isDirectory() ||
+                        SUPPORTED_EXTENSIONS_WITH_LEADING_DOT.stream().noneMatch(entryName::endsWith)) {
+                    continue;
+                }
+                // If the ZIP file contains entries like `../../malicious_file`
+                if (!entryPath.toAbsolutePath().normalize().startsWith(outputDir.toAbsolutePath().normalize())) {
+                    throw new IOException("Invalid ZIP entry: " + entryName);
+                }
+                // If it's a file, create parent directories first
+                if (!Files.exists(entryPath.getParent())) {
+                    Files.createDirectories(entryPath.getParent());
+                }
+                // Write the file
+                try (var outStream = Files.newOutputStream(entryPath,
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.WRITE,
+                        StandardOpenOption.TRUNCATE_EXISTING)) {
+                    zipInputStream.transferTo(outStream);
+                }
+                // Close the current ZIP entry
+                zipInputStream.closeEntry();
+            }
+        }
     }
 
     @Override
