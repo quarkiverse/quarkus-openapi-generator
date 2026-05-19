@@ -120,7 +120,7 @@ See the module `integration-tests/register-provider` for an example of how to us
 
 Use the property key `quarkus.openapi-generator.codegen.validateSpec=false` to disable validating the input specification file before code generation. By default, invalid specifications will result in an error.
 
-== Type, schema and import mappings
+== Type, schema, import and name mappings
 
 It's possible to remap types in the generated files. For example, instead of a `File` you can configure the code generator to use `InputStream` for all file upload parts of multipart request, or you could change all `UUID` types to `String`. You can configure this in your `application.properties` using the following configuration keys:
 
@@ -137,9 +137,12 @@ It's possible to remap types in the generated files. For example, instead of a `
 |Schema Mapping
 |`quarkus.openapi-generator.codegen.spec.[filename].schema-mappings.[type]`
 |`quarkus.openapi-generator.codegen.spec.my_spec_yml.schema-mappings.YearMonth=java.time.YearMonth` will use `java.time.YearMonth` as type for all schemas of the chosen type in the file.
+|Name Mapping
+|`quarkus.openapi-generator.codegen.spec.[filename].name-mappings.[property_name]`
+|`quarkus.openapi-generator.codegen.spec.my_spec_yml.name-mappings._type=customType` will rename the `_type` property to `customType` in the generated code.
 |===
 
-Note that these configuration properties are maps. For the type-mapping the keys are OAS data types and the values are Java types.
+Note that these configuration properties are maps. For the type-mapping the keys are OAS data types and the values are Java types. For the name-mapping the keys are original property names and the values are the new names to use in the generated code.
 
 Another common example is needing `java.time.Instant` as type for date-time fields in your POJO classes. You can achieve with these settings:
 
@@ -149,9 +152,16 @@ quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.DateTime=Instan
 quarkus.openapi-generator.codegen.spec.my_spec_yml.import-mappings.Instant=java.time.Instant
 ----
 
-It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings[Type Mappings and Import Mappings] and https://openapi-generator.tech/docs/customization#schema-mapping[Schema mapping].
+Name mappings are useful to resolve naming conflicts, for example when an OpenAPI spec has properties with names that are Java reserved words or that cause duplicate fields (e.g., `type` and `_type` would both map to the same Java field `type`):
 
-See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/type-mapping[type-mapping] for an example of how to use this feature.
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_spec_yml.name-mappings._type=customType
+----
+
+It's also possible to only use a type mapping with a fully qualified name, for instance `quarkus.openapi-generator.codegen.spec.my_spec_yml.type-mappings.File=java.io.InputStream`. For more information and a list of all types see the OpenAPI generator documentation on https://openapi-generator.tech/docs/usage/#type-mappings-and-import-mappings[Type Mappings and Import Mappings] and https://openapi-generator.tech/docs/customization#schema-mapping[Schema mapping]. For more information on name mappings see https://openapi-generator.tech/docs/customization#name-mapping[Name mapping].
+
+See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/type-mapping[type-mapping] for an example of how to use type, import and schema mappings. See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/integration-tests/name-mapping[name-mapping] for an example of how to use name mappings.
 
 [[config-key]]
 == Config key

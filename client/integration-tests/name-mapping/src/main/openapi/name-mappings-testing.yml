@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  title: "Name Mapping API"
+  description: An api to test name mappings feature
+  version: 1.0.0
+
+servers:
+  - url: "http://localhost:8080/api/v1"
+
+paths:
+  /name-mapping:
+    get:
+      tags:
+        - Name Mapping
+      operationId: GetTheData
+      responses:
+        "200":
+          description: "Data retrieved"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameMappingModel'
+
+components:
+  schemas:
+    NameMappingModel:
+      type: object
+      properties:
+        type:
+          type: string
+        _type:
+          type: string

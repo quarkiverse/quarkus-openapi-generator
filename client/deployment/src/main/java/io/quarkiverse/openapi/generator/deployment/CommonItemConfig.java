@@ -43,6 +43,14 @@ public interface CommonItemConfig {
     Map<String, String> schemaMappings();
 
     /**
+     * Name Mapping is an OpenAPI Generator configuration specifying how properties and enum values (the keys)
+     * should be renamed (the values) in the generated code.
+     * This is useful to avoid conflicts with Java reserved words or to customize generated names.
+     */
+    @WithName("name-mappings")
+    Map<String, String> nameMappings();
+
+    /**
      * The specified annotations will be added to the generated model files
      */
     @WithName("additional-model-type-annotations")

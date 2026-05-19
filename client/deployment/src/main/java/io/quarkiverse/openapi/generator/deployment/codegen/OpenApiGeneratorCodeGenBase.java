@@ -363,6 +363,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.SCHEMA_MAPPINGS, String.class, String.class)
                 .ifPresent(generator::withSchemaMappings);
 
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.NAME_MAPPINGS, String.class, String.class)
+                .ifPresent(generator::withNameMappings);
+
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.SERIALIZABLE_MODEL, Boolean.class)
                 .ifPresent(generator::withSerializableModel);
 

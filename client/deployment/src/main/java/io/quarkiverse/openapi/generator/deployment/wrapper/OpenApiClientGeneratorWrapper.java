@@ -217,6 +217,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withNameMappings(final Map<String, String> nameMappings) {
+        nameMappings.forEach(configurator::addNameMapping);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
         return this;
