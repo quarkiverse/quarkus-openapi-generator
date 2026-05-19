@@ -52,6 +52,11 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
 
+        if (sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()))) {
+            // skip when generate-code-tests
+            return false;
+        }
+
         String serverCodegen = config.getOptionalValue(CodegenConfig.getServerUse(), String.class)
                 .orElse(ServerCodegenConfig.APICURIO);
         if (!serverCodegen.equalsIgnoreCase(ServerCodegenConfig.APICURIO)) {
