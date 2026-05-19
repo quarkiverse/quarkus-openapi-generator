@@ -1,8 +1,8 @@
 /*
-  Original Copyright Headers
-  This file include a substantially simplified version of
-  https://github.com/wilkincheung/URI-Template-Pattern-Matcher/blob/master/src/main/java/com/prodigi/service/UriTemplateValidator.java
- */
+Original Copyright Headers
+This file include a substantially simplified version of
+https://github.com/wilkincheung/URI-Template-Pattern-Matcher/blob/master/src/main/java/com/prodigi/service/UriTemplateValidator.java
+*/
 /**
 The MIT License (MIT)
 Copyright (c) 2015 Wilkin Cheung
@@ -38,6 +38,7 @@ public class UrlPatternMatcher {
     private static final String URL_QUERY_STRING_REGEX = "(?:\\?.*?)?$";
 
     private final Pattern pattern;
+    private final Pattern patternWithTrailingSlash;
 
     /**
      * Creates a URL pattern matcher with per-parameter segment control.
@@ -50,20 +51,28 @@ public class UrlPatternMatcher {
     public UrlPatternMatcher(String uriTemplate, Set<String> multiSegmentParams) {
         Set<String> multiSegParams = multiSegmentParams != null ? multiSegmentParams : Set.of();
 
+        this.pattern = compilePattern(uriTemplate, multiSegParams);
+
+        String trailingSlashTemplate = uriTemplate.endsWith("/") && uriTemplate.length() > 1
+                ? uriTemplate.substring(0, uriTemplate.length() - 1)
+                : uriTemplate + "/";
+        Pattern compiled = compilePattern(trailingSlashTemplate, multiSegParams);
+        this.patternWithTrailingSlash = compiled.equals(this.pattern) ? null : compiled;
+    }
+
+    private static Pattern compilePattern(String uriTemplate, Set<String> multiSegParams) {
         StringBuilder patternBuilder = new StringBuilder();
         Matcher m = LEVEL_ONE_PATTERN.matcher(uriTemplate);
         int end = 0;
 
         while (m.find()) {
-            // Extract parameter name from {paramName}
             String paramName = m.group(1);
 
-            // Choose regex based on whether this param is multi-segment
             String replacement;
             if (multiSegParams.contains(paramName)) {
-                replacement = "(.*)"; // Multi-segment: matches across slashes (greedy)
+                replacement = "(.*)";
             } else {
-                replacement = "([^/]*)"; // Single-segment: secure default
+                replacement = "([^/]*)";
             }
 
             patternBuilder.append(Pattern.quote(uriTemplate.substring(end, m.start())))
@@ -72,7 +81,7 @@ public class UrlPatternMatcher {
         }
 
         patternBuilder.append(Pattern.quote(uriTemplate.substring(end)));
-        this.pattern = Pattern.compile(patternBuilder + URL_QUERY_STRING_REGEX);
+        return Pattern.compile(patternBuilder + URL_QUERY_STRING_REGEX);
     }
 
     /**
@@ -86,11 +95,22 @@ public class UrlPatternMatcher {
      * Test the given URL against the underlying pattern to determine if it matches, returning a boolean
      * to reflect the outcome.
      *
+     * Trailing slashes are normalized so that a pattern with or without a trailing slash
+     * will match a request URL regardless of its trailing slash presence.
+     * This is important because OpenAPI spec paths may define trailing slashes (e.g., /request/issues/)
+     * but the actual runtime request URI may or may not include the trailing slash.
+     *
      * @param url an URL string with or without query string.
      * @return true if the given URL matches the underlying pattern. Otherwise false.
      */
     public boolean matches(String url) {
-        return pattern.matcher(url).matches();
+        if (pattern.matcher(url).matches()) {
+            return true;
+        }
+        if (patternWithTrailingSlash != null) {
+            return patternWithTrailingSlash.matcher(url).matches();
+        }
+        return false;
     }
 
     public String toString() {
