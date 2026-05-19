@@ -41,7 +41,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      */
     @SuppressWarnings("unused")
     public boolean genDeprecatedModelAttr(final String pkg, final String classname,
-                                          final HashMap<String, Object> codegenConfig) {
+            final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
     }
@@ -54,7 +54,7 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
      */
     @SuppressWarnings("unused")
     public boolean genDeprecatedApiAttr(final String pkg, final String classname,
-                                        final HashMap<String, Object> codegenConfig) {
+            final HashMap<String, Object> codegenConfig) {
         final String key = String.format("%s.%s.%s", pkg, classname, GENERATE_DEPRECATED_PROP);
         return Boolean.parseBoolean(codegenConfig.getOrDefault(key, "true").toString());
     }

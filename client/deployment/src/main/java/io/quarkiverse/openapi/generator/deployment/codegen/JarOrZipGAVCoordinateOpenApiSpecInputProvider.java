@@ -77,9 +77,9 @@ public class JarOrZipGAVCoordinateOpenApiSpecInputProvider extends AbstractGAVCo
 
     @Override
     protected void addInputModels(CodeGenContext context,
-                                  String gacString,
-                                  Path path,
-                                  List<SpecInputModel> inputModels) throws CodeGenException {
+            String gacString,
+            Path path,
+            List<SpecInputModel> inputModels) throws CodeGenException {
         List<String> rootFilesOfSpecOfDependency = context.config()
                 .getOptionalValues(getGavConfigName(SPEC_FILES, Paths.get(gacString)), String.class)
                 .orElse(List.of("openapi.yaml"));

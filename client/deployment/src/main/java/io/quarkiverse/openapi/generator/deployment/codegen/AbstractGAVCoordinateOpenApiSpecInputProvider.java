@@ -70,9 +70,9 @@ abstract class AbstractGAVCoordinateOpenApiSpecInputProvider implements OpenApiS
      * @throws CodeGenException if an error occurs while processing the input specifications
      */
     protected abstract void addInputModels(CodeGenContext context,
-                                           String gacString,
-                                           Path path,
-                                           List<SpecInputModel> inputModels) throws CodeGenException;
+            String gacString,
+            Path path,
+            List<SpecInputModel> inputModels) throws CodeGenException;
 
     /**
      * Filters dependencies based on specific criteria defined in the implementing class.
