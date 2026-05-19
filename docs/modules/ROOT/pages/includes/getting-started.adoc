@@ -69,7 +69,27 @@ quarkus.openapi-generator.codegen.spec.petstore_json.base-package=org.acme
 
 
 
-Configuring `additional-model-type-annotations` will add all annotations to the generated model files (extra details can be found in https://openapi-generator.tech/docs/generators/java/#config-options[OpenApi Generator Doc]).
+Configuring `additional-model-type-annotations` will add all annotations to all the generated model files (extra details can be found in https://openapi-generator.tech/docs/generators/java/#config-options[OpenApi Generator Doc]).
+
+You can add an annotation to a specific model file using the vendor extension `x-class-extra-annotation` (see https://openapi-generator.tech/docs/generators/java/#supported-vendor-extensions[Supported Vendor Extensions] for more information).
+[source,json]
+----
+{
+  "components": {
+    "schemas":{
+      "HelloModel": {
+        "type": "object",
+        "x-class-extra-annotation": "@AnAnnotation",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+----
 
 You can customize the name of generated classes. To do that, you must define the following properties:
 

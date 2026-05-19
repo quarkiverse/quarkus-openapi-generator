@@ -3,8 +3,10 @@ package io.quarkiverse.openapi.generator;
 import java.util.Map;
 import java.util.Optional;
 
+import io.quarkus.runtime.annotations.ConfigGroup;
 import io.smallrye.config.WithParentName;
 
+@ConfigGroup
 public interface AuthsConfig {
 
     /**

@@ -1,5 +1,7 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -20,6 +22,9 @@ import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.MethodDeclaration;
+import japa.parser.ast.body.TypeDeclaration;
+import japa.parser.ast.expr.AnnotationExpr;
+import japa.parser.ast.expr.NameExpr;
 
 class OpenAPIToolsServerCodegenTest {
 
@@ -190,6 +195,35 @@ class OpenAPIToolsServerCodegenTest {
         Assertions.assertThat(untaggedMethod.getAnnotations().stream()
                 .map(Object::toString)
                 .anyMatch(annotation -> annotation.contains("Extensions"))).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should generate class extra annotation if present")
+    void should_generate_class_extra_annotation() throws IOException, ParseException {
+        // arrange
+        Path path = findOpenAPIPath("x-class-extra-annotation-openapi.json");
+
+        OpenAPIToolsGenerator openAPIToolsGenerator = new OpenAPIToolsGenerator(
+                new QuarkusJavaServerCodegenConfigurator()
+                        .withInputBaseDir(path.toString())
+                        .withOutputDir(Files.createTempDirectory("").toString())
+                        .withBasePackage("org.acme"));
+
+        // act
+        List<File> files = openAPIToolsGenerator.generate();
+
+        File model = files.stream()
+                .filter(file -> file.getName().equals("HelloModel.java"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("HelloModel.java was not generated"));
+
+        CompilationUnit cu = JavaParser.parse(model);
+        List<TypeDeclaration> types = cu.getTypes();
+
+        // assert
+        assertThat(types).hasSize(1);
+        assertThat(types.get(0).getAnnotations().stream().map(AnnotationExpr::getName).map(NameExpr::getName))
+                .contains("AnAnnotation");
     }
 
     private Path findOpenAPIPath(String specFileName) {

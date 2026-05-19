@@ -2,10 +2,13 @@ package io.quarkiverse.openapi.generator;
 
 import java.util.Optional;
 
+import io.quarkus.runtime.annotations.ConfigGroup;
+
 /**
  * This class represents the runtime authentication related configurations for the individual OpenApi spec definitions,
  * i.e. the provided files.
  */
+@ConfigGroup
 public interface SpecItemConfig {
 
     /**

@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: echo
+  version: '1.0.0'
+  description: ""
+paths:
+  /echo:
+    post:
+      summary: Echo
+      operationId: echo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Message"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Echo'
+components:
+  schemas:
+    Echo:
+      type: object
+      properties:
+        echo:
+          type: string
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
