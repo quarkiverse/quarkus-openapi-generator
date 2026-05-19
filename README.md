@@ -46,6 +46,7 @@ The project keeps normal releases and `-lts` releases aligned with specific Quar
 
 | Project version | Type | Quarkus version |
 |---|---|---|
+| 2.18.0 | Normal | 3.35.3 |
 | 2.17.0 | Normal | 3.34.5 |
 | 2.16.0-lts | LTS | 3.33.1 |
 | 2.16.0 | Normal | 3.34.2 |
