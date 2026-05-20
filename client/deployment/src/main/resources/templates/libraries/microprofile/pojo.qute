@@ -1,4 +1,3 @@
-{@org.openapitools.codegen.CodegenModel m}
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 {#if m.description}
