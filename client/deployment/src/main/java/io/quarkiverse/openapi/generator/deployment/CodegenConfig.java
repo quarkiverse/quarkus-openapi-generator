@@ -92,7 +92,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         EQUALS_HASHCODE("equals-hashcode"),
         USE_DYNAMIC_URL("use-dynamic-url"),
         METHOD_PER_MEDIA_TYPE("method-per-media-type"),
-        NAME_MAPPINGS("name-mappings");
+        NAME_MAPPINGS("name-mappings"),
         RESTEASY_REACTIVE_CLIENT_FORM("resteasy-reactive-client-form");
 
         private final String name;
