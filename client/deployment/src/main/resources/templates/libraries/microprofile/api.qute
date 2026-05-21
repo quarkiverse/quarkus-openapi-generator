@@ -2,6 +2,7 @@ package {package};
 
 import java.util.List;
 import java.util.Map;
+import io.quarkiverse.openapi.generator.providers.PathParamEncodingParamConverterProvider;
 {#if use-bean-validation}
 {! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import {imp.import};
 @org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 {/if}
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
+@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(PathParamEncodingParamConverterProvider.class)
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
@@ -45,10 +47,10 @@ public interface {classname} {
      */
     {#if op.hasAuthMethods}
     {#for auth in op.authMethods}
-    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}"{#if op.vendorExtensions.x-multi-segment-params && op.vendorExtensions.x-multi-segment-params.size() > 0}, multiSegmentParams=\{{#for paramName in op.vendorExtensions.x-multi-segment-params}"{paramName}"{#if paramName_hasNext}, {/if}{/for}\}{/if})
     {/for}
     {#else}
-    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}"{#if op.vendorExtensions.x-multi-segment-params && op.vendorExtensions.x-multi-segment-params.size() > 0}, multiSegmentParams=\{{#for paramName in op.vendorExtensions.x-multi-segment-params}"{paramName}"{#if paramName_hasNext}, {/if}{/for}\}{/if})
     {/if}
     @jakarta.ws.rs.{op.httpMethod}
     {#if op.subresourceOperation || op.path eq '/'}
@@ -168,7 +170,9 @@ public interface {classname} {
         @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
     {/if}
     {#if op.hasFormParams}
-        {#if is-resteasy-reactive}
+        {#if is-resteasy-reactive && is-resteasy-reactive-client-form}
+        org.jboss.resteasy.reactive.client.api.ClientMultipartForm dataParts{#if op.hasPathParams},{/if}
+        {#else if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#else}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
@@ -193,7 +197,9 @@ public interface {classname} {
 {/for}{/if}
     );
     {#if op.hasFormParams}
+        {#if !(is-resteasy-reactive && is-resteasy-reactive-client-form)}
     {#include multipartFormdataPojo.qute param=op/}
+        {/if}
     {/if}
 
 {/for} {! end consume-loop !}
@@ -203,10 +209,10 @@ public interface {classname} {
      */
     {#if op.hasAuthMethods}
     {#for auth in op.authMethods}
-    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{auth.name}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}"{#if op.vendorExtensions.x-multi-segment-params && op.vendorExtensions.x-multi-segment-params.size() > 0}, multiSegmentParams=\{{#for paramName in op.vendorExtensions.x-multi-segment-params}"{paramName}"{#if paramName_hasNext}, {/if}{/for}\}{/if})
     {/for}
     {#else}
-    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}")
+    @io.quarkiverse.openapi.generator.markers.OperationMarker(name="{defaultSecurityScheme}", openApiSpecId="{quarkus-generator.openApiSpecId}", operationId="{op.operationId}", method="{op.httpMethod}", path="{contextPath}{commonPath}{op.path.orEmpty}"{#if op.vendorExtensions.x-multi-segment-params && op.vendorExtensions.x-multi-segment-params.size() > 0}, multiSegmentParams=\{{#for paramName in op.vendorExtensions.x-multi-segment-params}"{paramName}"{#if paramName_hasNext}, {/if}{/for}\}{/if})
     {/if}
     @jakarta.ws.rs.{op.httpMethod}
     {#if op.subresourceOperation || op.path eq '/'}
@@ -328,7 +334,9 @@ public interface {classname} {
         @io.quarkus.rest.client.reactive.Url String dynUrl{#if op.allParams || op.hasFormParams},{/if}
     {/if}
     {#if op.hasFormParams}
-        {#if is-resteasy-reactive}
+        {#if is-resteasy-reactive && is-resteasy-reactive-client-form}
+        org.jboss.resteasy.reactive.client.api.ClientMultipartForm dataParts{#if op.hasPathParams},{/if}
+        {#else if is-resteasy-reactive}
         @jakarta.ws.rs.BeanParam {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
         {#else}
         @org.jboss.resteasy.annotations.providers.multipart.MultipartForm {op.operationIdCamelCase}MultipartForm multipartForm{#if op.hasPathParams},{/if}
@@ -353,7 +361,9 @@ public interface {classname} {
 {/for}{/if}
     );
     {#if op.hasFormParams}
+        {#if !(is-resteasy-reactive && is-resteasy-reactive-client-form)}
     {#include multipartFormdataPojo.qute param=op/}
+        {/if}
     {/if}
 
 {/if} {! end method-per-media-type else !}

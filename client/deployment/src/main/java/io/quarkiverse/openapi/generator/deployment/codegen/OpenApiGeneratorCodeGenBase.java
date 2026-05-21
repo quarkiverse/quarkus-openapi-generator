@@ -16,6 +16,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_COUNT;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_DELIMITER;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.RESTEASY_REACTIVE_CLIENT_FORM;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.TEMPLATE_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.VALIDATE_SPEC;
 
@@ -35,10 +36,13 @@ import java.util.stream.StreamSupport;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.eclipse.microprofile.config.Config;
 import org.openapitools.codegen.config.GlobalSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import io.quarkiverse.openapi.generator.common.OpenApiGeneratorOptions;
+import io.quarkiverse.openapi.generator.common.SkipGenerationSupport;
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig;
 import io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName;
-import io.quarkiverse.openapi.generator.deployment.OpenApiGeneratorOptions;
 import io.quarkiverse.openapi.generator.deployment.circuitbreaker.CircuitBreakerConfigurationParser;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClassicClientGeneratorWrapper;
 import io.quarkiverse.openapi.generator.deployment.wrapper.OpenApiClientGeneratorWrapper;
@@ -71,6 +75,8 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
     private static final DefaultArtifactVersion BREAKING_QUARKUS_VERSION = new DefaultArtifactVersion("3.4.1");
     private static final DefaultArtifactVersion TARGET_QUARKUS_VERSION = new DefaultArtifactVersion(Version.getVersion());
     private static final String REST_CLIENT_REACTIVE_JACKSON_BEFORE_QUARKUS_3_4_1 = "io.quarkus.rest.client.reactive.jackson";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiGeneratorCodeGenBase.class);
 
     /**
      * The input base directory from
@@ -155,8 +161,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                     }
 
                     OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                            getClass(),
+                            "quarkus." + CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
                             context.config(),
                             openApiPath,
+                            getSanitizedFileName(openApiPath),
                             outDir,
                             templateDir,
                             isRestEasyReactive);
@@ -205,8 +214,34 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         return Capability.REST_CLIENT_REACTIVE_JACKSON;
     }
 
-    // TODO: do not generate if the output dir has generated files and the openapi file has the same checksum of the previous run
     protected void generate(OpenApiGeneratorOptions options) {
+        Config config = options.config();
+        Path openApiFilePath = options.openApiFilePath();
+
+        boolean skipIfUnchanged = getValues(
+                config,
+                openApiFilePath,
+                CodegenConfig.ConfigName.SKIP_IF_UNCHANGED,
+                Boolean.class).orElse(false);
+
+        if (!skipIfUnchanged) {
+            doGenerate(options);
+            return;
+        }
+
+        var skipGenerationFeature = new SkipGenerationSupport();
+        String fingerprint = skipGenerationFeature.computeFingerprint(options);
+        if (skipGenerationFeature.shouldSkipGeneration(options, fingerprint)) {
+            LOGGER.info(
+                    "Skipping code generation as the OpenAPI spec file and configuration haven't changed since the last generation.");
+            return;
+        }
+
+        doGenerate(options);
+        skipGenerationFeature.persistFingerprint(options, fingerprint);
+    }
+
+    protected void doGenerate(OpenApiGeneratorOptions options) {
         Config config = options.config();
         Path openApiFilePath = options.openApiFilePath();
         Path outDir = options.outDir();
@@ -360,6 +395,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         getValues(config, openApiFilePath, ConfigName.GENERATE_MODEL_FOR_USAGE_AS_BEAN_PARAM, Boolean.class)
                 .ifPresent(generator::withGenerateModelForUsageAsBeanParam);
+
+        getValues(config, openApiFilePath, RESTEASY_REACTIVE_CLIENT_FORM, Boolean.class)
+                .ifPresent(generator::withResteasyReactiveClientForm);
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.METHOD_PER_MEDIA_TYPE, Boolean.class)
                 .ifPresent(generator::withMethodPerMediaType);

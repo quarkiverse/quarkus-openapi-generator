@@ -38,7 +38,14 @@ public interface {classname} {
     {#if op.hasProduces}
     @jakarta.ws.rs.Produces(\{{#for produce in op.produces}"{produce.mediaType}"{#if produce_hasNext}, {/if}{/for}\})
     {/if}
-        {#if use-reactive}
+    {#if openapi:hasSmallryeProfileExtensions(op.vendorExtensions)}
+    @org.eclipse.microprofile.openapi.annotations.extensions.Extensions({
+    {#for profile in openapi:smallryeProfileExtensions(op.vendorExtensions)}
+        @org.eclipse.microprofile.openapi.annotations.extensions.Extension(name = "x-smallrye-profile-{profile}", value = ""){#if profile_hasNext}, {/if}
+    {/for}
+    })
+    {/if}
+    {#if use-reactive}
             {#if op.returnType == "void"}
     public io.smallrye.mutiny.Uni<Void> {op.nickname}(
             {#else}

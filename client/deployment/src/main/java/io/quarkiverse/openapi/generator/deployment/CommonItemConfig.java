@@ -188,6 +188,15 @@ public interface CommonItemConfig {
     Optional<Boolean> registerRestClient();
 
     /**
+     * Use {@link org.jboss.resteasy.reactive.client.api.ClientMultipartForm} for multipart request bodies when generating
+     * RESTEasy Reactive clients. This avoids generating a multipart form POJO and lets callers build multipart payloads
+     * programmatically.
+     */
+    @WithName("resteasy-reactive-client-form")
+    @WithDefault("false")
+    Optional<Boolean> resteasyReactiveClientForm();
+
+    /**
      * Which CDI scope annotation (if any) should be placed on the generated API. Defaults to
      * {@code @jakarta.enterprise.context.ApplicationScoped}.
      * <p>

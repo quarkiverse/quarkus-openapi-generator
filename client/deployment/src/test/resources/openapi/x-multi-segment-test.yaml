@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  title: Multi-Segment Path Parameters Test API
+  version: 1.0.0
+  description: Test API for x-multi-segment vendor extension support
+
+servers:
+  - url: https://api.example.com
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /repos/{owner}/{ref}:
+    get:
+      operationId: getRepoRef
+      summary: Get a repository reference (multi-segment)
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Repository owner
+        - name: ref
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Reference path (can contain multiple segments)
+          x-multi-segment: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ref:
+                    type: string
+                  sha:
+                    type: string
+
+  /files/{path}:
+    get:
+      operationId: getFile
+      summary: Get a file by path (multi-segment)
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+          description: File path (can contain multiple segments)
+          x-multi-segment: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+
+  /docs/{owner}/{repo}/{ref}/{path}:
+    get:
+      operationId: getDocFile
+      summary: Get a documentation file (multiple multi-segment params)
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Repository owner
+        - name: repo
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Repository name
+        - name: ref
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Reference path (can contain multiple segments)
+          x-multi-segment: true
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+          description: File path (can contain multiple segments)
+          x-multi-segment: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /simple/{id}:
+    get:
+      operationId: getById
+      summary: Get by ID (no multi-segment params)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Simple ID parameter
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string

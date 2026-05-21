@@ -93,12 +93,17 @@ public class ApicurioCodegenWrapper {
     }
 
     private void unzip(File fromZipFile, File toOutputDir) throws IOException, CodeGenException {
+        Path outputDirPath = toOutputDir.toPath().toAbsolutePath().normalize();
         try (java.util.zip.ZipFile zipFile = new ZipFile(fromZipFile)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
+                Path entryPath = outputDirPath.resolve(entry.getName()).toAbsolutePath().normalize();
+                if (!entryPath.startsWith(outputDirPath)) {
+                    throw new IOException("Invalid ZIP entry: " + entry.getName());
+                }
+                File entryDestination = entryPath.toFile();
                 assertGenerationSucceeded(zipFile, entry);
-                File entryDestination = new File(toOutputDir, entry.getName());
                 if (entry.isDirectory()) {
                     entryDestination.mkdirs();
                 } else {

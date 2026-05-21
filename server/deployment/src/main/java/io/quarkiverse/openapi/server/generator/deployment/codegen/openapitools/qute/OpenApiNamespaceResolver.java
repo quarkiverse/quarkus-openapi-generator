@@ -4,10 +4,10 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
@@ -29,6 +29,8 @@ import io.quarkus.qute.NamespaceResolver;
 public class OpenApiNamespaceResolver implements NamespaceResolver {
     static final OpenApiNamespaceResolver INSTANCE = new OpenApiNamespaceResolver();
     private static final String GENERATE_DEPRECATED_PROP = "generateDeprecated";
+    private static final String EXT_PROFILE_PREFIX = "x-smallrye-profile-";
+    private static final int EXT_PROFILE_PREFIX_LENGTH = EXT_PROFILE_PREFIX.length();
 
     private OpenApiNamespaceResolver() {
     }
@@ -87,7 +89,31 @@ public class OpenApiNamespaceResolver implements NamespaceResolver {
                             (existing, replacement) -> existing, LinkedHashMap::new))
                     .values());
         }
-        return Collections.emptyList();
+        return List.of();
+    }
+
+    /**
+     * Returns the list of SmallRye profile names declared on an operation through vendor extensions.
+     *
+     * @param vendorExtensions vendor extensions attached to a codegen operation
+     * @return the profile names, sorted for deterministic output
+     */
+    @SuppressWarnings("unused")
+    public List<String> smallryeProfileExtensions(Map<String, Object> vendorExtensions) {
+        if (vendorExtensions == null || vendorExtensions.isEmpty()) {
+            return List.of();
+        }
+
+        return vendorExtensions.keySet().stream()
+                .filter(key -> key.startsWith(EXT_PROFILE_PREFIX))
+                .map(key -> key.substring(EXT_PROFILE_PREFIX_LENGTH))
+                .sorted()
+                .toList();
+    }
+
+    @SuppressWarnings("unused")
+    public boolean hasSmallryeProfileExtensions(Map<String, Object> vendorExtensions) {
+        return !smallryeProfileExtensions(vendorExtensions).isEmpty();
     }
 
     @Override

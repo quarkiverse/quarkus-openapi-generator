@@ -3,6 +3,11 @@ name: Pull Request Backporting
 on:
   pull_request_target:
     types: [closed, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

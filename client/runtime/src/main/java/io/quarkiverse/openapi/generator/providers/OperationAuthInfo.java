@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import java.util.Objects;
+import java.util.Set;
 
 public final class OperationAuthInfo {
 
@@ -8,6 +9,7 @@ public final class OperationAuthInfo {
     private String path;
     private String httpMethod;
     private UrlPatternMatcher pathMatcher;
+    private Set<String> multiSegmentParams = Set.of();
 
     public OperationAuthInfo() {
     }
@@ -17,8 +19,20 @@ public final class OperationAuthInfo {
     }
 
     public void setPath(final String path) {
-        this.pathMatcher = new UrlPatternMatcher(path);
+        this.pathMatcher = new UrlPatternMatcher(path, multiSegmentParams);
         this.path = path;
+    }
+
+    public void setMultiSegmentParams(final Set<String> params) {
+        this.multiSegmentParams = params != null ? params : Set.of();
+        // Recreate matcher if path was already set
+        if (this.path != null) {
+            this.pathMatcher = new UrlPatternMatcher(this.path, this.multiSegmentParams);
+        }
+    }
+
+    public Set<String> getMultiSegmentParams() {
+        return multiSegmentParams;
     }
 
     public void setHttpMethod(final String method) {
@@ -58,12 +72,13 @@ public final class OperationAuthInfo {
             return false;
         }
         OperationAuthInfo that = (OperationAuthInfo) o;
-        return operationId.equals(that.operationId) && path.equals(that.path) && httpMethod.equals(that.httpMethod);
+        return operationId.equals(that.operationId) && path.equals(that.path) && httpMethod.equals(that.httpMethod)
+                && multiSegmentParams.equals(that.multiSegmentParams);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operationId, path, httpMethod);
+        return Objects.hash(operationId, path, httpMethod, multiSegmentParams);
     }
 
     public static final class Builder {
@@ -76,8 +91,12 @@ public final class OperationAuthInfo {
         }
 
         public Builder withPath(final String path) {
-            this.operationAuthInfo.pathMatcher = new UrlPatternMatcher(path);
             this.operationAuthInfo.path = path;
+            return this;
+        }
+
+        public Builder withMultiSegmentParams(final Set<String> params) {
+            this.operationAuthInfo.multiSegmentParams = params != null ? params : Set.of();
             return this;
         }
 
@@ -87,6 +106,11 @@ public final class OperationAuthInfo {
         }
 
         public OperationAuthInfo build() {
+            if (this.operationAuthInfo.path != null) {
+                this.operationAuthInfo.pathMatcher = new UrlPatternMatcher(
+                        this.operationAuthInfo.path,
+                        this.operationAuthInfo.multiSegmentParams);
+            }
             return this.operationAuthInfo;
         }
     }

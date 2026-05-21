@@ -45,6 +45,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         EXCLUDE_GAVS("exclude-gavs"),
         VALIDATE_SPEC("validateSpec"),
         DEFAULT_SECURITY_SCHEME("default-security-scheme"),
+        SKIP_IF_UNCHANGED("skip-if-unchanged"),
 
         //spec configs only
         BASE_PACKAGE("base-package"),
@@ -92,6 +93,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         USE_DYNAMIC_URL("use-dynamic-url"),
         METHOD_PER_MEDIA_TYPE("method-per-media-type"),
         NAME_MAPPINGS("name-mappings");
+        RESTEASY_REACTIVE_CLIENT_FORM("resteasy-reactive-client-form");
 
         private final String name;
 

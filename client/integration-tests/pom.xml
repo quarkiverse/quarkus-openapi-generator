@@ -56,6 +56,7 @@
     <module>jsonproperty-getter-and-setter</module>
     <module>suppress-warnings</module>
     <module>name-mapping</module>
+    <module>x-multi-segment</module>
   </modules>
   <dependencyManagement>
     <dependencies>
@@ -119,6 +120,7 @@
     <profile>
       <id>resteasy-reactive</id>
       <modules>
+        <module>multipart-client-form</module>
         <module>mutiny-return-rest-response</module>
         <module>return-rest-response</module>
       </modules>
@@ -130,6 +132,7 @@
         <dependency>
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-rest-client-jackson</artifactId>
+          <version>${quarkus.version}</version>
         </dependency>
         <dependency>
           <groupId>jakarta.validation</groupId>

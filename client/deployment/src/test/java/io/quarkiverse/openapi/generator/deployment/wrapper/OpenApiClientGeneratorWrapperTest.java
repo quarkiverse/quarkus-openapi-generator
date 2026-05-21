@@ -14,7 +14,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +35,14 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.SimpleName;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.type.Type;
@@ -388,6 +398,64 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyReactiveMultipartFormStillUsesBeanParamByDefault() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapperReactive("multipart-openapi.yml").withSkipFormModelConfig("false")
+                .generate("org.acme");
+        assertThat(generatedFiles).isNotEmpty();
+
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
+        assertThat(file).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> multipartPostMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("postUserProfileData")).findAny();
+        assertThat(multipartPostMethod).isPresent();
+
+        List<Parameter> parameters = multipartPostMethod.orElseThrow().getParameters();
+        assertThat(parameters).hasSize(1);
+
+        Parameter param = parameters.get(0);
+        assertThat(param.getTypeAsString()).isEqualTo("PostUserProfileDataMultipartForm");
+        assertThat(param.getNameAsString()).isEqualTo("multipartForm");
+        assertThat(param.getAnnotationByName("BeanParam")).isPresent();
+        assertThat(compilationUnit.findAll(ClassOrInterfaceDeclaration.class).stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny()).isNotEmpty();
+    }
+
+    @Test
+    void verifyReactiveMultipartFormCanUseClientMultipartForm() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapperReactive("multipart-openapi.yml")
+                .withSkipFormModelConfig("false")
+                .withResteasyReactiveClientForm(true)
+                .generate("org.acme");
+        assertThat(generatedFiles).isNotEmpty();
+
+        Optional<File> file = generatedFiles.stream().filter(f -> f.getName().endsWith("UserProfileDataApi.java")).findAny();
+        assertThat(file).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> multipartPostMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("postUserProfileData")).findAny();
+        assertThat(multipartPostMethod).isPresent();
+
+        List<Parameter> parameters = multipartPostMethod.orElseThrow().getParameters();
+        assertThat(parameters).hasSize(1);
+
+        Parameter param = parameters.get(0);
+        assertThat(param.getTypeAsString()).isEqualTo("org.jboss.resteasy.reactive.client.api.ClientMultipartForm");
+        assertThat(param.getNameAsString()).isEqualTo("dataParts");
+        assertThat(param.getAnnotations()).isEmpty();
+        assertThat(compilationUnit.findAll(ClassOrInterfaceDeclaration.class).stream()
+                .filter(c -> c.getNameAsString().equals("PostUserProfileDataMultipartForm")).findAny()).isEmpty();
+    }
+
+    @Test
     void verifyMultipartPojoGeneratedAndFieldsHaveAnnotations() throws URISyntaxException, FileNotFoundException {
         List<File> generatedFiles = createGeneratorWrapper("multipart-openapi.yml").withSkipFormModelConfig("false")
                 .generate("org.acme");
@@ -734,6 +802,45 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyPathParamsAreEncoded() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapper("issue-38.yaml")
+                .withEnabledSecurityGeneration(false)
+                .generate("org.issue38");
+
+        Optional<File> file = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("ConnectorClustersAgentApi.java"))
+                .findAny();
+        assertThat(file).isNotEmpty();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+        boolean foundRegisterProvider = compilationUnit.findAll(AnnotationExpr.class).stream()
+                .filter(annotation -> annotation.getName().getIdentifier().equals("RegisterProvider"))
+                .anyMatch(annotation -> {
+                    if (annotation instanceof SingleMemberAnnotationExpr singleMemberAnnotationExpr) {
+                        return singleMemberAnnotationExpr.getMemberValue().isClassExpr()
+                                && singleMemberAnnotationExpr.getMemberValue().asClassExpr().getType().asString()
+                                        .equals("PathParamEncodingParamConverterProvider");
+                    }
+                    if (annotation instanceof NormalAnnotationExpr normalAnnotationExpr) {
+                        return normalAnnotationExpr.getPairs().stream()
+                                .filter(pair -> pair.getNameAsString().equals("value"))
+                                .map(MemberValuePair::getValue)
+                                .anyMatch(value -> value.isClassExpr()
+                                        && value.asClassExpr().getType().asString()
+                                                .equals("PathParamEncodingParamConverterProvider"));
+                    }
+                    return false;
+                });
+        assertThat(foundRegisterProvider).isTrue();
+
+        boolean foundEncodedPathParam = compilationUnit.findAll(MethodDeclaration.class).stream()
+                .flatMap(method -> method.getParameters().stream())
+                .anyMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
+                        && parameter.getAnnotationByName("EncodedPathParam").isPresent());
+        assertThat(foundEncodedPathParam).isTrue();
+    }
+
+    @Test
     void verifyAllowAdditionalPropertiesIfNotPresent() throws Exception {
         List<File> generatedFiles = createGeneratorWrapperReactive("issue-1185.json")
                 .generate("org.issue1185")
@@ -799,6 +906,44 @@ public class OpenApiClientGeneratorWrapperTest {
                 .hasSize(3)
                 .extracting(NodeWithSimpleName::getNameAsString)
                 .containsExactlyInAnyOrder("updateImageImageJpeg", "updateImageImagePng", "updateImageImageGif");
+    }
+
+    @Test
+    void verifyMediaTypesDeduplication() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1519.yaml")
+                .withMethodPerMediaType(true);
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1519");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        List<MethodDeclaration> updateMethodList = StaticJavaParser.parse(imagesApiFile).findAll(MethodDeclaration.class,
+                method -> method.getNameAsString().startsWith("updateImage"));
+        assertThat(updateMethodList)
+                .hasSize(3)
+                .extracting(NodeWithSimpleName::getNameAsString)
+                .containsExactlyInAnyOrder("updateImageImageJpeg", "updateImageImagePng", "updateImageImageGif");
+    }
+
+    @Test
+    void verifyXClassExtraAnnotationGeneration() throws URISyntaxException, FileNotFoundException {
+        final List<File> generatedFiles = createGeneratorWrapper("x-class-extra-annotation-openapi.json")
+                .generate("org.classExtraAnnotation");
+        final Optional<File> modelFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("HelloModel.java")).findFirst();
+        assertThat(modelFile).isPresent();
+
+        final CompilationUnit cu = StaticJavaParser.parse(modelFile.orElseThrow());
+
+        List<ClassOrInterfaceDeclaration> types = cu.findAll(ClassOrInterfaceDeclaration.class);
+
+        assertThat(types).hasSize(2);
+        assertThat(types.get(0).getAnnotations().stream().map(AnnotationExpr::getName).map(Name::asString))
+                .contains("AnAnnotation");
     }
 
     private List<File> generateRestClientFiles() throws URISyntaxException {
