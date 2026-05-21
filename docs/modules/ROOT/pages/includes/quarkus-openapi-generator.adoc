@@ -760,8 +760,8 @@ endif::add-copy-button-to-config-props[]
 --
 Option to specify GAVs for which generation should be executed only. Depending on the GAV Provider default behavior differs:
 
- - for `io.quarkiverse.openapi.generator.deployment.codegen.YamlOrJsonGAVCoordinateOpenApiSpecInputProvider`, all suitable GAVs will be considered for generation if config value is not given
- - for `io.quarkiverse.openapi.generator.deployment.codegen.JarOrZipGAVCoordinateOpenApiSpecInputProvider`, only specified GAVs will be considered for generation if config value is available
+ * for `io.quarkiverse.openapi.generator.deployment.codegen.YamlOrJsonGAVCoordinateOpenApiSpecInputProvider`, all suitable GAVs will be considered for generation if config value is not given
+ * for `io.quarkiverse.openapi.generator.deployment.codegen.JarOrZipGAVCoordinateOpenApiSpecInputProvider`, only specified GAVs will be considered for generation if config value is available
 
 
 ifdef::add-copy-button-to-env-var[]
