@@ -7,7 +7,7 @@ For this purpose use the configuration property `quarkus.openapi-generator.codeg
 For example:
 [source,properties]
 ----
-quarkus.openapi-generator.codegen.spec.petstore_json.name-mappings.changeme=newnname
+quarkus.openapi-generator.codegen.spec.petstore_json.name-mappings.changeme=newname
 ----
 
 With the above configuration, given the folling model:
