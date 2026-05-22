@@ -35,6 +35,7 @@ import io.quarkiverse.openapi.generator.oidc.providers.OAuth2AuthenticationProvi
 import io.quarkiverse.openapi.generator.providers.ApiKeyIn;
 import io.quarkiverse.openapi.generator.providers.AuthProvider;
 import io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider;
+import io.quarkiverse.openapi.generator.providers.ConfigCredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.CredentialsProvider;
 import io.quarkiverse.openapi.generator.providers.OperationAuthInfo;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
@@ -112,6 +113,12 @@ public class GeneratorProcessor {
             producer.produce(AdditionalBeanBuildItem.builder().addBeanClass(ClassicOidcClientRequestFilterDelegate.class)
                     .setDefaultScope(DotName.createSimple(Dependent.class)).setUnremovable().build());
         }
+    }
+
+    @BuildStep
+    void registerDefaultCredentialsProvider(BuildProducer<AdditionalBeanBuildItem> producer) {
+        producer.produce(AdditionalBeanBuildItem.builder().addBeanClass(ConfigCredentialsProvider.class)
+                .setUnremovable().build());
     }
 
     @BuildStep
