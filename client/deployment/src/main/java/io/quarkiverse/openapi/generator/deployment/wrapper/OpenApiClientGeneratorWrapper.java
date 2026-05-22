@@ -364,6 +364,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withNameMappings(final Map<String, String> nameMappings) {
+        nameMappings.forEach(configurator::addNameMapping);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withResteasyReactiveClientForm(final Boolean resteasyReactiveClientForm) {
         this.configurator.addAdditionalProperty("is-resteasy-reactive-client-form", resteasyReactiveClientForm);
         return this;
