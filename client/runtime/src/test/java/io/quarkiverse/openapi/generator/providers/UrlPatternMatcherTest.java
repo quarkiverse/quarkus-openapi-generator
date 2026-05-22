@@ -123,4 +123,47 @@ class UrlPatternMatcherTest {
                 Arguments.of("/files/{path}", "/files/etc/passwd"));
     }
 
+    @ParameterizedTest
+    @MethodSource("provideTrailingSlashNormalizationTests")
+    void verifyTrailingSlashNormalization(final String pathPattern, final String requestPath, final boolean shouldMatch) {
+        UrlPatternMatcher pattern = new UrlPatternMatcher(pathPattern);
+        if (shouldMatch) {
+            Assertions.assertTrue(pattern.matches(requestPath),
+                    () -> "Expected " + pathPattern + " to match " + requestPath + " (trailing slash normalization)");
+        } else {
+            Assertions.assertFalse(pattern.matches(requestPath),
+                    () -> "Expected " + pathPattern + " NOT to match " + requestPath + " (trailing slash normalization)");
+        }
+    }
+
+    private static Stream<Arguments> provideTrailingSlashNormalizationTests() {
+        return Stream.of(
+
+                Arguments.of("/request/issues/", "/request/issues", true),
+                Arguments.of("/users/", "/users", true),
+                Arguments.of("/{id}/pets/", "/1/pets", true),
+
+                Arguments.of("/request/issues", "/request/issues/", true),
+                Arguments.of("/users", "/users/", true),
+                Arguments.of("/{id}/pets", "/1/pets/", true),
+
+                Arguments.of("/request/issues/", "/request/issues?q=1", true),
+                Arguments.of("/request/issues", "/request/issues/?q=1", true),
+                Arguments.of("/users/", "/users?q=1&q2=2", true),
+                Arguments.of("/users", "/users/?q=1&q2=2", true),
+
+                Arguments.of("/request/issues/", "/request/issues/", true),
+                Arguments.of("/request/issues", "/request/issues", true),
+
+                Arguments.of("/data/{version}/issues/", "/data/v2/issues", true),
+                Arguments.of("/data/{version}/issues", "/data/v2/issues/", true),
+
+                Arguments.of("/users/{id}", "/users/1/edit", false),
+                Arguments.of("/users/{id}", "/users/1/edit/", false),
+                Arguments.of("/users/{id}/", "/users/1/edit", false),
+                Arguments.of("/users/{id}/", "/users/1/edit/", false),
+
+                Arguments.of("/", "/", true));
+    }
+
 }

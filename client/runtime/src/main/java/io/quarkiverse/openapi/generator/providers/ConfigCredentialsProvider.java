@@ -2,15 +2,14 @@ package io.quarkiverse.openapi.generator.providers;
 
 import java.util.Optional;
 
-import jakarta.annotation.Priority;
-import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 
-@Dependent
-@Alternative
-@Priority(100)
+import io.quarkus.arc.DefaultBean;
+
+@DefaultBean
+@ApplicationScoped
 public class ConfigCredentialsProvider implements CredentialsProvider {
 
     static final String USER_NAME = "username";
