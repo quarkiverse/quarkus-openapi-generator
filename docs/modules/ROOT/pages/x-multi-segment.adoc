@@ -11,7 +11,7 @@ This page describes support for the `x-multi-segment` vendor extension, which en
 
 By default, path parameters in OpenAPI specifications match only a single URL segment (the part between slashes). The `x-multi-segment` vendor extension allows path parameters to match multiple segments, which is useful for APIs that accept file paths, Git references, or other hierarchical identifiers.
 
-For example, without `x-multi-segment`, the parameter `{ref}` in `/repos/{owner}/{ref}` would only match single-segment values like `main`. With `x-multi-segment: true`, the same parameter can match multi-segment values like `heads/feature/my-branch`.
+For example, without `x-multi-segment`, the parameter `\{ref}` in `/repos/\{owner}/\{ref}` would only match single-segment values like `main`. With `x-multi-segment: true`, the same parameter can match multi-segment values like `heads/feature/my-branch`.
 
 [[why-opt-in]]
 === Why Opt-In?
