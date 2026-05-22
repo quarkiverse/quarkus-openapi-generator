@@ -110,9 +110,9 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     /**
-     * If the specification component has `oneOf` specified instead of `allOf`, the inner generator won't create a hierarchy of
-     * classes.
-     * In this situation, we can't generate the `JsonSubTypes` annotations.
+     * When the specification component has `oneOf` with a `discriminator` that has `mappedModels`,
+     * the `JsonSubTypes` annotation should be generated since the discriminator mapping provides
+     * the necessary type information for Jackson deserialization.
      */
     @Test
     void verifyOneOfDiscriminatorGeneration() throws java.net.URISyntaxException, FileNotFoundException {
@@ -129,12 +129,11 @@ public class OpenApiClientGeneratorWrapperTest {
         final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
         assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
                 .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class)))
-                .isNotPresent();
+                .isPresent();
     }
 
     /**
-     * Only generates `JsonSubTypes` annotations in case the class has children, otherwise skip since Jackson will complain in
-     * runtime.
+     * Only generates `JsonSubTypes` annotations when the class has a discriminator with mappedModels.
      * The file issue-1022.json is a classic example of a spec with allOf to denote how the Java POJO should be and how Jackson
      * would serialize.
      */
@@ -153,6 +152,34 @@ public class OpenApiClientGeneratorWrapperTest {
         final CompilationUnit compilationUnit = StaticJavaParser.parse(classWithDiscriminator.orElseThrow());
         assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
                 .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class))).isPresent();
+    }
+
+    /**
+     * When a parent schema has a discriminator with mapping and child schemas use allOf to reference the parent,
+     * the `@JsonTypeInfo` and `@JsonSubTypes` annotations must be generated on the parent class
+     * even if the upstream generator does not populate `m.children`.
+     * See https://github.com/quarkiverse/quarkus-openapi-generator/issues/XXX
+     */
+    @Test
+    void verifyDiscriminatorGenerationWithAllOfAndMapping() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-pet-discriminator.json");
+        final List<File> generatedFiles = generatorWrapper.generate("org.petdiscriminator");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> petClass = generatedFiles.stream()
+                .filter(f -> f.getName().startsWith("Pet.java"))
+                .findFirst();
+        assertThat(petClass).isPresent();
+
+        final CompilationUnit compilationUnit = StaticJavaParser.parse(petClass.orElseThrow());
+        assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
+                .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonTypeInfo.class)))
+                .isPresent();
+        assertThat(compilationUnit.findFirst(ClassOrInterfaceDeclaration.class)
+                .flatMap(first -> first.getAnnotationByClass(com.fasterxml.jackson.annotation.JsonSubTypes.class)))
+                .isPresent();
     }
 
     @Test
