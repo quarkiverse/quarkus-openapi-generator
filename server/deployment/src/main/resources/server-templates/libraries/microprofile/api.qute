@@ -1,5 +1,3 @@
-{@java.lang.Boolean use-reactive}
-
 package {package};
 
 {#if use-bean-validation}
