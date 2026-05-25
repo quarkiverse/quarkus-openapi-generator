@@ -55,12 +55,12 @@ import io.quarkiverse.openapi.generator.deployment.codegen.ClassCodegenConfigPar
 public class OpenApiClientGeneratorWrapperTest {
 
     private static Optional<MethodDeclaration> getMethodDeclarationByIdentifier(List<MethodDeclaration> methodDeclarations,
-                                                                                String methodName) {
+            String methodName) {
         return methodDeclarations.stream().filter(md -> md.getName().getIdentifier().equals(methodName)).findAny();
     }
 
     private static List<String> getMethodAnnotationValuesByAnnotationName(MethodDeclaration methodDeclaration,
-                                                                          String annotationName) {
+            String annotationName) {
         AnnotationExpr consumesAnnotation = methodDeclaration.getAnnotationByName(annotationName)
                 .orElseThrow(() -> new AssertionError("@%s annotation not found".formatted(annotationName)));
         assertThat(consumesAnnotation).isInstanceOf(SingleMemberAnnotationExpr.class);
@@ -644,7 +644,7 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     private void verifyGeneratedDateAndTimeTypes(ClassOrInterfaceDeclaration classDeclaration,
-                                                 Map<String, String> expectedFieldsAndTypes) {
+            Map<String, String> expectedFieldsAndTypes) {
         expectedFieldsAndTypes.forEach((fieldName, expectedFieldType) -> {
             Optional<FieldDeclaration> fieldDeclaration = classDeclaration.getFieldByName(fieldName);
             assertThat(fieldDeclaration).isPresent();
@@ -819,7 +819,7 @@ public class OpenApiClientGeneratorWrapperTest {
                     if (annotation instanceof SingleMemberAnnotationExpr singleMemberAnnotationExpr) {
                         return singleMemberAnnotationExpr.getMemberValue().isClassExpr()
                                 && singleMemberAnnotationExpr.getMemberValue().asClassExpr().getType().asString()
-                                .equals("PathParamEncodingParamConverterProvider");
+                                        .equals("PathParamEncodingParamConverterProvider");
                     }
                     if (annotation instanceof NormalAnnotationExpr normalAnnotationExpr) {
                         return normalAnnotationExpr.getPairs().stream()
@@ -827,7 +827,7 @@ public class OpenApiClientGeneratorWrapperTest {
                                 .map(MemberValuePair::getValue)
                                 .anyMatch(value -> value.isClassExpr()
                                         && value.asClassExpr().getType().asString()
-                                        .equals("PathParamEncodingParamConverterProvider"));
+                                                .equals("PathParamEncodingParamConverterProvider"));
                     }
                     return false;
                 });
