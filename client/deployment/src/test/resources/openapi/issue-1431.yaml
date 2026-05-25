@@ -1,0 +1,109 @@
+openapi: 3.1.0
+info:
+  title: Fruits API - Bug Reproduction
+  version: 1.0.0
+  description: Minimal reproduction case for OpenAPI generator bug where response wrapper classes are incorrectly used in component schema references
+paths:
+  /api/fruits:
+    get:
+      summary: List fruits
+      description: Retrieves a paginated list of fruits
+      operationId: getFruits
+      tags:
+        - fruits
+      parameters:
+        - description: Page number (0-based)
+          name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: Number of items per page
+          name: size
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 20
+      responses:
+        "200":
+          description: Successfully retrieved fruits
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FruitPagedResult"
+    post:
+      summary: Create fruit
+      description: Creates a new fruit
+      operationId: createFruit
+      tags:
+        - fruits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewFruit"
+        required: true
+      responses:
+        "201":
+          description: Fruit created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Fruit"
+components:
+  schemas:
+    Fruit:
+      type: object
+      required:
+        - name
+        - color
+      description: Fruit information
+      properties:
+        name:
+          type: string
+          description: Fruit name
+        color:
+          type: string
+          description: Fruit color
+    FruitPagedResult:
+      type: object
+      required:
+        - pageIndex
+        - size
+        - totalCount
+        - list
+      description: Paginated result containing fruits
+      properties:
+        pageIndex:
+          type: integer
+          format: int64
+          description: Current page index (0-based)
+          minimum: 0
+        size:
+          type: integer
+          format: int64
+          description: Number of items per page
+        totalCount:
+          type: integer
+          format: int64
+          description: Total number of items across all pages
+        list:
+          type: array
+          items:
+            $ref: "#/components/schemas/Fruit"
+          description: List of items on the current page
+    NewFruit:
+      type: object
+      required:
+        - name
+        - color
+      description: Request payload for creating a new fruit
+      properties:
+        name:
+          type: string
+          description: Fruit name
+        color:
+          type: string
+          description: Fruit color
