@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -29,7 +30,12 @@ import org.slf4j.LoggerFactory;
 
 import io.quarkiverse.openapi.generator.deployment.template.MediaTypeExtensions;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.servers.Server;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
@@ -148,7 +154,6 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (verbose) {
             super.postProcess();
         }
-
     }
 
     @Override
@@ -268,26 +273,145 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             List<CodegenOperation> operations = ops.getOperation();
             if (operations != null) {
                 for (CodegenOperation operation : operations) {
-                    if ((Boolean) this.additionalProperties.getOrDefault("method-per-media-type", false)) {
-                        operation.consumes = MediaTypeExtensions.deduplicateByMediaType(operation.consumes);
-                    }
-
-                    // Build list of multi-segment parameter names
-                    List<String> multiSegmentParamNames = new ArrayList<>();
-                    if (operation.pathParams != null) {
-                        for (CodegenParameter param : operation.pathParams) {
-                            Object multiSegmentFlag = param.vendorExtensions.get(X_MULTI_SEGMENT);
-                            if (Boolean.TRUE.equals(multiSegmentFlag)) {
-                                multiSegmentParamNames.add(param.baseName);
-                            }
-                        }
-                    }
-                    // Add to operation vendor extensions for template access
-                    operation.vendorExtensions.put(X_MULTI_SEGMENT_PARAMS, multiSegmentParamNames);
+                    handleDuplicateByMediaType(operation);
+                    handleMultiSegmentParams(operation);
+                    handleReturnType(operation, result);
                 }
             }
         }
 
         return result;
+    }
+
+    private void handleDuplicateByMediaType(CodegenOperation operation) {
+        if ((Boolean) this.additionalProperties.getOrDefault("method-per-media-type", false)) {
+            operation.consumes = MediaTypeExtensions.deduplicateByMediaType(operation.consumes);
+        }
+    }
+
+    private Operation findOperation(String path, String httpMethod) {
+        if (this.openAPI == null)
+            return null;
+        PathItem pathItem = this.openAPI.getPaths().get(path);
+        if (pathItem == null)
+            return null;
+        try {
+            HttpMethod method = HttpMethod
+                    .valueOf(httpMethod.toUpperCase());
+            return pathItem.readOperationsMap().get(method);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private String findMatchingEnumModel(List<?> enumValues) {
+        if (this.openAPI != null && this.openAPI.getComponents() != null
+                && this.openAPI.getComponents().getSchemas() != null) {
+            for (Map.Entry<String, Schema> entry : this.openAPI.getComponents().getSchemas().entrySet()) {
+                Schema s = entry.getValue();
+                if (s.getEnum() != null && s.getEnum().equals(enumValues)) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return null;
+    }
+
+    private static boolean is2xxResponseCode(String statusCode) {
+        if (statusCode == null) {
+            return false;
+        }
+        try {
+            int code = Integer.parseInt(statusCode);
+            return code >= 200 && code <= 299;
+        } catch (NumberFormatException e) {
+            return "2XX".equalsIgnoreCase(statusCode);
+        }
+    }
+
+    private void handleReturnType(CodegenOperation operation, OperationsMap result) {
+
+        if ("String".equals(operation.returnBaseType)
+                && ("Set".equals(operation.returnContainer) || "List".equals(operation.returnContainer))) {
+            String commonPath = (String) result.get("commonPath");
+            String path = getPath(operation, commonPath);
+
+            Operation openApiOperation = findOperation(path, operation.httpMethod);
+            if (openApiOperation == null && path != null && path.endsWith("/")) {
+                String pathNoSlash = path.substring(0, path.length() - 1);
+                openApiOperation = findOperation(pathNoSlash, operation.httpMethod);
+            }
+
+            if (openApiOperation != null && openApiOperation.getResponses() != null) {
+                for (Map.Entry<String, ApiResponse> responseEntry : openApiOperation.getResponses().entrySet()) {
+                    String statusCode = responseEntry.getKey();
+                    if (!is2xxResponseCode(statusCode)) {
+                        continue;
+                    }
+                    ApiResponse apiResponse = responseEntry.getValue();
+                    if (apiResponse.getContent() == null
+                            || apiResponse.getContent().get("application/json") == null) {
+                        continue;
+                    }
+                    Schema<?> responseSchema = apiResponse.getContent().get("application/json").getSchema();
+                    if (responseSchema instanceof ArraySchema) {
+                        Schema<?> items = responseSchema.getItems();
+                        if (items.getEnum() != null && items.get$ref() == null) {
+                            String matchedModel = findMatchingEnumModel(items.getEnum());
+                            if (matchedModel != null) {
+                                operation.returnBaseType = matchedModel;
+                                operation.returnType = operation.returnContainer + "<" + matchedModel + ">";
+                                operation.imports.add(matchedModel);
+
+                                // Add to file-level imports
+                                List<Map<String, String>> imports = (List<Map<String, String>>) result
+                                        .get("imports");
+                                String modelImport = modelPackage() + "." + matchedModel;
+                                boolean alreadyImported = imports.stream()
+                                        .anyMatch(importEntry -> modelImport.equals(importEntry.get("import")));
+                                if (!alreadyImported) {
+                                    Map<String, String> importMap = new HashMap<>();
+                                    importMap.put("import", modelImport);
+                                    imports.add(importMap);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static String getPath(CodegenOperation operation, String commonPath) {
+        String path = operation.path;
+        if (commonPath != null && path != null) {
+            if (path.startsWith("/")) {
+                path = commonPath + path;
+            } else {
+                path = commonPath + "/" + path;
+            }
+        } else if (commonPath != null) {
+            path = commonPath;
+        }
+        // Handle double slashes if any
+        if (path != null) {
+            path = path.replaceAll("//", "/");
+        }
+        return path;
+    }
+
+    private void handleMultiSegmentParams(CodegenOperation operation) {
+        // Build list of multi-segment parameter names
+        List<String> multiSegmentParamNames = new ArrayList<>();
+        if (operation.pathParams != null) {
+            for (CodegenParameter param : operation.pathParams) {
+                Object multiSegmentFlag = param.vendorExtensions.get(X_MULTI_SEGMENT);
+                if (Boolean.TRUE.equals(multiSegmentFlag)) {
+                    multiSegmentParamNames.add(param.baseName);
+                }
+            }
+        }
+        // Add to operation vendor extensions for template access
+        operation.vendorExtensions.put(X_MULTI_SEGMENT_PARAMS, multiSegmentParamNames);
     }
 }
