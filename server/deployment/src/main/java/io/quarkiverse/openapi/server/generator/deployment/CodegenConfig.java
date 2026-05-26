@@ -26,6 +26,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_GENERATE_BUILDERS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-builders";
     String CODEGEN_SERVER_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-bean-validation";
     String CODEGEN_SERVER_SKIP_IF_UNCHANGED = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".skip-if-unchanged";
+    String CODEGEN_SERVER_OPERATION_IDS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".operation-ids";
 
     static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
@@ -85,5 +86,9 @@ public interface CodegenConfig extends ServerCodegenConfig {
      */
     static String getServerUse() {
         return CODEGEN_SERVER_USE;
+    }
+
+    static String getServerOperationIds() {
+        return CODEGEN_SERVER_OPERATION_IDS;
     }
 }

@@ -317,5 +317,26 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-operation-ids-operation-ids-return-type]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-operation-ids-operation-ids-return-type[`+++quarkus.openapi.generator.server.operation-ids."operation-ids".return-type+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.operation-ids."operation-ids".return-type+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The name of the method parameter that should be used to return the response from the operation.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_OPERATION_IDS__OPERATION_IDS__RETURN_TYPE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_OPERATION_IDS__OPERATION_IDS__RETURN_TYPE+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|required icon:exclamation-circle[title=Configuration property is required]
+
 |===
 
