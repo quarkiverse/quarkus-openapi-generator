@@ -130,6 +130,7 @@ public abstract class OpenApiClientGeneratorWrapper {
         this.configurator.addAdditionalProperty("use-dynamic-url", FALSE);
         this.configurator.addAdditionalProperty("generate-model-for-usage-as-bean-param", TRUE);
         this.configurator.addAdditionalProperty("method-per-media-type", FALSE);
+        this.configurator.addAdditionalProperty("preferred-content-type", "");
     }
 
     /**
@@ -385,6 +386,12 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withMethodPerMediaType(final Boolean methodPerMediaType) {
         this.configurator.addAdditionalProperty("method-per-media-type", methodPerMediaType);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withPreferredContentType(final String preferredContentType) {
+        this.configurator.addAdditionalProperty("preferred-content-type",
+                Optional.ofNullable(preferredContentType).orElse(""));
         return this;
     }
 

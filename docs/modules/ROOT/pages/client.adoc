@@ -193,6 +193,11 @@ include::./includes/register-rest-client.adoc[leveloffset=+1, opts=optional`]
 
 include::./includes/method-per-media-type.adoc[leveloffset=+1, opts=optional]
 
+[[preferred-content-type]]
+== Preferred content type
+
+include::./includes/preferred-content-type.adoc[leveloffset=+1, opts=optional]
+
 [[generate-apis]]
 == Generate APIs
 
