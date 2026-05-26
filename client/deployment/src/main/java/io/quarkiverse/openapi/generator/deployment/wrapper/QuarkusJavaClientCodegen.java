@@ -402,6 +402,12 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     }
 
     private void handleMultiSegmentParams(CodegenOperation operation) {
+        String preferredContentType = (String) this.additionalProperties.getOrDefault("preferred-content-type", "");
+        operation.consumes = MediaTypeExtensions.filterByPreferredContentType(operation.consumes,
+                preferredContentType);
+        operation.produces = MediaTypeExtensions.filterByPreferredContentType(operation.produces,
+                preferredContentType);
+
         // Build list of multi-segment parameter names
         List<String> multiSegmentParamNames = new ArrayList<>();
         if (operation.pathParams != null) {

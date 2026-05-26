@@ -43,4 +43,43 @@ class MediaTypeExtensionsTest {
                 .map(m -> m.get("mediaType"))
                 .containsExactlyInAnyOrder("application/json", "application/vnd.api+json", "application/x-www-form-urlencoded");
     }
+
+    @Test
+    void filterByPreferredContentTypeReturnsNullWhenInputIsNull() {
+        assertThat(MediaTypeExtensions.filterByPreferredContentType(null, "application/json")).isNull();
+    }
+
+    @Test
+    void filterByPreferredContentTypeReturnsEmptyWhenInputIsEmpty() {
+        assertThat(MediaTypeExtensions.filterByPreferredContentType(List.of(), "application/json")).isEmpty();
+    }
+
+    @Test
+    void filterByPreferredContentTypeReturnsOriginalWhenPreferredIsBlank() {
+        var mediaTypes = List.of(
+                Map.of("mediaType", "application/json"),
+                Map.of("mediaType", "application/xml"));
+        assertThat(MediaTypeExtensions.filterByPreferredContentType(mediaTypes, "")).isEqualTo(mediaTypes);
+        assertThat(MediaTypeExtensions.filterByPreferredContentType(mediaTypes, null)).isEqualTo(mediaTypes);
+    }
+
+    @Test
+    void filterByPreferredContentTypeFiltersToSingleMatchingType() {
+        var mediaTypes = List.of(
+                Map.of("mediaType", "application/json"),
+                Map.of("mediaType", "application/xml"));
+
+        var result = MediaTypeExtensions.filterByPreferredContentType(mediaTypes, "application/json");
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).get("mediaType")).isEqualTo("application/json");
+    }
+
+    @Test
+    void filterByPreferredContentTypeReturnsOriginalWhenPreferredNotInList() {
+        var mediaTypes = List.of(
+                Map.of("mediaType", "application/json"),
+                Map.of("mediaType", "application/xml"));
+
+        assertThat(MediaTypeExtensions.filterByPreferredContentType(mediaTypes, "text/plain")).isEqualTo(mediaTypes);
+    }
 }
