@@ -1,0 +1,33 @@
+== Authentication Provider Path Matching
+
+The generated `CompositeAuthenticationProvider` matches incoming requests to OpenAPI operations by comparing the request URI path against the operation paths defined in the OpenAPI spec.
+By default, the request path must exactly match the operation path (including the context path from the spec's `servers` URL).
+
+=== When the Base URL Path Differs from the Spec
+
+When you configure the REST client base URL with a path prefix that differs from the `servers` URL path in the OpenAPI spec, the request URI path will not directly match the operation path.
+This commonly happens when using an API gateway that adds a stage prefix.
+
+For example, given an OpenAPI spec with:
+
+[source,json]
+----
+{
+  "servers": [{ "url": "https://api.example.com/v1" }]
+}
+----
+
+The generated operation path will be `/v1/myapp/search`.
+
+If you configure the REST client base URL with a different path prefix:
+
+[source,properties]
+----
+quarkus.rest-client.my_spec_yaml.url=https://gateway.example.com/my-apigwstage/v1
+----
+
+The actual request URI path will be `/my-apigwstage/v1/myapp/search`, which does not match the operation path `/v1/myapp/search`.
+
+The authentication provider automatically handles this by stripping the path component of the configured base URL (`/my-apigwstage/v1`) from the request URI path before matching, so `/my-apigwstage/v1/myapp/search` becomes `/v1/myapp/search` and matches correctly.
+
+This behavior is automatic and requires no additional configuration. It only applies when the base URL contains a non-root path component.
