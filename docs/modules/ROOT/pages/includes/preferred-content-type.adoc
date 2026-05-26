@@ -1,0 +1,75 @@
+When using RESTEasy Reactive, MicroProfile REST Client interfaces do not support multiple values in the `@Consumes` annotation.
+If an OpenAPI operation defines multiple request body media types, the generator will produce an annotation like:
+
+[source,java]
+----
+@Consumes({"application/json", "application/xml"})
+----
+
+This causes a runtime error:
+
+[source]
+----
+org.jboss.resteasy.reactive.client.api.InvalidRestClientDefinitionException:
+Failed to generate client for class interface com.example.api.DefaultApi :
+Multiple `@Consumes` values used in a MicroProfile Rest Client: com.example.api.DefaultApi
+Unable to determine a single `Content-Type`.
+----
+
+The `preferred-content-type` configuration property solves this by allowing you to specify which content type should be used exclusively when multiple are available.
+If the preferred content type is present among the available options, only that single type will be kept in both the `@Consumes` and `@Produces` annotations.
+
+For example, given the following OpenAPI spec snippet:
+
+[source,yaml]
+----
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: "#/components/schemas/Pet"
+    application/xml:
+      schema:
+        $ref: "#/components/schemas/Pet"
+----
+
+By default, the generator produces:
+
+[source,java]
+----
+@Consumes({"application/json", "application/xml"})
+@Produces({"application/json", "application/xml"})
+Response updatePet(Pet pet);
+----
+
+After setting `preferred-content-type=application/json`, the generator produces:
+
+[source,java]
+----
+@Consumes({"application/json"})
+@Produces({"application/json"})
+Response updatePet(Pet pet);
+----
+
+If the preferred content type is **not** found among the available media types, all original media types are kept unchanged (i.e., no filtering is applied).
+
+== Configuration
+
+The `preferred-content-type` property can be set either globally or per OpenAPI specification.
+
+Set it globally for all specs:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.preferred-content-type=application/json
+----
+
+Or for a specific OpenAPI document:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.preferred-content-type=application/json
+----
+
+This property works independently of the `method-per-media-type` configuration.
+When both are enabled, `method-per-media-type` deduplication runs first, then `preferred-content-type` filtering is applied.

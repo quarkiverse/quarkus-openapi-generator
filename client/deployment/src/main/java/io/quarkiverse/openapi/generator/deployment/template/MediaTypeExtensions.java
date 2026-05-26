@@ -53,4 +53,17 @@ public class MediaTypeExtensions {
                 .map(mediaTypeGroup -> mediaTypeGroup.get(0))
                 .collect(Collectors.toList());
     }
+
+    public static List<Map<String, String>> filterByPreferredContentType(List<Map<String, String>> mediaTypes,
+            String preferredContentType) {
+        if (mediaTypes == null || mediaTypes.isEmpty() || preferredContentType == null || preferredContentType.isBlank()) {
+            return mediaTypes;
+        }
+        for (Map<String, String> entry : mediaTypes) {
+            if (preferredContentType.equals(entry.get("mediaType"))) {
+                return List.of(entry);
+            }
+        }
+        return mediaTypes;
+    }
 }
