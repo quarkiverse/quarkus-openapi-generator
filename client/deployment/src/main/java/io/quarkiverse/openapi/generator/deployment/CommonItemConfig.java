@@ -231,4 +231,13 @@ public interface CommonItemConfig {
      */
     @WithName("initialize-empty-collections")
     Optional<String> initializeEmptyCollections();
+
+    /**
+     * Preferred content type to use when multiple content types are available in the `@Consumes` annotation.
+     * When set, and the preferred content type is among the available content types, only that single type
+     * will be used in the `@Consumes` annotation. This is useful for RESTEasy Reactive clients that do not
+     * support multiple `@Consumes` values.
+     */
+    @WithName("preferred-content-type")
+    Optional<String> preferredContentType();
 }

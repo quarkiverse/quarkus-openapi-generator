@@ -888,6 +888,54 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyPreferredContentTypeFiltersConsumes() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
+                .withMethodPerMediaType(false)
+                .withPreferredContentType("image/png");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1428.preferred");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        CompilationUnit cu = StaticJavaParser.parse(imagesApiFile);
+
+        List<MethodDeclaration> updateMethodList = cu.findAll(MethodDeclaration.class,
+                method -> method.getNameAsString().startsWith("updateImage"));
+        assertThat(updateMethodList).hasSize(1);
+
+        List<String> mediaTypes = getMethodAnnotationValuesByAnnotationName(updateMethodList.get(0), "Consumes");
+        assertThat(mediaTypes).containsExactly("image/png");
+    }
+
+    @Test
+    void verifyPreferredContentTypeNotInListDoesNotFilter() throws java.net.URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
+                .withMethodPerMediaType(false)
+                .withPreferredContentType("text/plain");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1428.preferrednotfound");
+
+        assertThat(generatedFiles).isNotEmpty();
+        File imagesApiFile = generatedFiles.stream()
+                .filter(file -> file.getPath().endsWith("ImagesApi.java"))
+                .findFirst()
+                .orElse(null);
+        assertThat(imagesApiFile).isNotNull();
+
+        CompilationUnit cu = StaticJavaParser.parse(imagesApiFile);
+
+        List<MethodDeclaration> updateMethodList = cu.findAll(MethodDeclaration.class,
+                method -> method.getNameAsString().startsWith("updateImage"));
+        assertThat(updateMethodList).hasSize(1);
+
+        List<String> mediaTypes = getMethodAnnotationValuesByAnnotationName(updateMethodList.get(0), "Consumes");
+        assertThat(mediaTypes).containsExactly("image/jpeg", "image/png", "image/gif");
+    }
+
+    @Test
     void verifyMethodPerMediaTypeGeneration() throws java.net.URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
                 .withMethodPerMediaType(true);
