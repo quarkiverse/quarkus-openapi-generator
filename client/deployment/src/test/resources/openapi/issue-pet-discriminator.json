@@ -1,0 +1,103 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Pet API with Discriminator",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/pets": {
+      "post": {
+        "summary": "Add a new pet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pet added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "required": [
+          "petType"
+        ],
+        "discriminator": {
+          "propertyName": "petType",
+          "mapping": {
+            "dog": "#/components/schemas/Dog",
+            "cat": "#/components/schemas/Cat"
+          }
+        },
+        "properties": {
+          "petType": {
+            "type": "string",
+            "description": "The type of the pet (discriminator)"
+          },
+          "name": {
+            "type": "string",
+            "description": "The pet's name"
+          }
+        }
+      },
+      "Dog": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "breed": {
+                "type": "string",
+                "description": "Breed of the dog"
+              },
+              "barkVolume": {
+                "type": "integer",
+                "description": "Bark volume level"
+              }
+            }
+          }
+        ]
+      },
+      "Cat": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "color": {
+                "type": "string",
+                "description": "Color of the cat"
+              },
+              "declawed": {
+                "type": "boolean",
+                "description": "Whether the cat is declawed"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
