@@ -10,6 +10,7 @@ public class QuarkusCodegenConfigurator extends CodegenConfigurator {
         this.setGeneratorName("quarkus");
         this.setTemplatingEngineName("qute");
         this.setLibrary(JavaClientCodegen.MICROPROFILE);
+        this.addInlineSchemaOption("SKIP_SCHEMA_REUSE", "true");
     }
 
 }
