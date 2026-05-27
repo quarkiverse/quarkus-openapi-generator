@@ -1005,6 +1005,31 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyIssue1431SchemaReferenceNotReplacedByResponseWrapper() throws URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1431.yaml");
+        final List<File> generatedFiles = generatorWrapper.generate("org.issue1431");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> fruitPagedResultFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("FruitPagedResult.java")).findFirst();
+        assertThat(fruitPagedResultFile).isPresent();
+
+        final CompilationUnit cu = StaticJavaParser.parse(fruitPagedResultFile.orElseThrow());
+        List<FieldDeclaration> fields = cu.findAll(FieldDeclaration.class);
+
+        Optional<VariableDeclarator> listField = findVariableByName(fields, "_list");
+        assertThat(listField).isPresent();
+
+        String listFieldType = listField.orElseThrow().getType().asString();
+        assertTrue(listFieldType.contains("Fruit"),
+                "FruitPagedResult._list should reference Fruit, but got: " + listFieldType);
+        assertFalse(listFieldType.contains("CreateFruit201Response"),
+                "FruitPagedResult._list should NOT reference CreateFruit201Response, but got: " + listFieldType);
+    }
+
+    @Test
     void verifyXClassExtraAnnotationGeneration() throws URISyntaxException, FileNotFoundException {
         final List<File> generatedFiles = createGeneratorWrapper("x-class-extra-annotation-openapi.json")
                 .generate("org.classExtraAnnotation");
