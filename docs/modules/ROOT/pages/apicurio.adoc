@@ -219,6 +219,35 @@ import io.smallrye.mutiny.Multi;
 Multi<String> getCartIds();
 ----
 
+[NOTE]
+====
+`x-codegen-returnType` must be placed at the **media type object level** (sibling of `schema`), not inside the `schema` object.
+====
+
+==== Configuring `x-codegen-returnType` via `application.properties`
+
+Instead of editing the OpenAPI specification directly, you can configure the return type for an operation using the `operation-ids` map in `application.properties`.
+The extension value will be automatically injected into the spec before code generation.
+
+[cols="1,3",options="header"]
+|===
+| Property
+| `quarkus.openapi.generator.server.operation-ids."<operationId>".return-type`
+|===
+
+.Example `application.properties`:
+[source,properties]
+----
+quarkus.openapi.generator.server.operation-ids."getCartIds".return-type=io.smallrye.mutiny.Multi<String>
+----
+
+This is equivalent to manually placing `x-codegen-returnType` on every response media type of the `getCartIds` operation in the spec.
+
+[NOTE]
+====
+This approach keeps your OpenAPI specification clean and vendor-extension free. The injection happens at build time only.
+====
+
 === x-codegen-annotations
 
 The `x-codegen-annotations` extension allows you to add annotations to the generated code. This extension is supported in two specific contexts:

@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.Config;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,24 @@ public class CodegenTest {
 
     @BeforeAll
     public static void setup() throws IOException {
-        FileUtils.deleteDirectory(new File("target/generated-test-sources"));
+        Files.createDirectories(Path.of(OUT_DIR));
+    }
+
+    private static Path outDir(String name) throws IOException {
+        Path dir = Path.of(OUT_DIR, name);
+        Files.createDirectories(dir);
+        return dir;
+    }
+
+    @AfterAll
+    public static void cleanup() throws IOException {
+        FileUtils.deleteDirectory(new File(OUT_DIR));
     }
 
     @Test
-    public void testJSON() throws CodeGenException {
+    public void testJSON() throws CodeGenException, IOException {
         Config config = MockConfigUtils.getTestConfig("json.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "json"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("json"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
         apicurioOpenApiServerCodegen.trigger(codeGenContext);
@@ -46,9 +58,9 @@ public class CodegenTest {
     }
 
     @Test
-    public void testYaml() throws CodeGenException {
+    public void testYaml() throws CodeGenException, IOException {
         Config config = MockConfigUtils.getTestConfig("yaml.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "yaml"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("yaml"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
         apicurioOpenApiServerCodegen.trigger(codeGenContext);
@@ -57,9 +69,9 @@ public class CodegenTest {
     }
 
     @Test
-    public void testInputDir() throws CodeGenException {
+    public void testInputDir() throws CodeGenException, IOException {
         Config config = MockConfigUtils.getTestConfig("inputDir.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "inputDir"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("inputDir"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
         apicurioOpenApiServerCodegen.trigger(codeGenContext);
@@ -68,18 +80,18 @@ public class CodegenTest {
     }
 
     @Test
-    void testDuplicateOperationIdThrowsCodeGenException() {
+    void testDuplicateOperationIdThrowsCodeGenException() throws IOException {
         Config config = MockConfigUtils.getTestConfig("duplicate-operation-id.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "duplicate-operation-id"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("duplicate-operation-id"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
         Assertions.assertThrows(CodeGenException.class, () -> apicurioOpenApiServerCodegen.trigger(codeGenContext));
     }
 
     @Test
-    public void shouldGenerateAnErrorWhenInputDirIsNotExist() {
+    public void shouldGenerateAnErrorWhenInputDirIsNotExist() throws IOException {
         Config config = MockConfigUtils.getTestConfig("doesNotExistDir.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "inputDir"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("inputDir"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
 
@@ -93,7 +105,7 @@ public class CodegenTest {
     @Test
     void testMultipartFormContent() throws CodeGenException, IOException {
         Config config = MockConfigUtils.getTestConfig("multipart-form-content.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "multipart-form-content"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("multipart-form-content"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
         apicurioOpenApiServerCodegen.trigger(codeGenContext);
@@ -125,7 +137,7 @@ public class CodegenTest {
     @Test
     void testMultipartArrayOnlyRef() throws CodeGenException, IOException {
         Config config = MockConfigUtils.getTestConfig("multipart-array-only-ref.application.properties");
-        CodeGenContext codeGenContext = new CodeGenContext(null, Path.of(OUT_DIR, "multipart-array-only-ref"), WORK_DIR,
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("multipart-array-only-ref"), WORK_DIR,
                 INPUT_DIR, false, config, true);
         ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
         apicurioOpenApiServerCodegen.trigger(codeGenContext);

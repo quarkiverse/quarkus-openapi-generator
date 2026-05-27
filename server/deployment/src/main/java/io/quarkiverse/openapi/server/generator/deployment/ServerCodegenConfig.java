@@ -1,5 +1,6 @@
 package io.quarkiverse.openapi.server.generator.deployment;
 
+import java.util.Map;
 import java.util.Optional;
 
 import io.quarkus.runtime.annotations.ConfigGroup;
@@ -121,5 +122,14 @@ public interface ServerCodegenConfig {
          */
         @WithDefault("false")
         Optional<Boolean> skipIfUnchanged();
+
+        /**
+         * The map of operations to be configured, where the key is the operationId defined in the OpenAPI specification and the
+         * value is the configuration for that operation.
+         * <p>
+         * Only applied for {@code apicurio} generator.
+         */
+        Map<String, OperationConfig> operationIds();
+
     }
 }
