@@ -56,6 +56,24 @@ class QuarkusJavaClientCodegenTest {
     }
 
     @Test
+    void unaccentString() {
+        // Test basic accent removal
+        assertThat(QuarkusJavaClientCodegen.unaccentString("Funcionário")).isEqualTo("Funcionario");
+        assertThat(QuarkusJavaClientCodegen.unaccentString("Português")).isEqualTo("Portugues");
+        assertThat(QuarkusJavaClientCodegen.unaccentString("Mão")).isEqualTo("Mao");
+        assertThat(QuarkusJavaClientCodegen.unaccentString("Piso Sótão")).isEqualTo("Piso Sotao");
+
+        // Test with no accents
+        assertThat(QuarkusJavaClientCodegen.unaccentString("Hello World")).isEqualTo("Hello World");
+
+        // Test with mixed characters
+        assertThat(QuarkusJavaClientCodegen.unaccentString("Época ãé")).isEqualTo("Epoca ae");
+
+        // Test with null
+        assertThat(QuarkusJavaClientCodegen.unaccentString(null)).isNull();
+    }
+
+    @Test
     void verifyMultiSegmentParamsInOperationMarker() throws URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("x-multi-segment-test.yaml");
         final List<File> generatedFiles = generatorWrapper.generate("org.multisegment");

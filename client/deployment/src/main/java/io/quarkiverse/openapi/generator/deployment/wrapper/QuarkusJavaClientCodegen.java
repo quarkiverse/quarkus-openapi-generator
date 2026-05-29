@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import java.io.File;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.tags.Tag;
 
 public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
@@ -140,6 +142,9 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     @Override
     public void preprocessOpenAPI(OpenAPI openAPI) {
         super.preprocessOpenAPI(openAPI);
+        // Normalize tag names to remove accents and special characters
+        normalizeTagNames(openAPI);
+
         // add the default server url to the context
         getServerURL(this.openAPI, serverVariableOverrides())
                 .ifPresent(url -> additionalProperties.put(DEFAULT_SERVER_URL, url));
@@ -147,6 +152,42 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                 GlobalSettings.getProperty(OpenApiClientGeneratorWrapper.DEFAULT_SECURITY_SCHEME));
 
         this.configureAdditionalPropertiesAsAttribute();
+    }
+
+    private static void normalizeTagNames(OpenAPI openAPI) {
+        if (openAPI.getTags() != null) {
+            for (Tag tag : openAPI.getTags()) {
+                if (tag.getName() != null) {
+                    tag.setName(unaccentString(tag.getName()));
+                }
+            }
+        }
+        if (openAPI.getPaths() != null) {
+            for (PathItem pathItem : openAPI.getPaths().values()) {
+                normalizeTagsInPathItem(pathItem);
+            }
+        }
+    }
+
+    private static void normalizeTagsInPathItem(PathItem pathItem) {
+        pathItem.readOperationsMap().values().stream()
+                .filter(Objects::nonNull)
+                .forEach(operation -> {
+                    if (operation.getTags() != null) {
+                        operation.setTags(
+                                operation.getTags().stream()
+                                        .map(QuarkusJavaClientCodegen::unaccentString)
+                                        .toList());
+                    }
+                });
+    }
+
+    static String unaccentString(String input) {
+        if (input == null) {
+            return null;
+        }
+        String decomposed = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}", "");
     }
 
     @Override
