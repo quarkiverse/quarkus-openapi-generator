@@ -51,6 +51,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     private static final String DEFAULT_SERVER_URL = "defaultServerUrl";
     private static final String X_MULTI_SEGMENT = "x-multi-segment";
     private static final String X_MULTI_SEGMENT_PARAMS = "x-multi-segment-params";
+    private static final String X_HAS_TRAILING_SLASH = "x-has-trailing-slash";
 
     public QuarkusJavaClientCodegen() {
         // immutable properties
@@ -273,10 +274,12 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
         if (ops != null) {
             List<CodegenOperation> operations = ops.getOperation();
             if (operations != null) {
+                String commonPath = (String) result.get("commonPath");
                 for (CodegenOperation operation : operations) {
                     handleDuplicateByMediaType(operation);
                     handleMultiSegmentParams(operation);
                     handleReturnType(operation, result);
+                    handleTrailingSlashPath(operation, commonPath);
                 }
             }
         }
@@ -399,6 +402,16 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             path = path.replaceAll("//", "/");
         }
         return path;
+    }
+
+    private void handleTrailingSlashPath(CodegenOperation operation, String commonPath) {
+        if (commonPath != null && commonPath.endsWith("/") && commonPath.length() > 1) {
+            String operationPath = operation.path;
+            boolean isBasePathOperation = operationPath == null || operationPath.isEmpty() || "/".equals(operationPath);
+            if (isBasePathOperation && !operation.subresourceOperation) {
+                operation.vendorExtensions.put(X_HAS_TRAILING_SLASH, true);
+            }
+        }
     }
 
     private void handleMultiSegmentParams(CodegenOperation operation) {

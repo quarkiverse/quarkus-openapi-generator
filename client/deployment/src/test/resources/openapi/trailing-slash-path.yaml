@@ -1,0 +1,24 @@
+---
+openapi: 3.0.3
+info:
+  title: Trailing Slash Test API
+  version: 1.0.0
+paths:
+  /someMethod/:
+    post:
+      operationId: someMethod
+      responses:
+        "200":
+          description: OK
+  /someMethod/{id}:
+    post:
+      operationId: someMethodId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK

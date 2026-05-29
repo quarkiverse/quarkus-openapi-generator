@@ -1,0 +1,44 @@
+
+When an OpenAPI specification defines a path with a trailing slash (e.g., `/someMethod/`) and the same API class groups multiple paths (e.g., `/someMethod/` and `/someMethod/{id}`), the generator extracts a common path (`/someMethod`) for the class-level `@Path` annotation.
+This causes the trailing slash to be lost on the base method, which can lead to `404` errors when the server or an API gateway requires the trailing slash to match the route.
+
+To preserve the trailing slash, the generator automatically adds a method-level `@Path("/")` annotation on operations whose original path in the spec ended with a trailing slash and that share a class with other sub-path operations.
+
+Given the following OpenAPI spec:
+
+[source,yaml]
+----
+paths:
+  /someMethod/:
+    post:
+      operationId: someMethod
+  /someMethod/{id}:
+    post:
+      operationId: someMethodId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+----
+
+The generated interface will be:
+
+[source,java]
+----
+@Path("/someMethod")
+@RegisterRestClient(configKey="my_spec_yaml")
+public interface DefaultApi {
+
+    @POST
+    @Path("/")
+    public Response someMethod();
+
+    @POST
+    @Path("/{id}")
+    public Response someMethodId(@PathParam("id") String id);
+}
+----
+
+If the path in the spec does **not** end with a trailing slash, no extra `@Path` annotation is generated on the base method.

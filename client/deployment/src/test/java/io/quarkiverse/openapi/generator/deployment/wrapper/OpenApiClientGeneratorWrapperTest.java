@@ -1046,6 +1046,72 @@ public class OpenApiClientGeneratorWrapperTest {
                 .contains("AnAnnotation");
     }
 
+    @Test
+    void verifyTrailingSlashPathAnnotation() throws URISyntaxException, FileNotFoundException {
+        OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("trailing-slash-path.yaml");
+        final List<File> generatedFiles = generatorWrapper.generate("org.trailingSlash");
+
+        assertNotNull(generatedFiles);
+        assertFalse(generatedFiles.isEmpty());
+
+        Optional<File> apiFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+        assertThat(apiFile).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(apiFile.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> someMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("someMethod"))
+                .findAny();
+        assertThat(someMethod).isPresent();
+        assertThat(someMethod.orElseThrow().getAnnotationByName("Path")).isPresent();
+        assertThat(someMethod.orElseThrow().getAnnotationByName("Path").get()
+                .asSingleMemberAnnotationExpr().getMemberValue().asStringLiteralExpr().getValue())
+                .isEqualTo("/");
+
+        Optional<MethodDeclaration> someMethodId = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("someMethodId"))
+                .findAny();
+        assertThat(someMethodId).isPresent();
+        assertThat(someMethodId.orElseThrow().getAnnotationByName("Path")).isPresent();
+        assertThat(someMethodId.orElseThrow().getAnnotationByName("Path").get()
+                .asSingleMemberAnnotationExpr().getMemberValue().asStringLiteralExpr().getValue())
+                .isEqualTo("/{id}");
+    }
+
+    @Test
+    void verifyNoTrailingSlashDoesNotGeneratePathAnnotation() throws URISyntaxException, FileNotFoundException {
+        List<File> generatedFiles = createGeneratorWrapper("no-trailing-slash-path.yaml")
+                .generate("org.noTrailingSlash");
+
+        Optional<File> apiFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java"))
+                .findAny();
+        assertThat(apiFile).isPresent();
+
+        CompilationUnit compilationUnit = StaticJavaParser.parse(apiFile.orElseThrow());
+        List<MethodDeclaration> methodDeclarations = compilationUnit.findAll(MethodDeclaration.class);
+        assertThat(methodDeclarations).isNotEmpty();
+
+        Optional<MethodDeclaration> someMethod = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("someMethod"))
+                .findAny();
+        assertThat(someMethod).isPresent();
+        assertThat(someMethod.orElseThrow().getAnnotationByName("Path")).isEmpty();
+
+        Optional<MethodDeclaration> someMethodId = methodDeclarations.stream()
+                .filter(m -> m.getNameAsString().equals("someMethodId"))
+                .findAny();
+        assertThat(someMethodId).isPresent();
+        assertThat(someMethodId.orElseThrow().getAnnotationByName("Path")).isPresent();
+        assertThat(someMethodId.orElseThrow().getAnnotationByName("Path").get()
+                .asSingleMemberAnnotationExpr().getMemberValue().asStringLiteralExpr().getValue())
+                .isEqualTo("/{id}");
+    }
+
     private List<File> generateRestClientFiles() throws URISyntaxException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("simple-openapi.json").withCircuitBreakerConfig(
                 Map.of("org.openapitools.client.api.DefaultApi", List.of("opThatDoesNotExist", "byeMethodGet")));

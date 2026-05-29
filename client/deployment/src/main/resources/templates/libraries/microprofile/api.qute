@@ -55,6 +55,8 @@ public interface {classname} {
     @jakarta.ws.rs.{op.httpMethod}
     {#if op.subresourceOperation || op.path eq '/'}
     @jakarta.ws.rs.Path("{op.path}")
+    {#else if op.vendorExtensions.x-has-trailing-slash.or(false)}
+    @jakarta.ws.rs.Path("/")
     {/if}
     @jakarta.ws.rs.Consumes(\{"{consume.mediaType}"\})
     {#if op.hasProduces}
@@ -217,6 +219,8 @@ public interface {classname} {
     @jakarta.ws.rs.{op.httpMethod}
     {#if op.subresourceOperation || op.path eq '/'}
     @jakarta.ws.rs.Path("{op.path}")
+    {#else if op.vendorExtensions.x-has-trailing-slash.or(false)}
+    @jakarta.ws.rs.Path("/")
     {/if}
     {#if op.hasConsumes}
     @jakarta.ws.rs.Consumes(\{{#for consume in op.consumes}"{consume.mediaType}"{#if consume_hasNext}, {/if}{/for}\})
