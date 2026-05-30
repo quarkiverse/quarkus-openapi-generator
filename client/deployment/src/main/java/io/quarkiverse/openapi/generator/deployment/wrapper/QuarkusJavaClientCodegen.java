@@ -23,6 +23,7 @@ import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.model.ModelMap;
 import org.openapitools.codegen.model.OperationMap;
 import org.openapitools.codegen.model.OperationsMap;
+import org.openapitools.codegen.utils.ModelUtils;
 import org.openapitools.codegen.utils.ProcessUtils;
 import org.openapitools.codegen.utils.URLPathUtils;
 import org.slf4j.Logger;
@@ -184,6 +185,15 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             }
         }
         return super.fromProperty(name, p, required, schemaIsFromAdditionalProperties);
+    }
+
+    @Override
+    public String toDefaultValue(CodegenProperty property, Schema schema) {
+        Schema referencedSchema = ModelUtils.getReferencedSchema(this.openAPI, schema);
+        if (ModelUtils.isObjectSchema(referencedSchema) && referencedSchema.getDefault() != null) {
+            return null;
+        }
+        return super.toDefaultValue(property, schema);
     }
 
     private void warnIfDuplicated(CodegenModel m) {

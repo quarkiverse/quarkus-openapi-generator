@@ -3,7 +3,11 @@ package io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools;
 import static io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools.QuarkusJavaServerCodegenConfigurator.USE_BEAN_VALIDATION;
 import static io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools.QuarkusJavaServerCodegenConfigurator.USE_REST_RESPONSE;
 
+import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.languages.JavaClientCodegen;
+import org.openapitools.codegen.utils.ModelUtils;
+
+import io.swagger.v3.oas.models.media.Schema;
 
 public class QuarkusJavaServerCodegen extends JavaClientCodegen {
 
@@ -60,4 +64,23 @@ public class QuarkusJavaServerCodegen extends JavaClientCodegen {
         this.modelTemplateFiles.put("model.qute", ".java");
     }
 
+    @Override
+    public CodegenProperty fromProperty(String name, Schema p, boolean required, boolean schemaIsFromAdditionalProperties) {
+        if (p != null && p.getType() != null) {
+            if ("object".equals(p.getType()) && p.getDefault() != null && p.getAdditionalProperties() == null
+                    && p.getItems() == null) {
+                p.setAdditionalProperties(true);
+            }
+        }
+        return super.fromProperty(name, p, required, schemaIsFromAdditionalProperties);
+    }
+
+    @Override
+    public String toDefaultValue(CodegenProperty property, Schema schema) {
+        Schema referencedSchema = ModelUtils.getReferencedSchema(this.openAPI, schema);
+        if (ModelUtils.isObjectSchema(referencedSchema) && referencedSchema.getDefault() != null) {
+            return null;
+        }
+        return super.toDefaultValue(property, schema);
+    }
 }

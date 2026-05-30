@@ -1,0 +1,166 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API with object schema default value via $ref",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/convert": {
+      "post": {
+        "summary": "Convert Document",
+        "operationId": "convertDocument",
+        "tags": ["Conversion"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConversionRequest": {
+        "type": "object",
+        "title": "ConversionRequest",
+        "properties": {
+          "options": {
+            "$ref": "#/components/schemas/ConvertDocumentsOptions"
+          }
+        }
+      },
+      "ConvertDocumentsOptions": {
+        "type": "object",
+        "title": "ConvertDocumentsOptions",
+        "description": "Options for document conversion.",
+        "default": {
+          "from_formats": ["docx", "pptx", "html", "image", "pdf", "asciidoc", "md"],
+          "to_formats": ["md"],
+          "image_export_mode": "embedded",
+          "do_ocr": true,
+          "force_ocr": false,
+          "ocr_engine": "easyocr",
+          "pdf_backend": "dlparse_v4",
+          "table_mode": "accurate",
+          "pipeline": "standard",
+          "document_timeout": 604800,
+          "abort_on_error": false,
+          "return_as_file": false,
+          "do_table_structure": true,
+          "include_images": true,
+          "images_scale": 2,
+          "do_code_enrichment": false,
+          "do_formula_enrichment": false,
+          "do_picture_classification": false,
+          "do_picture_description": false,
+          "picture_description_area_threshold": 0.05
+        },
+        "properties": {
+          "from_formats": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Input format(s) to convert from."
+          },
+          "to_formats": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Output format(s) to convert to."
+          },
+          "image_export_mode": {
+            "type": "string",
+            "description": "Image export mode."
+          },
+          "do_ocr": {
+            "type": "boolean",
+            "description": "If enabled, the bitmap content will be processed using OCR."
+          },
+          "force_ocr": {
+            "type": "boolean",
+            "description": "If enabled, replace existing text with OCR-generated text."
+          },
+          "ocr_engine": {
+            "type": "string",
+            "description": "The OCR engine to use."
+          },
+          "pdf_backend": {
+            "type": "string",
+            "description": "The PDF backend to use."
+          },
+          "table_mode": {
+            "type": "string",
+            "description": "Mode to use for table structure."
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "Choose the pipeline to process PDF or image files."
+          },
+          "document_timeout": {
+            "type": "integer",
+            "description": "The timeout for processing each document, in seconds."
+          },
+          "abort_on_error": {
+            "type": "boolean",
+            "description": "Abort on error if enabled."
+          },
+          "return_as_file": {
+            "type": "boolean",
+            "description": "Return the output as a zip file."
+          },
+          "do_table_structure": {
+            "type": "boolean",
+            "description": "If enabled, the table structure will be extracted."
+          },
+          "include_images": {
+            "type": "boolean",
+            "description": "If enabled, images will be extracted from the document."
+          },
+          "images_scale": {
+            "type": "number",
+            "description": "Scale factor for images."
+          },
+          "do_code_enrichment": {
+            "type": "boolean",
+            "description": "If enabled, perform OCR code enrichment."
+          },
+          "do_formula_enrichment": {
+            "type": "boolean",
+            "description": "If enabled, perform formula OCR, return LaTeX code."
+          },
+          "do_picture_classification": {
+            "type": "boolean",
+            "description": "If enabled, classify pictures in documents."
+          },
+          "do_picture_description": {
+            "type": "boolean",
+            "description": "If enabled, describe pictures in documents."
+          },
+          "picture_description_area_threshold": {
+            "type": "number",
+            "description": "Minimum percentage of the area for a picture to be processed."
+          }
+        }
+      }
+    }
+  }
+}
