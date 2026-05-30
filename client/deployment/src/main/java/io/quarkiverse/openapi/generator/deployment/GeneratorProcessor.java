@@ -97,13 +97,24 @@ public class GeneratorProcessor {
     }
 
     @BuildStep
-    void registerOidcClientBean(Capabilities capabilities, BuildProducer<AdditionalBeanBuildItem> producer) {
+    void registerOidcClientBean(Capabilities capabilities, CombinedIndexBuildItem beanArchiveBuildItem,
+            BuildProducer<AdditionalBeanBuildItem> producer) {
         if (!isClassPresentAtRuntime(ABSTRACT_TOKEN_PRODUCER)) {
             LOGGER.debug("{} class not found in runtime, skipping OidcClientRequestFilterDelegate bean generation",
                     ABSTRACT_TOKEN_PRODUCER);
             return;
         }
-        LOGGER.debug("{} class found in runtime, producing OidcClientRequestFilterDelegate bean generation",
+
+        Collection<AnnotationInstance> authenticationMarkers = beanArchiveBuildItem.getIndex()
+                .getAnnotationsWithRepeatable(OAUTH_AUTHENTICATION_MARKER, beanArchiveBuildItem.getIndex());
+
+        if (authenticationMarkers.isEmpty()) {
+            LOGGER.debug("No OAuth2 authentication markers found, skipping OidcClientRequestFilterDelegate bean generation");
+            return;
+        }
+
+        LOGGER.debug(
+                "{} class found in runtime and OAuth2 authentication markers found, producing OidcClientRequestFilterDelegate bean generation",
                 ABSTRACT_TOKEN_PRODUCER);
 
         if (capabilities.isPresent(Capability.REST_CLIENT_REACTIVE)) {
