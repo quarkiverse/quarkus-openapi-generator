@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ApicurioOpenApiServerCodegenTest {
@@ -28,6 +29,22 @@ class ApicurioOpenApiServerCodegenTest {
 
         assertThat(json).contains("\"CommonPet\"");
         assertThat(json).doesNotContain("common-spec.yaml");
+    }
+
+    @Test
+    @DisplayName("Should handle self-referencing schema without StackOverflowError")
+    void should_handle_self_referencing_schema() throws Exception {
+        Path specPath = findSpec(
+                "io/quarkiverse/openapi/server/generator/deployment/codegen/apicurio/self-referencing-schema.json");
+
+        ApicurioOpenApiServerCodegen codegen = new ApicurioOpenApiServerCodegen();
+        Method method = ApicurioOpenApiServerCodegen.class.getDeclaredMethod("resolveToJSON", Path.class);
+        method.setAccessible(true);
+
+        File jsonFile = (File) method.invoke(codegen, specPath);
+        String json = Files.readString(jsonFile.toPath());
+
+        assertThat(json).contains("\"Something\"");
     }
 
     private Path findSpec(String resourcePath) {
