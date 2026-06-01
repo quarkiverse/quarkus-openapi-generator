@@ -46,6 +46,16 @@
         <dependency>
             <groupId>io.apicurio</groupId>
             <artifactId>apicurio-codegen</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.codemodel</groupId>
+                    <artifactId>codemodel</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>codemodel</artifactId>
         </dependency>
 
         <dependency>
