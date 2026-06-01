@@ -100,4 +100,16 @@ public interface GlobalCodegenConfig extends CommonItemConfig {
     @WithName("skip-if-unchanged")
     @WithDefault("false")
     Optional<Boolean> skipIfUnchanged();
+
+    /**
+     * Whether the Jackson dependency is provided by the runtime environment (e.g., a Keycloak extension or another
+     * Quarkus runtime) rather than being declared as a direct dependency of the project.
+     * When set to {@code true}, the extension will skip the validation that checks for the presence of
+     * {@code quarkus-rest-client-reactive-jackson} or {@code quarkus-rest-client-jackson} capabilities.
+     * This is useful when building Quarkus extensions where the required Jackson dependencies are already
+     * provided by the hosting runtime, avoiding dependency conflicts.
+     */
+    @WithName("provided-jackson-dependency")
+    @WithDefault("false")
+    Optional<Boolean> providedJacksonDependency();
 }
