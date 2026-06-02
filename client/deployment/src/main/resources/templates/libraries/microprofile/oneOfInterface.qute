@@ -1,0 +1,8 @@
+{@org.openapitools.codegen.CodegenModel m}
+@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.DEDUCTION)
+@com.fasterxml.jackson.annotation.JsonSubTypes({
+{#for sub in m.interfaces}
+    @com.fasterxml.jackson.annotation.JsonSubTypes.Type({sub}.class),
+{/for}})
+public interface {m.classname} {
+}

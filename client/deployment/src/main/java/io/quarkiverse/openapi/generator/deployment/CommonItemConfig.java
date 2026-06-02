@@ -240,4 +240,11 @@ public interface CommonItemConfig {
      */
     @WithName("preferred-content-type")
     Optional<String> preferredContentType();
+
+    /**
+     * Generate interfaces for {@code oneOf} schemas and have their members implement those interfaces,
+     * instead of generating a class with all the fields of the members
+     */
+    @WithName("use-one-of-interfaces")
+    Optional<Boolean> useOneOfInterfaces();
 }

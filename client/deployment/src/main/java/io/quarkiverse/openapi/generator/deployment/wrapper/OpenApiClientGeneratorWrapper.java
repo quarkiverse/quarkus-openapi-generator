@@ -8,6 +8,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.requireNonNull;
 import static org.openapitools.codegen.languages.AbstractJavaCodegen.ADDITIONAL_MODEL_TYPE_ANNOTATIONS;
+import static org.openapitools.codegen.languages.AbstractJavaCodegen.USE_ONE_OF_INTERFACES;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -232,6 +233,11 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withUseOneOfInterfaces(final Boolean useOneOfInterfaces) {
+        this.configurator.addAdditionalProperty(USE_ONE_OF_INTERFACES, useOneOfInterfaces);
         return this;
     }
 

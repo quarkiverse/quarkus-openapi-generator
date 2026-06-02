@@ -582,6 +582,27 @@ endif::add-copy-button-to-env-var[]
 |string
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-one-of-interfaces]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-use-one-of-interfaces[`+++quarkus.openapi-generator.codegen.use-one-of-interfaces+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.use-one-of-interfaces+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Generate interfaces for `oneOf` schemas and have their members implement those interfaces, instead of generating a class with all the fields of the members
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_USE_ONE_OF_INTERFACES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_USE_ONE_OF_INTERFACES+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`+++quarkus.openapi-generator.codegen.verbose+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.verbose+++[]
@@ -1431,6 +1452,27 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__PRE
 endif::add-copy-button-to-env-var[]
 --
 |string
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-one-of-interfaces]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-use-one-of-interfaces[`+++quarkus.openapi-generator.codegen.spec."spec-item".use-one-of-interfaces+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".use-one-of-interfaces+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Generate interfaces for `oneOf` schemas and have their members implement those interfaces, instead of generating a class with all the fields of the members
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE_ONE_OF_INTERFACES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__USE_ONE_OF_INTERFACES+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-base-package[`+++quarkus.openapi-generator.codegen.spec."spec-item".base-package+++`]##
