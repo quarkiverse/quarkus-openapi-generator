@@ -41,26 +41,17 @@ Most of the tests are the same for both RESTEasy implementations, but a few of t
 
 Maven automatically formats code and organizes imports when you run `mvn verify`. So, we recommend you do that before sending your PR. Otherwise, PR checks will fail.
 
-## Quarkus 3 and Quarkus 2 support
 
-We no longer offer support for Quarkus 2. This extension used to support versions 3 and 2 of Quarkus and the code base was different for each Quarkus version. Therefore, we have the `main` branch supporting Quarkus 3, and the `quarkus2` archived branch supporting Quarkus 2. Note that no updates are planned for Quarkus 2 and features and bug fixes are not backported to the `quarkus2` branch.
+## Quarkus 3 LTS support
+
+We align the `main` branch with the latest Quarkus LTS stream (currently 3.33.x). All features, fixes, and updates target `main`, which provides long-term support aligned with Quarkus' LTS releases.
+
+The `main-lts` branch is archived. No further updates or releases will be made from it. If you're on an older LTS release, we recommend migrating to `main` to get the latest LTS-aligned updates.
+
+The `quarkus2` branch is also archived and no longer maintained.
+
 
 ## For the maintainers
-
-### Backporting between branches
-
-[We have a GitHub action for backporting PRs between different branches](.github/workflows/pr-backporting.yml). To use that, you must set a label named `backport-<destination_branch_name>`.
-
-Let's say you want to backport a PR from the `main` branch to the `quarkus2` branch. You would have to add a label named `backport-quarkus2` to the original PR. When that PR is merged, the GitHub actions bot will send a copy of the PR to the `quarkus2` branch.
-
-See an example:
-
-* [Original PR](https://github.com/quarkiverse/quarkus-openapi-generator/pull/439)
-* [Backport PR](https://github.com/quarkiverse/quarkus-openapi-generator/pull/445)
-
-#### Known limitation
-
-GitHub does not initiate checks for pull requests opened by the GitHub Actions bot. Therefore, [when we backport a PR to another branch the PR checks are not run automatically](https://github.com/quarkiverse/quarkus-openapi-generator/issues/450).
 
 ### Backlog
 

@@ -115,13 +115,7 @@ lines = [
 for row in rows:
     lines.append(f"| {row['version']} | {row['type']} | {row['quarkus']} |")
 
-lines.extend(
-    [
-        "",
-        "The matrix above is maintained via workflow dispatch using the informed project version and Quarkus version.",
-        end_marker,
-    ]
-)
+lines.append(end_marker)
 
 replacement = "\n".join(lines)
 updated_content = content[:start] + replacement + content[end:]
