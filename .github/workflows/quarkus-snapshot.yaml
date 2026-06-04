@@ -17,5 +17,5 @@ jobs:
     uses: quarkiverse/.github/.github/workflows/quarkus-ecosystem-ci.yml@main
     secrets: inherit
     with:
-      ecosystem_ci_repo_path: quarkus-openapi-generator
+      ecosystem_ci_repo_path: quarkiverse-openapi-generator
       java_version: 17
