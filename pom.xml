@@ -42,6 +42,7 @@
     <version.io.swagger.parser>2.1.43</version.io.swagger.parser>
     <version.org.openapitools>7.22.0</version.org.openapitools>
     <version.com.github.javaparser>3.28.2</version.com.github.javaparser>
+    <version.org.glassfish.jaxb.codemodel>4.0.7</version.org.glassfish.jaxb.codemodel>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -71,6 +72,17 @@
         <groupId>io.apicurio</groupId>
         <artifactId>apicurio-codegen</artifactId>
         <version>${apicurio.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.sun.codemodel</groupId>
+            <artifactId>codemodel</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>codemodel</artifactId>
+        <version>${version.org.glassfish.jaxb.codemodel}</version>
       </dependency>
       <dependency>
         <groupId>org.wiremock</groupId>
