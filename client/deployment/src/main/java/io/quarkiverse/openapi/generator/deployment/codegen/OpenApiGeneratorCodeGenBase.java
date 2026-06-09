@@ -13,6 +13,7 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_SUFFIX;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.PROVIDED_JACKSON_DEPENDENCY;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_COUNT;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.REMOVE_OPERATION_ID_PREFIX_DELIMITER;
@@ -127,13 +128,15 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
             final boolean isRestEasyReactive = isRestEasyReactive(context);
             boolean isHibernateValidatorPresent = isHibernateValidatorPresent(context);
 
-            if (isRestEasyReactive) {
-                if (!isJacksonReactiveClientPresent(context)) {
-                    throw new CodeGenException(
-                            "You need to add io.quarkus:quarkus-rest-client-reactive-jackson to your dependencies.");
+            if (!isProvidedJacksonDependency(context)) {
+                if (isRestEasyReactive) {
+                    if (!isJacksonReactiveClientPresent(context)) {
+                        throw new CodeGenException(
+                                "You need to add io.quarkus:quarkus-rest-client-reactive-jackson to your dependencies.");
+                    }
+                } else if (!isJacksonClassicClientPresent(context)) {
+                    throw new CodeGenException("You need to add io.quarkus:quarkus-rest-client-jackson to your dependencies.");
                 }
-            } else if (!isJacksonClassicClientPresent(context)) {
-                throw new CodeGenException("You need to add io.quarkus:quarkus-rest-client-jackson to your dependencies.");
             }
 
             try (Stream<Path> openApiFilesPaths = Files.walk(openApiDir)) {
@@ -192,6 +195,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     protected static boolean isHibernateValidatorPresent(CodeGenContext context) {
         return isExtensionCapabilityPresent(context, Capability.HIBERNATE_VALIDATOR);
+    }
+
+    private static boolean isProvidedJacksonDependency(CodeGenContext context) {
+        return context.config()
+                .getOptionalValue(getGlobalConfigName(PROVIDED_JACKSON_DEPENDENCY), Boolean.class)
+                .orElse(false);
     }
 
     private void validateUserConfiguration(CodeGenContext context) throws CodeGenException {

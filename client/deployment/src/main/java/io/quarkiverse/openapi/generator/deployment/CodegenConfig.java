@@ -46,6 +46,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         VALIDATE_SPEC("validateSpec"),
         DEFAULT_SECURITY_SCHEME("default-security-scheme"),
         SKIP_IF_UNCHANGED("skip-if-unchanged"),
+        PROVIDED_JACKSON_DEPENDENCY("provided-jackson-dependency"),
 
         //spec configs only
         BASE_PACKAGE("base-package"),

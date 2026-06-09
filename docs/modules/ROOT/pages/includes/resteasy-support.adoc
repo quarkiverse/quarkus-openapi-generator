@@ -71,3 +71,17 @@ When using RESTEasy Reactive:
 
 * The client must not declare multiple MIME-TYPES with `@Consumes`
 * You might need to implement a `ParamConverter` for each complex type
+
+== Using a provided Jackson dependency
+
+In some scenarios, such as building Quarkus extensions (e.g., Keycloak extensions), the Jackson dependency is already provided by the hosting runtime.
+In these cases, declaring `quarkus-rest-client-reactive-jackson` or `quarkus-rest-client-jackson` as a direct dependency can result in conflicts.
+
+You can set the `provided-jackson-dependency` configuration property to `true` to skip the validation that checks for the presence of the Jackson capability:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.provided-jackson-dependency=true
+----
+
+WARNING: When using this option, you are responsible for ensuring that the required Jackson dependencies are available at runtime.
