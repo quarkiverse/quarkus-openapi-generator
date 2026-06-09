@@ -46,6 +46,7 @@ The project keeps normal releases and `-lts` releases aligned with specific Quar
 
 | Project version | Type | Quarkus version |
 |---|---|---|
+| 2.19.0 | Normal | 3.33.2 |
 | 2.18.0 | Normal | 3.35.3 |
 | 2.17.0-lts | LTS | 3.33.1 |
 | 2.17.0 | Normal | 3.34.5 |
@@ -59,10 +60,6 @@ The project keeps normal releases and `-lts` releases aligned with specific Quar
 | 2.13.0 | Normal | 3.28.4 |
 | 2.12.1-lts | LTS | 3.20.2.2 |
 | 2.12.1 | Normal | 3.26.1 |
-
-The matrix above is maintained via workflow dispatch using the informed project version and Quarkus version.
-
-> **Note on LTS Alignment:** As of version 2.17.0, the `main` branch aligns with the Quarkus LTS stream (currently 3.33.x). The `main-lts` branch is archived and no longer maintained. For LTS support, use the `main` branch.
 <!-- VERSION-MATRIX:END -->
 
 ## Contributors ✨
