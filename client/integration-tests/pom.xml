@@ -52,6 +52,7 @@
     <module>without-oidc</module>
     <module>serializable-model</module>
     <module>equals-hashcode</module>
+    <module>use-one-of-interfaces</module>
     <module>override-credential-provider</module>
     <module>jsonproperty-getter-and-setter</module>
     <module>suppress-warnings</module>

@@ -95,7 +95,8 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         METHOD_PER_MEDIA_TYPE("method-per-media-type"),
         PREFERRED_CONTENT_TYPE("preferred-content-type"),
         NAME_MAPPINGS("name-mappings"),
-        RESTEASY_REACTIVE_CLIENT_FORM("resteasy-reactive-client-form");
+        RESTEASY_REACTIVE_CLIENT_FORM("resteasy-reactive-client-form"),
+        USE_ONE_OF_INTERFACES("use-one-of-interfaces");
 
         private final String name;
 

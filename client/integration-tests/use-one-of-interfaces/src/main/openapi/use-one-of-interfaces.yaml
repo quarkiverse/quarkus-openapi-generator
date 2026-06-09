@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: NoUseOneOfInterfaces - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /things/{id}:
+    get:
+      operationId: getThingById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Holder"
+components:
+  schemas:
+    SomeThing:
+      type: object
+      properties:
+        some:
+          type: string
+    OtherThing:
+      type: object
+      properties:
+        other:
+          type: string
+    Holder:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        thing:
+          oneOf:
+            - $ref: '#/components/schemas/SomeThing'
+            - $ref: '#/components/schemas/OtherThing'
+

@@ -381,6 +381,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.NORMALIZER, String.class, String.class)
                 .ifPresent(generator::withOpenApiNormalizer);
 
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_ONE_OF_INTERFACES, Boolean.class)
+                .ifPresent(generator::withUseOneOfInterfaces);
+
         Boolean additionalPropertiesAsAttribute = getValues(smallRyeConfig, openApiFilePath,
                 CodegenConfig.ConfigName.ADDITIONAL_PROPERTIES_AS_ATTRIBUTE, Boolean.class)
                 .orElse(Boolean.FALSE);
