@@ -1,15 +1,11 @@
 package io.quarkiverse.openapi.server.generator.deployment.codegen.openapitools;
 
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.APICURIO;
-import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_DIR;
-import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.DEFAULT_PACKAGE;
 import static io.quarkiverse.openapi.server.generator.deployment.ServerCodegenConfig.OPENAPITOOLS;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 import org.eclipse.microprofile.config.Config;
 import org.jboss.logging.Logger;
@@ -17,6 +13,9 @@ import org.jboss.logging.Logger;
 import io.quarkiverse.openapi.generator.common.OpenApiGeneratorOptions;
 import io.quarkiverse.openapi.generator.common.SkipGenerationSupport;
 import io.quarkiverse.openapi.server.generator.deployment.CodegenConfig;
+import io.quarkiverse.openapi.server.generator.deployment.codegen.ServerCodegenConfigResolver;
+import io.quarkiverse.openapi.server.generator.deployment.codegen.ServerCodegenSpec;
+import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.Capability;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
@@ -25,6 +24,7 @@ import io.smallrye.config.common.utils.StringUtil;
 public class OpenAPIToolsServerCodegen implements CodeGenProvider {
 
     private static final Logger LOGGER = Logger.getLogger(OpenAPIToolsServerCodegen.class);
+    private final ServerCodegenConfigResolver configResolver = new ServerCodegenConfigResolver();
 
     @Override
     public String providerId() {
@@ -37,38 +37,34 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
     }
 
     @Override
-    public boolean trigger(CodeGenContext context) {
-
-        final Path inputDir = Path.of(getInputBaseDirRelativeToModule(context.inputDir(), context.config())
-                .orElse(context.inputDir().resolve(DEFAULT_DIR).toString()));
-
+    public boolean trigger(CodeGenContext context) throws CodeGenException {
         Path outputDir = context.outDir();
-        String specPropertyName = getSpecPropertyName(context);
-        File openAPIFile = new File(inputDir.toFile(), specPropertyName);
+        for (ServerCodegenSpec spec : configResolver.resolveSpecs(context.inputDir(), context.config())) {
+            File openAPIFile = spec.specPath().toFile();
 
-        LOGGER.info("Generating server side code for: " + openAPIFile);
+            LOGGER.info("Generating server side code for: " + openAPIFile);
 
-        QuarkusJavaServerCodegenConfigurator configurator = new QuarkusJavaServerCodegenConfigurator()
-                .withBasePackage(basePackage(context))
-                .withGenerateBuilders(generateBuilders(context))
-                .withBeanValidation(beanValidation(context))
-                .withReactive(reactive(context))
-                .withRestResponse(restResponse(context))
-                .withInputBaseDir(openAPIFile.toString())
-                .withOutputDir(
-                        outputDir.toAbsolutePath().toString());
+            QuarkusJavaServerCodegenConfigurator configurator = new QuarkusJavaServerCodegenConfigurator()
+                    .withBasePackage(spec.basePackage())
+                    .withGenerateBuilders(spec.builders())
+                    .withBeanValidation(beanValidation(context, spec))
+                    .withReactive(spec.reactive())
+                    .withRestResponse(restResponse(context))
+                    .withInputBaseDir(openAPIFile.toString())
+                    .withOutputDir(outputDir.toAbsolutePath().toString());
 
-        OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
-                getClass(),
-                CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
-                context.config(),
-                openAPIFile.toPath(),
-                StringUtil.replaceNonAlphanumericByUnderscores(openAPIFile.getName()),
-                outputDir.toAbsolutePath(),
-                null,
-                reactive(context));
+            OpenApiGeneratorOptions options = new OpenApiGeneratorOptions(
+                    getClass(),
+                    CodegenConfig.CODEGEN_TIME_CONFIG_PREFIX,
+                    context.config(),
+                    openAPIFile.toPath(),
+                    StringUtil.replaceNonAlphanumericByUnderscores(openAPIFile.getName()),
+                    outputDir.toAbsolutePath(),
+                    null,
+                    spec.reactive());
 
-        generate(configurator, options);
+            generate(configurator, options);
+        }
 
         return true;
     }
@@ -83,7 +79,7 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
 
         String serverCodegen = config.getOptionalValue(CodegenConfig.getServerUse(), String.class)
                 .orElse(APICURIO);
-        return serverCodegen.equalsIgnoreCase(OPENAPITOOLS);
+        return serverCodegen.equalsIgnoreCase(OPENAPITOOLS) && configResolver.hasConfiguration(sourceDir, config);
     }
 
     protected void generate(QuarkusJavaServerCodegenConfigurator configurator, OpenApiGeneratorOptions options) {
@@ -115,58 +111,23 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
         }
     }
 
-    private Optional<String> getInputBaseDirRelativeToModule(final Path sourceDir, final Config config) {
-        return config.getOptionalValue(CodegenConfig.getInputBaseDirPropertyName(), String.class)
-                .map(resolveInputBaseDir(sourceDir))
-                .or(() -> config.getOptionalValue(CodegenConfig.getServerInputBaseDirPropertyName(), String.class)
-                        .map(resolveInputBaseDir(sourceDir)));
-    }
-
-    private static Function<String, String> resolveInputBaseDir(Path sourceDir) {
-        return baseDir -> {
-            int srcIndex = sourceDir.toString().lastIndexOf("src");
-            return srcIndex < 0 ? null : Path.of(sourceDir.toString().substring(0, srcIndex), baseDir).toString();
-        };
-    }
-
-    private boolean beanValidation(CodeGenContext context) {
-        Boolean beanValidation = context.config().getOptionalValue(CodegenConfig.getServerUseBeanValidation(), Boolean.class)
-                .orElse(false);
-
-        boolean hibernateValidatorCapabilityIsPresent = context.applicationModel().getExtensionCapabilities().stream()
-                .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
-                .anyMatch(Capability.HIBERNATE_VALIDATOR::equals);
-
-        if (beanValidation && !hibernateValidatorCapabilityIsPresent) {
-            throw new IllegalStateException(
-                    "The extension io.quarkus:quarkus-hibernate-validator is required when the property " +
-                            "quarkus.openapi.generator.server.bean-validation is set to true.");
+    private boolean beanValidation(CodeGenContext context, ServerCodegenSpec spec) {
+        if (!spec.beanValidation()) {
+            return false;
         }
 
-        return beanValidation;
-    }
+        boolean hibernateValidatorCapabilityIsPresent = context.applicationModel() != null
+                && context.applicationModel().getExtensionCapabilities().stream()
+                        .flatMap(extensionCapability -> extensionCapability.getProvidesCapabilities().stream())
+                        .anyMatch(Capability.HIBERNATE_VALIDATOR::equals);
 
-    private boolean generateBuilders(CodeGenContext context) {
-        return context.config().getOptionalValue(CodegenConfig.getServerGenerateBuilders(), Boolean.class)
-                .orElse(true);
-    }
+        if (!hibernateValidatorCapabilityIsPresent) {
+            throw new IllegalStateException(
+                    "The extension io.quarkus:quarkus-hibernate-validator is required when the property "
+                            + "quarkus.openapi.generator.server.bean-validation is set to true.");
+        }
 
-    private String getSpecPropertyName(CodeGenContext context) {
-        return context.config()
-                .getOptionalValue(CodegenConfig.getSpecPropertyName(), String.class)
-                .orElse(context.config().getOptionalValue(CodegenConfig.getServerSpecPropertyName(), String.class).orElseThrow(
-                        () -> new IllegalStateException(
-                                "You need to provide the OpenAPI file through 'quarkus.openapi.generator.server.spec' property.")));
-    }
-
-    private String basePackage(CodeGenContext context) {
-        return context.config().getOptionalValue(CodegenConfig.getServerBasePackagePropertyName(), String.class)
-                .orElse(DEFAULT_PACKAGE);
-    }
-
-    private boolean reactive(CodeGenContext context) {
-        return context.config().getOptionalValue(CodegenConfig.getServerCodegenReactive(), Boolean.class)
-                .orElse(false);
+        return true;
     }
 
     private boolean restResponse(CodeGenContext context) {

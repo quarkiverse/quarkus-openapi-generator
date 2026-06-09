@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: Simple Animal API
+  version: 1.0.0
+paths:
+  /animals:
+    get:
+      operationId: listAnimals
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Animal"
+components:
+  schemas:
+    Animal:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string

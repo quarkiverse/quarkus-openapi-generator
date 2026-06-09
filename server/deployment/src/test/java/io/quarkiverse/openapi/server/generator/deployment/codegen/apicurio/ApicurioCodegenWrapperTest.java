@@ -13,10 +13,10 @@ import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import io.quarkiverse.openapi.server.generator.deployment.codegen.ServerCodegenSpec;
 
 class ApicurioCodegenWrapperTest {
 
@@ -62,8 +62,8 @@ class ApicurioCodegenWrapperTest {
         Method unzipMethod = ApicurioCodegenWrapper.class.getDeclaredMethod("unzip", File.class, File.class);
         unzipMethod.setAccessible(true);
 
-        Config config = ConfigProviderResolver.instance().getBuilder().build();
-        ApicurioCodegenWrapper wrapper = new ApicurioCodegenWrapper(config, outputDir);
+        ApicurioCodegenWrapper wrapper = new ApicurioCodegenWrapper(outputDir,
+                new ServerCodegenSpec("test", outputDir.toPath(), outputDir.toPath(), "org.acme", false, false, false));
 
         try {
             unzipMethod.invoke(wrapper, zipFile, outputDir);

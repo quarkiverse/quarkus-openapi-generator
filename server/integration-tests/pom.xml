@@ -13,15 +13,18 @@
     <artifactId>quarkus-openapi-generator-server-integration-tests-parent</artifactId>
     <name>Quarkus - OpenAPI Generator - Server - Integration Tests</name>
 
-    <modules>
-        <module>reactive</module>
-        <module>resteasy</module>
-        <module>codestarts</module>
-        <module>builders</module>
-        <module>openapitools</module>
-        <module>rest-response</module>
-        <module>rest-response-reactive</module>
-        <module>rest-response-vendor-extension</module>
-    </modules>
+  <modules>
+    <module>reactive</module>
+    <module>resteasy</module>
+    <module>codestarts</module>
+    <module>builders</module>
+    <module>openapitools</module>
+    <module>apicurio</module>
+    <module>apicurio-multispec</module>
+    <module>openapitools-multispec</module>
+    <module>rest-response</module>
+    <module>rest-response-reactive</module>
+    <module>rest-response-vendor-extension</module>
+  </modules>
 
 </project>

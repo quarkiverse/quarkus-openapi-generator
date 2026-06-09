@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: Unconfigured API
+  version: 1.0.0
+paths:
+  /unconfigured:
+    get:
+      operationId: listUnconfigured
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+components:
+  schemas:
+    Item:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
