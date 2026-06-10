@@ -26,7 +26,7 @@ public class AuthenticationRecorder {
         return ctx -> {
             List<AuthProvider> providers = ctx.getInjectedReference(new TypeLiteral<Instance<AuthProvider>>() {
             }, new Literal(openApiSpec)).stream().toList();
-            return new BaseCompositeAuthenticationProvider(providers);
+            return new BaseCompositeAuthenticationProvider(openApiSpec, providers);
         };
     }
 
