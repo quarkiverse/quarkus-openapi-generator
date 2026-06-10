@@ -13,16 +13,19 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-52-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](<https://img.shields.io/github/actions/workflow/status/quarkiverse/quarkus-openapi-generator/build.yml?branch=main&logo=GitHub&style=flat-square>)](https://github.com/quarkiverse/quarkus-openapi-generator/actions?query=workflow%3ABuild)
+[![Quarkus ecosystem CI](https://github.com/quarkiverse/quarkus-openapi-generator/actions/workflows/quarkus-snapshot.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-openapi-generator/actions/workflows/quarkus-snapshot.yaml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.openapi.generator/quarkus-openapi-generator.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/artifact/io.quarkiverse.openapi.generator/quarkus-openapi-generator)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/quarkiverse/quarkus-openapi-generator)
 
-Quarkus' extensions for generation of [Rest Clients](https://quarkus.io/guides/rest-client) and server stubs generation based on the [Apicurio Codegen](https://github.com/Apicurio/apicurio-codegen) capabilities based on OpenAPI specification files.
+Quarkus' extensions for generation of [Rest Clients](https://quarkus.io/guides/rest-client) and [Rest Services](https://quarkus.io/guides/rest) based on OpenAPI specification files.
 
-This client-side extension is based on the [OpenAPI Generator Tool](https://openapi-generator.tech/). Please consider a donation to help them maintain the
-project: https://opencollective.com/openapi_generator/donate
+The client and server extensions are powered by the [OpenAPI Generator Tool](https://openapi-generator.tech/), with the server also supporting [Apitomy](https://github.com/Apitomy/apitomy-codegen). Consider supporting their work with a [donation](https://opencollective.com/openapi_generator/donate).
 
-This repository holds two Quarkus extensions. The one located in the client folder is for REST code generation for client-side only. The extension located in the server folder can be used for server stubs generation.
+
+> [!IMPORTANT]
+> **LTS Alignment Change:** As of version 2.19.0, the `main` branch aligns with the Quarkus LTS stream. The `main-lts` branch is archived and no longer maintained. For LTS support, use the `main` branch.
+
 
 > [!WARNING]
 > This extension, [like Quarkus 3.7](https://quarkus.io/blog/java-17/), requires Java 17. The last version of this extension that supports earlier versions of Java is [2.2.16](https://github.com/quarkiverse/quarkus-openapi-generator/releases/tag/2.2.16).
@@ -39,7 +42,7 @@ You can learn more in [Quarkus OpenAPI Generator Documentation](http://docs.quar
 > [!TIP]
 > If you want to improve the docs, please feel free to contribute editing the docs in [Docs](https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/docs/modules/ROOT). But first, read [this page](CONTRIBUTING.md).
 
-## Version Matrix
+## Version matrix
 
 <!-- VERSION-MATRIX:START -->
 The project keeps normal releases and `-lts` releases aligned with specific Quarkus streams.
