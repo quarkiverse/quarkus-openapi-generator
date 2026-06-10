@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
+            <artifactId>quarkus-oidc-client</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
