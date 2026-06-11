@@ -1,0 +1,71 @@
+openapi: "3.0.0"
+info:
+  title: "Path Encoding API"
+  description: "API for testing path parameter encoding (e.g. email addresses)"
+  version: "1.0.0"
+
+servers:
+  - url: "https://api.example.com"
+
+paths:
+  /users/{email}:
+    get:
+      summary: "Get a user by email"
+      description: "Get a user by their email address. Tests that special characters like @ are not double-encoded."
+      operationId: getUserByEmail
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Not found
+
+  /resources/{resourceId}:
+    get:
+      summary: "Get a resource by ID"
+      description: "Get a resource by its ID. Tests that simple string path parameters work correctly."
+      operationId: getResourceById
+      parameters:
+        - name: resourceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        "404":
+          description: Not found
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        id:
+          type: integer
+
+    Resource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string

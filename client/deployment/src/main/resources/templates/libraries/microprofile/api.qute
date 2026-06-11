@@ -2,7 +2,6 @@ package {package};
 
 import java.util.List;
 import java.util.Map;
-import io.quarkiverse.openapi.generator.providers.PathParamEncodingParamConverterProvider;
 {#if use-bean-validation}
 {! https://github.com/OpenAPITools/openapi-generator/issues/18974 !}
 import jakarta.validation.Valid;
@@ -10,6 +9,15 @@ import jakarta.validation.Valid;
 
 {#for imp in imports}
 import {imp.import};
+{/for}
+
+{!! Determine if we need to register the PathParamEncodingParamConverterProvider !!}
+{!! This is required only if any operation has multi-segment path parameters !!}
+{#set needsPathParamEncodingProvider=false}
+{#for op in operations.operation}
+  {#if op.vendorExtensions.x-multi-segment-params && op.vendorExtensions.x-multi-segment-params.size() > 0}
+    {#set needsPathParamEncodingProvider=true}
+  {/if}
 {/for}
 
 {#if appName}
@@ -23,7 +31,9 @@ import {imp.import};
 @org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 {/if}
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
-@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(PathParamEncodingParamConverterProvider.class)
+{#if needsPathParamEncodingProvider}
+@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(io.quarkiverse.openapi.generator.providers.PathParamEncodingParamConverterProvider.class)
+{/if}
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)

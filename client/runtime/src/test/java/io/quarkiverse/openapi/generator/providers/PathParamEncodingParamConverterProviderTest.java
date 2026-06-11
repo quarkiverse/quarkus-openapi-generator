@@ -8,6 +8,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+import jakarta.ws.rs.PathParam;
+
 import org.junit.jupiter.api.Test;
 
 import io.quarkiverse.openapi.generator.annotations.EncodedPathParam;
@@ -42,8 +44,27 @@ class PathParamEncodingParamConverterProviderTest {
     }
 
     @Test
-    void doesNotApplyToRegularParameters() {
+    void doesNotApplyToNonPathParameters() {
         assertNull(provider.getConverter(String.class, String.class, new Annotation[0]));
+    }
+
+    @Test
+    void passesThroughPlainPathParamsWithoutEncoding() throws Exception {
+        Annotation[] annotations = plainPathParamAnnotations();
+
+        var converter = provider.getConverter(String.class, String.class, annotations);
+        assertEquals("test@test.com", converter.toString("test@test.com"));
+        assertEquals("simple-value", converter.toString("simple-value"));
+        assertEquals("space and+plus", converter.toString("space and+plus"));
+    }
+
+    @Test
+    void doesNotDoubleEncodePlainPathParams() throws Exception {
+        Annotation[] annotations = plainPathParamAnnotations();
+
+        var converter = provider.getConverter(String.class, String.class, annotations);
+        assertEquals("test%40test.com", converter.toString("test%40test.com"));
+        assertEquals("mygroup%2Fmyproject", converter.toString("mygroup%2Fmyproject"));
     }
 
     @Test
@@ -64,11 +85,20 @@ class PathParamEncodingParamConverterProviderTest {
         return method.getParameters()[0].getAnnotations();
     }
 
+    private Annotation[] plainPathParamAnnotations() throws Exception {
+        Method method = getClass().getDeclaredMethod("plainPathParamSample", String.class);
+        return method.getParameters()[0].getAnnotations();
+    }
+
     private void sample(@EncodedPathParam String value) {
         Objects.requireNonNull(value);
     }
 
     private void multiSegmentSample(@MultiSegmentPathParam @EncodedPathParam String value) {
+        Objects.requireNonNull(value);
+    }
+
+    private void plainPathParamSample(@PathParam("id") String value) {
         Objects.requireNonNull(value);
     }
 }

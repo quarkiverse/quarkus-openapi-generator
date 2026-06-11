@@ -129,7 +129,7 @@ class QuarkusJavaClientCodegenTest {
             assertThat(parameter.getAnnotationByName("MultiSegmentPathParam")).isPresent();
             assertThat(parameter.getAnnotationByName("EncodedPathParam")).isNotPresent();
         } else {
-            assertThat(parameter.getAnnotationByName("EncodedPathParam")).isPresent();
+            assertThat(parameter.getAnnotationByName("EncodedPathParam")).isNotPresent();
             assertThat(parameter.getAnnotationByName("MultiSegmentPathParam")).isNotPresent();
         }
     }

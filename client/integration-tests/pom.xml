@@ -58,6 +58,7 @@
     <module>suppress-warnings</module>
     <module>name-mapping</module>
     <module>x-multi-segment</module>
+    <module>path-encoding</module>
   </modules>
   <dependencyManagement>
     <dependencies>
