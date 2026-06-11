@@ -111,11 +111,7 @@
       <dependencies>
         <dependency>
           <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-resteasy-client</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-oidc-client</artifactId>
+          <artifactId>quarkus-resteasy-client-oidc-filter</artifactId>
         </dependency>
         <dependency>
           <groupId>io.quarkus</groupId>
