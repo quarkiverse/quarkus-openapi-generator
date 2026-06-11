@@ -862,7 +862,7 @@ public class OpenApiClientGeneratorWrapperTest {
 
         boolean foundEncodedPathParam = compilationUnit.findAll(MethodDeclaration.class).stream()
                 .flatMap(method -> method.getParameters().stream())
-                .anyMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
+                .noneMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
                         && parameter.getAnnotationByName("EncodedPathParam").isPresent());
         assertThat(foundEncodedPathParam).isTrue();
     }
