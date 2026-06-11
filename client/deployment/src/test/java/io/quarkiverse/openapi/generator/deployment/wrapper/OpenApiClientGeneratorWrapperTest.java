@@ -892,6 +892,62 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifyObjectDefaultValuesDoNotGenerateInvalidJava() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapper("issue-1185-object-default.json")
+                .generate("org.issue1185objectdefault")
+                .stream()
+                .filter(file -> file.getPath().endsWith("ConvertDocumentsOptions.java")).toList();
+
+        assertThat(generatedFiles).isNotEmpty();
+        for (File file : generatedFiles) {
+            try {
+                CompilationUnit cu = StaticJavaParser.parse(file);
+                List<FieldDeclaration> fields = cu.findAll(FieldDeclaration.class);
+                for (FieldDeclaration field : fields) {
+                    for (VariableDeclarator var : field.getVariables()) {
+                        Expression init = var.getInitializer().orElse(null);
+                        if (init != null) {
+                            String initStr = init.toString();
+                            assertFalse(initStr.startsWith("{") && !initStr.startsWith("{\""),
+                                    "Field " + var.getNameAsString() + " has invalid Java default value: " + initStr);
+                        }
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    void verifySchemaDefaultValuesDoNotGenerateInvalidJava() throws Exception {
+        List<File> generatedFiles = createGeneratorWrapper("issue-1216-schema-default.json")
+                .generate("org.issue1216schemadefault")
+                .stream()
+                .filter(file -> file.getPath().endsWith("ConversionRequest.java")).toList();
+
+        assertThat(generatedFiles).isNotEmpty();
+        for (File file : generatedFiles) {
+            try {
+                CompilationUnit cu = StaticJavaParser.parse(file);
+                List<FieldDeclaration> fields = cu.findAll(FieldDeclaration.class);
+                for (FieldDeclaration field : fields) {
+                    for (VariableDeclarator var : field.getVariables()) {
+                        Expression init = var.getInitializer().orElse(null);
+                        if (init != null) {
+                            String initStr = init.toString();
+                            assertFalse(initStr.startsWith("{") && !initStr.startsWith("{\""),
+                                    "Field " + var.getNameAsString() + " has invalid Java default value: " + initStr);
+                        }
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+    }
+
+    @Test
     void verifySingleMethodForAllMediaTypesGeneration() throws java.net.URISyntaxException, FileNotFoundException {
         OpenApiClientGeneratorWrapper generatorWrapper = createGeneratorWrapper("issue-1428.yaml")
                 .withMethodPerMediaType(false);

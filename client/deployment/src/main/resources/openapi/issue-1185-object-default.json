@@ -1,0 +1,83 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API with object default values",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/convert": {
+      "post": {
+        "summary": "Convert Document",
+        "operationId": "convertDocument",
+        "tags": ["Conversion"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConversionRequest": {
+        "type": "object",
+        "title": "ConversionRequest",
+        "properties": {
+          "options": {
+            "$ref": "#/components/schemas/ConvertDocumentsOptions"
+          }
+        }
+      },
+      "ConvertDocumentsOptions": {
+        "type": "object",
+        "title": "ConvertDocumentsOptions",
+        "description": "Options for document conversion.",
+        "properties": {
+          "from_formats": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["docx", "pptx", "html", "image", "pdf", "asciidoc", "md"],
+            "description": "Input format(s) to convert from."
+          },
+          "to_formats": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["md"],
+            "description": "Output format(s) to convert to."
+          },
+          "ocr_engine": {
+            "type": "object",
+            "title": "Ocr Engine Options",
+            "description": "OCR engine options.",
+            "default": {
+              "ocr_engine": "easyocr",
+              "lang": "en"
+            }
+          }
+        }
+      }
+    }
+  }
+}
