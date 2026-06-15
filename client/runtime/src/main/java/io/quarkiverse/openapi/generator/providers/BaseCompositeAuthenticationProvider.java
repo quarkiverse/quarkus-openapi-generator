@@ -3,6 +3,7 @@ package io.quarkiverse.openapi.generator.providers;
 import static io.quarkiverse.openapi.generator.providers.AbstractAuthenticationPropagationHeadersFactory.propagationHeaderNamePrefix;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Set;
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.client.ClientRequestFilter;
 
+import org.eclipse.microprofile.config.ConfigProvider;
+
 import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
 
 /**
@@ -20,10 +23,21 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
  */
 public class BaseCompositeAuthenticationProvider implements ClientRequestFilter {
 
+    static final String REST_CLIENT_URL_CONFIG_PREFIX = "quarkus.rest-client.";
+    static final String REST_CLIENT_URL_CONFIG_SUFFIX = ".url";
+
     private final List<AuthProvider> authProviders;
+    private final String openApiSpecId;
+    private final String baseUrlPath;
+
+    public BaseCompositeAuthenticationProvider(String openApiSpecId, List<AuthProvider> authProviders) {
+        this.openApiSpecId = openApiSpecId;
+        this.authProviders = List.copyOf(authProviders);
+        this.baseUrlPath = resolveBaseUrlPath();
+    }
 
     public BaseCompositeAuthenticationProvider(List<AuthProvider> authProviders) {
-        this.authProviders = List.copyOf(authProviders);
+        this(null, authProviders);
     }
 
     public final List<AuthProvider> getAuthenticationProviders() {
@@ -96,12 +110,79 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
     }
 
     /**
-     * It can perform the authentication filter only if this operation requires it (has a security reference)
+     * It can perform the authentication filter only if this operation requires it (has a security reference).
+     * When the REST client base URL contains a path component, that prefix is stripped from the request
+     * URI path before matching against the operation paths defined in the OpenAPI spec. This ensures
+     * authentication works correctly when the configured base URL path differs from the spec's server
+     * URL path (e.g., when using an API gateway stage prefix).
      */
     private boolean canFilter(final AuthProvider authProvider, final ClientRequestContext requestContext) {
+        String requestPath = requestContext.getUri().getPath();
+        String method = requestContext.getMethod();
         return authProvider.operationsToFilter().stream()
-                .anyMatch(o -> o.getHttpMethod().equals(requestContext.getMethod()) &&
-                        o.matchPath(requestContext.getUri().getPath()));
+                .anyMatch(o -> {
+                    boolean methodMatch = o.getHttpMethod().equals(method);
+                    boolean pathMatch = o.matchPath(requestPath);
+                    boolean strippedMatch = false;
+                    if (methodMatch && !pathMatch) {
+                        strippedMatch = matchesWithBaseUrlStripped(o, requestPath, this.baseUrlPath);
+                    }
+                    return methodMatch && (pathMatch || strippedMatch);
+                });
+    }
+
+    /**
+     * Attempts to match the operation path by stripping the base URL path prefix from the request path.
+     * This handles the case where the REST client base URL path differs from the context path
+     * embedded in the OpenAPI spec's server URL.
+     */
+    private boolean matchesWithBaseUrlStripped(OperationAuthInfo op, String requestPath, String baseUrlPath) {
+        if (baseUrlPath == null || baseUrlPath.isEmpty() || !requestPath.startsWith(baseUrlPath)) {
+            return false;
+        }
+        int baseUrlLen = baseUrlPath.length();
+        if (requestPath.length() > baseUrlLen && requestPath.charAt(baseUrlLen) != '/') {
+            return false;
+        }
+        String strippedPath = requestPath.substring(baseUrlLen);
+        if (!strippedPath.startsWith("/")) {
+            strippedPath = "/" + strippedPath;
+        }
+        return op.matchPath(strippedPath);
+    }
+
+    /**
+     * Resolves the path component of the REST client base URL configured via
+     * {@code quarkus.rest-client.<openApiSpecId>.url}.
+     * Returns null if the openApiSpecId is not set or the URL cannot be resolved.
+     */
+    String getBaseUrlPath() {
+        return baseUrlPath;
+    }
+
+    private String resolveBaseUrlPath() {
+        if (openApiSpecId == null) {
+            return null;
+        }
+        Optional<String> urlOpt = ConfigProvider.getConfig()
+                .getOptionalValue(REST_CLIENT_URL_CONFIG_PREFIX + openApiSpecId + REST_CLIENT_URL_CONFIG_SUFFIX, String.class);
+        return urlOpt.map(this::extractPathFromUrl).orElse(null);
+    }
+
+    private String extractPathFromUrl(String url) {
+        try {
+            URI uri = URI.create(url);
+            String path = uri.getPath();
+            if (path == null || path.isEmpty() || "/".equals(path)) {
+                return null;
+            }
+            if (path.endsWith("/") && path.length() > 1) {
+                path = path.substring(0, path.length() - 1);
+            }
+            return path;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     protected static String sanitizeAuthName(String schemeName) {

@@ -37,6 +37,11 @@ include::./includes/filter-openapi-spec-files.adoc[leveloffset=+1, opts=optional
 
 include::./includes/authentication-support.adoc[leveloffset=+1, opts=optional]
 
+[[authentication-provider-path-matching]]
+== Authentication Provider Path Matching
+
+include::./includes/authentication-provider-path-matching.adoc[leveloffset=+1, opts=optional]
+
 [[autorization-token-prop]]
 == Authorization Token Propagation
 
