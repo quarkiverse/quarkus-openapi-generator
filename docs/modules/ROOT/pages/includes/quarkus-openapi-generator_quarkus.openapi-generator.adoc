@@ -858,6 +858,27 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-provided-jackson-dependency]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-provided-jackson-dependency[`+++quarkus.openapi-generator.codegen.provided-jackson-dependency+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.provided-jackson-dependency+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether the Jackson dependency is provided by the runtime environment (e.g., a Keycloak extension or another Quarkus runtime) rather than being declared as a direct dependency of the project. When set to `true`, the extension will skip the validation that checks for the presence of `quarkus-rest-client-reactive-jackson` or `quarkus-rest-client-jackson` capabilities. This is useful when building Quarkus extensions where the required Jackson dependencies are already provided by the hosting runtime, avoiding dependency conflicts.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_PROVIDED_JACKSON_DEPENDENCY+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_PROVIDED_JACKSON_DEPENDENCY+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-skip-form-model[`+++quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".skip-form-model+++[]

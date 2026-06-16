@@ -26,6 +26,26 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
     static final String REST_CLIENT_URL_CONFIG_PREFIX = "quarkus.rest-client.";
     static final String REST_CLIENT_URL_CONFIG_SUFFIX = ".url";
 
+    /**
+     * Request context property name for storing the operation path template.
+     * This property is set by OperationIdFilter to identify which OpenAPI operation is being invoked.
+     * SECURITY (GHSA-fqh4-5f48-9j28): Used to prevent credential leakage by matching authentication
+     * to the exact operation path template (e.g., "/repos/{owner}/{repo}"), which won't match literal
+     * sibling paths (e.g., "/repos/health").
+     */
+    public static final String OPERATION_PATH_PROPERTY = "io.quarkiverse.openapi.generator.operation.path";
+
+    /**
+     * Request context property name for storing the operation HTTP method.
+     * This property is set by OperationIdFilter to identify which OpenAPI operation is being invoked.
+     */
+    public static final String OPERATION_METHOD_PROPERTY = "io.quarkiverse.openapi.generator.operation.method";
+
+    /**
+     * Request context property name for storing the operation ID (optional, for backward compatibility).
+     */
+    public static final String OPERATION_ID_PROPERTY = "io.quarkiverse.openapi.generator.operationId";
+
     private final List<AuthProvider> authProviders;
     private final String openApiSpecId;
     private final String baseUrlPath;
@@ -111,44 +131,37 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
 
     /**
      * It can perform the authentication filter only if this operation requires it (has a security reference).
-     * When the REST client base URL contains a path component, that prefix is stripped from the request
-     * URI path before matching against the operation paths defined in the OpenAPI spec. This ensures
-     * authentication works correctly when the configured base URL path differs from the spec's server
-     * URL path (e.g., when using an API gateway stage prefix).
+     *
+     * SECURITY (GHSA-fqh4-5f48-9j28): This method uses operationId-based matching to prevent
+     * credential leakage. The operationId MUST be set in the request context by generated code.
+     * If no operationId is present, the request will not be authenticated (fail-secure).
+     *
+     * This replaces the previous URL pattern matching approach which was vulnerable to credential
+     * leakage when literal sibling paths (e.g., /repos/health) matched parameterized templates
+     * (e.g., /repos/{ref}).
      */
     private boolean canFilter(final AuthProvider authProvider, final ClientRequestContext requestContext) {
-        String requestPath = requestContext.getUri().getPath();
-        String method = requestContext.getMethod();
-        return authProvider.operationsToFilter().stream()
-                .anyMatch(o -> {
-                    boolean methodMatch = o.getHttpMethod().equals(method);
-                    boolean pathMatch = o.matchPath(requestPath);
-                    boolean strippedMatch = false;
-                    if (methodMatch && !pathMatch) {
-                        strippedMatch = matchesWithBaseUrlStripped(o, requestPath, this.baseUrlPath);
-                    }
-                    return methodMatch && (pathMatch || strippedMatch);
-                });
-    }
+        // SECURITY FIX (GHSA-fqh4-5f48-9j28): Match by path template and method from @OperationMarker
+        // This prevents credential leakage when literal paths (e.g., /repos/health) would incorrectly
+        // match parameterized URL patterns (e.g., /repos/{ref})
 
-    /**
-     * Attempts to match the operation path by stripping the base URL path prefix from the request path.
-     * This handles the case where the REST client base URL path differs from the context path
-     * embedded in the OpenAPI spec's server URL.
-     */
-    private boolean matchesWithBaseUrlStripped(OperationAuthInfo op, String requestPath, String baseUrlPath) {
-        if (baseUrlPath == null || baseUrlPath.isEmpty() || !requestPath.startsWith(baseUrlPath)) {
+        Object pathProp = requestContext.getProperty(OPERATION_PATH_PROPERTY);
+        Object methodProp = requestContext.getProperty(OPERATION_METHOD_PROPERTY);
+
+        if (!(pathProp instanceof String) || !(methodProp instanceof String)) {
+            // No operation path/method set - fail secure by not applying authentication
+            // This ensures we never leak credentials to unintended endpoints
             return false;
         }
-        int baseUrlLen = baseUrlPath.length();
-        if (requestPath.length() > baseUrlLen && requestPath.charAt(baseUrlLen) != '/') {
-            return false;
-        }
-        String strippedPath = requestPath.substring(baseUrlLen);
-        if (!strippedPath.startsWith("/")) {
-            strippedPath = "/" + strippedPath;
-        }
-        return op.matchPath(strippedPath);
+
+        String requestPath = (String) pathProp;
+        String requestMethod = (String) methodProp;
+
+        // Match by exact path template and method - prevents credential leakage to sibling endpoints
+        // The path is the template from the OpenAPI spec (e.g., "/repos/{owner}/{repo}"),
+        // not the resolved path (e.g., "/repos/acme/myrepo"), so exact string match is safe
+        return authProvider.operationsToFilter().stream()
+                .anyMatch(o -> o.getPath().equals(requestPath) && o.getHttpMethod().equals(requestMethod));
     }
 
     /**
