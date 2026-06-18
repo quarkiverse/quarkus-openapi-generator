@@ -72,8 +72,9 @@ public class OpenAPIToolsServerCodegen implements CodeGenProvider {
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
 
-        if (sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()))) {
-            // skip when generate-code-tests
+        // Only run for the main source directory to prevent multiple executions
+        // when the project has multiple source roots
+        if (!sourceDir.endsWith(Path.of("src", "main", this.inputDirectory()))) {
             return false;
         }
 
