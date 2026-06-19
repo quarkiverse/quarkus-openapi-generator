@@ -25,6 +25,7 @@ import {imp.import};
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider(PathParamEncodingParamConverterProvider.class)
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
+@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(io.quarkiverse.openapi.generator.providers.OperationIdFilter.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
 {/if}

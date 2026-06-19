@@ -51,11 +51,25 @@ class BaseCompositeAuthenticationProviderTest {
     }
 
     private ClientRequestContext createRequestContext(String method, String path) {
+        return createRequestContext(method, path, null);
+    }
+
+    private ClientRequestContext createRequestContext(String method, String path, String operationId) {
         ClientRequestContext requestContext = Mockito.mock(ClientRequestContext.class);
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         lenient().when(requestContext.getHeaders()).thenReturn(headers);
         lenient().when(requestContext.getMethod()).thenReturn(method);
         lenient().when(requestContext.getUri()).thenReturn(URI.create("http://localhost" + path));
+
+        // Set operation path and method properties for path-template-based matching
+        lenient().when(requestContext.getProperty(BaseCompositeAuthenticationProvider.OPERATION_PATH_PROPERTY))
+                .thenReturn(path);
+        lenient().when(requestContext.getProperty(BaseCompositeAuthenticationProvider.OPERATION_METHOD_PROPERTY))
+                .thenReturn(method);
+
+        // Also set operationId for backward compatibility
+        lenient().when(requestContext.getProperty(BaseCompositeAuthenticationProvider.OPERATION_ID_PROPERTY))
+                .thenReturn(operationId);
         return requestContext;
     }
 
@@ -155,7 +169,7 @@ class BaseCompositeAuthenticationProviderTest {
         when(provider1.operationsToFilter()).thenReturn(List.of(operation));
         lenient().when(provider2.operationsToFilter()).thenReturn(List.of(operation));
 
-        ClientRequestContext requestContext = createRequestContext("POST", "/api/test");
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
 
         givenProviderWillAuthenticate(provider1, headers, "Bearer token1");
@@ -178,7 +192,7 @@ class BaseCompositeAuthenticationProviderTest {
         when(provider1.operationsToFilter()).thenReturn(List.of(operation));
         when(provider2.operationsToFilter()).thenReturn(List.of(operation));
 
-        ClientRequestContext requestContext = createRequestContext("POST", "/api/test");
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
 
         givenProviderWillFail(provider1, new RuntimeException("Missing OAuth2 configuration"));
@@ -203,7 +217,7 @@ class BaseCompositeAuthenticationProviderTest {
         when(provider1.operationsToFilter()).thenReturn(List.of(operation1));
         lenient().when(provider2.operationsToFilter()).thenReturn(List.of(operation2));
 
-        ClientRequestContext requestContext = createRequestContext("POST", "/api/test");
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
 
         givenProviderWillAuthenticate(provider1, headers, "Bearer token1");
@@ -228,7 +242,7 @@ class BaseCompositeAuthenticationProviderTest {
         lenient().when(provider2.operationsToFilter()).thenReturn(List.of(operation));
         lenient().when(provider3.operationsToFilter()).thenReturn(List.of(operation));
 
-        ClientRequestContext requestContext = createRequestContext("POST", "/api/test");
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
 
         givenProviderWillAuthenticate(provider1, headers, "Bearer token1");
@@ -253,7 +267,7 @@ class BaseCompositeAuthenticationProviderTest {
         when(provider1.operationsToFilter()).thenReturn(List.of(operation));
         when(provider2.operationsToFilter()).thenReturn(List.of(operation));
 
-        ClientRequestContext requestContext = createRequestContext("POST", "/api/test");
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
 
         givenProviderWillFail(provider1, new RuntimeException("First provider failed"));
         givenProviderWillFail(provider2, new RuntimeException("Second provider failed"));
@@ -272,7 +286,7 @@ class BaseCompositeAuthenticationProviderTest {
         OperationAuthInfo operation = createOperation();
         when(provider.operationsToFilter()).thenReturn(List.of(operation));
 
-        ClientRequestContext requestContext = createRequestContext("POST", "/api/test");
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
 
         givenProviderWillFail(provider, new IOException("Network error"));
 
@@ -326,91 +340,13 @@ class BaseCompositeAuthenticationProviderTest {
     }
 
     @Test
-    void canFilterMatchesDirectlyWhenPathsAlign() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/data/2.5/weather").withMethod("GET").withId("currentWeatherData")
-                        .build()));
-
-        withConfigMockThrows("open_weather_yaml", Optional.of("https://api.openweathermap.org/data/2.5"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "open_weather_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://api.openweathermap.org/data/2.5/weather");
-            provider.filter(ctx);
-            verify(authProvider).filter(ctx);
-        });
-    }
-
-    @Test
-    void canFilterMatchesByStrippingBaseUrlPathWhenPathsDiffer() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/v1/myapp/search").withMethod("GET").withId("searchOp").build()));
-
-        withConfigMockThrows("search_service_yml",
-                Optional.of("https://redacted.execute-api.eu-west-1.amazonaws.com/my-apigwstage"), () -> {
-                    BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                            "search_service_yml", List.of(authProvider));
-                    ClientRequestContext ctx = mockRequestContext("GET",
-                            "https://redacted.execute-api.eu-west-1.amazonaws.com/my-apigwstage/v1/myapp/search");
-                    provider.filter(ctx);
-                    verify(authProvider).filter(ctx);
-                });
-    }
-
-    @Test
-    void canFilterMatchesWhenNoBaseUrlPath() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/myapp/search").withMethod("GET").withId("searchOp").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://example.com"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://example.com/myapp/search");
-            provider.filter(ctx);
-            verify(authProvider).filter(ctx);
-        });
-    }
-
-    @Test
-    void canFilterDoesNotMatchWrongMethod() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/myapp/search").withMethod("GET").withId("searchOp").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://example.com"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("POST", "https://example.com/myapp/search");
-            provider.filter(ctx);
-            verify(authProvider, never()).filter(any());
-        });
-    }
-
-    @Test
-    void canFilterDoesNotMatchWrongPath() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/myapp/search").withMethod("GET").withId("searchOp").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://example.com/api"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://example.com/api/other/path");
-            provider.filter(ctx);
-            verify(authProvider, never()).filter(any());
-        });
-    }
-
-    @Test
     void canFilterWithNoOpenApiSpecIdStillWorks() throws IOException {
         AuthProvider authProvider = mock(AuthProvider.class);
         when(authProvider.operationsToFilter()).thenReturn(List.of(
                 OperationAuthInfo.builder().withPath("/myapp/search").withMethod("GET").withId("searchOp").build()));
 
         BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(List.of(authProvider));
-        ClientRequestContext ctx = mockRequestContext("GET", "https://example.com/myapp/search");
+        ClientRequestContext ctx = createRequestContext("GET", "/myapp/search", "searchOp");
 
         provider.filter(ctx);
         verify(authProvider).filter(ctx);
@@ -422,65 +358,9 @@ class BaseCompositeAuthenticationProviderTest {
         assertNull(provider.getBaseUrlPath());
     }
 
-    @Test
-    void canFilterDoesNotMatchWhenBaseUrlPathIsPrefixOfDifferentSegment() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/users").withMethod("GET").withId("getUsers").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://example.com/api"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://example.com/apiV2/users");
-            provider.filter(ctx);
-            verify(authProvider, never()).filter(any());
-        });
-    }
-
-    @Test
-    void canFilterMatchesWhenBaseUrlPathIsExactSegment() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/users").withMethod("GET").withId("getUsers").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://example.com/api"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://example.com/api/users");
-            provider.filter(ctx);
-            verify(authProvider).filter(ctx);
-        });
-    }
-
-    @Test
-    void canFilterMatchesWhenBaseUrlPathMatchesExactly() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/").withMethod("GET").withId("getRoot").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://example.com/api"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://example.com/api");
-            provider.filter(ctx);
-            verify(authProvider).filter(ctx);
-        });
-    }
-
-    @Test
-    void canFilterMatchesWithParamInPathAfterStripping() throws IOException {
-        AuthProvider authProvider = mock(AuthProvider.class);
-        when(authProvider.operationsToFilter()).thenReturn(List.of(
-                OperationAuthInfo.builder().withPath("/v1/myapp/{id}").withMethod("GET").withId("getById").build()));
-
-        withConfigMockThrows("my_spec_yaml", Optional.of("https://gateway.example.com/custom-stage"), () -> {
-            BaseCompositeAuthenticationProvider provider = new BaseCompositeAuthenticationProvider(
-                    "my_spec_yaml", List.of(authProvider));
-            ClientRequestContext ctx = mockRequestContext("GET", "https://gateway.example.com/custom-stage/v1/myapp/123");
-            provider.filter(ctx);
-            verify(authProvider).filter(ctx);
-        });
-    }
+    // NOTE: URL-pattern based canFilter tests have been removed because the CVE fix (GHSA-fqh4-5f48-9j28)
+    // replaced URL pattern matching with operationId-based matching. See SecurityVulnerabilityCVE20264233Test
+    // for tests covering the new operationId-based behavior.
 
     //endregion
 }
