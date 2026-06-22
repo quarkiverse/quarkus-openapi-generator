@@ -3,7 +3,7 @@
 include::./includes/attributes.adoc[]
 
 This documentation helps you to use Quarkus OpenAPI Generator Server with the OpenAPITools code generator.
-To see how to use with OpenAPITools, please see the xref:apicurio.adoc[Apicurio] documentation.
+To see how to use with Apicurio, please see the xref:apicurio.adoc[Apicurio] documentation.
 
 :extension-status: preview
 
