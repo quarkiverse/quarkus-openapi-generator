@@ -840,6 +840,13 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(file).isNotEmpty();
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
+
+        // Check if any parameter has @MultiSegmentPathParam
+        boolean hasMultiSegmentParam = compilationUnit.findAll(MethodDeclaration.class).stream()
+                .flatMap(method -> method.getParameters().stream())
+                .anyMatch(parameter -> parameter.getAnnotationByName("MultiSegmentPathParam").isPresent());
+
+        // The provider should be registered only if there are multi-segment path params
         boolean foundRegisterProvider = compilationUnit.findAll(AnnotationExpr.class).stream()
                 .filter(annotation -> annotation.getName().getIdentifier().equals("RegisterProvider"))
                 .anyMatch(annotation -> {
@@ -858,11 +865,12 @@ public class OpenApiClientGeneratorWrapperTest {
                     }
                     return false;
                 });
-        assertThat(foundRegisterProvider).isTrue();
+        assertThat(foundRegisterProvider).isEqualTo(hasMultiSegmentParam);
 
+        // No parameter should have both @PathParam and @EncodedPathParam
         boolean foundEncodedPathParam = compilationUnit.findAll(MethodDeclaration.class).stream()
                 .flatMap(method -> method.getParameters().stream())
-                .anyMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
+                .noneMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
                         && parameter.getAnnotationByName("EncodedPathParam").isPresent());
         assertThat(foundEncodedPathParam).isTrue();
     }

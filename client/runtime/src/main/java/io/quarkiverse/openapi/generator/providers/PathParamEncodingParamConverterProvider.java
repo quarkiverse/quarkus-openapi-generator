@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
-import jakarta.ws.rs.ext.Provider;
 
 import io.quarkiverse.openapi.generator.annotations.EncodedPathParam;
 import io.quarkiverse.openapi.generator.annotations.MultiSegmentPathParam;
@@ -19,8 +18,10 @@ import io.quarkiverse.openapi.generator.annotations.MultiSegmentPathParam;
  * percent triplets such as {@code %2F}. That allows callers to pass either raw paths like
  * {@code mygroup/myproject/backend} or already-encoded values like {@code mygroup%2Fmyproject%2Fbackend}
  * without producing invalid double-encoded URLs.
+ * <p>
+ * Registered explicitly via {@code @RegisterProvider} on generated REST client interfaces rather than
+ * auto-discovered via {@code @Provider}, to avoid duplicate-registration warnings.
  */
-@Provider
 public class PathParamEncodingParamConverterProvider implements ParamConverterProvider {
 
     private static final ParamConverter<String> STRING_PATH_PARAM_CONVERTER = new ParamConverter<>() {
@@ -47,6 +48,18 @@ public class PathParamEncodingParamConverterProvider implements ParamConverterPr
         }
     };
 
+    private static final ParamConverter<String> NOOP_CONVERTER = new ParamConverter<>() {
+        @Override
+        public String fromString(String value) {
+            return value;
+        }
+
+        @Override
+        public String toString(String value) {
+            return value;
+        }
+    };
+
     @Override
     @SuppressWarnings("unchecked")
     public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
@@ -58,6 +71,9 @@ public class PathParamEncodingParamConverterProvider implements ParamConverterPr
         }
         if (hasEncodedPathParam(annotations)) {
             return (ParamConverter<T>) STRING_PATH_PARAM_CONVERTER;
+        }
+        if (hasPathParam(annotations)) {
+            return (ParamConverter<T>) NOOP_CONVERTER;
         }
         return null;
     }
@@ -158,6 +174,18 @@ public class PathParamEncodingParamConverterProvider implements ParamConverterPr
         }
         for (Annotation annotation : annotations) {
             if (annotation.annotationType() == EncodedPathParam.class) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasPathParam(Annotation[] annotations) {
+        if (annotations == null) {
+            return false;
+        }
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType() == jakarta.ws.rs.PathParam.class) {
                 return true;
             }
         }
