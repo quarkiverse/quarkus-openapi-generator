@@ -5,7 +5,7 @@ Add the following dependency to your project's `pom.xml` file:
 <dependency>
   <groupId>io.quarkiverse.openapi.generator</groupId>
   <artifactId>quarkus-openapi-generator-server</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>{project-version}</version>
 </dependency>
 ----
 
@@ -18,8 +18,6 @@ By default, the generated resources are annotated with Microprofile OpenAPI anno
     <artifactId>quarkus-smallrye-openapi</artifactId>
 </dependency>
 ----
-
-Note that since this extension has not been yet released, you'll need a local build of the dependency.
 
 You will also need to add or update the `quarkus-maven-plugin` configuration with the following:
 
