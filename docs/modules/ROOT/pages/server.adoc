@@ -122,6 +122,72 @@ When using per-spec configuration (`quarkus.openapi.generator.server.spec.<id>.*
 ====
 
 
+[[using-client-and-server-together]]
+== Using Client and Server Generators Together
+
+When using both the Client and Server generators in the same project, note that they have **different default input directories**:
+
+| Generator | Default Input Directory |
+|-----------|-------------------------|
+| Client    | `src/main/openapi`      |
+| Server    | `src/main/resources/openapi` |
+
+This means if you place your OpenAPI spec in `src/main/openapi`, the client generator will find it automatically, but the server generator will not.
+
+=== Option 1: Configure Server Generator to Use Client's Directory
+
+Add to `src/main/resources/application.properties`:
+
+[source,properties]
+----
+quarkus.openapi.generator.server.input-base-dir=src/main/openapi
+quarkus.openapi.generator.server.use=apicurio
+# or openapitools
+quarkus.openapi.generator.server.spec=your-spec.yaml
+----
+
+=== Option 2: Use Separate Directories
+
+Keep specs in their default locations:
+- Client specs: `src/main/openapi/`
+- Server specs: `src/main/resources/openapi/`
+
+=== Option 3: Explicit Spec Configuration (Recommended)
+
+For full control, explicitly configure both generators:
+
+[source,properties]
+----
+# Client generator (uses src/main/openapi by default)
+quarkus.openapi-generator.codegen.spec.your-spec_yaml.base-package=org.acme.client
+
+# Server generator (explicit config)
+quarkus.openapi.generator.server.use=apicurio
+quarkus.openapi.generator.server.spec=your-spec.yaml
+quarkus.openapi.generator.server.input-base-dir=src/main/openapi
+quarkus.openapi.generator.server.base-package=org.acme.server
+----
+
+=== Important Notes
+
+* The `quarkus.openapi.generator.server.use` property is **required** for server generation (values: `apicurio` or `openapitools`)
+* Without explicit server config, running `mvn quarkus:generate-code` may only generate client code with a warning
+* Run `mvn compile` or `mvn quarkus:generate-code` after configuring to generate both client and server code
+
+=== Multiple Files Support
+
+Both Apicurio and OpenAPITools generators support multiple OpenAPI files in the input directory:
+
+* **Multi-file specs**: An entry spec can use relative `$ref` to reference other YAML/JSON files in the same input directory
+* **Auto-discovery**: All `.json`, `.yaml`, `.yml` files in `input-base-dir` are automatically discovered and generated with defaults (`base-package=org.acme`, `use-builders=true`)
+* **Filtering**: Use `quarkus.openapi.generator.server.include` and `quarkus.openapi.generator.server.exclude` to control which files are processed
+* **Per-spec config**: Use `quarkus.openapi.generator.server.spec.<id>.*` to customize each spec individually (the `<id>` is the sanitized relative file name, e.g., `petstore_openapi_json`)
+
+[TIP]
+====
+To exclude shared reference files (like `common-spec.yaml`) from auto-discovery, use the `quarkus.openapi.generator.server.exclude` property.
+====
+
 == Configuration Properties
 
 include::./includes/quarkus-openapi-generator-server.adoc[opts=optional, leveloffset=+1]
