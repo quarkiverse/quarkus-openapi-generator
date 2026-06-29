@@ -133,7 +133,7 @@ public class GeneratorProcessor {
     }
 
     @BuildStep
-    @Record(ExecutionTime.STATIC_INIT)
+    @Record(ExecutionTime.RUNTIME_INIT)
     void produceCompositeProviders(AuthenticationRecorder recorder, List<AuthProviderBuildItem> authProviders,
             BuildProducer<SyntheticBeanBuildItem> beanProducer) {
         Map<String, List<AuthProviderBuildItem>> providersBySpec = authProviders.stream()
@@ -149,6 +149,7 @@ public class GeneratorProcessor {
                             ParameterizedType.create(Instance.class, ClassType.create(AuthProvider.class)),
                             AnnotationInstance.builder(OpenApiSpec.class).add("openApiSpecId", openApiSpecId).build())
                     .createWith(recorder.recordCompositeProvider(openApiSpecId))
+                    .setRuntimeInit()
                     .done());
         });
     }
