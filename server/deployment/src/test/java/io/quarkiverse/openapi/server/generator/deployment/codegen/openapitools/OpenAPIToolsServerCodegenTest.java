@@ -226,6 +226,25 @@ class OpenAPIToolsServerCodegenTest {
                 .contains("AnAnnotation");
     }
 
+    @Test
+    @DisplayName("Should handle self-referencing schema without StackOverflowError")
+    void should_handle_self_referencing_schema() throws IOException {
+        // arrange
+        Path path = findOpenAPIPath("self-referencing-schema.json");
+
+        OpenAPIToolsGenerator openAPIToolsGenerator = new OpenAPIToolsGenerator(
+                new QuarkusJavaServerCodegenConfigurator()
+                        .withInputBaseDir(path.toString())
+                        .withOutputDir(Files.createTempDirectory("").toString())
+                        .withBasePackage("org.acme"));
+
+        // act
+        List<File> files = openAPIToolsGenerator.generate();
+
+        // assert
+        Assertions.assertThat(files).isNotEmpty();
+    }
+
     private Path findOpenAPIPath(String specFileName) {
         URL url = this.getClass().getResource("/openapitools/" + specFileName);
         Objects.requireNonNull(url, "Could not find /openapi/" + specFileName);
