@@ -7,6 +7,7 @@ paths:
     post:
       operationId: doOperation
       security:
+        - {}
         - client_id: [ ]
         - oauth: [ read, write ]
         - bearerAuth: [ ]

@@ -107,6 +107,16 @@ public class OpenApiClientGeneratorWrapperTest {
 
         // Assert that there's exactly one annotation with name=oauth
         assertThat(oauthAnnotationsCount).isEqualTo(1);
+
+        final Optional<File> apiFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("DefaultApi.java")).findFirst();
+        assertThat(apiFile).isPresent();
+
+        final String apiFileContent = StaticJavaParser.parse(apiFile.orElseThrow()).toString();
+        assertTrue(apiFileContent.contains("OperationMarker(name = \"client_id\""));
+        assertTrue(apiFileContent.contains("OperationMarker(name = \"oauth\""));
+        assertTrue(apiFileContent.contains("OperationMarker(name = \"bearerAuth\""));
+        assertFalse(apiFileContent.contains("OperationMarker(name = \"\""));
     }
 
     /**
