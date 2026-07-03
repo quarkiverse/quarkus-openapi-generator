@@ -226,6 +226,54 @@ class OpenAPIToolsServerCodegenTest {
                 .contains("AnAnnotation");
     }
 
+    @Test
+    @DisplayName("Object default values should not generate invalid Java")
+    void should_not_generate_invalid_java_for_object_default_values() throws IOException {
+        Path path = findOpenAPIPath("issue-1216-object-default.json");
+
+        OpenAPIToolsGenerator openAPIToolsGenerator = new OpenAPIToolsGenerator(
+                new QuarkusJavaServerCodegenConfigurator()
+                        .withInputBaseDir(path.toString())
+                        .withOutputDir(Files.createTempDirectory("").toString())
+                        .withBasePackage("org.issue1216objectdefault"));
+
+        List<File> files = openAPIToolsGenerator.generate();
+
+        List<File> modelFiles = files.stream()
+                .filter(file -> file.getName().endsWith("ConvertDocumentsOptions.java"))
+                .toList();
+
+        assertThat(modelFiles).isNotEmpty();
+        for (File file : modelFiles) {
+            String content = Files.readString(file.toPath());
+            assertThat(content).doesNotContain("= {");
+        }
+    }
+
+    @Test
+    @DisplayName("Schema default values via $ref should not generate invalid Java")
+    void should_not_generate_invalid_java_for_schema_default_values() throws IOException {
+        Path path = findOpenAPIPath("issue-1216-schema-default.json");
+
+        OpenAPIToolsGenerator openAPIToolsGenerator = new OpenAPIToolsGenerator(
+                new QuarkusJavaServerCodegenConfigurator()
+                        .withInputBaseDir(path.toString())
+                        .withOutputDir(Files.createTempDirectory("").toString())
+                        .withBasePackage("org.issue1216schemadefault"));
+
+        List<File> files = openAPIToolsGenerator.generate();
+
+        List<File> modelFiles = files.stream()
+                .filter(file -> file.getName().endsWith("ConversionRequest.java"))
+                .toList();
+
+        assertThat(modelFiles).isNotEmpty();
+        for (File file : modelFiles) {
+            String content = Files.readString(file.toPath());
+            assertThat(content).doesNotContain("= {");
+        }
+    }
+
     private Path findOpenAPIPath(String specFileName) {
         URL url = this.getClass().getResource("/openapitools/" + specFileName);
         Objects.requireNonNull(url, "Could not find /openapi/" + specFileName);
