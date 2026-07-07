@@ -603,6 +603,48 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-implicit-headers]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-implicit-headers[`+++quarkus.openapi-generator.codegen.implicit-headers+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.implicit-headers+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Skip header parameters in the generated API methods. When set to `true`, all header parameters will be omitted from the generated method signatures. This is useful for headers that are automatically added by infrastructure (e.g., correlation IDs, authentication headers).
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_IMPLICIT_HEADERS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_IMPLICIT_HEADERS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-implicit-headers-regex]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-implicit-headers-regex[`+++quarkus.openapi-generator.codegen.implicit-headers-regex+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.implicit-headers-regex+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Skip header parameters that match the given regex pattern in the generated API methods. This allows selectively omitting specific header parameters (e.g., `x-.*` to skip all headers starting with `x-`). Note: this parameter is ignored when `implicit-headers=true`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_IMPLICIT_HEADERS_REGEX+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_IMPLICIT_HEADERS_REGEX+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-verbose[`+++quarkus.openapi-generator.codegen.verbose+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.verbose+++[]

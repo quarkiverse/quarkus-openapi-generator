@@ -1,0 +1,89 @@
+---
+openapi: 3.0.3
+info:
+  title: Implicit Headers Regex Test API
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+paths:
+  /users:
+    get:
+      tags:
+      - User Resource
+      description: Find All
+      operationId: findAll
+      parameters:
+      - name: x-request-id
+        in: header
+        description: Request ID header
+        required: false
+        schema:
+          type: string
+      - name: x-correlation-id
+        in: header
+        description: Correlation ID header
+        required: false
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        description: Authorization header
+        required: false
+        schema:
+          type: string
+      - name: custom-header
+        in: header
+        description: Custom header
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      tags:
+      - User Resource
+      description: Add
+      operationId: add
+      parameters:
+      - name: x-request-id
+        in: header
+        description: Request ID header
+        required: false
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        description: Authorization header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          type: string

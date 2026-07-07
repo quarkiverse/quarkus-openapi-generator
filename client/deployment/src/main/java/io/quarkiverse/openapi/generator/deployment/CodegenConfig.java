@@ -96,7 +96,9 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         PREFERRED_CONTENT_TYPE("preferred-content-type"),
         NAME_MAPPINGS("name-mappings"),
         RESTEASY_REACTIVE_CLIENT_FORM("resteasy-reactive-client-form"),
-        USE_ONE_OF_INTERFACES("use-one-of-interfaces");
+        USE_ONE_OF_INTERFACES("use-one-of-interfaces"),
+        IMPLICIT_HEADERS("implicit-headers"),
+        IMPLICIT_HEADERS_REGEX("implicit-headers-regex");
 
         private final String name;
 
