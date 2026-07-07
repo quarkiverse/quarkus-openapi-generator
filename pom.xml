@@ -40,6 +40,7 @@
     <version.org.wiremock>3.13.2</version.org.wiremock>
     <version.com.github.tomakehurst>2.35.2</version.com.github.tomakehurst>
     <version.io.swagger.parser>2.1.45</version.io.swagger.parser>
+    <version.swagger.core.jakarta>2.2.52</version.swagger.core.jakarta>
     <version.org.openapitools>7.23.0</version.org.openapitools>
     <version.com.github.javaparser>3.28.2</version.com.github.javaparser>
     <version.org.glassfish.jaxb.codemodel>4.0.9</version.org.glassfish.jaxb.codemodel>

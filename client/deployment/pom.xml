@@ -102,7 +102,25 @@
           <groupId>io.swagger.parser.v3</groupId>
           <artifactId>swagger-parser</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-models</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-annotations</artifactId>
+        </exclusion>
       </exclusions>
+    </dependency>
+  
+    <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-core-jakarta</artifactId>
+        <version>${version.swagger.core.jakarta}</version>
     </dependency>
     <!-- Used internally by openapi-generator-tool, we can't use JBoss Logging -->
     <dependency>
