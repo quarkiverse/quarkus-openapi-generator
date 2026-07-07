@@ -41,6 +41,8 @@ public abstract class OpenApiClientGeneratorWrapper {
      */
     public static final String DEFAULT_SECURITY_SCHEME = "defaultSecurityScheme";
     public static final String SUPPORTS_ADDITIONAL_PROPERTIES_AS_ATTRIBUTE = "supportsAdditionalPropertiesWithComposedSchema";
+    public static final String IMPLICIT_HEADERS = "implicitHeaders";
+    public static final String IMPLICIT_HEADERS_REGEX = "implicitHeadersRegex";
     private static final String ONCE_LOGGER = "org.openapitools.codegen.utils.oncelogger.enabled";
     private static final Map<String, String> defaultTypeMappings = Map.of("date", "LocalDate", "DateTime",
             "OffsetDateTime");
@@ -238,6 +240,16 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withUseOneOfInterfaces(final Boolean useOneOfInterfaces) {
         this.configurator.addAdditionalProperty(USE_ONE_OF_INTERFACES, useOneOfInterfaces);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withImplicitHeaders(final Boolean implicitHeaders) {
+        this.configurator.addAdditionalProperty(IMPLICIT_HEADERS, implicitHeaders);
+        return this;
+    }
+
+    public OpenApiClientGeneratorWrapper withImplicitHeadersRegex(final String implicitHeadersRegex) {
+        this.configurator.addAdditionalProperty(IMPLICIT_HEADERS_REGEX, implicitHeadersRegex);
         return this;
     }
 

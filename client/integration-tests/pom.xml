@@ -30,6 +30,7 @@
     <module>generation-input</module>
     <module>generation-tests</module>
     <module>include</module>
+    <module>implicit-headers</module>
     <module>initialize-empty-collections</module>
     <module>method-per-media-type</module>
     <module>multipart-request</module>

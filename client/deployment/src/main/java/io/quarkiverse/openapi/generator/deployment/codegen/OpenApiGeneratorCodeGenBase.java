@@ -9,6 +9,8 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.IMPLICIT_HEADERS;
+import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.IMPLICIT_HEADERS_REGEX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
@@ -383,6 +385,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_ONE_OF_INTERFACES, Boolean.class)
                 .ifPresent(generator::withUseOneOfInterfaces);
+
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.IMPLICIT_HEADERS, Boolean.class)
+                .ifPresent(generator::withImplicitHeaders);
+
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.IMPLICIT_HEADERS_REGEX, String.class)
+                .ifPresent(generator::withImplicitHeadersRegex);
 
         Boolean additionalPropertiesAsAttribute = getValues(smallRyeConfig, openApiFilePath,
                 CodegenConfig.ConfigName.ADDITIONAL_PROPERTIES_AS_ATTRIBUTE, Boolean.class)
