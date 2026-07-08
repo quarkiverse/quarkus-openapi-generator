@@ -119,6 +119,17 @@
         "xml": {
           "name": "primate"
         }
+      },
+      "RegisterDeviceV3Request": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "serialNumber": {
+            "type": "string"
+          }
+        }
       }
     }
   }

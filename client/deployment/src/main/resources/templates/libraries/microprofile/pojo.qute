@@ -156,19 +156,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        {m.classname} model = ({m.classname}) obj;
+        {m.classname} other = ({m.classname}) obj;
 
         {#if m.vars.size == 1}
-        return java.util.Objects.equals({m.vars.0.name}, model.{m.vars.0.name});
+        return java.util.Objects.equals({m.vars.0.name}, other.{m.vars.0.name});
         {#else}
         {#for v in m.vars}
         {#if !v.deprecated || openapi:genDeprecatedModelAttr(package, m.classname, codegen)}
         {#if v_isFirst}
-        return java.util.Objects.equals({v.name}, model.{v.name}) &&
+        return java.util.Objects.equals({v.name}, other.{v.name}) &&
         {#else if v_isLast}
-        java.util.Objects.equals({v.name}, model.{v.name});
+        java.util.Objects.equals({v.name}, other.{v.name});
         {#else}
-        java.util.Objects.equals({v.name}, model.{v.name}) &&
+        java.util.Objects.equals({v.name}, other.{v.name}) &&
         {/if}
         {/if}
         {/for}
