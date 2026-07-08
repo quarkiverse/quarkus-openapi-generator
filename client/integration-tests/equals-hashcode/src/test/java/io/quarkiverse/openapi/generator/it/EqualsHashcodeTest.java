@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.time.OffsetDateTime;
 
 import org.acme.equals.hashcode.model.Animal;
+import org.acme.equals.hashcode.model.RegisterDeviceV3Request;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -46,6 +47,38 @@ class EqualsHashcodeTest {
 
         var object2 = new Animal();
         object2.setDeceased(offset);
+
+        assertEquals(object1.hashCode(), object2.hashCode());
+    }
+
+    @Test
+    void verifyModelPropertyNameDoesNotBreakEquals() {
+        var object1 = new RegisterDeviceV3Request();
+        object1.setModel("iPhone");
+        object1.setSerialNumber("SN-001");
+
+        var object2 = new RegisterDeviceV3Request();
+        object2.setModel("iPhone");
+        object2.setSerialNumber("SN-001");
+
+        var object3 = new RegisterDeviceV3Request();
+        object3.setModel("iPad");
+        object3.setSerialNumber("SN-001");
+
+        assertEquals(object1, object2);
+        assertNotEquals(object1, object3);
+        assertNotEquals(object2, object3);
+    }
+
+    @Test
+    void verifyModelPropertyNameDoesNotBreakHashCode() {
+        var object1 = new RegisterDeviceV3Request();
+        object1.setModel("iPhone");
+        object1.setSerialNumber("SN-001");
+
+        var object2 = new RegisterDeviceV3Request();
+        object2.setModel("iPhone");
+        object2.setSerialNumber("SN-001");
 
         assertEquals(object1.hashCode(), object2.hashCode());
     }

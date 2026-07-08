@@ -31,6 +31,18 @@ class VerifyGenerationTest {
         assertNotEquals(hashCodeMethod.getDeclaringClass(), org.acme.equals.hashcode.model.Animal.class);
     }
 
+    @Test
+    void verifyThatGeneratedModelWithModelPropertyHasEqualsDefined() {
+        var equalsMethod = getMethod(org.acme.equals.hashcode.model.RegisterDeviceV3Request.class, "equals");
+        assertEquals(equalsMethod.getDeclaringClass(), org.acme.equals.hashcode.model.RegisterDeviceV3Request.class);
+    }
+
+    @Test
+    void verifyThatGeneratedModelWithModelPropertyHasHashCodeDefined() {
+        var hashCodeMethod = getMethod(org.acme.equals.hashcode.model.RegisterDeviceV3Request.class, "hashCode");
+        assertEquals(hashCodeMethod.getDeclaringClass(), org.acme.equals.hashcode.model.RegisterDeviceV3Request.class);
+    }
+
     private static Method getMethod(Class<?> clazz, String methodName) {
         var methods = clazz.getMethods();
 
