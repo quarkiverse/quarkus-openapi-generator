@@ -12,6 +12,8 @@ include::./includes/want-to-contribute.adoc[]
 
 include::./includes/getting-started.adoc[leveloffset=+1, opts=optional]
 
+NOTE: For using both Client and Server generators together, see xref:server.adoc#using-client-and-server-together[Using Client and Server Generators Together].
+
 [[resteasy-support]]
 == RESTEasy Reactive and Classic support
 
