@@ -1,6 +1,7 @@
 package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import static io.quarkiverse.openapi.generator.deployment.assertions.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -19,6 +20,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AnnotationExpr;
@@ -180,9 +182,53 @@ class QuarkusJavaClientCodegenTest {
         // If it's not a NormalAnnotationExpr, there's definitely no multiSegmentParams attribute
     }
 
+    @Test
+    void verifyInlineEnumReuse() throws URISyntaxException, FileNotFoundException {
+        final List<File> generatedFiles = createGeneratorWrapper("inline-enum-reuse.json", true)
+                .generate("org.enumreuse");
+        assertFalse(generatedFiles.isEmpty());
+
+        final Optional<File> orderFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("Order.java")).findFirst();
+        assertThat(orderFile).isPresent();
+
+        final Optional<File> shipmentFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("Shipment.java")).findFirst();
+        assertThat(shipmentFile).isPresent();
+
+        final Optional<File> sharedStatusFile = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("SharedStatus.java")).findFirst();
+        assertThat(sharedStatusFile).isPresent();
+
+        final CompilationUnit orderCu = StaticJavaParser.parse(orderFile.orElseThrow());
+        final CompilationUnit shipmentCu = StaticJavaParser.parse(shipmentFile.orElseThrow());
+
+        assertThat(orderCu.toString()).contains("SharedStatus");
+        assertThat(orderCu.toString()).doesNotContain("StatusEnum");
+
+        assertThat(shipmentCu.toString()).contains("SharedStatus");
+        assertThat(shipmentCu.toString()).doesNotContain("StatusEnum");
+
+        final CompilationUnit statusCu = StaticJavaParser.parse(sharedStatusFile.orElseThrow());
+        final List<EnumConstantDeclaration> constants = statusCu.findAll(EnumConstantDeclaration.class);
+        assertThat(constants).hasSize(4)
+                .extracting(EnumConstantDeclaration::getNameAsString)
+                .containsExactlyInAnyOrder("CREATED", "PAID", "SHIPPED", "CANCELLED");
+    }
+
     private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName) throws URISyntaxException {
         final Path openApiSpec = getOpenApiSpecPath(specFileName);
-        return new OpenApiClassicClientGeneratorWrapper(openApiSpec, getOpenApiTargetPath(openApiSpec), false, true);
+        OpenApiClientGeneratorWrapper wrapper = new OpenApiClassicClientGeneratorWrapper(openApiSpec,
+                getOpenApiTargetPath(openApiSpec), false, true);
+        return wrapper;
+    }
+
+    private OpenApiClientGeneratorWrapper createGeneratorWrapper(String specFileName, boolean reuseEnums)
+            throws URISyntaxException {
+        final Path openApiSpec = getOpenApiSpecPath(specFileName);
+        OpenApiClientGeneratorWrapper wrapper = new OpenApiClassicClientGeneratorWrapper(openApiSpec,
+                getOpenApiTargetPath(openApiSpec), false, true);
+        return wrapper.withReuseEnums(reuseEnums);
     }
 
     private Path getOpenApiSpecPath(String specFileName) throws URISyntaxException {

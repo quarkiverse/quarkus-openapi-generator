@@ -48,6 +48,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     public static final String QUARKUS_GENERATOR_NAME = "quarkus-generator";
 
     private static final String AUTH_PACKAGE = "auth";
+    private static final String REUSE_ENUMS = "reuse-enums";
     /*
      * Default server URL (the first one in the OpenAPI spec file servers definition.
      */
@@ -224,6 +225,15 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
             if ("object".equals(p.getType()) && p.getDefault() != null && p.getAdditionalProperties() == null
                     && p.getItems() == null) {
                 p.setAdditionalProperties(true);
+            }
+        }
+        boolean reuseEnums = Boolean
+                .parseBoolean(String.valueOf(this.additionalProperties.getOrDefault(REUSE_ENUMS, false)));
+        if (reuseEnums && p != null && p.getEnum() != null && p.get$ref() == null) {
+            String matchedModelName = findMatchingEnumModel(p.getEnum());
+            if (matchedModelName != null) {
+                Schema<?> refSchema = new Schema<>().$ref("#/components/schemas/" + matchedModelName);
+                return super.fromProperty(name, refSchema, required, schemaIsFromAdditionalProperties);
             }
         }
         return super.fromProperty(name, p, required, schemaIsFromAdditionalProperties);
