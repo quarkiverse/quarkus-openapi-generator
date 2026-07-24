@@ -1,0 +1,14 @@
+By default, one API class is generated per tag defined in the OpenAPI specification. If you prefer to have all
+operations generated in a single API class, regardless of the tags, set `single-api-name` to the desired name:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.my_openapi_yaml.single-api-name=MyService
+----
+
+The value is used verbatim as the name of the generated class, so the example above generates a single `MyService`
+class containing all the operations in the specification. Because of that, the value must be a valid Java class
+name (the build fails otherwise), and `api-name-prefix`/`api-name-suffix` are not applied to it.
+
+This option is equivalent to the OpenAPI Normalizer rule `SET_TAGS_FOR_ALL_OPERATIONS`; if both are set,
+`single-api-name` takes precedence.
