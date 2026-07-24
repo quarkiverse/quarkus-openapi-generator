@@ -815,6 +815,25 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
+    void verifySingleApiName() throws Exception {
+        final List<File> generatedFiles = this.createGeneratorWrapper("petstore-openapi.json")
+                .withSingleApiName("PetStore")
+                .generate("org.acme.single");
+
+        final List<File> apiFiles = generatedFiles.stream()
+                .filter(f -> f.getName().endsWith("Api.java"))
+                .toList();
+        assertThat(apiFiles).extracting(File::getName).containsExactly("PetStoreApi.java");
+
+        final CompilationUnit compilationUnit = StaticJavaParser.parse(apiFiles.get(0));
+        final List<String> methodNames = compilationUnit.findAll(MethodDeclaration.class).stream()
+                .map(MethodDeclaration::getNameAsString)
+                .toList();
+        // operations originally spread across the pet, store and user tags
+        assertThat(methodNames).contains("findPetsByStatus", "getOrderById", "getUserByName");
+    }
+
+    @Test
     void verifyDynamicUrlAnnotation() throws Exception {
         List<File> generatedFiles = createGeneratorWrapperReactive("petstore-openapi.json")
                 .withUseDynamicUrl(true)

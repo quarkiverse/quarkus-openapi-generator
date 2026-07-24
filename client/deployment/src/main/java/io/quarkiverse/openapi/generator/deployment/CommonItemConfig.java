@@ -87,6 +87,16 @@ public interface CommonItemConfig {
     Map<String, String> normalizer();
 
     /**
+     * When set, all operations are generated in a single API class, regardless of the tags declared in the
+     * specification. The value is used as the tag for every operation, so the generated class is named after it
+     * plus the `Api` suffix (or the configured `api-name-suffix`). For example, setting this to `MyService`
+     * generates a single `MyServiceApi` class. Equivalent to the OpenAPI Normalizer rule
+     * `SET_TAGS_FOR_ALL_OPERATIONS`; if both are set, this option takes precedence.
+     */
+    @WithName("single-api-name")
+    Optional<String> singleApiName();
+
+    /**
      * Enable SmallRye Mutiny support. If you set this to {@code true}, all return types will be wrapped in
      * {@link io.smallrye.mutiny.Uni}.
      */
