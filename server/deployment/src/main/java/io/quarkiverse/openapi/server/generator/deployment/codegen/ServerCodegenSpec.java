@@ -9,5 +9,6 @@ public record ServerCodegenSpec(
         String basePackage,
         boolean reactive,
         boolean builders,
-        boolean beanValidation) {
+        boolean beanValidation,
+        String modelNameSuffix) {
 }

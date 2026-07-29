@@ -20,6 +20,7 @@
     <module>builders</module>
     <module>openapitools</module>
     <module>apicurio</module>
+    <module>apicurio-model-name-suffix</module>
     <module>apicurio-multispec</module>
     <module>openapitools-multispec</module>
     <module>rest-response</module>
