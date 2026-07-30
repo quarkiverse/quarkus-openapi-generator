@@ -39,7 +39,6 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
@@ -839,7 +838,7 @@ public class OpenApiClientGeneratorWrapperTest {
     }
 
     @Test
-    void verifyPathParamsAreEncoded() throws Exception {
+    void verifyNoPathParamEncodingProviderRegistered() throws Exception {
         List<File> generatedFiles = createGeneratorWrapper("issue-38.yaml")
                 .withEnabledSecurityGeneration(false)
                 .generate("org.issue38");
@@ -851,38 +850,20 @@ public class OpenApiClientGeneratorWrapperTest {
 
         CompilationUnit compilationUnit = StaticJavaParser.parse(file.orElseThrow());
 
-        // Check if any parameter has @MultiSegmentPathParam
-        boolean hasMultiSegmentParam = compilationUnit.findAll(MethodDeclaration.class).stream()
-                .flatMap(method -> method.getParameters().stream())
-                .anyMatch(parameter -> parameter.getAnnotationByName("MultiSegmentPathParam").isPresent());
-
-        // The provider should be registered only if there are multi-segment path params
         boolean foundRegisterProvider = compilationUnit.findAll(AnnotationExpr.class).stream()
                 .filter(annotation -> annotation.getName().getIdentifier().equals("RegisterProvider"))
-                .anyMatch(annotation -> {
-                    if (annotation instanceof SingleMemberAnnotationExpr singleMemberAnnotationExpr) {
-                        return singleMemberAnnotationExpr.getMemberValue().isClassExpr()
-                                && singleMemberAnnotationExpr.getMemberValue().asClassExpr().getType().asString()
-                                        .equals("PathParamEncodingParamConverterProvider");
-                    }
-                    if (annotation instanceof NormalAnnotationExpr normalAnnotationExpr) {
-                        return normalAnnotationExpr.getPairs().stream()
-                                .filter(pair -> pair.getNameAsString().equals("value"))
-                                .map(MemberValuePair::getValue)
-                                .anyMatch(value -> value.isClassExpr()
-                                        && value.asClassExpr().getType().asString()
-                                                .equals("PathParamEncodingParamConverterProvider"));
-                    }
-                    return false;
-                });
-        assertThat(foundRegisterProvider).isEqualTo(hasMultiSegmentParam);
+                .anyMatch(annotation -> annotation.toString().contains("PathParamEncodingParamConverterProvider"));
+        assertThat(foundRegisterProvider).isFalse();
 
-        // No parameter should have both @PathParam and @EncodedPathParam
+        boolean foundMultiSegmentAnnotation = compilationUnit.findAll(MethodDeclaration.class).stream()
+                .flatMap(method -> method.getParameters().stream())
+                .anyMatch(parameter -> parameter.getAnnotationByName("MultiSegmentPathParam").isPresent());
+        assertThat(foundMultiSegmentAnnotation).isFalse();
+
         boolean foundEncodedPathParam = compilationUnit.findAll(MethodDeclaration.class).stream()
                 .flatMap(method -> method.getParameters().stream())
-                .noneMatch(parameter -> parameter.getAnnotationByName("PathParam").isPresent()
-                        && parameter.getAnnotationByName("EncodedPathParam").isPresent());
-        assertThat(foundEncodedPathParam).isTrue();
+                .anyMatch(parameter -> parameter.getAnnotationByName("EncodedPathParam").isPresent());
+        assertThat(foundEncodedPathParam).isFalse();
     }
 
     @Test
