@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkiverse.openapi.generator.it.pathencoding.api.api.DefaultApi;
 import io.quarkiverse.openapi.generator.it.pathencoding.api.model.Resource;
+import io.quarkiverse.openapi.generator.it.pathencoding.api.model.StockProfit;
 import io.quarkiverse.openapi.generator.it.pathencoding.api.model.User;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -45,5 +46,13 @@ class PathEncodingTest {
         Resource result = api.getResourceById("test+value");
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo("test+value");
+    }
+
+    @Test
+    void testQueryParamNotDroppedWithPathParam() {
+        StockProfit result = api.getStockProfit("KGTO", new java.math.BigDecimal("110"));
+        assertThat(result).isNotNull();
+        assertThat(result.getSymbol()).isEqualTo("KGTO");
+        assertThat(result.getProfit()).isEqualTo("10%");
     }
 }

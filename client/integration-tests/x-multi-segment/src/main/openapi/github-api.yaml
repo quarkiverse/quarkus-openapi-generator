@@ -25,6 +25,16 @@ paths:
           schema:
             type: string
           x-multi-segment: true
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Successful response
@@ -78,6 +88,10 @@ components:
         ref:
           type: string
         url:
+          type: string
+        page:
+          type: integer
+        filter:
           type: string
         object:
           type: object

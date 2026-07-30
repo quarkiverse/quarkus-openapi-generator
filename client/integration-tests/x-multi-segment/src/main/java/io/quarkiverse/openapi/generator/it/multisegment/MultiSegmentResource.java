@@ -5,6 +5,7 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -19,6 +20,8 @@ public class MultiSegmentResource {
     public Response getRepoRef(
             @PathParam("owner") String owner,
             @PathParam("ref") String ref,
+            @QueryParam("page") Integer page,
+            @QueryParam("filter") String filter,
             @HeaderParam("Authorization") String authHeader) {
 
         // Verify authentication
@@ -26,10 +29,12 @@ public class MultiSegmentResource {
             return Response.status(401).entity("{\"message\":\"Unauthorized\"}").build();
         }
 
-        // Return mock response
+        String pageField = page != null ? ",\"page\":" + page : "";
+        String filterField = filter != null ? ",\"filter\":\"" + filter + "\"" : "";
+
         String response = String.format(
-                "{\"ref\":\"refs/%s\",\"url\":\"https://api.github.com/repos/%s/git/refs/%s\",\"object\":{\"type\":\"commit\",\"sha\":\"abc123\",\"url\":\"https://api.github.com/repos/%s/git/commits/abc123\"}}",
-                ref, owner, ref, owner);
+                "{\"ref\":\"refs/%s\",\"url\":\"https://api.github.com/repos/%s/git/refs/%s\"%s%s,\"object\":{\"type\":\"commit\",\"sha\":\"abc123\",\"url\":\"https://api.github.com/repos/%s/git/commits/abc123\"}}",
+                ref, owner, ref, pageField, filterField, owner);
 
         return Response.ok(response).build();
     }

@@ -1,7 +1,6 @@
 package io.quarkiverse.openapi.generator.providers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.annotation.Annotation;
@@ -9,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,8 +44,18 @@ class PathParamEncodingParamConverterProviderTest {
     }
 
     @Test
-    void doesNotApplyToNonPathParameters() {
-        assertNull(provider.getConverter(String.class, String.class, new Annotation[0]));
+    void returnsNoopConverterForNonPathParameters() {
+        var converter = provider.getConverter(String.class, String.class, new Annotation[0]);
+        assertEquals("unchanged-value", converter.toString("unchanged-value"));
+    }
+
+    @Test
+    void returnsNoopConverterForQueryParam() throws Exception {
+        Annotation[] annotations = queryParamAnnotations();
+
+        var converter = provider.getConverter(String.class, String.class, annotations);
+        assertEquals("some-value", converter.toString("some-value"));
+        assertEquals("value with spaces", converter.toString("value with spaces"));
     }
 
     @Test
@@ -90,6 +100,11 @@ class PathParamEncodingParamConverterProviderTest {
         return method.getParameters()[0].getAnnotations();
     }
 
+    private Annotation[] queryParamAnnotations() throws Exception {
+        Method method = getClass().getDeclaredMethod("queryParamSample", String.class);
+        return method.getParameters()[0].getAnnotations();
+    }
+
     private void sample(@EncodedPathParam String value) {
         Objects.requireNonNull(value);
     }
@@ -99,6 +114,10 @@ class PathParamEncodingParamConverterProviderTest {
     }
 
     private void plainPathParamSample(@PathParam("id") String value) {
+        Objects.requireNonNull(value);
+    }
+
+    private void queryParamSample(@QueryParam("filter") String value) {
         Objects.requireNonNull(value);
     }
 }

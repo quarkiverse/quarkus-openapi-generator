@@ -72,10 +72,7 @@ public class PathParamEncodingParamConverterProvider implements ParamConverterPr
         if (hasEncodedPathParam(annotations)) {
             return (ParamConverter<T>) STRING_PATH_PARAM_CONVERTER;
         }
-        if (hasPathParam(annotations)) {
-            return (ParamConverter<T>) NOOP_CONVERTER;
-        }
-        return null;
+        return (ParamConverter<T>) NOOP_CONVERTER;
     }
 
     /**
@@ -174,18 +171,6 @@ public class PathParamEncodingParamConverterProvider implements ParamConverterPr
         }
         for (Annotation annotation : annotations) {
             if (annotation.annotationType() == EncodedPathParam.class) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean hasPathParam(Annotation[] annotations) {
-        if (annotations == null) {
-            return false;
-        }
-        for (Annotation annotation : annotations) {
-            if (annotation.annotationType() == jakarta.ws.rs.PathParam.class) {
                 return true;
             }
         }
