@@ -46,6 +46,23 @@ If the OpenAPI specification file has `securitySchemes` definitions, but no http
 
 See the module https://github.com/quarkiverse/quarkus-openapi-generator/tree/main/client/integration-tests/security[security] for an example of how to use this feature.
 
+== Multiple Security Schemes
+
+When an OpenAPI operation references multiple security schemes, the extension applies *all* matching authentication providers by default. This means every configured scheme (API key, Basic, Bearer, OAuth2) will add its credentials to the request.
+
+If your specification uses security schemes as *alternatives* (only one needs to succeed), you can enable exclusive authentication mode. In this mode, the extension stops after the first provider that successfully authenticates, skipping the rest. If the first provider fails (e.g., missing OAuth2 configuration), it falls back to the next one.
+
+[%autowidth]
+|===
+|Description |Property Key |Example
+
+|Enable exclusive (OR) authentication
+|`quarkus.openapi-generator.[filename].exclusive-auth`
+|`quarkus.openapi-generator.petstore_json.exclusive-auth=true`
+|===
+
+NOTE: The https://spec.openapis.org/oas/v3.1.0#security-requirement-object[OpenAPI specification] distinguishes between alternative security requirements (OR) and conjunctive requirements (AND). However, the upstream code generator flattens both into a single list, so the extension cannot automatically determine the intended semantics. Use this flag to select the behavior that matches your API's requirements.
+
 == Basic HTTP Authentication
 
 For Basic HTTP Authentication, these are the supported configurations:

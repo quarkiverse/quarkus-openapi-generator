@@ -114,6 +114,11 @@ class BaseCompositeAuthenticationProviderTest {
 
     private BaseCompositeAuthenticationProvider createProviderWithConfig(String specId, Optional<String> urlValue,
             List<AuthProvider> authProviders) {
+        return createProviderWithConfig(specId, urlValue, Optional.empty(), authProviders);
+    }
+
+    private BaseCompositeAuthenticationProvider createProviderWithConfig(String specId, Optional<String> urlValue,
+            Optional<Boolean> exclusiveAuth, List<AuthProvider> authProviders) {
         try (MockedStatic<ConfigProvider> configMock = mockStatic(ConfigProvider.class)) {
             Config config = mock(Config.class);
             configMock.when(ConfigProvider::getConfig).thenReturn(config);
@@ -122,12 +127,17 @@ class BaseCompositeAuthenticationProviderTest {
                             + BaseCompositeAuthenticationProvider.REST_CLIENT_URL_CONFIG_SUFFIX,
                     String.class))
                     .thenReturn(urlValue);
+            when(config.getOptionalValue(
+                    BaseCompositeAuthenticationProvider.EXCLUSIVE_AUTH_CONFIG_PREFIX + specId
+                            + BaseCompositeAuthenticationProvider.EXCLUSIVE_AUTH_CONFIG_SUFFIX,
+                    Boolean.class))
+                    .thenReturn(exclusiveAuth);
             return new BaseCompositeAuthenticationProvider(specId, authProviders);
         }
     }
 
     private BaseCompositeAuthenticationProvider createProviderWithConfig(String specId, Optional<String> urlValue) {
-        return createProviderWithConfig(specId, urlValue, List.of());
+        return createProviderWithConfig(specId, urlValue, Optional.empty(), List.of());
     }
 
     private void withConfigMockThrows(String specId, Optional<String> urlValue, ThrowingRunnable action) throws IOException {
@@ -139,6 +149,11 @@ class BaseCompositeAuthenticationProviderTest {
                             + BaseCompositeAuthenticationProvider.REST_CLIENT_URL_CONFIG_SUFFIX,
                     String.class))
                     .thenReturn(urlValue);
+            lenient().when(config.getOptionalValue(
+                    BaseCompositeAuthenticationProvider.EXCLUSIVE_AUTH_CONFIG_PREFIX + specId
+                            + BaseCompositeAuthenticationProvider.EXCLUSIVE_AUTH_CONFIG_SUFFIX,
+                    Boolean.class))
+                    .thenReturn(Optional.empty());
             action.run();
         }
     }
@@ -161,13 +176,13 @@ class BaseCompositeAuthenticationProviderTest {
     //region Alternative security scheme tests
 
     @Test
-    void testOnlyOneAlternativeProviderIsCalled() throws IOException {
+    void testAllMatchingProvidersAreCalled() throws IOException {
         AuthProvider provider1 = Mockito.mock(AuthProvider.class);
         AuthProvider provider2 = Mockito.mock(AuthProvider.class);
 
         OperationAuthInfo operation = createOperation();
         when(provider1.operationsToFilter()).thenReturn(List.of(operation));
-        lenient().when(provider2.operationsToFilter()).thenReturn(List.of(operation));
+        when(provider2.operationsToFilter()).thenReturn(List.of(operation));
 
         ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
@@ -179,7 +194,7 @@ class BaseCompositeAuthenticationProviderTest {
         composite.filter(requestContext);
 
         verify(provider1, times(1)).filter(any(ClientRequestContext.class));
-        verify(provider2, never()).filter(any(ClientRequestContext.class));
+        verify(provider2, times(1)).filter(any(ClientRequestContext.class));
         assertEquals("Bearer token1", headers.getFirst("Authorization"));
     }
 
@@ -232,15 +247,15 @@ class BaseCompositeAuthenticationProviderTest {
     }
 
     @Test
-    void testStopsOnFirstSuccessfulProvider() throws IOException {
+    void testAllMatchingProvidersAreCalledInOrder() throws IOException {
         AuthProvider provider1 = Mockito.mock(AuthProvider.class);
         AuthProvider provider2 = Mockito.mock(AuthProvider.class);
         AuthProvider provider3 = Mockito.mock(AuthProvider.class);
 
         OperationAuthInfo operation = createOperation();
         when(provider1.operationsToFilter()).thenReturn(List.of(operation));
-        lenient().when(provider2.operationsToFilter()).thenReturn(List.of(operation));
-        lenient().when(provider3.operationsToFilter()).thenReturn(List.of(operation));
+        when(provider2.operationsToFilter()).thenReturn(List.of(operation));
+        when(provider3.operationsToFilter()).thenReturn(List.of(operation));
 
         ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
@@ -253,8 +268,8 @@ class BaseCompositeAuthenticationProviderTest {
         composite.filter(requestContext);
 
         verify(provider1, times(1)).filter(any(ClientRequestContext.class));
-        verify(provider2, never()).filter(any(ClientRequestContext.class));
-        verify(provider3, never()).filter(any(ClientRequestContext.class));
+        verify(provider2, times(1)).filter(any(ClientRequestContext.class));
+        verify(provider3, times(1)).filter(any(ClientRequestContext.class));
         assertEquals("Bearer token1", headers.getFirst("Authorization"));
     }
 
@@ -293,6 +308,59 @@ class BaseCompositeAuthenticationProviderTest {
         BaseCompositeAuthenticationProvider composite = new BaseCompositeAuthenticationProvider(List.of(provider));
 
         assertFilterThrows(composite, requestContext, "Network error");
+    }
+
+    //endregion
+
+    //region Exclusive auth tests (OR semantics)
+
+    @Test
+    void testExclusiveAuthStopsOnFirstSuccess() throws IOException {
+        AuthProvider provider1 = Mockito.mock(AuthProvider.class);
+        AuthProvider provider2 = Mockito.mock(AuthProvider.class);
+
+        OperationAuthInfo operation = createOperation();
+        when(provider1.operationsToFilter()).thenReturn(List.of(operation));
+        lenient().when(provider2.operationsToFilter()).thenReturn(List.of(operation));
+
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
+        MultivaluedMap<String, Object> headers = requestContext.getHeaders();
+
+        givenProviderWillAuthenticate(provider1, headers, "Bearer token1");
+
+        BaseCompositeAuthenticationProvider composite = createProviderWithConfig(
+                "my_spec_yaml", Optional.empty(), Optional.of(true), List.of(provider1, provider2));
+
+        composite.filter(requestContext);
+
+        verify(provider1, times(1)).filter(any(ClientRequestContext.class));
+        verify(provider2, never()).filter(any(ClientRequestContext.class));
+        assertEquals("Bearer token1", headers.getFirst("Authorization"));
+    }
+
+    @Test
+    void testExclusiveAuthFallsBackOnFailure() throws IOException {
+        AuthProvider provider1 = Mockito.mock(AuthProvider.class);
+        AuthProvider provider2 = Mockito.mock(AuthProvider.class);
+
+        OperationAuthInfo operation = createOperation();
+        when(provider1.operationsToFilter()).thenReturn(List.of(operation));
+        when(provider2.operationsToFilter()).thenReturn(List.of(operation));
+
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
+        MultivaluedMap<String, Object> headers = requestContext.getHeaders();
+
+        givenProviderWillFail(provider1, new RuntimeException("Missing OAuth2 configuration"));
+        givenProviderWillAuthenticate(provider2, headers, "Bearer token2");
+
+        BaseCompositeAuthenticationProvider composite = createProviderWithConfig(
+                "my_spec_yaml", Optional.empty(), Optional.of(true), List.of(provider1, provider2));
+
+        composite.filter(requestContext);
+
+        verify(provider1, times(1)).filter(any(ClientRequestContext.class));
+        verify(provider2, times(1)).filter(any(ClientRequestContext.class));
+        assertEquals("Bearer token2", headers.getFirst("Authorization"));
     }
 
     //endregion

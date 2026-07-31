@@ -2,6 +2,9 @@ package io.quarkiverse.openapi.generator;
 
 import java.util.Optional;
 
+import io.smallrye.config.WithDefault;
+import io.smallrye.config.WithName;
+
 import io.quarkus.runtime.annotations.ConfigGroup;
 
 /**
@@ -21,6 +24,14 @@ public interface SpecItemConfig {
      * @see AuthsConfig
      */
     AuthsConfig auth();
+
+    /**
+     * When set to true, only the first successful authentication provider is applied per request (OR semantics).
+     * When false (default), all matching authentication providers are applied (AND semantics).
+     */
+    @WithName("exclusive-auth")
+    @WithDefault("false")
+    boolean exclusiveAuth();
 
     default Optional<AuthsConfig> getAuth() {
         return Optional.ofNullable(auth());
