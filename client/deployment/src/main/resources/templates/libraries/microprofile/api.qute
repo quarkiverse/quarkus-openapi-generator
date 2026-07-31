@@ -11,15 +11,6 @@ import jakarta.validation.Valid;
 import {imp.import};
 {/for}
 
-{!! Determine if we need to register the PathParamEncodingParamConverterProvider !!}
-{!! This is required only if any operation has multi-segment path parameters !!}
-{#set needsPathParamEncodingProvider=false}
-{#for op in operations.operation}
-  {#if op.vendorExtensions.x-multi-segment-params && op.vendorExtensions.x-multi-segment-params.size() > 0}
-    {#set needsPathParamEncodingProvider=true}
-  {/if}
-{/for}
-
 {#if appName}
 /**
  * {appName}
@@ -31,9 +22,6 @@ import {imp.import};
 @org.eclipse.microprofile.rest.client.inject.RegisterRestClient({#if defaultServerUrl.or('') != ''}baseUri="{defaultServerUrl}", {/if}configKey="{configKey}")
 {/if}
 @io.quarkiverse.openapi.generator.annotations.GeneratedClass(value="{openapi:parseUri(inputSpec)}", tag = "{baseName}")
-{#if needsPathParamEncodingProvider}
-@org.eclipse.microprofile.rest.client.annotation.RegisterProvider(io.quarkiverse.openapi.generator.providers.PathParamEncodingParamConverterProvider.class)
-{/if}
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider(io.quarkiverse.openapi.generator.providers.OperationIdFilter.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)

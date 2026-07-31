@@ -50,6 +50,29 @@ paths:
         "404":
           description: Not found
 
+  /profit/{symbol}:
+    get:
+      summary: "Get stock profit"
+      description: "Mimics stock-profit scenario from issue #1738: String path param + number query param."
+      operationId: getStockProfit
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: currentPrice
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockProfit'
+
 components:
   schemas:
     User:
@@ -68,4 +91,12 @@ components:
         id:
           type: string
         name:
+          type: string
+
+    StockProfit:
+      type: object
+      properties:
+        symbol:
+          type: string
+        profit:
           type: string
