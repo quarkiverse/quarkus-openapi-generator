@@ -2,10 +2,9 @@ package io.quarkiverse.openapi.generator;
 
 import java.util.Optional;
 
+import io.quarkus.runtime.annotations.ConfigGroup;
 import io.smallrye.config.WithDefault;
 import io.smallrye.config.WithName;
-
-import io.quarkus.runtime.annotations.ConfigGroup;
 
 /**
  * This class represents the runtime authentication related configurations for the individual OpenApi spec definitions,
