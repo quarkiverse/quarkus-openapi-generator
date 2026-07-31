@@ -46,14 +46,19 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
      */
     public static final String OPERATION_ID_PROPERTY = "io.quarkiverse.openapi.generator.operationId";
 
+    static final String EXCLUSIVE_AUTH_CONFIG_PREFIX = "quarkus.openapi-generator.";
+    static final String EXCLUSIVE_AUTH_CONFIG_SUFFIX = ".exclusive-auth";
+
     private final List<AuthProvider> authProviders;
     private final String openApiSpecId;
     private final String baseUrlPath;
+    private final boolean exclusiveAuth;
 
     public BaseCompositeAuthenticationProvider(String openApiSpecId, List<AuthProvider> authProviders) {
         this.openApiSpecId = openApiSpecId;
         this.authProviders = List.copyOf(authProviders);
         this.baseUrlPath = resolveBaseUrlPath();
+        this.exclusiveAuth = resolveExclusiveAuth();
     }
 
     public BaseCompositeAuthenticationProvider(List<AuthProvider> authProviders) {
@@ -79,9 +84,12 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
                 Optional<Exception> possibleException = tryFilter(authProvider, requestContext);
                 if (possibleException.isEmpty()) {
                     applied = true;
-                    break;
+                    if (exclusiveAuth) {
+                        break;
+                    }
+                } else {
+                    exceptionsDuringFilter.add(possibleException.get());
                 }
-                exceptionsDuringFilter.add(possibleException.get());
             }
         }
 
@@ -94,12 +102,10 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
 
     /**
      * Tries to apply the filter of the given provider.
-     * As per the OpenAPI spec, only one security requirement needs to be satisfied.
-     * See <a href="https://spec.openapis.org/oas/v3.1.0#security-requirement-object">Security Requirement Object</a>:
-     * "A declaration of security schemes which can be used for the API operation.
-     * The list of values includes alternative security requirement objects that can be used.
-     * Only one of the security requirement objects need to be satisfied to authorize a request."
-     * Thus, if one provider successfully applied, we stop trying others for this request.
+     * By default, all matching providers are applied (AND semantics). When {@code exclusive-auth}
+     * is enabled, only the first successful provider is applied (OR semantics).
+     * If a provider fails, the exception is collected and iteration continues.
+     * If at least one provider succeeds, no exception is thrown.
      *
      * @return an empty {@link Optional} if the filter was applied successfully,
      *         or an {@link Optional} containing the exception if the provider failed.
@@ -169,8 +175,21 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
      * {@code quarkus.rest-client.<openApiSpecId>.url}.
      * Returns null if the openApiSpecId is not set or the URL cannot be resolved.
      */
+    boolean isExclusiveAuth() {
+        return exclusiveAuth;
+    }
+
     String getBaseUrlPath() {
         return baseUrlPath;
+    }
+
+    private boolean resolveExclusiveAuth() {
+        if (openApiSpecId == null) {
+            return false;
+        }
+        return ConfigProvider.getConfig()
+                .getOptionalValue(EXCLUSIVE_AUTH_CONFIG_PREFIX + openApiSpecId + EXCLUSIVE_AUTH_CONFIG_SUFFIX, Boolean.class)
+                .orElse(false);
     }
 
     private String resolveBaseUrlPath() {
