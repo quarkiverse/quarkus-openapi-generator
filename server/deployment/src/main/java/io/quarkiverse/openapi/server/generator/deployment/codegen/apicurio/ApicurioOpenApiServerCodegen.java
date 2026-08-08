@@ -5,10 +5,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
@@ -99,12 +103,18 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
             }
 
             Map<String, String> returnTypes = collectReturnTypes(config);
-            final Path specToUse;
+            Path specToUse;
             if (returnTypes.isEmpty()) {
                 specToUse = jsonSpec.toPath();
             } else {
                 String modifiedSpecName = originalSpecName.replace(".json", "-modified.json");
                 specToUse = injectReturnTypes(jsonSpec.toPath(), returnTypes, outDir.resolve(modifiedSpecName));
+            }
+
+            String modelNameSuffix = spec.modelNameSuffix();
+            if (modelNameSuffix != null && !modelNameSuffix.isBlank()) {
+                String suffixedSpecName = originalSpecName.replace(".json", "-suffixed.json");
+                specToUse = applyModelNameSuffix(specToUse, modelNameSuffix.trim(), outDir.resolve(suffixedSpecName));
             }
 
             new ApicurioCodegenWrapper(outDir.toFile(), spec).generate(specToUse);
@@ -173,6 +183,70 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         } catch (IOException e) {
             throw new CodeGenException("Error injecting x-codegen-returnType into spec", e);
         }
+    }
+
+    /**
+     * Appends the given suffix to every schema under {@code components/schemas} and rewrites all
+     * {@code #/components/schemas/...} references (including discriminator mappings) accordingly.
+     * Apicurio derives model class names from the schema names, so only the generated beans are
+     * renamed; the JAX-RS resource interfaces keep their original names.
+     */
+    private Path applyModelNameSuffix(Path jsonSpecPath, String suffix, Path outputPath) throws CodeGenException {
+        try {
+            JsonNode root = OBJECT_MAPPER.readTree(jsonSpecPath.toFile());
+            JsonNode schemas = root.path("components").path("schemas");
+            if (schemas.isObject()) {
+                ObjectNode schemasNode = (ObjectNode) schemas;
+                List<String> schemaNames = new ArrayList<>();
+                schemasNode.fieldNames().forEachRemaining(schemaNames::add);
+
+                renameSchemaRefs(root, Set.copyOf(schemaNames), suffix);
+
+                ObjectNode renamedSchemas = OBJECT_MAPPER.createObjectNode();
+                for (String schemaName : schemaNames) {
+                    renamedSchemas.set(schemaName + suffix, schemasNode.get(schemaName));
+                }
+                schemasNode.removeAll();
+                schemasNode.setAll(renamedSchemas);
+            }
+            OBJECT_MAPPER.writeValue(outputPath.toFile(), root);
+            return outputPath;
+        } catch (IOException e) {
+            throw new CodeGenException("Error applying the model name suffix to spec", e);
+        }
+    }
+
+    private static void renameSchemaRefs(JsonNode node, Set<String> schemaNames, String suffix) {
+        if (node.isObject()) {
+            Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> field = fields.next();
+                JsonNode value = field.getValue();
+                if (value.isTextual()) {
+                    renameSchemaRef(value.asText(), schemaNames, suffix)
+                            .ifPresent(newRef -> ((ObjectNode) node).put(field.getKey(), newRef));
+                } else {
+                    renameSchemaRefs(value, schemaNames, suffix);
+                }
+            }
+        } else if (node.isArray()) {
+            node.forEach(element -> renameSchemaRefs(element, schemaNames, suffix));
+        }
+    }
+
+    private static Optional<String> renameSchemaRef(String ref, Set<String> schemaNames, String suffix) {
+        final String schemasRefPrefix = "#/components/schemas/";
+        if (!ref.startsWith(schemasRefPrefix)) {
+            return Optional.empty();
+        }
+        String remainder = ref.substring(schemasRefPrefix.length());
+        int slash = remainder.indexOf('/');
+        String schemaName = slash < 0 ? remainder : remainder.substring(0, slash);
+        if (!schemaNames.contains(schemaName)) {
+            return Optional.empty();
+        }
+        String rest = slash < 0 ? "" : remainder.substring(slash);
+        return Optional.of(schemasRefPrefix + schemaName + suffix + rest);
     }
 
     private File resolveToJSON(Path specPath) throws CodeGenException {
