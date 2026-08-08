@@ -109,6 +109,13 @@ Similarly to bearer token, the API Key Authentication also has the token entry k
 
 The API Key scheme has an additional property that requires where to add the API key in the request token: header, cookie or query. The inner provider takes care of that for you.
 
+NOTE: By default, if the outgoing request already has an `Authorization` header set, its value is forwarded as the API key header to avoid duplicate headers. If you need to keep both the `Authorization` header (e.g. a JWT bearer token) and a static API key in a separate header, disable this behavior with:
+
+[source,properties]
+----
+quarkus.openapi-generator.[filename].auth.[security_scheme_name].use-authorization-header-value=false
+----
+
 == OAuth2 Authentication
 
 The extension will generate a `ClientRequestFilter` capable to add OAuth2 authentication capabilities to the OpenAPI operations that require it. This means that you can use
