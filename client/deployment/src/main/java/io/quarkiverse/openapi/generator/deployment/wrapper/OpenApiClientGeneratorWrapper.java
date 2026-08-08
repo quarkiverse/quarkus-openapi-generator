@@ -238,6 +238,18 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    /**
+     * Generates all operations in a single API class, regardless of the tags in the specification.
+     * Must be called after {@link #withOpenApiNormalizer(Map)}, which replaces the whole normalizer rule set.
+     *
+     * @param singleApiName the tag applied to every operation; the API class is named after it
+     * @return this wrapper
+     */
+    public OpenApiClientGeneratorWrapper withSingleApiName(final String singleApiName) {
+        configurator.addOpenapiNormalizer("SET_TAGS_FOR_ALL_OPERATIONS", singleApiName);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withUseOneOfInterfaces(final Boolean useOneOfInterfaces) {
         this.configurator.addAdditionalProperty(USE_ONE_OF_INTERFACES, useOneOfInterfaces);
         return this;
