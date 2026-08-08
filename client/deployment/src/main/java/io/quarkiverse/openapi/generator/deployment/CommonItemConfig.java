@@ -247,4 +247,14 @@ public interface CommonItemConfig {
      */
     @WithName("use-one-of-interfaces")
     Optional<Boolean> useOneOfInterfaces();
+
+    /**
+     * When enabled, the generator will reuse top-level enum schemas across different API definitions
+     * whenever they share the same set of allowed values. The first encountered enum schema becomes
+     * the canonical type, and subsequent duplicates are replaced with a {@code $ref} to that schema.
+     * This reduces code duplication but may change the logical owner of an enum from a specific API
+     * to a shared model.
+     */
+    @WithName("reuse-enums")
+    Optional<Boolean> reuseEnums();
 }
