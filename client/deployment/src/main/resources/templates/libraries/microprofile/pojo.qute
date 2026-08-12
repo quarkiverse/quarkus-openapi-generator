@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 {/if}
 {#include suppressWarnings.qute/}
-{#if m.vendorExtensions.containsKey('x-class-extra-annotation')}
-{m.vendorExtensions['x-class-extra-annotation']}
-{/if}
+{#for ext in m.vendorExtensions.x-class-extra-annotation.orEmpty}
+{ext}
+{/for}
 {#let xImpl=m.vendorExtensions.x-implements.or(false)}public class {m.classname} {#if m.parent}extends {m.parent}{/if}{#if xImpl} implements {#for iface in xImpl}{iface}{#if iface_hasNext}, {/if}{/for}{/if}{/let} {
 
     {#for v in m.vars}
