@@ -36,6 +36,8 @@
                         <tested.version>${tested.version}</tested.version>
                         <!-- pass-through from outer -P… ; fallback provided below -->
                         <consume.profile>${consume.profile}</consume.profile>
+                        <!-- managed by io.quarkiverse:quarkiverse-parent -->
+                        <version.surefire.plugin>${version.surefire.plugin}</version.surefire.plugin>
                     </properties>
                     <goals>
                         <goal>clean</goal>
