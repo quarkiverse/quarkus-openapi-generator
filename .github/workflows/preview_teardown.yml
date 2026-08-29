@@ -3,8 +3,6 @@ name: Surge.sh Teardown
 on:
   pull_request_target:
     types: [closed]
-    branches-ignore:
-      - main-lts
 
 jobs:
   preview:
@@ -14,8 +12,8 @@ jobs:
     steps:
       - name: Teardown surge preview
         id: deploy
-        run: npx surge teardown https://quarkiverse-openapi-generator-preview-pr-${{ github.event.number }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
-      - name: Update PR status comment on success
+        run: npx surge teardown https://quarkiverse-oapi-pr-${{ github.event.number }}-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }} || true
+      - name: Update PR status comment
         uses: quarkusio/action-helpers@main
         with:
           action: maintain-one-comment
@@ -23,14 +21,4 @@ jobs:
           pr-number: ${{ github.event.number }}
           body: |
             🙈 The PR is closed and the preview is expired.
-          body-marker: <!-- Preview status comment marker -->
-      - name: Update PR status comment on failure
-        uses: quarkusio/action-helpers@main
-        if: ${{ failure() }}
-        with:
-          action: maintain-one-comment
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-number: ${{ github.event.number }}
-          body: |
-            😭 Failed to teardown preview for this PR. Please check the workflow logs.
           body-marker: <!-- Preview status comment marker -->

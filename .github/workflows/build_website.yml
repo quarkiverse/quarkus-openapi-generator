@@ -2,31 +2,31 @@ name: Build Website
 
 on:
   push:
-    branches:
-      - "main"
-      - "main-lts"
-    paths-ignore:
-      - '.gitignore'
-      - 'CODEOWNERS'
-      - 'LICENSE'
-      - '*.md'
-      - '*.adoc'
-      - '*.txt'
-      - '.all-contributorsrc'
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+
+  workflow_dispatch:
   pull_request:
-    paths-ignore:
-      - '.gitignore'
-      - 'CODEOWNERS'
-      - 'LICENSE'
-      - '*.md'
-      - '*.txt'
-      - '.all-contributorsrc'
+    paths:
+      - 'docs/**'
+    types: [ opened, synchronize, reopened ]
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-website:
-    name: Build Website
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v7
+
       - name: Set up JDK 17
         uses: actions/setup-java@v6
         with:
@@ -37,10 +37,35 @@ jobs:
       - name: Build with Maven
         run: mvn '-Dorg.slf4j.simpleLogger.log.org.openapitools=off' -B formatter:validate impsort:check verify --file pom.xml -DskipTests
 
-      - name: Store PR id
-        if: github.event_name == 'pull_request'
+      - name: Validate generated documentation
         run: |
-          echo ${{ github.event.number }} > ./docs/target/generated-docs/pr-id.txt
+          STATUS=$(git status --porcelain docs/modules/ROOT/pages/includes/)
+          if [ -n "$STATUS" ]; then
+            echo -e "Generated documentation is not up to date."
+            echo ""
+            echo "The following generated files were changed or added and must be committed:"
+            echo ""
+            echo "$STATUS" | sed 's/^?? / /; s/^ M / /; s/^/* /'
+            echo ""
+            echo "To fix this:"
+            echo "  1. Run: mvn clean install"
+            echo "  2. Commit the generated documentation files"
+            exit 1
+          else
+            echo -e "Generated documentation is up to date."
+          fi
+
+      - name: Store PR id
+        run: |
+          mkdir pr
+          echo ${{ github.event.number }} > ./pr/pr-id.txt
+
+      - name: Upload PR id as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-id
+          path: pr
+          retention-days: 1
 
       - name: Publishing directory for PR preview
         if: github.event_name == 'pull_request'
