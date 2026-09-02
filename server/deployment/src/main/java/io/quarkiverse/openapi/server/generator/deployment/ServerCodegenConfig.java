@@ -159,5 +159,16 @@ public interface ServerCodegenConfig {
          */
         Map<String, OperationConfig> operationIds();
 
+        /**
+         * Suffix to append to the generated model (bean) class names, e.g. {@code Dto} generates {@code PetDto}
+         * instead of {@code Pet}.
+         * <p>
+         * The suffix is applied only to the model classes generated from {@code components/schemas}; the generated
+         * JAX-RS resource interfaces keep their original names.
+         * <p>
+         * Only applied for {@code apicurio} generator.
+         */
+        Optional<String> modelNameSuffix();
+
     }
 }

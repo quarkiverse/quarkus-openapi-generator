@@ -31,6 +31,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_OPERATION_IDS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".operation-ids";
     String CODEGEN_SERVER_INCLUDE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".include";
     String CODEGEN_SERVER_EXCLUDE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".exclude";
+    String CODEGEN_SERVER_MODEL_NAME_SUFFIX = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".model-name-suffix";
 
     static String getBasePackagePropertyName() {
         return CODEGEN_BASE_PACKAGE;
@@ -110,5 +111,9 @@ public interface CodegenConfig extends ServerCodegenConfig {
 
     static String getServerExclude() {
         return CODEGEN_SERVER_EXCLUDE;
+    }
+
+    static String getServerModelNameSuffix() {
+        return CODEGEN_SERVER_MODEL_NAME_SUFFIX;
     }
 }
