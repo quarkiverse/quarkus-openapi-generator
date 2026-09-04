@@ -386,6 +386,9 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.USE_ONE_OF_INTERFACES, Boolean.class)
                 .ifPresent(generator::withUseOneOfInterfaces);
 
+        getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.REUSE_ENUMS, Boolean.class)
+                .ifPresent(generator::withReuseEnums);
+
         getValues(smallRyeConfig, openApiFilePath, CodegenConfig.ConfigName.IMPLICIT_HEADERS, Boolean.class)
                 .ifPresent(generator::withImplicitHeaders);
 
