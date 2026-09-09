@@ -72,6 +72,7 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         IMPORT_MAPPINGS("import-mappings"),
         SCHEMA_MAPPINGS("schema-mappings"),
         NORMALIZER("open-api-normalizer"),
+        SINGLE_API_NAME("single-api-name"),
         RETURN_RESPONSE("return-response"),
         ENABLE_SECURITY_GENERATION("enable-security-generation"),
         CONFIG_KEY("config-key"),
