@@ -9,8 +9,6 @@ import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigNa
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.BASE_PACKAGE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.DEFAULT_SECURITY_SCHEME;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.EXCLUDE;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.IMPLICIT_HEADERS;
-import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.IMPLICIT_HEADERS_REGEX;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INCLUDE;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.INPUT_BASE_DIR;
 import static io.quarkiverse.openapi.generator.deployment.CodegenConfig.ConfigName.MODEL_NAME_PREFIX;
@@ -98,13 +96,26 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     @Override
     public boolean shouldRun(Path sourceDir, Config config) {
+        // Only run for the main source directory to prevent multiple executions
+        // when the project has multiple source roots (e.g. src/main and src/test),
+        // which would otherwise generate duplicate classes when input-base-dir is set,
+        // since the resolved directory does not depend on which source root triggered it.
+        if (!sourceDir.endsWith(Path.of("src", "main", this.inputDirectory()))) {
+            return isTestSourceDir(sourceDir) && getInputBaseDirRelativeToModule(sourceDir, config).isEmpty()
+                    && Files.isDirectory(sourceDir);
+        }
+
         String inputBaseDir = getInputBaseDirRelativeToModule(sourceDir, config).orElse(null);
 
         if (inputBaseDir != null) {
             return Files.isDirectory(Path.of(inputBaseDir));
         } else {
-            return Files.isDirectory(sourceDir) || sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()));
+            return Files.isDirectory(sourceDir);
         }
+    }
+
+    private boolean isTestSourceDir(Path sourceDir) {
+        return sourceDir.endsWith(Path.of("src", "test", this.inputDirectory()));
     }
 
     protected boolean isRestEasyReactive(CodeGenContext context) {
