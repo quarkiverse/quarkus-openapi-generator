@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 import jakarta.ws.rs.core.HttpHeaders;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,8 +26,6 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTestResource(TokenPropagationExternalServicesMock.class)
 @QuarkusTestResource(KeycloakServiceMock.class)
 @QuarkusTest
-// Enabled only for RESTEasy Classic while https://github.com/quarkiverse/quarkus-openapi-generator/issues/434 is not fixed
-@Tag("resteasy-classic")
 class TokenPropagationTest {
 
     private static class HeaderArgument {
