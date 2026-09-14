@@ -2,7 +2,16 @@ By default, this extension generates the methods according to their returning mo
 
 If you want to return `jakarta.ws.rs.core.Response` in _all_ cases instead, you can set the `return-response` property to `Response` or `true`.
 
-== Example
+== Global configuration
+
+You can set `return-response` **globally** to apply it to all your OpenAPI specifications at once, without repeating the configuration for each spec. The per-spec value takes precedence over the global value.
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.return-response=true
+----
+
+== Per-spec configuration
 
 Given you want to return `jakarta.ws.rs.core.Response` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
 
@@ -13,7 +22,7 @@ quarkus.openapi-generator.codegen.spec.my_openapi_yaml.return-response=true
 
 If you want to return `org.jboss.resteasy.reactive.RestResponse` in _all_ cases instead, you can set the `return-response` property to `RestResponse`.
 
-== Example
+== Per-spec configuration with RestResponse
 
 Given you want to return `org.jboss.resteasy.reactive.RestResponse` for the `my-openapi.yaml` file, you must add the following to your `application.properties` file:
 
