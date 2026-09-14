@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.lang.model.SourceVersion;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 import org.openapitools.codegen.CodegenConstants;
@@ -235,6 +237,26 @@ public abstract class OpenApiClientGeneratorWrapper {
 
     public OpenApiClientGeneratorWrapper withOpenApiNormalizer(final Map<String, String> openApiNormalizer) {
         configurator.setOpenapiNormalizer(openApiNormalizer);
+        return this;
+    }
+
+    /**
+     * Generates all operations in a single API class named exactly after the given value.
+     * Must be called after {@link #withOpenApiNormalizer(Map)}, which replaces the whole normalizer rule set.
+     *
+     * @param singleApiName the name of the generated API class; must be a valid Java class name
+     * @return this wrapper
+     * @throws IllegalArgumentException if the given value is not a valid Java class name
+     */
+    public OpenApiClientGeneratorWrapper withSingleApiName(final String singleApiName) {
+        if (singleApiName == null || !SourceVersion.isIdentifier(singleApiName)
+                || SourceVersion.isKeyword(singleApiName)) {
+            throw new IllegalArgumentException(
+                    "Invalid 'single-api-name' value '" + singleApiName
+                            + "'. The value must be a valid Java class name.");
+        }
+        configurator.addOpenapiNormalizer("SET_TAGS_FOR_ALL_OPERATIONS", singleApiName);
+        configurator.addAdditionalProperty(QuarkusJavaClientCodegen.SINGLE_API_NAME, singleApiName);
         return this;
     }
 
