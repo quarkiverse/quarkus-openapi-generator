@@ -1,0 +1,43 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Inline Enum Reuse",
+    "version": "1.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Order": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["created", "paid", "shipped", "cancelled"]
+          }
+        }
+      },
+      "Shipment": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["created", "paid", "shipped", "cancelled"]
+          },
+          "statusHistory": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["created", "paid", "shipped", "cancelled"]
+            }
+          }
+        }
+      },
+      "SharedStatus": {
+        "type": "string",
+        "enum": ["created", "paid", "shipped", "cancelled"]
+      }
+    }
+  }
+}
