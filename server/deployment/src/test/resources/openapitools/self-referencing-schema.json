@@ -1,0 +1,46 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Self-referencing schema test",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/something": {
+      "get": {
+        "summary": "Get something",
+        "operationId": "getSomething",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Something"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Something": {
+        "type": "object",
+        "properties": {
+          "someGroup": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Something"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

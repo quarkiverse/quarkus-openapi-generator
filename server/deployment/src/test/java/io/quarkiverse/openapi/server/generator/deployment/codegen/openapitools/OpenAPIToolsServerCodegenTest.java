@@ -227,6 +227,25 @@ class OpenAPIToolsServerCodegenTest {
     }
 
     @Test
+    @DisplayName("Should handle self-referencing schema without StackOverflowError")
+    void should_handle_self_referencing_schema() throws IOException {
+        // arrange
+        Path path = findOpenAPIPath("self-referencing-schema.json");
+
+        OpenAPIToolsGenerator openAPIToolsGenerator = new OpenAPIToolsGenerator(
+                new QuarkusJavaServerCodegenConfigurator()
+                        .withInputBaseDir(path.toString())
+                        .withOutputDir(Files.createTempDirectory("").toString())
+                        .withBasePackage("org.acme"));
+
+        // act
+        List<File> files = openAPIToolsGenerator.generate();
+
+        // assert
+        Assertions.assertThat(files).isNotEmpty();
+    }
+
+    @Test
     @DisplayName("Object default values should not generate invalid Java")
     void should_not_generate_invalid_java_for_object_default_values() throws IOException {
         Path path = findOpenAPIPath("issue-1216-object-default.json");
