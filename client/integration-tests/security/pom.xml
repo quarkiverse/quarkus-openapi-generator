@@ -100,6 +100,10 @@
       <dependencies>
         <dependency>
           <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-rest</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.quarkus</groupId>
           <artifactId>quarkus-rest-client-oidc-filter</artifactId>
         </dependency>
       </dependencies>
