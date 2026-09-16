@@ -194,9 +194,12 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
     private SwaggerParseResult parseAndResolve(Path specPath) throws CodeGenException {
         ParseOptions options = new ParseOptions();
+        // Resolve external references (multi-file specs) into the document but keep local
+        // "#/components/..." references intact. Fully resolving the document inlines every
+        // scalar schema reference, which breaks Apicurio's type inlining and makes it reference
+        // bean classes for scalar schemas that are never generated (see issue #1784).
         options.setResolve(true);
-        options.setResolveFully(true);
-        options.setResolveCombinators(true);
+        options.setResolveFully(false);
 
         SwaggerParseResult parseResult = new OpenAPIV3Parser()
                 .readLocation(specPath.toUri().toString(), null, options);
