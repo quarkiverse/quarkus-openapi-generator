@@ -100,11 +100,12 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
             Map<String, String> returnTypes = collectReturnTypes(config);
             final Path specToUse;
-            if (returnTypes.isEmpty()) {
+            if (returnTypes.isEmpty() && !spec.arrayAsResponse()) {
                 specToUse = jsonSpec.toPath();
             } else {
                 String modifiedSpecName = originalSpecName.replace(".json", "-modified.json");
-                specToUse = injectReturnTypes(jsonSpec.toPath(), returnTypes, outDir.resolve(modifiedSpecName));
+                specToUse = injectReturnTypes(jsonSpec.toPath(), returnTypes, spec.arrayAsResponse(),
+                        outDir.resolve(modifiedSpecName));
             }
 
             new ApicurioCodegenWrapper(outDir.toFile(), spec).generate(specToUse);
@@ -139,10 +140,15 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         return returnTypes;
     }
 
-    private Path injectReturnTypes(Path jsonSpecPath, Map<String, String> returnTypes, Path outputPath)
+    private Path injectReturnTypes(Path jsonSpecPath, Map<String, String> returnTypes, boolean arrayAsResponse,
+            Path outputPath)
             throws CodeGenException {
         try {
             JsonNode root = OBJECT_MAPPER.readTree(jsonSpecPath.toFile());
+            if (arrayAsResponse) {
+                // applied first so that the return types configured per operation override it
+                ArrayAsResponseProcessor.process(root);
+            }
             JsonNode paths = root.path("paths");
             if (!paths.isMissingNode()) {
                 paths.fields().forEachRemaining(pathEntry -> {

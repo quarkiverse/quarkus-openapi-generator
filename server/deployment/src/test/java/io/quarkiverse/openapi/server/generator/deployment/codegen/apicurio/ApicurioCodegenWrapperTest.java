@@ -63,7 +63,8 @@ class ApicurioCodegenWrapperTest {
         unzipMethod.setAccessible(true);
 
         ApicurioCodegenWrapper wrapper = new ApicurioCodegenWrapper(outputDir,
-                new ServerCodegenSpec("test", outputDir.toPath(), outputDir.toPath(), "org.acme", false, false, false));
+                new ServerCodegenSpec("test", outputDir.toPath(), outputDir.toPath(), "org.acme", false, false, false,
+                        false));
 
         try {
             unzipMethod.invoke(wrapper, zipFile, outputDir);
