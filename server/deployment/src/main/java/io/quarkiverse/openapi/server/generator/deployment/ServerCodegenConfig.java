@@ -131,6 +131,23 @@ public interface ServerCodegenConfig {
         Optional<Boolean> useRestResponse();
 
         /**
+         * Whether operations whose response is an array of a model declared in {@code components/schemas}
+         * (a schema with {@code type: array} and {@code items.$ref}) must return
+         * {@code jakarta.ws.rs.core.Response} instead of {@code List<Model>}.
+         * <p>
+         * Versions 2.20.0 to 2.23.0 generated {@code Response} for these operations. Enable this property to keep
+         * that return type when upgrading. It can also be set per specification with
+         * {@code quarkus.openapi.generator.server.spec.<id>.array-as-response}.
+         * <p>
+         * An explicit {@code x-codegen-returnType} in the specification, or a
+         * {@code quarkus.openapi.generator.server.operation-ids."<operationId>".return-type} property, takes precedence.
+         * <p>
+         * Only applied for {@code apicurio} generator.
+         */
+        @WithDefault("false")
+        Optional<Boolean> arrayAsResponse();
+
+        /**
          * Whether to skip generation when the persisted fingerprint of the OpenAPI specification
          * and relevant generation configuration matches the previous run.
          */

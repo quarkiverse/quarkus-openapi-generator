@@ -70,7 +70,7 @@ class ApicurioOpenApiServerCodegenTest {
 
         Path outDir = tempDir.resolve("out");
         ServerCodegenSpec spec = new ServerCodegenSpec("test", specPath.getParent(), specPath, "org.acme", false, false,
-                true);
+                true, false);
         new ApicurioCodegenWrapper(outDir.toFile(), spec).generate(jsonFile.toPath());
 
         Path resourceFile = outDir.resolve(Path.of("org", "acme", "ItemsResource.java"));

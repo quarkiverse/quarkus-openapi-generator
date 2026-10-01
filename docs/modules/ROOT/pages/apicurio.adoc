@@ -39,6 +39,64 @@ Any OpenAPI specification files in the input base directory that are not explici
 
 As with OpenAPITools, the identifier may also be an alias when you set `quarkus.openapi.generator.server.spec.<id>.spec=<file>` and, optionally, `quarkus.openapi.generator.server.spec.<id>.input-base-dir=<dir>`.
 
+[[array-as-response]]
+== Return type of array responses
+
+When a response is an array of a model declared in `components/schemas`, the generated method returns a typed list:
+
+[source,yaml]
+----
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/Animal"
+----
+
+[source,java]
+----
+@GET
+@Produces("application/json")
+List<Animal> listAnimals();
+----
+
+Set the `array-as-response` property to `true` to generate `jakarta.ws.rs.core.Response` for these operations instead. It can be set for all specifications or for a single one:
+
+[source,properties]
+----
+# all specifications
+quarkus.openapi.generator.server.array-as-response=true
+# a single specification
+quarkus.openapi.generator.server.spec.simple_server_yaml.array-as-response=true
+----
+
+[source,java]
+----
+@GET
+@Produces("application/json")
+Response listAnimals();
+----
+
+The property defaults to `false` and follows these rules:
+
+* It only changes responses that are an array of a model. Arrays of scalars, such as `List<String>`, and single model responses keep their types.
+* The specification property takes precedence over the global one.
+* An explicit <<x-codegen-returnType,`x-codegen-returnType`>> in the specification, or a `quarkus.openapi.generator.server.operation-ids."<operationId>".return-type` property, takes precedence over `array-as-response`.
+* With `use-reactive=true` the method returns `CompletionStage<Response>`.
+
+[IMPORTANT]
+====
+*Upgrading from 2.20.0 - 2.23.0*
+
+For YAML specifications, these versions generated `Response` for operations that return an array of models. The generator now returns `List<Model>` again, as it did up to 2.19.0. If your implementation classes were written against the `Response` return type, either change them to return `List<Model>` or set `array-as-response=true` to keep the previous method signature.
+
+`array-as-response` only covers array responses. In the same versions, YAML specifications also generated `Response` for single model responses and `InputStream` for model request bodies. Both use the model type again. To keep `Response` for a given operation, set `quarkus.openapi.generator.server.operation-ids."<operationId>".return-type=jakarta.ws.rs.core.Response`.
+====
+
 [[codegen-extensions]]
 == Codegen Extensions
 
@@ -207,6 +265,7 @@ This configuration generates the following asynchronous JAX-RS method:
 CompletionStage<String> getCartByID();
 ----
 
+[[x-codegen-returnType]]
 === x-codegen-returnType
 
 The `x-codegen-returnType` extension allows you to explicitly define the return type of a generated method, overriding the type inferred from the schema. This is useful for advanced use cases, such as returning reactive types, server-sent events (SSE), or custom wrappers.
