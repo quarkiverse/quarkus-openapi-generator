@@ -210,6 +210,11 @@ include::./includes/preferred-content-type.adoc[leveloffset=+1, opts=optional]
 
 include::./includes/generate-apis.adoc[leveloffset=+1, opts=optional]
 
+[[single-api-name]]
+== Generate a single API class
+
+include::./includes/single-api-name.adoc[leveloffset=+1, opts=optional]
+
 [[generate-models]]
 == Generate Models
 

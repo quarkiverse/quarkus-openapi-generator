@@ -238,6 +238,27 @@ endif::add-copy-button-to-env-var[]
 |Map<String,String>
 |
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-single-api-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-single-api-name[`+++quarkus.openapi-generator.codegen.single-api-name+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.single-api-name+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+When set, all operations are generated in a single API class, regardless of the tags declared in the specification. The value is used verbatim as the name of the generated class, so it must be a valid Java class name, and `api-name-prefix`/`api-name-suffix` are not applied to it. For example, setting this to `MyService` generates a single `MyService` class. Equivalent to the OpenAPI Normalizer rule `SET_TAGS_FOR_ALL_OPERATIONS`; if both are set, this option takes precedence.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SINGLE_API_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SINGLE_API_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-mutiny[`+++quarkus.openapi-generator.codegen.mutiny+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator.codegen.mutiny+++[]
@@ -1108,6 +1129,27 @@ Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__OPE
 endif::add-copy-button-to-env-var[]
 --
 |Map<String,String>
+|
+
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-single-api-name]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-single-api-name[`+++quarkus.openapi-generator.codegen.spec."spec-item".single-api-name+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator.codegen.spec."spec-item".single-api-name+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+When set, all operations are generated in a single API class, regardless of the tags declared in the specification. The value is used verbatim as the name of the generated class, so it must be a valid Java class name, and `api-name-prefix`/`api-name-suffix` are not applied to it. For example, setting this to `MyService` generates a single `MyService` class. Equivalent to the OpenAPI Normalizer rule `SET_TAGS_FOR_ALL_OPERATIONS`; if both are set, this option takes precedence.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SINGLE_API_NAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_CODEGEN_SPEC__SPEC_ITEM__SINGLE_API_NAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
 |
 
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-codegen-spec-spec-item-mutiny[`+++quarkus.openapi-generator.codegen.spec."spec-item".mutiny+++`]##

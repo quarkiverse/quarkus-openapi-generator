@@ -45,6 +45,7 @@
     <module>remove-operationid-prefix</module>
     <module>security</module>
     <module>simple</module>
+    <module>single-api</module>
     <module>skip-validation</module>
     <module>suffix-prefix</module>
     <module>type-mapping</module>
