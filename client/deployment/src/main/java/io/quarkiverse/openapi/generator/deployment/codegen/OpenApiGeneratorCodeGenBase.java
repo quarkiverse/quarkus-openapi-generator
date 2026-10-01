@@ -79,6 +79,11 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiGeneratorCodeGenBase.class);
 
+    protected static final String RESTEASY_CLASSIC_DEPRECATION_WARNING = "RESTEasy Classic support in quarkus-openapi-generator is deprecated "
+            + "and will be removed in a future release. Migrate to quarkus-rest-client-reactive-jackson (Quarkus REST / REST Client Reactive). "
+            + "See the migration guide: https://quarkus.io/guides/rest-migration/ and "
+            + "https://github.com/quarkiverse/quarkus-openapi-generator/issues/1782 for details.";
+
     /**
      * The input base directory from
      *
@@ -124,6 +129,12 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
                 .anyMatch(Capability.REST_CLIENT_REACTIVE::equals);
     }
 
+    protected void warnIfRestEasyClassic(boolean isRestEasyReactive) {
+        if (!isRestEasyReactive) {
+            LOGGER.warn(RESTEASY_CLASSIC_DEPRECATION_WARNING);
+        }
+    }
+
     @Override
     public boolean trigger(CodeGenContext context) throws CodeGenException {
         final Path outDir = context.outDir();
@@ -139,6 +150,7 @@ public abstract class OpenApiGeneratorCodeGenBase implements CodeGenProvider {
 
         if (Files.isDirectory(openApiDir)) {
             final boolean isRestEasyReactive = isRestEasyReactive(context);
+            warnIfRestEasyClassic(isRestEasyReactive);
             boolean isHibernateValidatorPresent = isHibernateValidatorPresent(context);
 
             if (!isProvidedJacksonDependency(context)) {

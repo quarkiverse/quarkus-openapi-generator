@@ -13,6 +13,11 @@ You can use the `quarkus-openapi-generator` with REST Client Classic or REST Cli
 
 WARNING: After Version 1.2.1 / 2.1.1 you need to declare the above dependency explicitly! Even if you stay with the REST Client Classic implementation!
 
+WARNING: RESTEasy Classic support is deprecated and will be removed in a future release. Projects
+using it will see a build-time warning. Migrate to `quarkus-rest-client-reactive-jackson` (Quarkus
+REST / REST Client Reactive) following the https://quarkus.io/guides/rest-migration/[migration guide].
+See https://github.com/quarkiverse/quarkus-openapi-generator/issues/1782[#1782] for details.
+
 == RESTEasy Reactive
 
 [source,xml]
