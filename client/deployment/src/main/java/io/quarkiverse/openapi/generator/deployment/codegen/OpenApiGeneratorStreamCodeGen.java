@@ -66,6 +66,7 @@ public class OpenApiGeneratorStreamCodeGen extends OpenApiGeneratorCodeGenBase {
         boolean generated = false;
 
         boolean isRestEasyReactive = isRestEasyReactive(context);
+        warnIfRestEasyClassic(isRestEasyReactive);
 
         for (final OpenApiSpecInputProvider provider : this.providers) {
             for (SpecInputModel inputModel : provider.read(context)) {
