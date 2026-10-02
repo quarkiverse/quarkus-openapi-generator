@@ -125,4 +125,53 @@ public class OAuth2AuthenticationProviderTest {
         }
     }
 
+    @Test
+    void onUnauthorizedForcesTokenRefreshWhenEnabled() {
+        try (MockedStatic<ConfigProvider> configProviderMocked = Mockito.mockStatic(ConfigProvider.class)) {
+            Config mockedConfig = Mockito.mock(Config.class);
+            configProviderMocked.when(ConfigProvider::getConfig).thenReturn(mockedConfig);
+
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION),
+                    Boolean.class)).thenReturn(Optional.empty());
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.REFRESH_ON_UNAUTHORIZED),
+                    Boolean.class)).thenReturn(Optional.of(true));
+
+            provider.onUnauthorized(requestContext);
+
+            Mockito.verify(classicDelegate, Mockito.times(1)).forceTokenRefresh();
+        }
+    }
+
+    @Test
+    void onUnauthorizedDoesNothingWhenDisabled() {
+        try (MockedStatic<ConfigProvider> configProviderMocked = Mockito.mockStatic(ConfigProvider.class)) {
+            Config mockedConfig = Mockito.mock(Config.class);
+            configProviderMocked.when(ConfigProvider::getConfig).thenReturn(mockedConfig);
+
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION),
+                    Boolean.class)).thenReturn(Optional.empty());
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.REFRESH_ON_UNAUTHORIZED),
+                    Boolean.class)).thenReturn(Optional.empty());
+
+            provider.onUnauthorized(requestContext);
+
+            Mockito.verify(classicDelegate, Mockito.never()).forceTokenRefresh();
+        }
+    }
+
+    @Test
+    void onUnauthorizedDoesNothingWhenTokenPropagationEnabled() {
+        try (MockedStatic<ConfigProvider> configProviderMocked = Mockito.mockStatic(ConfigProvider.class)) {
+            Config mockedConfig = Mockito.mock(Config.class);
+            configProviderMocked.when(ConfigProvider::getConfig).thenReturn(mockedConfig);
+
+            when(mockedConfig.getOptionalValue(provider.getCanonicalAuthConfigPropertyName(AuthConfig.TOKEN_PROPAGATION),
+                    Boolean.class)).thenReturn(Optional.of(true));
+
+            provider.onUnauthorized(requestContext);
+
+            Mockito.verify(classicDelegate, Mockito.never()).forceTokenRefresh();
+        }
+    }
+
 }
