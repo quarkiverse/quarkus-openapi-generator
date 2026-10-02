@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Array As Response API
+  version: 1.0.0
+paths:
+  /animals:
+    get:
+      operationId: listAnimals
+      responses:
+        "200":
+          description: Array of models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Animal"
+  /animals/named:
+    get:
+      operationId: listAnimalsFromNamedArray
+      responses:
+        "200":
+          description: Reference to an array of models
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnimalList"
+  /animals/shared:
+    get:
+      operationId: listAnimalsFromSharedResponse
+      responses:
+        "200":
+          $ref: "#/components/responses/AnimalsResponse"
+  /animals/custom:
+    get:
+      operationId: listAnimalsWithCustomReturnType
+      responses:
+        "200":
+          description: Array of models with an explicit return type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Animal"
+              x-codegen-returnType: java.util.Collection<String>
+  /animals/names:
+    get:
+      operationId: listAnimalNames
+      responses:
+        "200":
+          description: Array of scalars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /animals/{name}:
+    get:
+      operationId: getAnimal
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Single model
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Animal"
+components:
+  responses:
+    AnimalsResponse:
+      description: Shared array of models
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Animal"
+  schemas:
+    Animal:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    AnimalList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Animal"

@@ -31,7 +31,8 @@ public class ServerCodegenConfigResolver {
             "base-package",
             "use-reactive",
             "use-builders",
-            "use-bean-validation");
+            "use-bean-validation",
+            "array-as-response");
 
     public boolean hasConfiguration(Config config) {
         return getLegacySpec(config).isPresent() || !getConfiguredSpecIds(config).isEmpty();
@@ -105,7 +106,8 @@ public class ServerCodegenConfigResolver {
                                 getValue(config, null, "base-package", String.class).orElse(DEFAULT_PACKAGE),
                                 getValue(config, null, "use-reactive", Boolean.class).orElse(false),
                                 getValue(config, null, "use-builders", Boolean.class).orElse(true),
-                                getValue(config, null, "use-bean-validation", Boolean.class).orElse(false)));
+                                getValue(config, null, "use-bean-validation", Boolean.class).orElse(false),
+                                getValue(config, null, "array-as-response", Boolean.class).orElse(false)));
                     });
         } catch (IOException e) {
             throw new CodeGenException("Failed to scan OpenAPI specifications under " + inputBaseDir, e);
@@ -124,7 +126,8 @@ public class ServerCodegenConfigResolver {
                 getValue(config, null, "base-package", String.class).orElse(DEFAULT_PACKAGE),
                 getValue(config, null, "use-reactive", Boolean.class).orElse(false),
                 getValue(config, null, "use-builders", Boolean.class).orElse(true),
-                getValue(config, null, "use-bean-validation", Boolean.class).orElse(false));
+                getValue(config, null, "use-bean-validation", Boolean.class).orElse(false),
+                getValue(config, null, "array-as-response", Boolean.class).orElse(false));
     }
 
     private ServerCodegenSpec resolveSpec(Path sourceDir, Config config, String specId) throws CodeGenException {
@@ -146,7 +149,8 @@ public class ServerCodegenConfigResolver {
                 getValue(config, specId, "base-package", String.class).orElse(DEFAULT_PACKAGE),
                 getValue(config, specId, "use-reactive", Boolean.class).orElse(false),
                 getValue(config, specId, "use-builders", Boolean.class).orElse(true),
-                getValue(config, specId, "use-bean-validation", Boolean.class).orElse(false));
+                getValue(config, specId, "use-bean-validation", Boolean.class).orElse(false),
+                getValue(config, specId, "array-as-response", Boolean.class).orElse(false));
     }
 
     private <T> Optional<T> getValue(Config config, String specId, String propertyName, Class<T> propertyType) {
@@ -269,6 +273,7 @@ public class ServerCodegenConfigResolver {
             case "use-reactive" -> Optional.of(CodegenConfig.getServerCodegenReactive());
             case "use-builders" -> Optional.of(CodegenConfig.getServerGenerateBuilders());
             case "use-bean-validation" -> Optional.of(CodegenConfig.getServerUseBeanValidation());
+            case "array-as-response" -> Optional.of(CodegenConfig.getServerArrayAsResponse());
             default -> Optional.empty();
         };
     }

@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: Issue 1784
+  version: "1.0"
+paths:
+  /items/{itemId}:
+    get:
+      operationId: getItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Int64Id'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Int64Id:
+      type: integer
+      format: int64
+      minimum: 0
