@@ -13,6 +13,7 @@ public interface AuthConfig {
 
     String TOKEN_PROPAGATION = "token-propagation";
     String HEADER_NAME = "header-name";
+    String REFRESH_ON_UNAUTHORIZED = "refresh-on-unauthorized";
 
     /**
      * Enables the authentication token propagation for this particular securityScheme.
@@ -128,4 +129,23 @@ public interface AuthConfig {
      * @return whether to use the prefix `Authorization` when sending an API Key using headers.
      */
     Optional<Boolean> useAuthorizationHeaderValue();
+
+    /**
+     * Only valid for OAuth2/OIDC Authentication.
+     * <p/>
+     * When enabled, a {@code 401 Unauthorized} response for an operation protected by this securityScheme marks the
+     * underlying OIDC client's cached token as stale, so the <strong>next</strong> request made through that client
+     * fetches a fresh token instead of reusing the cached one. The request that received the {@code 401} is not
+     * retried automatically.
+     * <p/>
+     * For example, given a file named petstore.json with a securityScheme named "petstore-oauth2", that is of
+     * OAuth2 authentication type, the following configuration enables this behavior.
+     * <p/>
+     * quarkus.openapi-generator.petstore_json.auth.petstore_oauth2.refresh-on-unauthorized=true
+     * <p/>
+     * Defaults to {@code false}. Ignored if the given securityScheme is not OAuth2/OIDC Authentication.
+     *
+     * @return whether to force a token refresh after an unauthorized response
+     */
+    Optional<Boolean> refreshOnUnauthorized();
 }

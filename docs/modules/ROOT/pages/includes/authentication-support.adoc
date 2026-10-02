@@ -192,6 +192,28 @@ RESTEasy Reactive:
 </dependency>
 ----
 
+=== Refreshing the token after a 401 response
+
+By default, the generated OIDC client reuses its cached access token until it naturally expires. If the
+authorization server invalidates a token early (for example, after a restart), the generator keeps sending
+the stale token and every call fails with `401 Unauthorized` until the token's original expiry time passes.
+
+You can enable `refresh-on-unauthorized` for a given securityScheme so that a `401` response forces the
+*next* request made through that scheme's `OidcClient` to fetch a fresh token instead of reusing the cached
+one. The request that received the `401` itself is **not** retried automatically; only the following request
+benefits from the fresh token. This mirrors the behavior of Quarkus's own
+https://quarkus.io/guides/security-openid-connect-client-reference#rest-client-oidc-filter[`refresh-on-unauthorized`]
+setting, scoped per securityScheme since the generator creates one independent `OidcClient` per scheme.
+
+[source,properties]
+----
+quarkus.openapi-generator.petstore_json.auth.petstore_auth.refresh-on-unauthorized=true
+----
+
+Defaults to `false`. Only applies to OAuth2/OIDC securitySchemes, and has no effect when
+link:#_oauth2_authentication[token propagation] is enabled for that scheme, since in that mode there is no
+local `OidcClient` to refresh.
+
 If authentication support doesn't suit your needs you can decide to disable it with `enable-security-generation=false`. In such case CompositeAuthenticationProvider and AuthenticationPropagationHeadersFactory wont be generated and used with your api.
 The option can be set globally with `quarkus.openapi-generator.codegen.enable-security-generation` or per api `quarkus.openapi-generator.codegen.spec.my_spec_yml.enable-security-generation`
 Custom authentication provider can be used with `additional-api-type-annotations`
