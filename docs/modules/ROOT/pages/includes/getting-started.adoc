@@ -59,6 +59,24 @@ To fine tune the configuration for each spec file, add the following entry to yo
 quarkus.openapi-generator.codegen.spec.petstore_json.additional-model-type-annotations=@org.test.Foo;@org.test.Bar
 ----
 
+== Global configuration
+
+Many configuration options can be set **globally** and apply to all OpenAPI specs at once. When a specific per-spec value is defined, it takes precedence over the global one. To set a global default, omit the `.spec.<filename>` segment from the property key.
+
+For example, to set `return-response` globally:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.return-response=true
+----
+
+And to override it for a specific spec:
+
+[source,properties]
+----
+quarkus.openapi-generator.codegen.spec.petstore_json.return-response=true
+----
+
 If you want to change the base package in which the classes are generated, use the `quarkus.openapi-generator.codegen.spec.<filename>.base-package` property.
 If a base package is not provided, it will default to `org.openapi.quarkus.<filename>`. For example, `org.openapi.quarkus.petstore_json`.
 
