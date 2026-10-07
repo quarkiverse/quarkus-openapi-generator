@@ -25,6 +25,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: site
+          path: site
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
@@ -40,9 +41,17 @@ jobs:
         run: |
           echo "id=$(<pr-id.txt)" >> $GITHUB_OUTPUT
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install surge from npm
+        run: npm install --no-save surge@0.24.6
+
       - name: Publishing to surge for preview
         id: deploy
-        run: npx surge ./ --domain https://quarkiverse-oapi-pr-${{ steps.pr.outputs.id }}-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+        run: ./node_modules/.bin/surge ./site --domain https://quarkiverse-oapi-pr-${{ steps.pr.outputs.id }}-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
 
       - name: Update PR status comment on success
         uses: quarkusio/action-helpers@main
