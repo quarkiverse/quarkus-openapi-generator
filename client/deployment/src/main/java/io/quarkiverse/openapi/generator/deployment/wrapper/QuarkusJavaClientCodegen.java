@@ -105,6 +105,11 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                                 "CompositeAuthenticationProvider.java"));
 
                 supportingFiles.add(
+                        new SupportingFile(AUTH_PACKAGE + "/compositeAuthenticationResponseFilter.qute",
+                                authFileFolder(),
+                                "CompositeAuthenticationResponseFilter.java"));
+
+                supportingFiles.add(
                         new SupportingFile("auth/headersFactory.qute",
                                 authFileFolder(),
                                 "AuthenticationPropagationHeadersFactory.java"));

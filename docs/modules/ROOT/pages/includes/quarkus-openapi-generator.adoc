@@ -1914,6 +1914,35 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |
 
+a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-refresh-on-unauthorized]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-auth-auth-configs-refresh-on-unauthorized[`+++quarkus.openapi-generator."item-configs".auth."auth-configs".refresh-on-unauthorized+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi-generator."item-configs".auth."auth-configs".refresh-on-unauthorized+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Only valid for OAuth2/OIDC Authentication.
+
+When enabled, a `401 Unauthorized` response for an operation protected by this securityScheme marks the underlying OIDC client's cached token as stale, so the *next* request made through that client fetches a fresh token instead of reusing the cached one. The request that received the `401` is not retried automatically.
+
+For example, given a file named petstore.json with a securityScheme named "petstore-oauth2", that is of OAuth2 authentication type, the following configuration enables this behavior.
+
+quarkus.openapi-generator.petstore_json.auth.petstore_oauth2.refresh-on-unauthorized=true
+
+Defaults to `false`. Ignored if the given securityScheme is not OAuth2/OIDC Authentication.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__REFRESH_ON_UNAUTHORIZED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR__ITEM_CONFIGS__AUTH__AUTH_CONFIGS__REFRESH_ON_UNAUTHORIZED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
 a| [[quarkus-openapi-generator_quarkus-openapi-generator-item-configs-exclusive-auth]] [.property-path]##link:#quarkus-openapi-generator_quarkus-openapi-generator-item-configs-exclusive-auth[`+++quarkus.openapi-generator."item-configs".exclusive-auth+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi-generator."item-configs".exclusive-auth+++[]
