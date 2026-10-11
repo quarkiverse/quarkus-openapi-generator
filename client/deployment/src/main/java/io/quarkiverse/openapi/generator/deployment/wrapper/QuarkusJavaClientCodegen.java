@@ -48,6 +48,7 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     public static final String QUARKUS_GENERATOR_NAME = "quarkus-generator";
 
     private static final String AUTH_PACKAGE = "auth";
+    private static final String REUSE_ENUMS = "reuse-enums";
     /*
      * Default server URL (the first one in the OpenAPI spec file servers definition.
      */
@@ -226,7 +227,32 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
                 p.setAdditionalProperties(true);
             }
         }
+        if (isReuseEnums() && p != null && p.getEnum() != null && p.get$ref() == null) {
+            String matchedModelName = findMatchingEnumModel(p.getEnum());
+            if (matchedModelName != null) {
+                Schema<?> refSchema = new Schema<>().$ref("#/components/schemas/" + matchedModelName);
+                return super.fromProperty(name, refSchema, required, schemaIsFromAdditionalProperties);
+            }
+        }
         return super.fromProperty(name, p, required, schemaIsFromAdditionalProperties);
+    }
+
+    @Override
+    public String getTypeDeclaration(Schema p) {
+        // Container types (e.g. Set<...>, List<...>) are computed from the raw items schema, which the
+        // parser may present as an inline enum. Without this override the container would be declared
+        // with the enum base type (e.g. String) while fromProperty maps the items to the shared enum model.
+        if (isReuseEnums() && p != null && p.getEnum() != null && p.get$ref() == null) {
+            String matchedModelName = findMatchingEnumModel(p.getEnum());
+            if (matchedModelName != null) {
+                return toModelName(matchedModelName);
+            }
+        }
+        return super.getTypeDeclaration(p);
+    }
+
+    private boolean isReuseEnums() {
+        return Boolean.parseBoolean(String.valueOf(this.additionalProperties.getOrDefault(REUSE_ENUMS, false)));
     }
 
     @Override

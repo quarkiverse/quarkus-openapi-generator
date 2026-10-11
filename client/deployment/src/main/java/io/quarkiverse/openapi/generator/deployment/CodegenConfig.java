@@ -98,7 +98,8 @@ public interface CodegenConfig extends GlobalCodegenConfig {
         RESTEASY_REACTIVE_CLIENT_FORM("resteasy-reactive-client-form"),
         USE_ONE_OF_INTERFACES("use-one-of-interfaces"),
         IMPLICIT_HEADERS("implicit-headers"),
-        IMPLICIT_HEADERS_REGEX("implicit-headers-regex");
+        IMPLICIT_HEADERS_REGEX("implicit-headers-regex"),
+        REUSE_ENUMS("reuse-enums");
 
         private final String name;
 

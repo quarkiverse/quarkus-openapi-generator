@@ -199,6 +199,11 @@ public abstract class OpenApiClientGeneratorWrapper {
         return this;
     }
 
+    public OpenApiClientGeneratorWrapper withReuseEnums(final Boolean reuseEnums) {
+        this.configurator.addAdditionalProperty("reuse-enums", reuseEnums);
+        return this;
+    }
+
     public OpenApiClientGeneratorWrapper withReturnResponse(String returnResponse) {
         if (returnResponse.equalsIgnoreCase(TRUE.toString())) {
             this.configurator.addAdditionalProperty("return-response", "Response");
