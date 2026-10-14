@@ -47,6 +47,8 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
 
     public static final String QUARKUS_GENERATOR_NAME = "quarkus-generator";
 
+    public static final String SINGLE_API_NAME = "single-api-name";
+
     private static final String AUTH_PACKAGE = "auth";
     /*
      * Default server URL (the first one in the OpenAPI spec file servers definition.
@@ -65,6 +67,20 @@ public class QuarkusJavaClientCodegen extends JavaClientCodegen {
     @Override
     public String getName() {
         return "quarkus";
+    }
+
+    /**
+     * When {@code single-api-name} is set, the configured value is used verbatim as the API class name,
+     * ignoring {@code api-name-prefix}/{@code api-name-suffix}. Also affects the file name, since
+     * {@code toApiFilename} delegates to this method.
+     */
+    @Override
+    public String toApiName(String name) {
+        final Object singleApiName = this.additionalProperties.get(SINGLE_API_NAME);
+        if (singleApiName != null && !singleApiName.toString().isBlank()) {
+            return singleApiName.toString();
+        }
+        return super.toApiName(name);
     }
 
     @Override
