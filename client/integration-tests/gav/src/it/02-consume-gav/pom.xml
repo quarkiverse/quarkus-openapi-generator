@@ -17,8 +17,11 @@
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.version>3.28.4</quarkus.platform.version>
 
-        <!-- injected by invoker -->
-        <tested.version>0.0.0-UNSET</tested.version>
+        <!-- Overridden by the invoker via -Dtested.version=... (see client/integration-tests/gav/pom.xml).
+             Default kept in sync with the root project version: Quarkus's bootstrap resolver has been
+             observed to intermittently ignore that override during generate-code-tests in CI, in which
+             case it falls back to this value, so it must match the current root pom.xml <version>. -->
+        <tested.version>3.0.0-SNAPSHOT</tested.version>
 
         <version.assertj.core>3.27.7</version.assertj.core>
         <version.maven.compiler.plugin>3.16.0</version.maven.compiler.plugin>
