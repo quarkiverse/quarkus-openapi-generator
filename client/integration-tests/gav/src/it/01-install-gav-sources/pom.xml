@@ -11,9 +11,10 @@
     <version>1</version>
     <packaging>pom</packaging>
 
-    <!-- tested.version is injected by the invoker as -Dtested.version=... -->
+    <!-- Overridden by the invoker via -Dtested.version=... (see client/integration-tests/gav/pom.xml).
+         Default kept in sync with the root project version as a fallback; see 02-consume-gav/pom.xml. -->
     <properties>
-        <tested.version>0.0.0-UNSET</tested.version>
+        <tested.version>3.0.0-SNAPSHOT</tested.version>
     </properties>
 
     <build>
