@@ -28,6 +28,7 @@ public interface CodegenConfig extends ServerCodegenConfig {
     String CODEGEN_SERVER_BEAN_VALIDATION = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-bean-validation";
     String CODEGEN_SERVER_USE_REST_RESPONSE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".use-rest-response";
     String CODEGEN_SERVER_SKIP_IF_UNCHANGED = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".skip-if-unchanged";
+    String CODEGEN_SERVER_ARRAY_AS_RESPONSE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".array-as-response";
     String CODEGEN_SERVER_OPERATION_IDS = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".operation-ids";
     String CODEGEN_SERVER_INCLUDE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".include";
     String CODEGEN_SERVER_EXCLUDE = CODEGEN_TIME_CONFIG_PREFIX + SERVER + ".exclude";
@@ -91,6 +92,10 @@ public interface CodegenConfig extends ServerCodegenConfig {
 
     static String getServerSkipIfUnchanged() {
         return CODEGEN_SERVER_SKIP_IF_UNCHANGED;
+    }
+
+    static String getServerArrayAsResponse() {
+        return CODEGEN_SERVER_ARRAY_AS_RESPONSE;
     }
 
     /**

@@ -317,6 +317,33 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-array-as-response]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-array-as-response[`+++quarkus.openapi.generator.server.array-as-response+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.array-as-response+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether operations whose response is an array of a model declared in `components/schemas` (a schema with `type: array` and `items.$ref`) must return `jakarta.ws.rs.core.Response` instead of `List<Model>`.
+
+Versions 2.20.0 to 2.23.0 generated `Response` for these operations. Enable this property to keep that return type when upgrading. It can also be set per specification with `quarkus.openapi.generator.server.spec.<id>.array-as-response`.
+
+An explicit `x-codegen-returnType` in the specification, or a `quarkus.openapi.generator.server.operation-ids."<operationId>".return-type` property, takes precedence.
+
+Only applied for `apicurio` generator.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_ARRAY_AS_RESPONSE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_ARRAY_AS_RESPONSE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-skip-if-unchanged]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-skip-if-unchanged[`+++quarkus.openapi.generator.server.skip-if-unchanged+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.skip-if-unchanged+++[]

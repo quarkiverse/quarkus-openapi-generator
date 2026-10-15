@@ -1,11 +1,13 @@
 package org.acme;
 
-import jakarta.ws.rs.core.Response;
+import java.util.List;
+
+import org.acme.beans.Animal;
 
 public class AnimalsResourceImpl implements AnimalsResource {
 
     @Override
-    public Response listAnimals() {
-        return Response.ok().build();
+    public List<Animal> listAnimals() {
+        return List.of();
     }
 }

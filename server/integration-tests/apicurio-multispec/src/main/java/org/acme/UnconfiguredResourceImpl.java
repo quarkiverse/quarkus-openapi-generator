@@ -1,11 +1,13 @@
 package org.acme;
 
-import jakarta.ws.rs.core.Response;
+import java.util.List;
+
+import org.acme.beans.Item;
 
 public class UnconfiguredResourceImpl implements UnconfiguredResource {
 
     @Override
-    public Response listUnconfigured() {
-        return Response.ok().build();
+    public List<Item> listUnconfigured() {
+        return List.of();
     }
 }
