@@ -1,0 +1,14 @@
+package {apiPackage}.auth;
+
+{#include suppressWarnings.qute/}
+public class CompositeAuthenticationResponseFilter implements jakarta.ws.rs.client.ClientResponseFilter {
+
+    @jakarta.inject.Inject
+    @io.quarkiverse.openapi.generator.OpenApiSpec(openApiSpecId="{quarkus-generator.openApiSpecId}")
+    io.quarkiverse.openapi.generator.providers.BaseCompositeAuthenticationProvider compositeProvider;
+
+    @java.lang.Override
+    public void filter(jakarta.ws.rs.client.ClientRequestContext requestContext, jakarta.ws.rs.client.ClientResponseContext responseContext) throws java.io.IOException {
+        compositeProvider.filter(requestContext, responseContext);
+    };
+}

@@ -49,6 +49,16 @@ public class ReactiveOidcClientRequestFilterDelegate extends AbstractTokensProdu
     }
 
     @Override
+    protected boolean isForceNewTokens() {
+        return ForceTokenRefreshRegistry.consumeForceRefresh(clientId);
+    }
+
+    @Override
+    public void forceTokenRefresh() {
+        ForceTokenRefreshRegistry.markForRefresh(clientId);
+    }
+
+    @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         filter((ResteasyReactiveClientRequestContext) requestContext);
     }

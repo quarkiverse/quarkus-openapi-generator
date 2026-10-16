@@ -77,7 +77,26 @@ public class OAuth2AuthenticationProvider extends AbstractAuthProvider {
         }
     }
 
+    /**
+     * Marks the underlying OIDC client's cached token as stale when this securityScheme's
+     * {@code refresh-on-unauthorized} configuration is enabled, so the next request made through the delegate
+     * fetches a fresh token instead of reusing the cached one. A no-op when token propagation is active, since
+     * there is no local OIDC client to refresh in that mode.
+     */
+    @Override
+    public void onUnauthorized(ClientRequestContext requestContext) {
+        if (isTokenPropagation()) {
+            return;
+        }
+        if (AbstractAuthProvider.isRefreshOnUnauthorized(getOpenApiSpecId(), getName())) {
+            delegate.forceTokenRefresh();
+        }
+    }
+
     public interface OidcClientRequestFilterDelegate {
         void filter(ClientRequestContext requestContext) throws IOException;
+
+        default void forceTokenRefresh() {
+        }
     }
 }
