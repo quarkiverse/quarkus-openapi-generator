@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.deployment.wrapper;
 
 import static io.quarkiverse.openapi.generator.deployment.assertions.Assertions.assertThat;
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -811,6 +812,41 @@ public class OpenApiClientGeneratorWrapperTest {
         assertThat(types).hasSize(2);
         assertThat(types.get(0).getExtendedTypes()).hasSize(1);
         assertThat(types.get(0).getExtendedTypes(0).getName()).isEqualTo(new SimpleName("Mammal"));
+    }
+
+    @Test
+    void verifySingleApiName() throws Exception {
+        final List<File> generatedFiles = this.createGeneratorWrapper("petstore-openapi.json")
+                .withSingleApiName("PetStore")
+                .generate("org.acme.single");
+
+        // the configured value is used verbatim as the class name, without the `Api` suffix
+        assertThat(generatedFiles).extracting(File::getName).noneMatch(name -> name.endsWith("Api.java"));
+
+        final List<File> apiFiles = generatedFiles.stream()
+                .filter(f -> f.getName().equals("PetStore.java"))
+                .toList();
+        assertThat(apiFiles).hasSize(1);
+
+        final CompilationUnit compilationUnit = StaticJavaParser.parse(apiFiles.get(0));
+        final List<ClassOrInterfaceDeclaration> types = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
+        assertThat(types).extracting(t -> t.getName().getIdentifier()).containsExactly("PetStore");
+
+        final List<String> methodNames = compilationUnit.findAll(MethodDeclaration.class).stream()
+                .map(MethodDeclaration::getNameAsString)
+                .toList();
+        // operations originally spread across the pet, store and user tags
+        assertThat(methodNames).contains("findPetsByStatus", "getOrderById", "getUserByName");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "My-Service", "123Service", "class", "My Service", "my.Service", "" })
+    void verifySingleApiNameRejectsInvalidJavaClassName(String invalidName) throws Exception {
+        final OpenApiClientGeneratorWrapper wrapper = this.createGeneratorWrapper("petstore-openapi.json");
+        assertThatThrownBy(() -> wrapper.withSingleApiName(invalidName))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("single-api-name")
+                .hasMessageContaining("valid Java class name");
     }
 
     @Test
