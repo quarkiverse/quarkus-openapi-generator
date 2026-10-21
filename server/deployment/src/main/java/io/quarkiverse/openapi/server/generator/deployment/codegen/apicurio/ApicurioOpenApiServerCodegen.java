@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.core.models.ParseOptions;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
@@ -35,6 +37,7 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
     private static final Logger log = LoggerFactory.getLogger(ApicurioOpenApiServerCodegen.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final Set<String> SCALAR_TYPES = Set.of("string", "integer", "number", "boolean", "null");
     private final ServerCodegenConfigResolver configResolver = new ServerCodegenConfigResolver();
 
     @Override
@@ -87,7 +90,8 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
                                 this.inputExtensions()));
             }
 
-            File jsonSpec = specFileName.endsWith("json") ? openApiResource : resolveToJSON(openApiResource.toPath());
+            File jsonSpec = specFileName.endsWith("json") ? openApiResource
+                    : resolveToJSON(openApiResource.toPath(), keepLocalRefs(config, spec));
 
             String originalSpecName = specFileName.replaceAll("\\.(yaml|yml)$", ".json");
             try {
@@ -139,6 +143,13 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         return returnTypes;
     }
 
+    private static boolean keepLocalRefs(Config config, ServerCodegenSpec spec) {
+        return config.getOptionalValue(CodegenConfig.getServerSpecPrefix() + spec.configKey() + ".keep-local-refs",
+                Boolean.class)
+                .or(() -> config.getOptionalValue(CodegenConfig.getServerKeepLocalRefs(), Boolean.class))
+                .orElse(false);
+    }
+
     private Path injectReturnTypes(Path jsonSpecPath, Map<String, String> returnTypes, Path outputPath)
             throws CodeGenException {
         try {
@@ -175,12 +186,15 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         }
     }
 
-    private File resolveToJSON(Path specPath) throws CodeGenException {
+    private File resolveToJSON(Path specPath, boolean keepLocalRefs) throws CodeGenException {
         try {
-            SwaggerParseResult parseResult = parseAndResolve(specPath);
+            SwaggerParseResult parseResult = parseAndResolve(specPath, keepLocalRefs);
             OpenAPI openAPI = parseResult.getOpenAPI();
             if (openAPI == null) {
                 throw new CodeGenException("Error parsing OpenAPI spec: " + parseMessages(parseResult));
+            }
+            if (!keepLocalRefs) {
+                removeScalarSchemas(openAPI);
             }
 
             File jsonFile = Files.createTempFile(specPath.getFileName().toString(), ".json").toFile();
@@ -192,11 +206,29 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
         }
     }
 
-    private SwaggerParseResult parseAndResolve(Path specPath) throws CodeGenException {
+    /**
+     * Once the document is fully resolved, scalar schemas are already inlined wherever they were referenced. Keeping
+     * them in {@code components/schemas} makes Apicurio register them as beans and use them as the type of the inlined
+     * schemas, but no class is ever generated for a scalar schema (see issue #1784).
+     */
+    private static void removeScalarSchemas(OpenAPI openAPI) {
+        if (openAPI.getComponents() != null && openAPI.getComponents().getSchemas() != null) {
+            openAPI.getComponents().getSchemas().values().removeIf(ApicurioOpenApiServerCodegen::isScalarSchema);
+        }
+    }
+
+    private static boolean isScalarSchema(Schema<?> schema) {
+        Set<String> types = schema.getType() != null ? Set.of(schema.getType()) : schema.getTypes();
+        return schema.getEnum() == null && types != null && !types.isEmpty() && SCALAR_TYPES.containsAll(types);
+    }
+
+    private SwaggerParseResult parseAndResolve(Path specPath, boolean keepLocalRefs) throws CodeGenException {
         ParseOptions options = new ParseOptions();
+        // External references (multi-file specs) are always resolved into the document. Local
+        // "#/components/..." references are inlined too, unless keep-local-refs is enabled.
         options.setResolve(true);
-        options.setResolveFully(true);
-        options.setResolveCombinators(true);
+        options.setResolveFully(!keepLocalRefs);
+        options.setResolveCombinators(!keepLocalRefs);
 
         SwaggerParseResult parseResult = new OpenAPIV3Parser()
                 .readLocation(specPath.toUri().toString(), null, options);

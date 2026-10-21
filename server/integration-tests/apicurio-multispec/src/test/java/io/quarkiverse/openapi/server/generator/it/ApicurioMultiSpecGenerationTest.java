@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.server.generator.it;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -41,5 +42,22 @@ public class ApicurioMultiSpecGenerationTest {
                 Path.of("target/generated-sources/jaxrs/org/acme/InventoryResource.java")));
         assertTrue(Files.exists(
                 Path.of("target/generated-sources/jaxrs/org/acme/beans/Product.java")));
+    }
+
+    @Test
+    public void testArrayResponseReturnsResponseByDefault() throws IOException {
+        String resource = Files.readString(
+                Path.of("target/generated-sources/jaxrs/org/acme/AnimalsResource.java"));
+        assertTrue(resource.contains("Response listAnimals()"));
+    }
+
+    @Test
+    public void testArrayResponseReturnsListOfBeansWhenKeepLocalRefsIsEnabled() throws IOException {
+        // orders-server.yaml is configured with keep-local-refs=true
+        String resource = Files.readString(
+                Path.of("target/generated-sources/jaxrs/org/acme/orders/OrdersResource.java"));
+        assertTrue(resource.contains("List<PurchaseOrder> listOrders()"));
+        assertTrue(Files.exists(
+                Path.of("target/generated-sources/jaxrs/org/acme/orders/beans/PurchaseOrder.java")));
     }
 }
