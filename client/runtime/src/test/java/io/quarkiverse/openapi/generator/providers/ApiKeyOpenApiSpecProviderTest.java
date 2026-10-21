@@ -14,12 +14,12 @@ import java.util.Optional;
 
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
-import org.jboss.resteasy.specimpl.MultivaluedTreeMap;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -96,7 +96,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
 
     @Test
     void filterCookieCaseEmpty() throws IOException {
-        final MultivaluedMap<String, Object> headers = new MultivaluedTreeMap<>();
+        final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         doReturn(headers).when(requestContext).getHeaders();
         provider = new ApiKeyAuthenticationProvider(OPEN_API_FILE_SPEC_ID, AUTH_SCHEME_NAME, ApiKeyIn.cookie, API_KEY_NAME,
                 List.of(), new ConfigCredentialsProvider());
@@ -107,7 +107,7 @@ class ApiKeyOpenApiSpecProviderTest extends AbstractOpenApiSpecProviderTest<ApiK
 
     @Test
     void filterCookieCaseExisting() throws IOException {
-        final MultivaluedMap<String, Object> headers = new MultivaluedTreeMap<>();
+        final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         final String existingCookieName = "quarkus";
         final String existingCookieValue = "rocks";
         final Cookie existingCookie = new Cookie.Builder(existingCookieName).value(existingCookieValue).build();

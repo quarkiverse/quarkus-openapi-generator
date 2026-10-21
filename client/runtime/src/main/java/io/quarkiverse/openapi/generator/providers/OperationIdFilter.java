@@ -90,7 +90,7 @@ public class OperationIdFilter implements ClientRequestFilter {
 
     /**
      * Retrieves the invoked method from the request context.
-     * Tries multiple approaches to support both RESTEasy Classic and Reactive.
+     * Tries multiple approaches to support different Quarkus REST Client versions.
      */
     private Method getInvokedMethod(ClientRequestContext requestContext) {
         // Try standard MicroProfile property first
