@@ -18,4 +18,16 @@ jobs:
     secrets: inherit
     with:
       ecosystem_ci_repo_path: quarkiverse-openapi-generator
+      java_version: 21
+  lts:
+    name: "Build against Quarkus LTS ${{ matrix.version }}"
+    if: github.event_name == 'workflow_dispatch' || github.actor == 'quarkusbot' || github.actor == 'quarkiversebot'
+    uses: quarkiverse/.github/.github/workflows/quarkus-ecosystem-ci.yml@main
+    secrets: inherit
+    with:
+      ecosystem_ci_repo_path: quarkiverse-openapi-generator
+      alternative: ${{ matrix.version }}
       java_version: 17
+    strategy:
+      matrix:
+        version: [ "3.40" ]
