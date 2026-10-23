@@ -98,14 +98,11 @@ public class ServerCodegenConfigResolver {
                     .sorted(Comparator.naturalOrder())
                     .forEach(path -> {
                         String configKey = sanitize(inputBaseDir.relativize(path));
-                        specs.add(new ServerCodegenSpec(
-                                configKey,
-                                inputBaseDir,
-                                path,
-                                getValue(config, null, "base-package", String.class).orElse(DEFAULT_PACKAGE),
-                                getValue(config, null, "use-reactive", Boolean.class).orElse(false),
-                                getValue(config, null, "use-builders", Boolean.class).orElse(true),
-                                getValue(config, null, "use-bean-validation", Boolean.class).orElse(false)));
+                        specs.add(specBuilder(config, null)
+                                .configKey(configKey)
+                                .inputBaseDir(inputBaseDir)
+                                .specPath(path)
+                                .build());
                     });
         } catch (IOException e) {
             throw new CodeGenException("Failed to scan OpenAPI specifications under " + inputBaseDir, e);
@@ -117,14 +114,11 @@ public class ServerCodegenConfigResolver {
         Path inputBaseDir = resolveInputBaseDir(sourceDir, Optional.empty(), config);
         validateOpenApiDir(inputBaseDir);
 
-        return new ServerCodegenSpec(
-                sanitize(Path.of(spec)),
-                inputBaseDir,
-                resolveExplicitSpec(inputBaseDir, spec),
-                getValue(config, null, "base-package", String.class).orElse(DEFAULT_PACKAGE),
-                getValue(config, null, "use-reactive", Boolean.class).orElse(false),
-                getValue(config, null, "use-builders", Boolean.class).orElse(true),
-                getValue(config, null, "use-bean-validation", Boolean.class).orElse(false));
+        return specBuilder(config, null)
+                .configKey(sanitize(Path.of(spec)))
+                .inputBaseDir(inputBaseDir)
+                .specPath(resolveExplicitSpec(inputBaseDir, spec))
+                .build();
     }
 
     private ServerCodegenSpec resolveSpec(Path sourceDir, Config config, String specId) throws CodeGenException {
@@ -139,14 +133,19 @@ public class ServerCodegenConfigResolver {
                 ? resolveExplicitSpec(inputBaseDir, explicitSpec.get())
                 : resolveSpecBySanitizedName(inputBaseDir, specId);
 
-        return new ServerCodegenSpec(
-                specId,
-                inputBaseDir,
-                specPath,
-                getValue(config, specId, "base-package", String.class).orElse(DEFAULT_PACKAGE),
-                getValue(config, specId, "use-reactive", Boolean.class).orElse(false),
-                getValue(config, specId, "use-builders", Boolean.class).orElse(true),
-                getValue(config, specId, "use-bean-validation", Boolean.class).orElse(false));
+        return specBuilder(config, specId)
+                .configKey(specId)
+                .inputBaseDir(inputBaseDir)
+                .specPath(specPath)
+                .build();
+    }
+
+    private ServerCodegenSpec.Builder specBuilder(Config config, String specId) {
+        return ServerCodegenSpec.builder()
+                .basePackage(getValue(config, specId, "base-package", String.class).orElse(DEFAULT_PACKAGE))
+                .reactive(getValue(config, specId, "use-reactive", Boolean.class).orElse(false))
+                .builders(getValue(config, specId, "use-builders", Boolean.class).orElse(true))
+                .beanValidation(getValue(config, specId, "use-bean-validation", Boolean.class).orElse(false));
     }
 
     private <T> Optional<T> getValue(Config config, String specId, String propertyName, Class<T> propertyType) {
