@@ -14,6 +14,32 @@
           "ocpp_integrator"
         ]
       },
+      "UserRoleAssignment": {
+        "type": "object",
+        "required": [
+          "userId",
+          "role"
+        ],
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "User identifier"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "operator",
+              "user",
+              "proxy",
+              "shareholder",
+              "ocpp_integrator"
+            ]
+          }
+        }
+      },
       "MeterUserRolesResponse": {
         "type": "object",
         "required": [
@@ -126,6 +152,39 @@
           },
           "404": {
             "description": "Group does not exist"
+          }
+        }
+      }
+    },
+    "/internal/user/{userId}/role-assignment": {
+      "get": {
+        "summary": "Get the role assignment of the given user",
+        "description": "Returns the role assigned to the user. The role property is declared as an inline enum whose values match the top-level MeterUserRole schema.",
+        "operationId": "internalUserUserIdRoleAssignmentGet",
+        "tags": [
+          "User management"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRoleAssignment"
+                }
+              }
+            }
           }
         }
       }
