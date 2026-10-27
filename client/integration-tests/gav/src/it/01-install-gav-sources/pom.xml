@@ -11,10 +11,10 @@
     <version>1</version>
     <packaging>pom</packaging>
 
-    <!-- Overridden by the invoker via -Dtested.version=... (see client/integration-tests/gav/pom.xml).
-         Default kept in sync with the root project version as a fallback; see 02-consume-gav/pom.xml. -->
+    <!-- @project.version@ is filtered by the invoker when cloning this project
+         (see client/integration-tests/gav/pom.xml), so it always matches the version under test. -->
     <properties>
-        <tested.version>3.0.0-SNAPSHOT</tested.version>
+        <tested.version>@project.version@</tested.version>
     </properties>
 
     <build>
