@@ -317,6 +317,33 @@ endif::add-copy-button-to-env-var[]
 |boolean
 |`+++false+++`
 
+a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-keep-local-refs]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-keep-local-refs[`+++quarkus.openapi.generator.server.keep-local-refs+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.openapi.generator.server.keep-local-refs+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Whether local references (`++#++/components/...`) of YAML specifications must be kept instead of being inlined before generating the code.
+
+By default, YAML specifications are fully resolved, so responses and request bodies that reference a model are generated as `jakarta.ws.rs.core.Response` and `java.io.InputStream`. When enabled, they are generated with the model types instead, such as `List<Model>`, `Model` and `Model data`.
+
+It can also be set per specification with `quarkus.openapi.generator.server.spec.<id>.keep-local-refs`.
+
+Only applied for `apicurio` generator.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_OPENAPI_GENERATOR_SERVER_KEEP_LOCAL_REFS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_OPENAPI_GENERATOR_SERVER_KEEP_LOCAL_REFS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-openapi-generator-server_quarkus-openapi-generator-server-skip-if-unchanged]] [.property-path]##link:#quarkus-openapi-generator-server_quarkus-openapi-generator-server-skip-if-unchanged[`+++quarkus.openapi.generator.server.skip-if-unchanged+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.openapi.generator.server.skip-if-unchanged+++[]

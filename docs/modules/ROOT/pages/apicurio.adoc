@@ -39,6 +39,42 @@ Any OpenAPI specification files in the input base directory that are not explici
 
 As with OpenAPITools, the identifier may also be an alias when you set `quarkus.openapi.generator.server.spec.<id>.spec=<file>` and, optionally, `quarkus.openapi.generator.server.spec.<id>.input-base-dir=<dir>`.
 
+[[keep-local-refs]]
+== Local references in YAML specifications
+
+YAML specifications are fully resolved before the code is generated: every local reference (`#/components/...`) is replaced with the schema it points to. Because of that, responses and request bodies that reference a model are generated as `jakarta.ws.rs.core.Response` and `java.io.InputStream`, instead of the model type.
+
+Set the `keep-local-refs` property to `true` to keep the local references and generate the model types instead. It can be set for all specifications or for a single one, and the specification property takes precedence over the global one:
+
+[source,properties]
+----
+# all specifications
+quarkus.openapi.generator.server.keep-local-refs=true
+# a single specification
+quarkus.openapi.generator.server.spec.simple_server_yaml.keep-local-refs=true
+----
+
+[cols="1,1,1"]
+|===
+|Schema |Default |`keep-local-refs=true`
+
+|Array of models response
+|`Response`
+|`List<Animal>`
+
+|Model response
+|`Response`
+|`Animal`
+
+|Model request body
+|`InputStream data`
+|`Animal data`
+|===
+
+External references (multi-file specifications) are resolved in both cases, and JSON specifications are not affected by this property.
+
+See the xref:migration-2.19-to-2.20.adoc[migration guide] if you are upgrading from 2.19.x or earlier.
+
 [[codegen-extensions]]
 == Codegen Extensions
 
