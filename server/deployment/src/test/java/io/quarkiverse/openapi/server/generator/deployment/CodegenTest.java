@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 
@@ -213,6 +214,29 @@ public class CodegenTest {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("No @RestForm(\"amounts\") parameter found"));
         assertThat(amountsParam.getTypeAsString()).startsWith("List<");
+    }
+
+    /**
+     * Tests that schema types of an OpenAPI 3.1 YAML spec survive the conversion to JSON.
+     */
+    @Test
+    void testOpenApi31YamlKeepsSchemaTypes() throws CodeGenException, IOException {
+        Config config = MockConfigUtils.getTestConfig("openapi-31.application.properties");
+        CodeGenContext codeGenContext = new CodeGenContext(null, outDir("openapi-31"), WORK_DIR,
+                INPUT_DIR, false, config, true);
+        ApicurioOpenApiServerCodegen apicurioOpenApiServerCodegen = new ApicurioOpenApiServerCodegen();
+        apicurioOpenApiServerCodegen.trigger(codeGenContext);
+
+        Path generatedFile = Path.of("target/generated-test-sources/openapi-31/io/example/api/beans/Item.java");
+        assertTrue(Files.exists(generatedFile));
+
+        CompilationUnit cu = StaticJavaParser.parse(generatedFile.toFile());
+        FieldDeclaration nameField = cu.findAll(FieldDeclaration.class).stream()
+                .filter(field -> field.getVariable(0).getNameAsString().equals("name"))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No name field found"));
+        assertThat(nameField.getElementType().asString()).isEqualTo("String");
+        assertThat(nameField.getAnnotationByName("Size")).isPresent();
     }
 
 }

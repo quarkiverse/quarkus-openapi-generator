@@ -26,7 +26,9 @@ import io.quarkus.bootstrap.prebuild.CodeGenException;
 import io.quarkus.deployment.CodeGenContext;
 import io.quarkus.deployment.CodeGenProvider;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.core.models.ParseOptions;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
@@ -185,7 +187,8 @@ public class ApicurioOpenApiServerCodegen implements CodeGenProvider {
 
             File jsonFile = Files.createTempFile(specPath.getFileName().toString(), ".json").toFile();
             jsonFile.deleteOnExit();
-            Json.mapper().writeValue(jsonFile, openAPI);
+            ObjectMapper mapper = openAPI.getSpecVersion() == SpecVersion.V31 ? Json31.mapper() : Json.mapper();
+            mapper.writeValue(jsonFile, openAPI);
             return jsonFile;
         } catch (Exception e) {
             throw new CodeGenException("Error resolving OpenAPI spec to JSON", e);
