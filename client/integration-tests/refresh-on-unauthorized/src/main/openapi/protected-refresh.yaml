@@ -1,0 +1,23 @@
+---
+openapi: 3.0.3
+info:
+  title: protected-refresh API
+  version: 3.0.0-SNAPSHOT
+paths:
+  /protected/call:
+    post:
+      operationId: callProtected
+      responses:
+        "200":
+          description: OK
+      security:
+        - refresh_oauth2: []
+components:
+  securitySchemes:
+    refresh_oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          authorizationUrl: https://example.com/oauth
+          tokenUrl: https://example.com/oauth/token
+          scopes: {}

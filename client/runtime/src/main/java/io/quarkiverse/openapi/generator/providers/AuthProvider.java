@@ -2,6 +2,7 @@ package io.quarkiverse.openapi.generator.providers;
 
 import java.util.List;
 
+import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.client.ClientRequestFilter;
 
 /**
@@ -18,5 +19,13 @@ public interface AuthProvider extends ClientRequestFilter {
     String getName();
 
     List<OperationAuthInfo> operationsToFilter();
+
+    /**
+     * Called when a request handled by this provider receives a {@code 401 Unauthorized} response.
+     * Providers that support refreshing stale credentials on demand (e.g. OAuth2/OIDC) can override this to do so.
+     * A no-op by default.
+     */
+    default void onUnauthorized(ClientRequestContext requestContext) {
+    }
 
 }
