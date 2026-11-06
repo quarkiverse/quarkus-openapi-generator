@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.client.ClientResponseContext;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 
@@ -429,6 +430,81 @@ class BaseCompositeAuthenticationProviderTest {
     // NOTE: URL-pattern based canFilter tests have been removed because the CVE fix (GHSA-fqh4-5f48-9j28)
     // replaced URL pattern matching with operationId-based matching. See SecurityVulnerabilityCVE20264233Test
     // for tests covering the new operationId-based behavior.
+
+    //endregion
+
+    //region Unauthorized response handling (refresh-on-unauthorized support)
+
+    private ClientResponseContext mockResponseContext(int status) {
+        ClientResponseContext responseContext = mock(ClientResponseContext.class);
+        lenient().when(responseContext.getStatus()).thenReturn(status);
+        return responseContext;
+    }
+
+    @Test
+    void unauthorizedResponseNotifiesMatchingProvider() {
+        AuthProvider provider = mock(AuthProvider.class);
+        OperationAuthInfo operation = createOperation();
+        when(provider.operationsToFilter()).thenReturn(List.of(operation));
+
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
+        ClientResponseContext responseContext = mockResponseContext(401);
+
+        BaseCompositeAuthenticationProvider composite = new BaseCompositeAuthenticationProvider(List.of(provider));
+
+        composite.filter(requestContext, responseContext);
+
+        verify(provider, times(1)).onUnauthorized(requestContext);
+    }
+
+    @Test
+    void unauthorizedResponseNotifiesAllMatchingProviders() {
+        AuthProvider provider1 = mock(AuthProvider.class);
+        AuthProvider provider2 = mock(AuthProvider.class);
+        OperationAuthInfo operation = createOperation();
+        when(provider1.operationsToFilter()).thenReturn(List.of(operation));
+        when(provider2.operationsToFilter()).thenReturn(List.of(operation));
+
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
+        ClientResponseContext responseContext = mockResponseContext(401);
+
+        BaseCompositeAuthenticationProvider composite = new BaseCompositeAuthenticationProvider(List.of(provider1, provider2));
+
+        composite.filter(requestContext, responseContext);
+
+        verify(provider1, times(1)).onUnauthorized(requestContext);
+        verify(provider2, times(1)).onUnauthorized(requestContext);
+    }
+
+    @Test
+    void unauthorizedResponseSkipsNonMatchingProvider() {
+        AuthProvider provider = mock(AuthProvider.class);
+        when(provider.operationsToFilter()).thenReturn(List.of(createOtherOperation()));
+
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
+        ClientResponseContext responseContext = mockResponseContext(401);
+
+        BaseCompositeAuthenticationProvider composite = new BaseCompositeAuthenticationProvider(List.of(provider));
+
+        composite.filter(requestContext, responseContext);
+
+        verify(provider, never()).onUnauthorized(any(ClientRequestContext.class));
+    }
+
+    @Test
+    void nonUnauthorizedResponseDoesNotNotifyProvider() {
+        AuthProvider provider = mock(AuthProvider.class);
+        lenient().when(provider.operationsToFilter()).thenReturn(List.of(createOperation()));
+
+        ClientRequestContext requestContext = createRequestContext("POST", "/api/test", "testOp");
+        ClientResponseContext responseContext = mockResponseContext(200);
+
+        BaseCompositeAuthenticationProvider composite = new BaseCompositeAuthenticationProvider(List.of(provider));
+
+        composite.filter(requestContext, responseContext);
+
+        verify(provider, never()).onUnauthorized(any(ClientRequestContext.class));
+    }
 
     //endregion
 }
