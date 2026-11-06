@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Keep Local Refs API
+  version: 1.0.0
+paths:
+  /animals:
+    get:
+      operationId: listAnimals
+      responses:
+        "200":
+          description: Array of models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Animal"
+    post:
+      operationId: createAnimal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Animal"
+      responses:
+        "201":
+          description: Created
+  /animals/names:
+    get:
+      operationId: listAnimalNames
+      responses:
+        "200":
+          description: Array of scalars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /animals/{id}:
+    get:
+      operationId: getAnimal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/Int64Id"
+      responses:
+        "200":
+          description: Single model
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Animal"
+components:
+  schemas:
+    Int64Id:
+      type: integer
+      format: int64
+      minimum: 0
+    Animal:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
