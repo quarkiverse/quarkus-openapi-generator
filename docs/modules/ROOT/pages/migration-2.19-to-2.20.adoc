@@ -1,0 +1,134 @@
+= Migration Guide: 2.19.x to 2.20.0
+
+include::./includes/attributes.adoc[]
+
+Version 2.20.0 added support for multi-file specifications to the Apicurio server generator. To support it, YAML specifications are fully resolved before the code is generated, which changed the types of the generated methods.
+
+* *Breaking*: YAML specifications generate `Response` and `InputStream` instead of the model types.
+* *New*: the `keep-local-refs` property, available since 2.24.0, generates the model types again.
+
+The OpenAPITools server generator, the client generator and JSON specifications are not affected.
+
+== Breaking change: model types in YAML specifications
+
+=== Why the change?
+
+Up to 2.19.x, YAML specifications were only converted to JSON, with their `$ref` values left untouched, so references to other files were not supported. Since 2.20.0, the specification is fully resolved: external references are loaded into the document, and local references (`#/components/...`) are replaced with the schema they point to. Without the reference, Apicurio no longer knows which model a response or a request body uses.
+
+=== What changed
+
+Given the following specification:
+
+[source,yaml]
+----
+paths:
+  /animals:
+    get:
+      operationId: listAnimals
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Animal"
+    post:
+      operationId: createAnimal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Animal"
+      responses:
+        "201":
+          description: Created
+  /animals/{id}:
+    get:
+      operationId: getAnimal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Animal"
+----
+
+[cols="1,1,1"]
+|===
+|Schema |Before (2.19.x) |After (2.20.0)
+
+|Array of models response
+|`List<Animal> listAnimals()`
+|`Response listAnimals()`
+
+|Model response
+|`Animal getAnimal(long id)`
+|`Response getAnimal(long id)`
+
+|Model request body
+|`void createAnimal(Animal data)`
+|`void createAnimal(InputStream data)`
+|===
+
+The model classes, such as `Animal`, are still generated.
+
+=== Step-by-step migration
+
+==== 1. Find the YAML specifications generated with Apicurio
+
+Only `.yaml` and `.yml` specifications generated with `quarkus.openapi.generator.server.use=apicurio`, the default generator, are affected.
+
+==== 2. Update the implementations of the generated interfaces
+
+Return a `jakarta.ws.rs.core.Response` with the entity, and read the request body from the `InputStream`:
+
+[source,java]
+----
+public class AnimalsResourceImpl implements AnimalsResource {
+
+    @Inject
+    ObjectMapper mapper;
+
+    @Override
+    public Response listAnimals() {
+        return Response.ok(List.of(new Animal())).build();
+    }
+
+    @Override
+    public void createAnimal(InputStream data) {
+        try {
+            Animal animal = mapper.readValue(data, Animal.class);
+            // ...
+        } catch (IOException e) {
+            throw new BadRequestException(e);
+        }
+    }
+}
+----
+
+==== 3. If you want to keep the model types
+
+Since 2.24.0, set the `keep-local-refs` property to keep the local references and generate the same types as 2.19.x. External references are still resolved, so multi-file specifications keep working:
+
+[source,properties]
+----
+# all specifications
+quarkus.openapi.generator.server.keep-local-refs=true
+# a single specification
+quarkus.openapi.generator.server.spec.<id>.keep-local-refs=true
+----
+
+== Further reading
+
+* xref:apicurio.adoc#keep-local-refs[Local references in YAML specifications]
+* xref:apicurio.adoc[Server with Apicurio]

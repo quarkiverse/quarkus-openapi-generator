@@ -131,6 +131,21 @@ public interface ServerCodegenConfig {
         Optional<Boolean> useRestResponse();
 
         /**
+         * Whether local references ({@code #/components/...}) of YAML specifications must be kept instead of being
+         * inlined before generating the code.
+         * <p>
+         * By default, YAML specifications are fully resolved, so responses and request bodies that reference a model
+         * are generated as {@code jakarta.ws.rs.core.Response} and {@code java.io.InputStream}. When enabled, they are
+         * generated with the model types instead, such as {@code List<Model>}, {@code Model} and {@code Model data}.
+         * <p>
+         * It can also be set per specification with {@code quarkus.openapi.generator.server.spec.<id>.keep-local-refs}.
+         * <p>
+         * Only applied for {@code apicurio} generator.
+         */
+        @WithDefault("false")
+        Optional<Boolean> keepLocalRefs();
+
+        /**
          * Whether to skip generation when the persisted fingerprint of the OpenAPI specification
          * and relevant generation configuration matches the previous run.
          */
