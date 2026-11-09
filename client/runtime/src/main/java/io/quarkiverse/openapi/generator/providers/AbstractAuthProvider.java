@@ -112,6 +112,14 @@ public abstract class AbstractAuthProvider implements AuthProvider {
                 .orElse(false);
     }
 
+    public static boolean isRefreshOnUnauthorized(String openApiSpecId, String authName) {
+        return ConfigProvider.getConfig()
+                .getOptionalValue(
+                        getCanonicalAuthConfigPropertyName(AuthConfig.REFRESH_ON_UNAUTHORIZED, openApiSpecId, authName),
+                        Boolean.class)
+                .orElse(false);
+    }
+
     public CredentialsProvider getCredentialsProvider() {
         return credentialsProvider;
     }
