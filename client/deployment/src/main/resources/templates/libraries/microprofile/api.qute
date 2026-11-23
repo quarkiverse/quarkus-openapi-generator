@@ -25,6 +25,7 @@ import {imp.import};
 {#if enable-security-generation && openapi:hasAuthMethods(operations) }
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider(io.quarkiverse.openapi.generator.providers.OperationIdFilter.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationProvider.class)
+@org.eclipse.microprofile.rest.client.annotation.RegisterProvider({package}.auth.CompositeAuthenticationResponseFilter.class)
 @org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders({package}.auth.AuthenticationPropagationHeadersFactory.class)
 {/if}
 {#if api-cdi-scope && ('none' ne api-cdi-scope)}@{api-cdi-scope}{/if}

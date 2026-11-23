@@ -41,6 +41,7 @@
     <module>path</module>
     <module>polymorphism</module>
 	<module>register-rest-client</module>
+    <module>refresh-on-unauthorized</module>
     <module>return-response</module>
     <module>remove-operationid-prefix</module>
     <module>security</module>

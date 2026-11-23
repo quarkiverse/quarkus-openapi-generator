@@ -40,6 +40,16 @@ public class ClassicOidcClientRequestFilterDelegate extends AbstractTokensProduc
     }
 
     @Override
+    protected boolean isForceNewTokens() {
+        return ForceTokenRefreshRegistry.consumeForceRefresh(clientId);
+    }
+
+    @Override
+    public void forceTokenRefresh() {
+        ForceTokenRefreshRegistry.markForRefresh(clientId);
+    }
+
+    @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         try {
             String accessToken = this.getAccessToken();

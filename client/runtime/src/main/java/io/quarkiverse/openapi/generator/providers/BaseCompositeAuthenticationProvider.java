@@ -12,6 +12,9 @@ import java.util.Set;
 
 import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.client.ClientRequestFilter;
+import jakarta.ws.rs.client.ClientResponseContext;
+import jakarta.ws.rs.client.ClientResponseFilter;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 
@@ -21,7 +24,7 @@ import io.quarkiverse.openapi.generator.OpenApiGeneratorConfig;
  * Composition of supported {@link ClientRequestFilter} defined by a given OpenAPI interface.
  * This class is used as the base class of generated code.
  */
-public class BaseCompositeAuthenticationProvider implements ClientRequestFilter {
+public class BaseCompositeAuthenticationProvider implements ClientRequestFilter, ClientResponseFilter {
 
     static final String REST_CLIENT_URL_CONFIG_PREFIX = "quarkus.rest-client.";
     static final String REST_CLIENT_URL_CONFIG_SUFFIX = ".url";
@@ -98,6 +101,19 @@ public class BaseCompositeAuthenticationProvider implements ClientRequestFilter 
         }
 
         removeAuthenticationTemporalHeaders(requestContext, removableHeaderPrefix);
+    }
+
+    @Override
+    public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) {
+        if (responseContext.getStatus() != Response.Status.UNAUTHORIZED.getStatusCode()) {
+            return;
+        }
+
+        for (AuthProvider authProvider : authProviders) {
+            if (canFilter(authProvider, requestContext)) {
+                authProvider.onUnauthorized(requestContext);
+            }
+        }
     }
 
     /**
