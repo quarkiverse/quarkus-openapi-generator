@@ -36,7 +36,6 @@
       <artifactId>quarkus-oidc-common</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!-- We need an impl of RuntimeDelegate for testing purposes only. Thus, it doesn't matter whether it has a reactive or classic rest client dependency -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
@@ -57,9 +56,10 @@
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- We need an impl of RuntimeDelegate for testing purposes only -->
     <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-core</artifactId>
+      <groupId>io.quarkus.resteasy.reactive</groupId>
+      <artifactId>resteasy-reactive-common</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
